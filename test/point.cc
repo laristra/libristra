@@ -18,6 +18,7 @@
 
 using namespace flecsi;
 using namespace flecsi::sp;
+using namespace flecsi::utils;
 
 using point_1d_t = point<double,1>;
 using point_2d_t = point<double,2>;
