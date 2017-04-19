@@ -16,8 +16,10 @@
 
 #include "flecsi-sp/geometry/point.h"
 
+#include <flecsi/utils/dimensioned_array.h>
+
 using namespace flecsi;
-using namespace flecsi::sp;
+using namespace flecsi::sp::geometry;
 using namespace flecsi::utils;
 
 using point_1d_t = point<double,1>;
@@ -26,16 +28,16 @@ using point_3d_t = point<double,3>;
 
 TEST(point, sanity) {
   point_1d_t a1{-1.0};
-  ASSERT_EQ(-1.0, a1[axis::x]);
+  ASSERT_EQ(-1.0, a1[ static_cast<size_t>( axis::x ) ]);
 
   point_2d_t a2{3.0, 0.0};
-  ASSERT_EQ(3.0, a2[axis::x]);
-  ASSERT_EQ(0.0, a2[axis::y]);
+  ASSERT_EQ(3.0, a2[ static_cast<size_t>( axis::x ) ]);
+  ASSERT_EQ(0.0, a2[ static_cast<size_t>( axis::y ) ]);
 
   point_3d_t a3{3.0, 0.0, -1.0};
-  ASSERT_EQ(3.0, a3[axis::x]);
-  ASSERT_EQ(0.0, a3[axis::y]);
-  ASSERT_EQ(-1.0, a3[axis::z]);
+  ASSERT_EQ(3.0, a3[ static_cast<size_t>( axis::x ) ]);
+  ASSERT_EQ(0.0, a3[ static_cast<size_t>( axis::y ) ]);
+  ASSERT_EQ(-1.0, a3[ static_cast<size_t>( axis::z ) ]);
 
 } // TEST
 

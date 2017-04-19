@@ -30,6 +30,7 @@
 
 namespace flecsi {
 namespace sp {
+namespace geometry {
 
 /*!
   \class space_vector space_vector.h
@@ -40,7 +41,7 @@ namespace sp {
   for more information on the vector_t interface.
  */
 template <typename T, size_t D>
-using space_vector = utils::dimensioned_array<T, D, 2>;
+using space_vector = flecsi::utils::dimensioned_array<T, D, 2>;
 
 /*!
   \function point_to_vector(const point<T, D> & a)
@@ -100,7 +101,7 @@ T magnitude(const space_vector<T, D> & a)
 {
   T sum(0);
   for (size_t d(0); d < D; ++d) {
-    sum += utils::square(a[d]);
+    sum += flecsi::utils::square(a[d]);
   } // for
 
   return std::sqrt(sum);
@@ -162,6 +163,7 @@ space_vector<T, 3> normal(
 } // normal
 
 } // namespace sp
+} // namespace flecsi
 } // namespace flecsi
 
 #endif // flecsi_sp_space_vector_h

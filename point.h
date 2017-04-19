@@ -15,8 +15,11 @@
 #ifndef flecsi_sp_point_h
 #define flecsi_sp_point_h
 
-#include <flecsi/utils/dimensioned_array.h>
+#include "flecsi-sp/math/vector.h"
+
 #include <flecsi/utils/common.h>
+
+#include <cmath>
 
 ///
 // \file point.h
@@ -26,6 +29,7 @@
 
 namespace flecsi {
 namespace sp {
+namespace geometry {
 
 ///
 // \class point point.h
@@ -35,19 +39,8 @@ namespace sp {
 // The point type is implemented using \ref dimensioned_array.  Look there
 // for more information on the point interface.
 ///
-template <typename T, size_t D>
-using point = utils::dimensioned_array<T, D, 1>;
-
-template <typename T, size_t D>
-point<T, D> operator*(const T val, const point<T, D> & p)
-{
-  point<T, D> tmp(p);
-  for (size_t d(0); d < D; ++d) {
-    tmp[d] *= val;
-  } // for
-
-  return tmp;
-} // operator *
+template <typename T, std::size_t D> 
+using point = math::vector<T,D>;
 
 ///
 // \function distance
@@ -57,7 +50,7 @@ T distance(const point<T, D> & a, const point<T, D> & b)
 {
   T sum(0);
   for (size_t d(0); d < D; ++d) {
-    sum += utils::square(a[d] - b[d]);
+    sum += flecsi::utils::square(a[d] - b[d]);
   } // for
 
   return std::sqrt(sum);
@@ -99,6 +92,7 @@ auto centroid(std::initializer_list<point<T, D>> vert_list)
 } // centroid
 
 } // namespace sp
+} // namespace flecsi
 } // namespace flecsi
 
 #endif // flecsi_sp_point_h
