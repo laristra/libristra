@@ -1,5 +1,5 @@
 /*~-------------------------------------------------------------------------~~*
- * Copyright (c) 2016 Los Alamos National Laboratory, LLC
+ * Copyright (c) 2017 Los Alamos National Laboratory, LLC
  * All rights reserved
  *~-------------------------------------------------------------------------~~*/
 ////////////////////////////////////////////////////////////////////////////////
@@ -10,8 +10,8 @@
 #pragma once
 
 // user includes 
-#include "detail/template_helpers_impl.h"
-#include "../common/types.h"
+#include "flecsi-sp/utils/detail/template_helpers_impl.h"
+#include "flecsi-sp/common/types.h"
 
 // system includes
 #include <functional>

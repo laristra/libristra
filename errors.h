@@ -1,5 +1,5 @@
 /*~-------------------------------------------------------------------------~~*
- * Copyright (c) 2016 Los Alamos National Laboratory, LLC
+ * Copyright (c) 2017 Los Alamos National Laboratory, LLC
  * All rights reserved
  *~-------------------------------------------------------------------------~~*/
 ////////////////////////////////////////////////////////////////////////////////
@@ -10,7 +10,7 @@
 #pragma once
 
 // user includes
-#include "exceptions.h"
+#include "flecsi-sp/utils/exceptions.h"
 
 // system includes
 #include <iostream>

@@ -1,5 +1,5 @@
 /*~-------------------------------------------------------------------------~~*
- * Copyright (c) 2016 Los Alamos National Laboratory, LLC
+ * Copyright (c) 2017 Los Alamos National Laboratory, LLC
  * All rights reserved
  *~-------------------------------------------------------------------------~~*/
 ////////////////////////////////////////////////////////////////////////////////
@@ -11,8 +11,8 @@
 #pragma once
 
 // user includes
-#include "type_traits.h"
-#include "template_helpers.h"
+#include "flecsi-sp/utils/type_traits.h"
+#include "flecsi-sp/utils/template_helpers.h"
 
 // system includes
 #include <algorithm>
