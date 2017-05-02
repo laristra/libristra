@@ -6,6 +6,14 @@
 set(geometry_HEADERS
   point.h
   space_vector.h
+  shapes/geometric_shapes.h
+  shapes/hexahedron.h
+  shapes/polygon.h
+  shapes/polyhedron.h
+  shapes/quadrilateral.h
+  shapes/tetrahedron.h
+  shapes/triangle.h
+
   PARENT_SCOPE
 )
 
