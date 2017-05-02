@@ -1,5 +1,5 @@
 /*~-------------------------------------------------------------------------~~*
- * Copyright (c) 2016 Los Alamos National Laboratory, LLC
+ * Copyright (c) 2017 Los Alamos National Laboratory, LLC
  * All rights reserved
  *~-------------------------------------------------------------------------~~*/
 ////////////////////////////////////////////////////////////////////////////////
@@ -9,7 +9,7 @@
 #pragma once
 
 // user includes
-#include "array.h"
+#include "flecsi-sp/math/array.h"
 
 namespace flecsi {
 namespace sp {

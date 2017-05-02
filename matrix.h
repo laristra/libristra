@@ -1,5 +1,5 @@
 /*~-------------------------------------------------------------------------~~*
- * Copyright (c) 2016 Los Alamos National Laboratory, LLC
+ * Copyright (c) 2017 Los Alamos National Laboratory, LLC
  * All rights reserved
  *~-------------------------------------------------------------------------~~*/
 ////////////////////////////////////////////////////////////////////////////////
@@ -9,8 +9,8 @@
 #pragma once
 
 // user includes
-#include "multi_array.h"
-#include "vector.h"
+#include "flecsi-sp/math/multi_array.h"
+#include "flecsi-sp/math/vector.h"
 
 // system includes
  #include <cmath>
