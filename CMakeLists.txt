@@ -5,7 +5,6 @@
 
 set(utils_HEADERS
   array_ref.h
-  detail
   errors.h
   exceptions.h
   fixed_vector.h
