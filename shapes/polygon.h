@@ -1,5 +1,5 @@
 /*~-------------------------------------------------------------------------~~*
- * Copyright (c) 2016 Los Alamos National Laboratory, LLC
+ * Copyright (c) 2017 Los Alamos National Laboratory, LLC
  * All rights reserved
  *~-------------------------------------------------------------------------~~*/
 ////////////////////////////////////////////////////////////////////////////////
@@ -9,9 +9,9 @@
 #pragma once
 
 // user includes
-#include "geometric_shapes.h"
-#include "triangle.h"
-#include "../../math/general.h"
+#include "flecsi-sp/geometry/shapes/geometric_shapes.h"
+#include "flecsi-sp/geometry/shapes/triangle.h"
+#include "flecsi-sp/math/general.h"
 
 namespace flecsi {
 namespace sp {
