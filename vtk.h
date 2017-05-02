@@ -1,5 +1,5 @@
 /*~-------------------------------------------------------------------------~~*
- * Copyright (c) 2016 Los Alamos National Laboratory, LLC
+ * Copyright (c) 2017 Los Alamos National Laboratory, LLC
  * All rights reserved
  *~-------------------------------------------------------------------------~~*/
 ////////////////////////////////////////////////////////////////////////////////
@@ -11,8 +11,8 @@
 #pragma once
 
 // user includes
-#include "write_binary.h"
-#include "../common/types.h"
+#include "flecsi-sp/io/write_binary.h"
+#include "flecsi-sp/common/types.h"
 
 // system includes
 #include <typeindex>
