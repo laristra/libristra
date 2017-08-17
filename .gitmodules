@@ -1,0 +1,4 @@
+[submodule "cinch"]
+	path = cinch
+	url = git@github.com:laristra/cinch.git
+	branch = master

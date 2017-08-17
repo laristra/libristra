@@ -1,0 +1,10 @@
+// ristra.h
+// Aug 17, 2017
+// (c) Copyright 2017 LANSLLC, all rights reserved
+
+
+#pragma once
+
+#define RISTRA_VERSION 1.0
+
+// End of file
