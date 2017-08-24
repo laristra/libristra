@@ -10,6 +10,14 @@
 
 set(ristra_HEADERS
   announce.hh
+  dbc.h
+  detail/dbc_impl.h
+  lua_access.h
+  detail/lua_base.h
+  detail/lua_ref.h
+  detail/lua_result.h
+  detail/lua_utils.h
+  detail/lua_value.h
 )
 
 #------------------------------------------------------------------------------#
@@ -19,6 +27,7 @@ set(ristra_HEADERS
 
 set(ristra_SOURCES
   announce.cc
+  detail/dbc_impl.cc
 )
 
 #------------------------------------------------------------------------------#
@@ -43,11 +52,13 @@ set(ristra_SOURCES
 # Unit tests.
 #------------------------------------------------------------------------------#
 
-
-
 cinch_add_unit(ristra-test
-  SOURCES test/test-announce.cc
-  LIBRARIES ristra
+  SOURCES
+    test/test-announce.cc
+    test/lua_utils.cc
+  LIBRARIES ristra ${RISTRA_LIBRARIES}
+  INPUTS
+    test/lua_test.lua
 )
 
 #~---------------------------------------------------------------------------~-#
