@@ -380,6 +380,8 @@ public:
 
 }; // lua_result_t
 
+using lua_result_uptr_t = std::unique_ptr<lua_result_t>;
+
 } // ristra::
 
 #endif // HAVE_LUA
