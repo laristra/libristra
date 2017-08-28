@@ -5,17 +5,17 @@
 
 #pragma once
 
-#include "ristra/detail/inputs_non_static_impl.h"
+#include "ristra/detail/inputs_impl.h"
 #include "ristra/lua_access.h"
-#include "ristra/vector.h"
+#include "ristra/flecsale-vector.h"
 #include <map>
 #include <memory>
 #include <string>
 
 namespace ristra{
 
-/* TODO: Still not sure how multiple sources will compose. Chain of
- * responsility? If so, how to control precedence?
+/**\TODO: review design. The registry idea is getting replicated in
+ * several places. This can likely be cleaned up, perhaps with CRTP.
  */
 
 /**\brief Interface for a source of input information. Goal is to permit
@@ -28,7 +28,9 @@ class input_source
   using string_t = string_ty;
   using str_cr_t = string_t const &;
   using real_t = real_ty;
-  template <uint32_t d> using vec = vector<real_t,d>;
+  /**\TODO Need to clean up the function interfaces so that composite types
+   * (like vectors) can be carried by the thing that parses/wraps functions. */
+  template <uint32_t d> using vec = ::ristra::vector<real_t,d>;
   template <uint32_t d> using ics_return_t =
     std::tuple<real_t,vec<d>,real_t>;
   template <uint32_t d> using ics_function_t =
@@ -50,7 +52,6 @@ protected:
     registry m_reg;
   }; // data_registry
 
-  // Is this really doing anything useful?
   /**\brief get value corr. to key
    * \return true if successfully found key.
    * \param[in] k: the key to look for
@@ -182,6 +183,7 @@ public:
     return;
   } // ctor
 
+  /**\brief Templated functor (thus specializable) to get values from Lua. */
   template <typename T>
   struct value_getter{
     bool get_value(str_cr_t k, T &t,lua_source_t & ls){
@@ -203,8 +205,7 @@ public:
     }
   }; // struct value_getter
 
-  // specialization for just getting back lua_result_t below...
-
+  // see below for specialization returning lua_result_t...
   template <typename T>
   bool get_value(str_cr_t f, T&t){
     value_getter<T> g;
