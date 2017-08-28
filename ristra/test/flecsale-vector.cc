@@ -8,7 +8,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // user includes
-#include "ristra/vector.h"
+#include "ristra/flecsale-vector.h"
 #include "ristra/math_utils.h"
 
 // system includes
