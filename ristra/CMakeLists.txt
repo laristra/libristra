@@ -10,15 +10,16 @@
 
 set(ristra_HEADERS
   announce.hh
-  array.h
+  flecsale-array.h
   dbc.h
   input_source.h
+  inputs.h
   lua_access.h
   math_utils.h
   type_traits.h
-  vector.h
+  flecsale-vector.h
   detail/dbc_impl.h
-  detail/inputs_non_static_impl.h
+  detail/inputs_impl.h
   detail/lua_base.h
   detail/lua_ref.h
   detail/lua_result.h
@@ -66,7 +67,9 @@ cinch_add_unit(ristra-test
     test/test-announce.cc
     test/lua_utils.cc
     test/input_source.cc
-    test/vector.cc
+    test/inputs.cc
+    test/test_input_hard_coded_problems.cc
+    test/flecsale-vector.cc
   LIBRARIES ristra ${RISTRA_LIBRARIES}
   INPUTS
     test/lua_test.lua
