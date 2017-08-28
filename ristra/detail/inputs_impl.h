@@ -1,9 +1,9 @@
-// inputs_non_static_impl.h
+// inputs_impl.h
 // T. M. Kelley
 // May 15, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
-/** \file inputs_non_static_impl.h
+/** \file inputs_impl.h
  * Macros and types to support invoking functions and functors on
  * a set of types, absent argument-driven type deduction.
  *
