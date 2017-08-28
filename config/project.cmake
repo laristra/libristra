@@ -16,7 +16,9 @@ cinch_minimum_required(1.0)
 # Set the project name
 #------------------------------------------------------------------------------#
 
-project(ristra CXX)
+project(ristra)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 #------------------------------------------------------------------------------#
 # Set header suffix regular expression
@@ -37,6 +39,70 @@ if(CXX14_COMPILER)
 else()
     message(FATAL_ERROR "C++14 compatible compiler not found")
 endif()
+
+#------------------------------------------------------------------------------#
+# Enable exceptions
+#------------------------------------------------------------------------------#
+
+OPTION (ENABLE_EXCEPTIONS "Enable C++ exceptions (really?)"  ON)
+if(ENABLE_EXCEPTIONS)
+  add_definitions( -DENABLE_EXCEPTIONS)
+endif()
+
+
+#------------------------------------------------------------------------------#
+# Some precision setup
+#------------------------------------------------------------------------------#
+
+# double or single precision
+OPTION (DOUBLE_PRECISION "Use double precision reals"  ON)
+
+if( DOUBLE_PRECISION )
+  message(STATUS "Note: Double precision build activated.")
+  add_definitions( -DDOUBLE_PRECISION )
+  SET (TEST_TOLERANCE 1.0e-14 CACHE STRING "The testing tolerance" )
+else()
+  message(STATUS "Note: Single precision build activated.")
+  SET (TEST_TOLERANCE 1.0e-6 CACHE STRING "The testing tolerance" )
+endif()
+
+add_definitions( -DTEST_TOLERANCE=${TEST_TOLERANCE} )
+
+#------------------------------------------------------------------------------#
+# Support for embedded interpreters
+#------------------------------------------------------------------------------#
+
+find_package (PythonLibs QUIET)
+
+option(ENABLE_PYTHON "Enable Python Support" ${PYTHONLIBS_FOUND})
+
+if(ENABLE_PYTHON AND NOT PYTHONLIBS_FOUND)
+  message(FATAL_ERROR "Python requested, but not found")
+endif()
+
+if (ENABLE_PYTHON)
+   message (STATUS "Found PythonLibs: ${PYTHON_INCLUDE_DIRS}")
+   include_directories( ${PYTHON_INCLUDE_DIRS} )
+   list( APPEND RISTRA_LIBRARIES ${PYTHON_LIBRARIES} )
+   add_definitions( -DHAVE_PYTHON )
+endif ()
+
+# find lua for embedding
+# Note: Not sure about the version: I'm OK with Lua 3.3
+find_package (Lua 5 QUIET)
+
+option(ENABLE_LUA "Enable Lua Support" ${LUA_FOUND})
+
+if(ENABLE_LUA AND NOT LUA_FOUND)
+  message(FATAL_ERROR "Lua requested, but not found")
+endif()
+
+if (ENABLE_LUA)
+   message (STATUS "Found Lua: ${LUA_INCLUDE_DIR}")
+   include_directories( ${LUA_INCLUDE_DIR} )
+   list( APPEND RISTRA_LIBRARIES ${LUA_LIBRARIES} )
+   add_definitions( -DHAVE_LUA )
+endif ()
 
 #------------------------------------------------------------------------------#
 # Boost
@@ -63,7 +129,7 @@ set(RISTRA_DBC_ACTION "${RISTRA_DBC_ACTION}" CACHE STRING
   "Select the design by contract action")
 set_property(CACHE RISTRA_DBC_ACTION PROPERTY STRINGS ${RISTRA_DBC_ACTIONS})
 
-set(FLECSI_DBC_REQUIRE ON CACHE BOOL
+set(RISTRA_DBC_REQUIRE ON CACHE BOOL
   "Enable DBC Pre/Post Condition Assertions")
 
 if(RISTRA_DBC_ACTION STREQUAL "throw")
