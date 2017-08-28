@@ -178,7 +178,6 @@ struct lua_value< Array<T,N> >
   static Array<T,N> get(lua_State * s, int index = -1)
   {
     // make sure we are accessing a table
-    // make sure we are accessing a table
     if ( !lua_istable(s, index) )
      raise_runtime_error( "Invalid conversion of type \"" +
       lua_typestring(s, index) + "\" to vector."
