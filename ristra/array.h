@@ -114,8 +114,11 @@ public:
 
   //! \brief Constructor with one value.
   //! \param[in] val The value to set the array to.
-  template < typename T2 >
-  constexpr array(const T2 & val)  noexcept
+  // template <
+  //   typename T
+  //   // ,typename std::enable_if_t< std::is_constructible<T,T2>::value>::value
+  //   >
+  constexpr array(const T & val)  noexcept
   //elems_( utils::fill<length>::apply( static_cast<T>(val) ) )
   //elems_( utils::make_array<value_type,length>( static_cast<T>(val) ) )
   {
