@@ -16,7 +16,6 @@
 
 #include "ristra/dbc.h"
 #include "ristra/errors.h"
-#include "here.h"
 
 namespace ristra {
 
@@ -242,6 +241,9 @@ public:
     return tup;
   }
 
+  /// \brief Explicit conversion for tuples.
+  /// \tparam Args The element types of the tuple.
+  /// \return The tuple of values.
   template <typename...Args>
   std::tuple<Args...> to_tuple() const {
     constexpr int N = sizeof...(Args);
@@ -255,7 +257,6 @@ public:
     get_results<Tup,0,Args...>(tup);
     return tup;
   }
-
 
   /// \brief Explicit type conversion operators for single values.
   /// \tparam T The type to convert to.
