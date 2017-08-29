@@ -13,7 +13,7 @@ set(ristra_HEADERS
   flecsale-array.h
   dbc.h
   input_source.h
-  inputs.h
+  input_engine.h
   lua_access.h
   math_utils.h
   type_traits.h
@@ -67,7 +67,7 @@ cinch_add_unit(ristra-test
     test/test-announce.cc
     test/lua_utils.cc
     test/input_source.cc
-    test/inputs.cc
+    test/input_engine.cc
     test/test_input_hard_coded_problems.cc
     test/flecsale-vector.cc
   LIBRARIES ristra ${RISTRA_LIBRARIES}

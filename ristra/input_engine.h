@@ -45,7 +45,7 @@ namespace ristra{
  * The current resolution priority is Lua file, then hard-coded source.
  */
 template <class input_traits>
-class inputs_t {
+class input_engine_t {
 public:
   using traits_t = input_traits;
   using type_tuple = typename input_traits::types;
@@ -118,11 +118,11 @@ public:
   apply_void_f_by_tuple(print_unresolved_types_);
   apply_void_f_by_tuple(define_type_names_);
 
-  inputs_t(){
+  input_engine_t(){
     define_type_names__by_tuple<type_tuple>();
   }
 
-  virtual ~inputs_t(){}
+  virtual ~input_engine_t(){}
 
   /**\brief Clear all registered targets on all types. */
   void clear_registry(){
@@ -196,7 +196,7 @@ public:
     if(pv == reg.end()){
       // TODO figure out what to do if lookup fails
       std::stringstream errstr;
-      errstr << "inputs_t::get_value: invalid key " << target_name;
+      errstr << "input_engine_t::get_value: invalid key " << target_name;
       throw std::domain_error(errstr.str());
     }
     return pv->second;
@@ -224,7 +224,7 @@ public:
     if(pv == hc_registry.end()){
       // TODO figure out what to do if lookup fails
       std::stringstream errstr;
-      errstr << "inputs_t::get_value: invalid key " << target_name;
+      errstr << "input_engine_t::get_value: invalid key " << target_name;
       throw std::domain_error(errstr.str());
     }
     return pv->second;
@@ -280,7 +280,7 @@ protected:
    * \return true if all targets for T resolved. */
   template <class T, size_t I>
   struct resolve_inputs_{
-    bool operator()(inputs_t & inp, lua_source_ptr_t &lua_source,
+    bool operator()(input_engine_t & inp, lua_source_ptr_t &lua_source,
       hard_coded_source_ptr_t & hard_coded_source){
       // temp:
       target_set_t &targets(inp.get_target_set<T>());
@@ -322,7 +322,7 @@ protected:
   /* Specialization for initial conditions functions. */
   template <size_t I>
   struct resolve_inputs_<ics_function_t, I>{
-    bool operator()(inputs_t &inp, lua_source_ptr_t &lua_source,
+    bool operator()(input_engine_t &inp, lua_source_ptr_t &lua_source,
                hard_coded_source_ptr_t &hard_coded_source) {
 
       // This is a bit more complex: we're going to store either

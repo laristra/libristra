@@ -3,7 +3,7 @@
 // May 08, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
-#include "ristra/inputs.h"
+#include "ristra/input_engine.h"
 #include "cinchtest.h"
 #include "ristra/flecsale-vector.h"
 #include "test_input_hard_coded_problems.h"
@@ -65,12 +65,12 @@ struct input_traits{
   }; // struct Lua_ICS_Func_Wrapper
 }; // input_traits
 
-// This is our concrete inputs_t class. It inherits from inputs_t
+// This is our concrete input_engine_t class. It inherits from input_engine_t
 // in order to make the registries accessible for testing.
-struct user_t : public inputs_t<input_traits> {
+struct user_t : public input_engine_t<input_traits> {
 public:
   using mesh_t = Mesh;
-  using base_t = inputs_t<input_traits>;
+  using base_t = input_engine_t<input_traits>;
 
   /**\brief relay the base class's state for testing */
   template <class T> base_t::registry<T> &get_registry() {
@@ -107,7 +107,6 @@ ics_r_t ICS_Func(user_t::vector_t,real_t){
 }
 
 TEST(inputs_non_static,register_target){
-  // using test_inputs_t = inputs_t<user_t>;
   using targs_t = test_inputs_t::target_set_t;
   using ics_f_t = user_t::ics_function_t;
   test_inputs_t t;
@@ -164,7 +163,6 @@ TEST(inputs_non_static,register_target){
 } // TEST(inputs_non_static,instantiate){
 
 TEST(inputs_non_static,resolve_inputs_from_hc){
-  // using test_inputs_t = inputs_t<user_t>;
   using targs_t = test_inputs_t::target_set_t;
   using ics_f_t = user_t::ics_function_t;
   using targets_t = test_inputs_t::target_set_t;
@@ -242,7 +240,6 @@ TEST(inputs_non_static,resolve_inputs_from_hc){
 } // TEST(inputs_non_static,resolve_inputs_from_hc){
 
 TEST(inputs_non_static,resolve_inputs_from_hc_with_failures){
-  // using test_inputs_t = inputs_t<user_t>;
   using targs_t = test_inputs_t::target_set_t;
   using ics_f_t = user_t::ics_function_t;
   using targets_t = test_inputs_t::target_set_t;
@@ -309,7 +306,6 @@ TEST(inputs_non_static,resolve_inputs_from_hc_with_failures){
 } // TEST(inputs_non_static,resolve_inputs_from_hc_with_failures){
 
 TEST(inputs_non_static,resolve_inputs_from_lua){
-  // using test_inputs_t = inputs_t<user_t>;
   using targs_t = test_inputs_t::target_set_t;
   using ics_f_t = user_t::ics_function_t;
   using targets_t = test_inputs_t::target_set_t;
