@@ -50,9 +50,8 @@ public:
   using traits_t = input_traits;
   using type_tuple = typename input_traits::types;
   using real_t = typename input_traits::real_t;
-  using mesh_t = typename input_traits::mesh_t;
 
-  using vector_t = typename mesh_t::vector_t;
+  using vector_t = typename input_traits::vector_t;
   using string_t = std::string;
   using str_cr_t = string_t const &;
   using ics_return_t = typename input_traits::ics_return_t;
