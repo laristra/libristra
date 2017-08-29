@@ -26,7 +26,7 @@ extern "C" {
 #include <string>
 
 namespace ristra {
-
+namespace detail{
 
 #define lua_try_access_as(state, key, ...)                                     \
   (!state[key].empty()) ?                                                      \
@@ -55,6 +55,7 @@ inline std::string lua_typestring(lua_State * s, int index)
 //! destroy it unless all objects are destroyed.
 using lua_state_ptr_t = std::shared_ptr<lua_State>;
 
+} // detail::
 } // ristra::
 
 #endif // HAVE_LUA

@@ -18,6 +18,7 @@
 #include "ristra/errors.h"
 
 namespace ristra {
+namespace detail{
 
 ////////////////////////////////////////////////////////////////////////////////
 /// \brief This class stores a reference to a lua value.
@@ -383,6 +384,7 @@ public:
 
 using lua_result_uptr_t = std::unique_ptr<lua_result_t>;
 
+} // detail::
 } // ristra::
 
 #endif // HAVE_LUA

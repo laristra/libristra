@@ -19,6 +19,7 @@
 #include <vector>
 
 namespace ristra {
+namespace detail{
 
 ////////////////////////////////////////////////////////////////////////////////
 /// \defgroup lua_push lua_push
@@ -130,6 +131,7 @@ inline lua_ref_t make_lua_ref(const lua_state_ptr_t & state)
   return { state, luaL_ref(s, LUA_REGISTRYINDEX), lua_type(s, -1) };
 }
 
+} // detail::
 } // ristra::
 
 #endif // HAVE_LUA

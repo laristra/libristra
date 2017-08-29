@@ -31,18 +31,21 @@ extern "C" {
 
 namespace ristra {
 
+using lua_result_t = detail::lua_result_t;
+using lua_result_uptr_t = detail::lua_result_uptr_t;
+
 ////////////////////////////////////////////////////////////////////////////////
 /// \brief The top level object for the lua interface.
 /// This is the object the user will instantiate.
 ////////////////////////////////////////////////////////////////////////////////
-class lua_t : public lua_base_t {
+class lua_t : public detail::lua_base_t {
 
 public:
 
   /// \brief Main constructor.
   /// \param [in] with_system  If true, load all system libraries.
   ///                          Default is true.
-  lua_t(bool with_system = true) : lua_base_t()
+  lua_t(bool with_system = true) : detail::lua_base_t()
   {
     if ( !state_ )
       raise_runtime_error("Cannot initialize lua state.");
@@ -87,7 +90,7 @@ public:
     // get the size of the object
     auto len = lua_rawlen(s, -1);
     // return the global object with a pointer to a location in the stack
-    return { state_, key, make_lua_ref(state_), len };
+    return { state_, key, detail::make_lua_ref(state_), len };
   }
 
   /// \brief Run a string through the lua interpreter.

@@ -28,6 +28,7 @@ extern "C" {
 #include <type_traits>
 
 namespace ristra {
+namespace detail{
 
 ////////////////////////////////////////////////////////////////////////////////
 /// \defgroup lua_value lua_value
@@ -203,6 +204,7 @@ struct lua_value< Array<T,N> >
 
 /// \}
 
+} // detail::
 } // ristra::
 
 #endif // HAVE_LUA

@@ -23,6 +23,8 @@
 #include <sstream>
 
 namespace ristra {
+namespace detail{
+
 ////////////////////////////////////////////////////////////////////////////////
 /// \brief A base class for several of the implemented objects.
 /// This class mainly contains a lua state pointer which all derived
@@ -120,7 +122,7 @@ public:
   }
 }; // class lua_base_t
 
-
+} // detail::
 } // ristra::
 
 #endif // HAVE_LUA
