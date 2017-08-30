@@ -1,8 +1,6 @@
-// Assert.hh
-// T. M. Kelley
-// Jan. 10, 2010
-// Header for Assert
-// (c) Copyright 2011 LANSLLC all rights reserved.
+// dbc_impl.h
+// Implementation details for dbc assertions
+// (c) Copyright 2017 LANSLLC all rights reserved.
 
 #pragma once
 
@@ -35,6 +33,10 @@ bool assertf(bool cond, std::string const & cond_str, const char * file_name,
 
 /**\brief Core assertion function, with some hope of not constructing the
  * error string every single time?
+ *
+ * Generates the error message through the gen functor.
+ *
+ * \return the condition
  */
 template <class error_msg_generator>
 bool assertf_l(bool cond, error_msg_generator & gen, const char * file_name,
@@ -44,7 +46,6 @@ bool assertf_l(bool cond, error_msg_generator & gen, const char * file_name,
     action(errstr,file_name,func_name,line);
   }
   return cond;
-
 }
 
 } // dbc::
