@@ -7,7 +7,7 @@
 #define IM_OK_TO_INCLUDE_DBC_IMPL
 #include "ristra/detail/dbc_impl.h"
 #undef IM_OK_TO_INCLUDE_DBC_IMPL
-#include <functional> // std::function
+#include <functional>
 #include <sstream>
 #include <string>
 
@@ -55,7 +55,6 @@ namespace dbc{
 inline void throw_exception(std::string const & cond, const char * file_name,
   const char * func_name, int line)
 {
-  // printf("%s:%i \n",__FUNCTION__,__LINE__);
   std::string msg(build_message(cond,file_name,func_name,line));
   throw std::logic_error(msg);
 } // throw_exception
@@ -169,15 +168,15 @@ bool less_than_func(gt_t const & x, gt_t const & min,
 } // dbc::
 } // ristra::
 
-#define Insist(c, cs) ::ristra::dbc::assertf(c,cs,__FILE__,__FUNCTION__,__LINE__,dbc_action);
+#define Insist(c, cs) ::ristra::dbc::assertf(c,cs,__FILE__,__FUNCTION__,__LINE__,ristra::dbc::dbc_action);
 
 #ifdef RISTRA_REQUIRE_ON
 /*! \def Require(condition,descriptive_string): Precondition assertion. */
-#define Require(c,cs) ::ristra::dbc::assertf(c,cs,__FILE__,__FUNCTION__,__LINE__,dbc_action);
+#define Require(c,cs) ::ristra::dbc::assertf(c,cs,__FILE__,__FUNCTION__,__LINE__,ristra::dbc::dbc_action);
 /*! \def Check(condition,descriptive_string): Invariant assertion. */
-#define Check(c,cs) ::ristra::dbc::assertf(c,cs,__FILE__,__FUNCTION__,__LINE__,dbc_action);
+#define Check(c,cs) ::ristra::dbc::assertf(c,cs,__FILE__,__FUNCTION__,__LINE__,ristra::dbc::dbc_action);
 /*! \def Ensure(condition,descriptive_string): Postcondition assertion. */
-#define Ensure(c,cs) ::ristra::dbc::assertf(c,cs,__FILE__,__FUNCTION__,__LINE__,dbc_action);
+#define Ensure(c,cs) ::ristra::dbc::assertf(c,cs,__FILE__,__FUNCTION__,__LINE__,ristra::dbc::dbc_action);
 /*! \def Equal(x,y): Assert x == y */
 #define Equal(a,b) ::ristra::dbc::equal_func(a,b,#a,#b,__FILE__,__FUNCTION__,__LINE__);
 /*! \def InOpenRange(x,min,max): Assert x > min && x < max */
