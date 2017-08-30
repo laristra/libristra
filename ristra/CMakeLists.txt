@@ -14,11 +14,13 @@ set(ristra_HEADERS
   dbc.h
   input_source.h
   input_engine.h
+  inputs.h
   lua_access.h
   math_utils.h
   type_traits.h
   flecsale-vector.h
   detail/dbc_impl.h
+  detail/default_input_traits.h
   detail/inputs_impl.h
   detail/lua_base.h
   detail/lua_ref.h
@@ -28,6 +30,7 @@ set(ristra_HEADERS
   detail/template_helpers.h
   detail/template_helpers_impl.h
   detail/type_traits_impl.h
+  detail/type_utils.h
 )
 
 #------------------------------------------------------------------------------#
@@ -66,6 +69,7 @@ cinch_add_unit(ristra-test
   SOURCES
     test/test-announce.cc
     test/lua_utils.cc
+    test/init_value.cc
     test/input_source.cc
     test/input_engine.cc
     test/test_input_hard_coded_problems.cc
