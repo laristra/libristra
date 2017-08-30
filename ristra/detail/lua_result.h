@@ -96,7 +96,7 @@ class lua_result_t : public lua_base_t {
       ss << "Cannot grow stack " << extra << " slots operating on element \""
          << name_ << "\"." << std::endl << "Current stack size is "
          << lua_gettop(s) << ".";
-      raise_runtime_error(ss.str());
+      throw_runtime_error(ss.str());
     }
   }
 
@@ -104,7 +104,7 @@ class lua_result_t : public lua_base_t {
   {
     if ( lua_isnil(state(), -1) ) {
       print_last_row();
-      raise_runtime_error("\"" + name + "\" does not exist.");
+      throw_runtime_error("\"" + name + "\" does not exist.");
     }
   }
 
@@ -113,7 +113,7 @@ class lua_result_t : public lua_base_t {
     check_nil(name);
     if ( !lua_istable(state(), -1) ) {
       print_last_row();
-      raise_runtime_error("\"" + name + "\" is not a table.");
+      throw_runtime_error("\"" + name + "\" is not a table.");
     }
   }
 
@@ -123,7 +123,7 @@ class lua_result_t : public lua_base_t {
   {
     if (lua_isnil(state(), -1)) {
       print_last_row();
-      raise_runtime_error("\"" + name + "\" returned nil.");
+      throw_runtime_error("\"" + name + "\" returned nil.");
     }
   }
 
@@ -134,7 +134,7 @@ class lua_result_t : public lua_base_t {
     check_nil(name);
     if ( !lua_isfunction(state(), -1) ) {
       print_last_row();
-      raise_runtime_error("\"" + name + "\" is not a function.");
+      throw_runtime_error("\"" + name + "\" is not a function.");
     }
   }
 
@@ -214,7 +214,7 @@ public:
   explicit operator T() const {
     if ( refs_.size() != 1 ){
       HERE("");
-      raise_runtime_error(
+      throw_runtime_error(
         "Expecting 1 result, stack has " + std::to_string(refs_.size()));
     }
     push_last();
@@ -234,7 +234,7 @@ public:
     constexpr int N = sizeof...(Args);
     using Tup = std::tuple<Args...>;
     if ( refs_.size() != N )
-      raise_runtime_error("Expecting " + std::to_string(N) +
+      throw_runtime_error("Expecting " + std::to_string(N) +
         " results, stack has " + std::to_string(refs_.size()));
     push_all();
     Tup tup;
@@ -250,7 +250,7 @@ public:
     constexpr int N = sizeof...(Args);
     using Tup = std::tuple<Args...>;
     if ( refs_.size() != N ){
-      raise_runtime_error("Expecting " + std::to_string(N) +
+      throw_runtime_error("Expecting " + std::to_string(N) +
         " results, stack has " + std::to_string(refs_.size()));
     }
     push_all();
@@ -310,7 +310,7 @@ public:
     auto ret = lua_pcall(s, sizeof...(args), LUA_MULTRET, 0);
     if (ret) {
       print_last_row();
-      raise_runtime_error("Problem calling \"" + name_ + "\".");
+      throw_runtime_error("Problem calling \"" + name_ + "\".");
     }
 
     // make sure the result is non nill

@@ -48,7 +48,7 @@ public:
   lua_t(bool with_system = true) : detail::lua_base_t()
   {
     if ( !state_ )
-      raise_runtime_error("Cannot initialize lua state.");
+      throw_runtime_error("Cannot initialize lua state.");
     // open all system libraries
     if ( with_system )
       luaL_openlibs(state());
@@ -62,7 +62,7 @@ public:
     auto ret = luaL_dostring(state(),script.c_str());
     if ( ret ) {
       print_last_row();
-      raise_runtime_error("Cannot load buffer.");
+      throw_runtime_error("Cannot load buffer.");
     }
     return ret;
   }
@@ -74,7 +74,7 @@ public:
     auto ret = luaL_dofile(state(),file.c_str());
     if ( ret ) {
       print_last_row();
-      raise_runtime_error("Cannot load file.");
+      throw_runtime_error("Cannot load file.");
     }
   }
 

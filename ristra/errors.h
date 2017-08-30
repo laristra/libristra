@@ -27,39 +27,39 @@
 
 
 /////////////////////////////////////////////////////////////////////
-//! \brief Raise a runtime error.
+//! \brief throw a runtime error.
 //! \param[in] the message to display
 /////////////////////////////////////////////////////////////////////
-#define raise_runtime_error(msg)                                     \
+#define throw_runtime_error(msg)                                     \
   do {                                                               \
-    THROW_EXCEPTION((std::runtime_error(HERE_STR(msg))));                        \
+    THROW_EXCEPTION((std::runtime_error(HERE_STR(msg))));            \
   } while(0)
 
 
 /////////////////////////////////////////////////////////////////////
-//! \brief Raise a logic error.
+//! \brief throw a logic error.
 //! \param[in] the message to display
 /////////////////////////////////////////////////////////////////////
-#define raise_logic_error(msg)                                          \
+#define throw_logic_error(msg)                                          \
   do {                                                                  \
     THROW_EXCEPTION(std::logic_error(HERE_STR(msg)));                      \
   } while(0)
 
 /////////////////////////////////////////////////////////////////////
-//! \brief Raise a file-related error.
+//! \brief throw a file-related error.
 //! \param[in] the file in question
 /////////////////////////////////////////////////////////////////////
-#define raise_file_error(file)                                        \
+#define throw_file_error(file)                                        \
   do {                                                                \
     THROW_EXCEPTION(                                                  \
       std::runtime_error(HERE_STR("error accessing file: " + file))); \
   } while (0)
 
 /////////////////////////////////////////////////////////////////////
-//! \brief Raise a not-implemented error.
+//! \brief throw a not-implemented error.
 //! \param[in] the message to display
 /////////////////////////////////////////////////////////////////////
-#define raise_implemented_error(msg)                                     \
+#define throw_implemented_error(msg)                                     \
   do {                                                                   \
     THROW_EXCEPTION(                                                     \
       std::logic_error(HERE_STR("error: not not implemented: " + msg))); \
@@ -72,7 +72,7 @@
 /////////////////////////////////////////////////////////////////////
 #define assert_true(cond, msg)                                          \
   if ( ! (cond) )                                                       \
-    raise_runtime_error("Assertion falied: " << msg)
+    throw_runtime_error("Assertion falied: " << msg)
 
 /////////////////////////////////////////////////////////////////////
 //! \brief Display a warning.
