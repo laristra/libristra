@@ -4,15 +4,16 @@
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
 #include "test_input_hard_coded_problems.h"
-#include "ristra/flecsale-vector.h"
+#include <array>
 
 namespace ristra_test{
 
 template <class T> using registry = spec_t::registry<T>;
-using ristra::vector;
+// using ristra::vector;
+// template <typename T, uint8_t dim> using vector = std::array<T,dim>;
 
 spec_t::ics_return_t<2>
-ics_func_2d(vector<real_t,2> const &xs, real_t const &t){
+ics_func_2d(std::array<real_t,2> const &xs, real_t const &t){
   double const &x(xs[0]);
   double const &y(xs[1]);
   if(x < 0 && y < 0)
