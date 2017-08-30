@@ -7,7 +7,7 @@
 
 #include "ristra/detail/inputs_impl.h"
 #include "ristra/lua_access.h"
-#include "ristra/flecsale-vector.h"
+#include <array>
 #include <map>
 #include <memory>
 #include <string>
@@ -30,7 +30,7 @@ class input_source
   using real_t = real_ty;
   /**\TODO Need to clean up the function interfaces so that composite types
    * (like vectors) can be carried by the thing that parses/wraps functions. */
-  template <uint32_t d> using vec = ::ristra::vector<real_t,d>;
+  template <uint32_t d> using vec = std::array<real_t,d>;
   template <uint32_t d> using ics_return_t =
     std::tuple<real_t,vec<d>,real_t>;
   template <uint32_t d> using ics_function_t =
