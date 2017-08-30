@@ -1,4 +1,4 @@
-// inputs_non_static.cc
+// input_engine.cc
 // T. M. Kelley
 // May 08, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
@@ -11,36 +11,26 @@
 
 using namespace ristra;
 
-TEST(inputs_non_static,header_compiles){
+TEST(input_engine,header_compiles){
   ASSERT_TRUE(true);
 }
 
-struct Mesh{
-  using vector_t = ristra::vector<double,2>;
-  using vec2s_t  = ristra::vector<size_t,2>;
-};
+using real_t = double;
+using vector_t = std::array<real_t,2>;
+using string_t = std::string;
 
-struct user_t;
-
-using real_t = ristra_test::real_t;
-
-namespace ristra{
-
-using ics_return_t = std::tuple<real_t,Mesh::vector_t,real_t>;
-using ics_function_t = std::function<ics_return_t(
-  Mesh::vector_t const &, real_t const & t)>;
-
-} // ristra::
+using ics_return_t = std::tuple<real_t,vector_t,real_t>;
+using ics_function_t =
+  std::function<ics_return_t(vector_t const &, real_t const & t)>;
 
 struct input_traits{
-  using mesh_t = Mesh;
-  using real_t = ::real_t;
+  using real_t = double;
   using size_t = ::size_t;
-  using vector_t = Mesh::vector_t;
+  using vector_t = std::array<real_t,2>;
   using arr2r_t = std::array<real_t,2>;
   using arr2s_t = std::array<size_t,2>;
-  using ics_return_t   = ristra::ics_return_t;
-  using ics_function_t = ristra::ics_function_t;
+  using ics_return_t   = ::ics_return_t;
+  using ics_function_t = ::ics_function_t;
   using types = std::tuple<real_t,
                            std::string,
                            arr2r_t,
@@ -67,9 +57,9 @@ struct input_traits{
 
 // This is our concrete input_engine_t class. It inherits from input_engine_t
 // in order to make the registries accessible for testing.
-struct user_t : public input_engine_t<input_traits> {
+// using test_inputs_t = input_engine_t<input_traits>;
+struct test_inputs_t : public input_engine_t<input_traits> {
 public:
-  using mesh_t = Mesh;
   using base_t = input_engine_t<input_traits>;
 
   /**\brief relay the base class's state for testing */
@@ -78,7 +68,7 @@ public:
   } // get_registry
 
   /**\brief relay the base class's state for testing */
-  template <class T> base_t::target_set_t &get_target_set() {
+  template <class T> base_t::target_set_t &get_target_set_d() {
     return base_t::get_target_set<T>();
   } // get_registry
 
@@ -87,37 +77,31 @@ public:
     return base_t::get_failed_target_set<T>();
   } // get_registry
 
-};  // struct user_t
+};  // struct test_inputs_t
 
-using string_t = user_t::string_t;
-
-using test_inputs_t = user_t;
-
-TEST(inputs_non_static,instantiate){
+TEST(input_engine,instantiate){
   test_inputs_t t;
   ASSERT_TRUE(true);
-} // TEST(inputs_non_static,instantiate){
+} // TEST(input_engine,instantiate){
 
-using ics_r_t = user_t::ics_return_t;
-
-using real_t = user_t::real_t;
-
-ics_r_t ICS_Func(user_t::vector_t,real_t){
-  return {real_t(),user_t::vector_t(),real_t()};
+ics_return_t
+ICS_Func(test_inputs_t::vector_t,real_t){
+  return {real_t(),test_inputs_t::vector_t(),real_t()};
 }
 
-TEST(inputs_non_static,register_target){
+TEST(input_engine,register_target){
   using targs_t = test_inputs_t::target_set_t;
-  using ics_f_t = user_t::ics_function_t;
+  using ics_f_t = test_inputs_t::ics_function_t;
   test_inputs_t t;
-  t.register_target<real_t>("foo");
+  t.clear_registry();
+  t.register_target<double>("foo");
   {
-    targs_t const & real_targets(t.get_target_set<real_t>());
+    targs_t const & real_targets(t.get_target_set_d<double>());
     EXPECT_EQ(1ul,real_targets.count("foo"));
   }
   t.register_target<string_t>("gnu");
   {
-    targs_t const & string_targets(t.get_target_set<string_t>());
+    targs_t const & string_targets(t.get_target_set_d<string_t>());
     EXPECT_EQ(1ul,string_targets.count("gnu"));
     targs_t exp_targs = {"gnu"};
     EXPECT_EQ(exp_targs,string_targets);
@@ -125,46 +109,46 @@ TEST(inputs_non_static,register_target){
   t.register_target<string_t>("flu");
   t.register_target<string_t>("zoo");
   {
-    targs_t const & string_targets(t.get_target_set<string_t>());
+    targs_t const & string_targets(t.get_target_set_d<string_t>());
     targs_t exp_targs = {"gnu","flu","zoo"};
     EXPECT_EQ(exp_targs,string_targets);
   }
   t.register_target<ics_f_t>("ics");
   {
-    targs_t const & ics_targets(t.get_target_set<ics_f_t>());
+    targs_t const & ics_targets(t.get_target_set_d<ics_f_t>());
     targs_t exp_targs = {"ics"};
     EXPECT_EQ(exp_targs,ics_targets);
   }
   t.register_target<ics_f_t>("jcs");
   {
-    targs_t const & ics_targets(t.get_target_set<ics_f_t>());
+    targs_t const & ics_targets(t.get_target_set_d<ics_f_t>());
     targs_t exp_targs = {"jcs","ics"};
     EXPECT_EQ(exp_targs,ics_targets);
   }
   t.register_target<string_t>("moo");
   {
-    targs_t const & string_targets(t.get_target_set<string_t>());
+    targs_t const & string_targets(t.get_target_set_d<string_t>());
     targs_t exp_targs = {"gnu","flu","moo","zoo"};
     EXPECT_EQ(exp_targs,string_targets);
   }
   t.register_target<size_t>("n_ns");
   {
-    targs_t const & size_targets(t.get_target_set<size_t>());
+    targs_t const & size_targets(t.get_target_set_d<size_t>());
     targs_t exp_targs = {"n_ns"};
     EXPECT_EQ(exp_targs,size_targets);
   }
   t.register_target<input_traits::arr2r_t>("xmin");
   {
-    targs_t const & array_2_targets(t.get_target_set<input_traits::arr2r_t>());
+    targs_t const & array_2_targets(t.get_target_set_d<input_traits::arr2r_t>());
     targs_t exp_targs = {"xmin"};
     EXPECT_EQ(exp_targs,array_2_targets);
   }
   t.clear_registry();
-} // TEST(inputs_non_static,instantiate){
+} // TEST(input_engine,instantiate){
 
-TEST(inputs_non_static,resolve_inputs_from_hc){
+TEST(input_engine,resolve_inputs_from_hc){
   using targs_t = test_inputs_t::target_set_t;
-  using ics_f_t = user_t::ics_function_t;
+  using ics_f_t = test_inputs_t::ics_function_t;
   using targets_t = test_inputs_t::target_set_t;
   using vec2r_t = input_traits::arr2r_t;
   using vec2s_t = input_traits::arr2s_t;
@@ -237,11 +221,11 @@ TEST(inputs_non_static,resolve_inputs_from_hc){
 
   t.clear_registry();
   phcs->clear_registry<input_traits::types>();
-} // TEST(inputs_non_static,resolve_inputs_from_hc){
+} // TEST(input_engine,resolve_inputs_from_hc){
 
-TEST(inputs_non_static,resolve_inputs_from_hc_with_failures){
+TEST(input_engine,resolve_inputs_from_hc_with_failures){
   using targs_t = test_inputs_t::target_set_t;
-  using ics_f_t = user_t::ics_function_t;
+  using ics_f_t = test_inputs_t::ics_function_t;
   using targets_t = test_inputs_t::target_set_t;
   using vec2r_t = input_traits::arr2r_t;
   using vec2s_t = input_traits::arr2s_t;
@@ -303,11 +287,11 @@ TEST(inputs_non_static,resolve_inputs_from_hc_with_failures){
   EXPECT_EQ(failures_lua_r_t,exp_fails);
   t.clear_registry();
   phcs->clear_registry<input_traits::types>();
-} // TEST(inputs_non_static,resolve_inputs_from_hc_with_failures){
+} // TEST(input_engine,resolve_inputs_from_hc_with_failures){
 
-TEST(inputs_non_static,resolve_inputs_from_lua){
+TEST(input_engine,resolve_inputs_from_lua){
   using targs_t = test_inputs_t::target_set_t;
-  using ics_f_t = user_t::ics_function_t;
+  using ics_f_t = test_inputs_t::ics_function_t;
   using targets_t = test_inputs_t::target_set_t;
   using vec2r_t = input_traits::arr2r_t;
   using vec2s_t = input_traits::arr2s_t;
@@ -381,6 +365,6 @@ TEST(inputs_non_static,resolve_inputs_from_lua){
   t.clear_registry();
   phcs->clear_registry<input_traits::types>();
   // delete pls;
-} // TEST(inputs_non_static,resolve_inputs_from_lua){
+} // TEST(input_engine,resolve_inputs_from_lua){
 
 // End of file
