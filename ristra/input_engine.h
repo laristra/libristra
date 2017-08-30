@@ -6,10 +6,12 @@
 
 #include "ristra/detail/inputs_impl.h"
 #include "ristra/input_source.h"
+#include "ristra/detail/type_utils.h"
 
 #include <algorithm>  // all_of
 #include <array>
 #include <deque>
+#include <iterator>
 #include <map>
 #include <memory>
 #include <numeric> // accumulate
@@ -41,6 +43,9 @@ namespace ristra{
  * there is support for a Lua source and a hard-coded C++ source. In the future,
  * we expect this to increase to Python, SQL, and (perhaps) multiple sources of
  * any given type.
+ *
+ * Note that inputs are distinguished by name and type. That is, an int32_t
+ * target named "foo" is considered different from a uint32_t named "foo".
  *
  * The current resolution priority is Lua file, then hard-coded source.
  */
@@ -83,7 +88,7 @@ protected:
 
     registry<T> & get_data_registry(){ return m_reg;}
 
-    target_set_t &get_target_set(){return m_targets;}
+    target_set_t & get_target_set() { return m_targets; }
 
     failed_set_t &get_failed_set(){return m_failures;}
 
@@ -102,11 +107,14 @@ protected:
     input_registry(input_registry &) = delete;
     input_registry(input_registry&&) = delete;
 
-    static input_registry& instance(){
-      static input_registry m;
-      return m;
-    }
   }; // registry
+
+private:
+  template <typename T>
+  static input_registry<T>& instance(){
+    static input_registry<T> m;
+    return m;
+  }
 
 public:
 
@@ -139,6 +147,7 @@ public:
    * default.
    **/
   bool resolve_inputs(){
+    m_resolve_called = true;
     deq_bool resolutions(resolve_inputs__by_tuple<type_tuple>(
       *this,m_lua_source,m_hard_coded_source));
     bool all_resolved = std::accumulate(
@@ -147,6 +156,7 @@ public:
     if(!all_resolved){
       print_unresolved_types__by_tuple<type_tuple>(resolutions);
     }
+    m_all_resolved = all_resolved;
     return all_resolved;
   } // resolve_inputs
 
@@ -175,7 +185,11 @@ public:
     target_set_t & target_set = get_target_set<T>();
     // TODO could have some error checking here: what if something gets
     // registered more than once, for example?
-    target_set.insert(name);
+    auto p = target_set.insert(name);
+    if(!p.second){
+      printf("%s:%i failed to insert target '%s'\n", __FUNCTION__, __LINE__,
+        name.c_str());
+    }
     return;
   } // register_target
 
@@ -229,26 +243,42 @@ public:
     return pv->second;
   } // get_value
 
+  /**\brief indicate whether a target was resolved */
+  template <class T>
+  bool resolved(str_cr_t target) const {
+    if(!m_resolve_called){
+      return false; // shd be error ?!?
+    }
+    // if the target is in the set of failures, then it was not resolved.
+    registry<T> const & el_reg(get_registry<T>());
+    return (1 == el_reg.count(target));
+  }
+
 protected:
   template <class T>
   registry<T> & get_registry(){
-    return input_registry<T>::instance().get_data_registry();
+    return instance<T>().get_data_registry();
+  }
+
+  template <class T>
+  registry<T> const & get_registry() const {
+    return instance<T>().get_data_registry();
   }
 
   template <class T>
   target_set_t & get_target_set(){
-    return input_registry<T>::instance().get_target_set();
+    return instance<T>().get_target_set();
   }
 
   template <class T>
   target_set_t & get_failed_target_set(){
-    return input_registry<T>::instance().get_failed_set();
+    return instance<T>().get_failed_set();
   }
 
   /**\brief Clear all registered targets on type T. */
   template <typename T, size_t I>
   void clear_registry_(){
-    input_registry<T>::instance().clear();
+    instance<T>().clear();
   }
 
   template <class T, size_t I>
@@ -406,6 +436,8 @@ private:
   hard_coded_source_ptr_t m_hard_coded_source;
   std::array<bool,tsize> m_registered;
   std::array<string_t,tsize> m_type_names;
+  bool m_resolve_called = false;
+  bool m_all_resolved = false;
 }; // class inputs_t
 
 //
