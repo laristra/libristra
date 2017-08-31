@@ -103,15 +103,7 @@ TEST(init_value,get_with_failures){
   EXPECT_EQ(0.21,final_time);
   EXPECT_FALSE(iv_foo.resolved());
   EXPECT_FALSE(iv_moo.resolved());
-  try{
-    iv_foo.get();
-  }
-  catch(std::exception &e){
-    printf("%s:%i caught exception: '%s'\n",__FUNCTION__,__LINE__,e.what());
-  }
-  catch(...){
-    printf("%s:%i \n",__FUNCTION__,__LINE__);
-  }
+  EXPECT_THROW(iv_foo.get(),std::exception);
   ie.clear_registry();
   phcs->clear_registry<input_traits::types>();
 } // TEST(init_value,get)
