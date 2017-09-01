@@ -7,6 +7,7 @@
 
 #include "ristra/detail/lua_result.h"
 #include <functional>
+#include <string>
 #include <tuple>
 
 namespace ristra{
@@ -19,6 +20,7 @@ struct default_input_traits{
 
   using real_t = double;
   using size_t = ::size_t;
+  using string_t = std::string;
   using vector_t = std::array<real_t,dim>;
   using arr_d_r_t = std::array<real_t,dim>;
   using arr_d_s_t = std::array<size_t,dim>;
