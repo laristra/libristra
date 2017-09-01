@@ -164,6 +164,20 @@ install(FILES ${CMAKE_BINARY_DIR}/ristra.h DESTINATION include)
 cinch_add_library_target(ristra ristra)
 
 #------------------------------------------------------------------------------#
+# configure .cmake file (for other projects)
+#------------------------------------------------------------------------------#
+set(CONF_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include")
+set(CONF_LIB_DIRS "${CMAKE_INSTALL_PREFIX}/lib")
+set(CONF_LIB_NAME "${CONF_LIB_DIRS}/libristra${CMAKE_SHARED_LIBRARY_SUFFIX}")
+message(STATUS "CMAKE_SHARED_LIBRARY_SUFFIX = " ${CMAKE_SHARED_LIBRARY_SUFFIX})
+
+configure_file(${PROJECT_SOURCE_DIR}/ristraConfig.cmake.in
+  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/ristraConfig.cmake" @ONLY)
+
+install(FILES "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/ristraConfig.cmake"
+  DESTINATION share/cmake)
+
+#------------------------------------------------------------------------------#
 # Add distclean target
 #------------------------------------------------------------------------------#
 

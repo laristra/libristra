@@ -12,6 +12,9 @@ set(ristra_HEADERS
   announce.hh
   flecsale-array.h
   dbc.h
+  errors.h
+  here.h
+  init_value.h
   input_source.h
   input_engine.h
   inputs.h
