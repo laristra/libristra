@@ -11,7 +11,11 @@
 #include "detail/default_input_traits.h"
 
 // Configure input_engine macros from build system here:
+#ifdef RISTRA_DIMENSION
+constexpr uint8_t default_dim = RISTRA_DIMENSION;
+#else
 constexpr uint8_t default_dim = 2;
+#endif
 
 namespace ristra{
 
