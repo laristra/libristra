@@ -16,6 +16,7 @@
 
 #include "ristra/dbc.h"
 #include "ristra/errors.h"
+#include "ristra/detail/type_utils.h"
 
 namespace ristra {
 namespace detail{
@@ -67,21 +68,23 @@ class lua_result_t : public lua_base_t {
   /// \{
 
   /// \brief Final templated function to end the recursion.
-  void push_args() const
-  {}
+  size_t push_args() const
+  {
+    return 0;
+  }
 
   /// \brief The main recursive function.
   /// \tparam Arg,Args  The function argument types.
   /// \param [in]  arg,args  The values of the function arguments.
   template< typename Arg, typename... Args >
-  void push_args( Arg&& arg, Args&&... args ) const
+  size_t push_args( Arg&& arg, Args&&... args ) const
   {
     // grow the stack
     check_stack(1);
-    // chop off an argument and push it
-    lua_push( state(), std::forward<Arg>(arg) );
-    // set the remaining arguments
-    push_args(std::forward<Args>(args)...);
+    // push head of list
+    size_t n_pushed = lua_push( state(), std::forward<Arg>(arg) );
+    // recurse over tail
+    return n_pushed + push_args(std::forward<Args>(args)...);
   }
   /// /}
 
@@ -290,10 +293,10 @@ public:
     // push the function onto the stack
     check_stack(1);
     push_last();
-    // now make sure its a function
+    // now make sure it's a function
     check_function(name_);
     // add the arguments
-    push_args(std::forward<Args>(args)...);
+    size_t nargs_pushed = push_args(std::forward<Args>(args)...);
 
     // keep track of the arguments
     auto pos1 = lua_gettop(s);
@@ -305,9 +308,9 @@ public:
       if (p<pos1) args_ss << ",";
     }
     args_ss << ")";
-    // call the function
 
-    auto ret = lua_pcall(s, sizeof...(args), LUA_MULTRET, 0);
+    // call the function
+    auto ret = lua_pcall(s, nargs_pushed, LUA_MULTRET, 0);
     if (ret) {
       print_last_row();
       throw_runtime_error("Problem calling \"" + name_ + "\".");
