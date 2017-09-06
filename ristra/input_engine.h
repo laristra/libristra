@@ -61,8 +61,6 @@ public:
   using str_cr_t = string_t const &;
   using ics_return_t = typename input_traits::ics_return_t;
   using ics_function_t = typename input_traits::ics_function_t;
-  using ics_wrapper_t = typename input_traits::Lua_ICS_Func_Wrapper;
-  using ics_uptr_t = std::unique_ptr<ics_wrapper_t>;
   using target_set_t = std::set<string_t>;
   using failed_set_t = std::set<string_t>;
   using deq_bool = std::deque<bool>;
