@@ -13,13 +13,12 @@
 namespace ristra{
 namespace detail{
 
-template <uint8_t ndim>
+template <size_t ndim>
 struct default_input_traits{
 // types and constants
-  static constexpr uint8_t dim = ndim;
+  static constexpr size_t dim = ndim;
 
   using real_t = double;
-  using size_t = ::size_t;
   using string_t = std::string;
   using vector_t = std::array<real_t,dim>;
   using arr_d_r_t = std::array<real_t,dim>;
@@ -36,21 +35,27 @@ struct default_input_traits{
                            >;
 
 
+  // template <size_t Ndim, typename ics_return_tt>
   struct Lua_ICS_Func_Wrapper{
   // state
     lua_result_t &lua_func;
   // interface
-    ics_return_t operator()(arr_d_r_t const &x, real_t const t){
+    ics_return_t
+    operator()(
+      arr_d_r_t const & x, real_t const t)
+    {
       real_t d,p;
       arr_d_r_t v;
+      // why not just return the tuple?
       std::tie(d, v, p) =
-        lua_func(x[0], x[1], t).template as<real_t, arr_d_r_t, real_t>();
+        lua_func(x, t).template as<real_t, arr_d_r_t, real_t>();
       return std::make_tuple( d, std::move(v), p);
     }
 
     explicit Lua_ICS_Func_Wrapper(lua_result_t &u)
         : lua_func(u) {}
   }; // struct Lua_ICS_Func_Wrapper
+
 }; // input_traits
 
 
