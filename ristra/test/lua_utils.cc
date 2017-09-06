@@ -12,11 +12,11 @@
 // user includes
 #include "ristra/lua_access.h"
 
-#include<cinchtest.h>
+#include <cinchtest.h>
 
 // system includes
-#include<array>
-#include<iostream>
+#include <array>
+#include <iostream>
 
 
 // explicitly use some stuff
@@ -86,6 +86,16 @@ TEST(lua_utils, embedded)
   ASSERT_TRUE(state["not_there"].empty());
   ASSERT_TRUE(arr1["not_there"].empty());
 
+  // test more complex function
+  {
+    double d = -1.0, p = -1.0, t = 3.14159;
+    using vector_t = std::array<double,3>;
+    vector_t v {-1.0,-1.0,-1.0};
+    vector_t x {1.0,2.0,3.0};
+    auto  lua_f = state["ics"]; //
+    auto lua_res = lua_f(x,t);
+    std::tie(d,v,p) = lua_res.as<double,vector_t,double>();
+  }
 } // TEST
 
 #endif // HAVE_LUA
