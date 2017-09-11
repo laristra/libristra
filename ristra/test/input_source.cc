@@ -171,5 +171,28 @@ TEST(input_source,lua_source_t_get_value){
     EXPECT_EQ(exp_dims,xmax);
     EXPECT_TRUE(ok);
   }
+  // test adding a table later on
+  ls.register_table("fooble","hydro");
+  ls.register_value("acoustich","fooble","acoustik");
+  ls.register_value("volyme","fooble");
+  ls.register_value("grouth","fooble");
+  {
+    real_t acoustik = 0.0;
+    bool ok = ls.get_value<real_t>("acoustich",acoustik);
+    EXPECT_TRUE(ok);
+    EXPECT_EQ(1.01,acoustik);
+  }
+  {
+    real_t volyme = 0.0;
+    bool ok = ls.get_value<real_t>("volyme",volyme);
+    EXPECT_TRUE(ok);
+    EXPECT_EQ(9.8,volyme);
+  }
+  {
+    real_t grouth = 0.0;
+    bool ok = ls.get_value<real_t>("grouth",grouth);
+    EXPECT_TRUE(ok);
+    EXPECT_EQ(0.25,grouth);
+  }
 }
 // End of file

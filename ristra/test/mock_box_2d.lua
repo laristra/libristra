@@ -21,6 +21,8 @@ hydro = {
     gas_constant = 1.4,
     specific_heat = 1.0
   },
+  -- the Fooble
+  fooble = {acoustik = 1.01, grouth = 0.25, volyme = 9.8},
   -- the initial conditions
   -- return density, velocity, pressure
   ics = function (x,y,t)
@@ -31,3 +33,4 @@ hydro = {
     end
   end
 }
+

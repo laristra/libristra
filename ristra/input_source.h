@@ -183,6 +183,42 @@ public:
     return;
   } // ctor
 
+  /**\brief Associate a key with a table.
+   *
+   * \param key: the key
+   * \param p_name: parent table name (default: base_state)
+   * \param lua_key: optional: different key to use in Lua files.
+   *
+   * \return: whether this registration displaced a previous definition
+   */
+  bool register_value(str_cr_t key, str_cr_t t_name, str_cr_t lua_key = ""){
+    bool const will_replace = 0 < m_table_map.count(key);
+    if(will_replace){
+      printf("%s:%i will replace %s in table map\n", __FUNCTION__, __LINE__,
+        key.c_str());
+    }
+    m_table_map[key] =t_name;
+    if(!lua_key.empty()){
+      m_lua_key[key] = lua_key;
+    }
+    return will_replace;
+  }
+
+  /**\brief register a table with the lua_input, and load it.
+   *
+   * \param t_name: table name
+   * \param p_name: parent table name (default: base_state)
+   * \param lua_key: (optional) different key to use in Lua files.
+   *
+   * \return: whether this registration displaced a previous definition
+   */
+  bool register_table(str_cr_t t_name, str_cr_t p_name = "base_state",
+    str_cr_t l_key = ""){
+    bool const will_replace = register_value(t_name,p_name,l_key);
+    load_table(t_name);
+    return will_replace;
+  } // register_table
+
   /**\brief Templated functor (thus specializable) to get values from Lua. */
   template <typename T>
   struct value_getter{
