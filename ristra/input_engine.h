@@ -7,6 +7,7 @@
 #include "ristra/detail/inputs_impl.h"
 #include "ristra/input_source.h"
 #include "ristra/detail/type_utils.h"
+#include "ristra/type_traits.h"
 
 #include <algorithm>  // all_of
 #include <array>
@@ -176,9 +177,11 @@ public:
     m_hard_coded_source.reset(hard_coded_source);
   }
 
-  /* Idea: derived class should call register_target for each thing it expects
-   * from the input. */
-  template <class T> // TODO add validators, defaults, etc.
+  /**\brief Register a target for any non-function type.
+   *
+   * A separate sub-registry is maintained for each type.
+   */
+  template <class T>
   void register_target(str_cr_t name){
     target_set_t & target_set = get_target_set<T>();
     // TODO could have some error checking here: what if something gets
@@ -199,8 +202,18 @@ public:
     return;
   } // register_target
 
-  /**\brief Get the value from the input process. */
-  template <class T>
+  /**\brief Get the value from the input process.
+   *
+   * \return: reference to requested object. The object itself lives in the
+   * input_engine's registry.
+   *
+   * N. B. The enable_if limits this to types that are not callable. Callable
+   * types are dealt with seperately. All the enable_if does is define an int
+   * template parameter equal to zero. The parameter is not used, so no matter
+   * what
+   */
+  template <class T,
+    typename std::enable_if<!ristra::is_callable<T>::value,int>::type = 0>
   T& get_value(str_cr_t target_name){
     registry<T> & reg(this->get_registry<T>());
     typename registry<T>::iterator pv(reg.find(target_name));
@@ -213,7 +226,55 @@ public:
     return pv->second;
   } // get_value
 
-  ics_function_t get_ics_function(str_cr_t target_name){
+  /**\brief Get callable value from the input process.
+   *
+   * \return: reference to requested object. The object will be std::move'd
+   * to the ctor of the invoked type.
+   *
+   * Suggested use: use with T = std::function<>
+   *
+   * N. B. The enable_if limits this to types that are not callable. Callable
+   * types are dealt with seperately. All the enable_if does is define an int
+   * template parameter equal to zero. The parameter is not used, so no matter
+   * what
+   */
+  template <class Func_T,
+    typename std::enable_if<ristra::is_callable<Func_T>::value,int>::type = 0>
+  Func_T get_value(str_cr_t target_name){
+    registry<Func_T> &hc_registry(get_registry<Func_T>());
+    registry<lua_result_uptr_t> &lua_registry(
+        get_registry<lua_result_uptr_t>());
+    // check whether the result is in the Lua items registry
+    string_t lua_target(mk_lua_func_name(target_name));
+    typename registry<lua_result_uptr_t>::iterator plua_val(
+        lua_registry.find(lua_target));
+    bool is_lua(plua_val != lua_registry.end());
+    if(is_lua){
+      // get the lua_func_wrapper object, return std::function to it
+      lua_result_t & lfunc(*(plua_val->second));
+      typename input_traits::Lua_ICS_Func_Wrapper w(lfunc);
+      Func_T f(w);
+      return std::move(f);
+    }
+    // If not, look for it in the hard-coded items registry
+    typename registry<Func_T>::iterator pv(
+        hc_registry.find(target_name));
+    if(pv == hc_registry.end()){
+      // TODO figure out what to do if lookup fails
+      std::stringstream errstr;
+      errstr << "input_engine_t::get_value: invalid key " << target_name;
+      throw std::domain_error(errstr.str());
+    }
+    return pv->second;
+
+  } // get_value
+
+  // template <class function_t>
+  // function_t get_function(str_cr_t func_name){
+  //   registry<function_t> &hc_registry()
+  // }
+
+  [[deprecated("use get_value<Callable_T> instead")]] ics_function_t get_ics_function(str_cr_t target_name){
     registry<ics_function_t> &hc_registry(get_registry<ics_function_t>());
     registry<lua_result_uptr_t> &lua_registry(
         get_registry<lua_result_uptr_t>());
