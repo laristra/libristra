@@ -76,6 +76,7 @@ cinch_add_unit(ristra-test
     test/input_source.cc
     test/input_engine.cc
     test/test_input_hard_coded_problems.cc
+    test/type_traits.cc
     test/flecsale-vector.cc
   LIBRARIES ristra ${RISTRA_LIBRARIES}
   INPUTS

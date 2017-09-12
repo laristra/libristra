@@ -41,8 +41,12 @@ template< class T >
 constexpr bool is_arithmetic_v = std::is_arithmetic<T>::value;
 
 ////////////////////////////////////////////////////////////////////////////////
-//! \brief A is_function helper type.  True if T is a std::function.
+//! \brief A is_function helper type.  _Not_ true if T is a std::function.
+//!
 //! \tparam T  The type to test.
+//! Note that std::is_function returns false for std::function, lambdas, and
+//! classes with operator().
+//! Cf. http://en.cppreference.com/w/cpp/types/is_function, also unit test.
 ////////////////////////////////////////////////////////////////////////////////
 template< class T >
 constexpr bool is_function_v = std::is_function<T>::value;
