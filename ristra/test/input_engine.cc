@@ -207,21 +207,21 @@ TEST(input_engine,resolve_inputs_from_hc){
   vec2s_t exp_dims = {101,10};
   EXPECT_EQ(exp_dims,t.get_value<vec2s_t>("dimensions"));
 
-  // try getting initial conditions function through the original
-  // ics_function route
-  {
-    ics_function_t f(t.get_ics_function("ics_func"));
-    {
-      auto result = f({-1,-2},23);
-      ics_return_t exp_result = {0.1,{0.0,0.0},0.125};
-      EXPECT_EQ(exp_result,result);
-    }
-    {
-      auto result = f({1,2},123000000);
-      ics_return_t exp_result = {2.0,{0.0,0.0},2.0};
-      EXPECT_EQ(exp_result,result);
-    }
-  }
+  // // try getting initial conditions function through the original
+  // // ics_function route
+  // {
+  //   ics_function_t f(t.get_ics_function("ics_func"));
+  //   {
+  //     auto result = f({-1,-2},23);
+  //     ics_return_t exp_result = {0.1,{0.0,0.0},0.125};
+  //     EXPECT_EQ(exp_result,result);
+  //   }
+  //   {
+  //     auto result = f({1,2},123000000);
+  //     ics_return_t exp_result = {2.0,{0.0,0.0},2.0};
+  //     EXPECT_EQ(exp_result,result);
+  //   }
+  // }
   // now try getting initial conditions function through the new
   // get_value<Callable_T> route
   {
@@ -369,19 +369,19 @@ TEST(input_engine,resolve_inputs_from_lua){
   EXPECT_EQ(exp_dims,t.get_value<vec2s_t>("dimensions"));
 
   // original get_ics_function path
-  {
-    ics_function_t f(t.get_ics_function("ics_func"));
-    {
-      auto result = f({-1,-2},23);
-      ics_return_t exp_result = {0.125,{0.0,0.0},0.1};
-      EXPECT_EQ(exp_result,result);
-    }
-    {
-      auto result = f({1,2},123000000);
-      ics_return_t exp_result = {1.0,{0.0,0.0},1.0};
-      EXPECT_EQ(exp_result,result);
-    }
-  }
+  // {
+  //   ics_function_t f(t.get_ics_function("ics_func"));
+  //   {
+  //     auto result = f({-1,-2},23);
+  //     ics_return_t exp_result = {0.125,{0.0,0.0},0.1};
+  //     EXPECT_EQ(exp_result,result);
+  //   }
+  //   {
+  //     auto result = f({1,2},123000000);
+  //     ics_return_t exp_result = {1.0,{0.0,0.0},1.0};
+  //     EXPECT_EQ(exp_result,result);
+  //   }
+  // }
   // new get_value<Callable_T> path
   {
     ics_function_t f(t.get_value<ics_function_t>("ics_func"));
