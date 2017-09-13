@@ -269,39 +269,6 @@ public:
 
   } // get_value
 
-  // template <class function_t>
-  // function_t get_function(str_cr_t func_name){
-  //   registry<function_t> &hc_registry()
-  // }
-
-  [[deprecated("use get_value<Callable_T> instead")]] ics_function_t get_ics_function(str_cr_t target_name){
-    registry<ics_function_t> &hc_registry(get_registry<ics_function_t>());
-    registry<lua_result_uptr_t> &lua_registry(
-        get_registry<lua_result_uptr_t>());
-    // check whether the result is in the Lua items registry
-    string_t lua_target(mk_lua_func_name(target_name));
-    typename registry<lua_result_uptr_t>::iterator plua_val(
-        lua_registry.find(lua_target));
-    bool is_lua(plua_val != lua_registry.end());
-    if(is_lua){
-      // get the lua_func_wrapper object, return std::function to it
-      lua_result_t & lfunc(*(plua_val->second));
-      typename input_traits::Lua_ICS_Func_Wrapper w(lfunc);
-      ics_function_t f(w);
-      return std::move(f);
-    }
-    // If not, look for it in the hard-coded items registry
-    typename registry<ics_function_t>::iterator pv(
-        hc_registry.find(target_name));
-    if(pv == hc_registry.end()){
-      // TODO figure out what to do if lookup fails
-      std::stringstream errstr;
-      errstr << "input_engine_t::get_value: invalid key " << target_name;
-      throw std::domain_error(errstr.str());
-    }
-    return pv->second;
-  } // get_value
-
   /**\brief indicate whether a target was resolved */
   template <class T>
   bool resolved(str_cr_t target) const {
@@ -455,40 +422,6 @@ protected:
     }
   }; // resolve_inputs for ics_function
 
-  // template <class R, class... Args, size_t I>
-  // struct resolve_inputs_<std::function<R(Args...)>, I>{
-
-  //   bool operator()(inputs_t &inp, lua_source_ptr_t &lua_source,
-  //              hard_coded_source_ptr_t &hard_coded_source) {
-  //     using Func_T = std::function<R(Args...)>;
-  //     target_set_t &targets(inp.get_target_set<Func_T>());
-  //     registry<Func_T> &registry(inp.get_registry<Func_T>());
-  //     failed_set_t &failures(inp.get_failed_target_set<Func_T>());
-  //     bool missed_any(false);
-  //     /* alright, the trick here is to look in various places for
-  //     * a function object, wrapping each in a std::function, along
-  //     * with argument matching. shew.
-  //     */
-  //     for(auto target : targets){
-  //       bool found_target(false);
-  //       if(lua_source){
-  //         lua_result_uptr_t tval;
-  //         found_target = lua_source->get_value(target,tval);
-  //       }
-  //       if(found_target){
-  //         // need to generate a wrapper to the Lua function. We'll
-  //         // assume (HAH!) that the function type we were instantiated
-  //         // with is a reasonable representation of the lua signature
-  //         // expect that we'll expect arrays on the C++ side to be
-  //         // unpacked to scalars on the Lua side. What could possibly go wrong?
-
-  //       }
-  //     } // for target in targets
-  //     bool found_all = !missed_any;
-  //     return found_all;
-  //   }
-  // }; // resolve_inputs for std::function
-
 private:
   // state
   lua_source_ptr_t m_lua_source;
@@ -498,74 +431,6 @@ private:
   bool m_resolve_called = false;
   bool m_all_resolved = false;
 }; // class inputs_t
-
-//
-//// specialization for initial conditions functions
-//template <>
-//template <class I> //, class F = typename I::ics_function_t>
-//struct inputs_t<I>::value_getter<typename I::ics_function_t>{
-//
-//  ics_function_t &operator()(str_cr_t target_name){
-//    registry<ics_function_t> &hc_registry(inp.get_registry<ics_function_t>());
-//    registry<ics_uptr_t> &lua_registry(inp.get_registry<ics_uptr_t>());
-//
-//    string_t lua_target(mk_lua_func_name(target));
-//    registry<ics_uptr_t>::iterator plua_val(lua_registry.find(lua_target));
-//    bool is_lua(plua_val != lua_registry.end());
-//    if(is_lua){
-//      // get the lua_func_wrapper object, return std::function to it
-//      ics_uptr_t &plua_wrapper(plua_val->second);
-//      return ics_function_t(*plua_wrapper);
-//    }
-//    registry<ics_function_t>::iterator pv(hc_registry.find(target_name));
-//    if(pv == reg.end()){
-//      // TODO figure out what to do if lookup fails
-//      std::stringstream errstr;
-//      errstr << "inputs_t::get_value: invalid key " << target_name;
-//      throw std::domain_error(errstr.str());
-//    }
-//    return pv->second;
-//  } // get_value
-//
-//};
-
-
-///*template <class input_user>
-//class inputs_t {*/
-//  template <class input_user>
-//  bool inputs_t<input_user>::<class R, class ...Args> resolve_inputs_<std::function<R(Args...)>, size_t I>(){
-//    // temp:
-//    // target_set_t &targets(get_target_set<T>());
-//    // registry<T> &registry(get_registry<T>());
-//    // failed_set_t &failures(get_failed_target_set<T>());
-//    // bool missed_any(false);
-//    // for(auto target : targets){
-//    //   bool found_target(false);
-//    //   T tval = T();
-//    //   // try to find in the Lua source, if there is one
-//    //   if(m_lua_source){
-//    //     found_target = m_lua_source->get_value(target,tval);
-//    //   }
-//    //   if(found_target){
-//    //     registry[target] = std::move(tval);
-//    //     continue;
-//    //   }
-//    //   // not there? no Lua file? Default to hard coded source
-//    //   if(m_hard_coded_source){
-//    //     found_target = m_hard_coded_source->get_value(target,tval);
-//    //   }
-//    //   if(found_target){
-//    //     registry[target] = std::move(tval);
-//    //   }
-//    //   else{
-//    //     missed_any = true;
-//    //     failures.insert(target);
-//    //   }
-//    // } // for(target : targets)
-//    // return !missed_any;
-//    return false;
-//  } // resolve_inputs_
-
 
 } // ristra::
 
