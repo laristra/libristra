@@ -4,12 +4,25 @@
 
 #pragma once
 
-#include <string>
 #include "ristra/dbc.h"
 #include "ristra/inputs.h"
 #include "ristra/errors.h"
+#include <string>
 
 namespace ristra{
+
+/**\brief Status cues for initialization values */
+enum class init_val_status_t : uint32_t {
+  unregistered = 0, /*!< not registered with input_engine (??) */
+  registered = 1,   /*!< registered, not yet resolved */
+  resolve_failed = 2,   /*!< resolution failed, or not yet attempted */
+  initialized = 3,  /*!< resolution succeeded */
+  invalid = 4,      /*!< ^^ and was not valid */
+  valid = 5         /*!< ^^ and value was valid */
+};
+
+inline
+std::string init_val_status_name(init_val_status_t const &s);
 
 /**\class init_value: a value that needs to be supplied at the beginning of a simulation
  *
@@ -21,19 +34,11 @@ template <typename T>
 class init_value{
 public:
 // types
-  /** Status cues */
-  enum class status_t : uint32_t {
-    unregistered = 0, /*!< not registered with input_engine (??) */
-    registered = 1,   /*!< registered, not yet resolved */
-    resolve_failed = 2,   /*!< resolution failed, or not yet attempted */
-    initialized = 3,  /*!< resolution succeeded */
-    invalid = 4,      /*!< ^^ and was not valid */
-    valid = 5         /*!< ^^ and value was valid */
-  };
 
   using validator = std::function<bool(T const&)>;
   using string_t = std::string;
   using str_cr_t = string_t const &;
+  using status_t = init_val_status_t;
 
 // interface
   /**\brief get a reference to the value if that's possible.
@@ -138,6 +143,23 @@ private:
   validator m_valid;
   status_t m_status;
 }; // struct init_value
+
+inline
+std::string init_val_status_name(init_val_status_t const &s){
+  std::string str;
+  using s_t = init_val_status_t;
+  switch(s){
+    case s_t::unregistered: str = "unregistered"; break;
+    case s_t::registered: str = "registered"; break;
+    case s_t::resolve_failed: str = "resolve_failed"; break;
+    case s_t::initialized: str = "initialized"; break;
+    case s_t::invalid: str = "invalid"; break;
+    case s_t::valid: str = "valid"; break;
+    default: str = "unknown";
+  };
+  return str;
+} // init_val_status_name
+
 
 } // ristra::
 
