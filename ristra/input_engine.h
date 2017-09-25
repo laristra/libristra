@@ -103,32 +103,58 @@ protected:
 
     // singleton for each type
     input_registry(){}
+    ~input_registry(){}
+
+    void set_all_resolved(){m_all_resolved = true;}
+
+    bool get_all_resolved() const {return m_all_resolved;}
+
+    void set_resolve_called(){m_resolve_called = true;}
+
+    bool get_resolve_called() const { return m_resolve_called;}
+
+  private:
+    bool m_resolve_called = false;
+    bool m_all_resolved = false;
     input_registry(input_registry &) = delete;
     input_registry(input_registry&&) = delete;
-
   }; // registry
 
-private:
-  template <typename T>
-  static input_registry<T>& instance(){
-    static input_registry<T> m;
-    return m;
+public:
+
+  input_engine_t(){
+    // define_type_names__by_tuple<type_tuple>();
   }
 
-public:
+  virtual ~input_engine_t(){}
+
+protected:
+  template <typename T>
+  static input_registry<T>& reg_instance(){
+    static input_registry<T> ir;
+    return ir;
+  }
+
+private:
+
+  input_engine_t(input_engine_t &) = delete;
+
+  input_engine_t& operator=(input_engine_t &) = delete;
+
+private:
 
 // meta
   // generate calls to each function for all types via std::tuple.
   apply_op_f_by_tuple(resolve_inputs_);
   apply_void_f_by_tuple(clear_registry_);
   apply_void_f_by_tuple(print_unresolved_types_);
-  apply_void_f_by_tuple(define_type_names_);
+  // apply_void_f_by_tuple(define_type_names_);
 
-  input_engine_t(){
-    define_type_names__by_tuple<type_tuple>();
-  }
 
-  virtual ~input_engine_t(){}
+
+public:
+
+  // virtual ~input_engine_t(){}
 
   /**\brief Clear all registered targets on all types. */
   void clear_registry(){
@@ -146,7 +172,6 @@ public:
    * default.
    **/
   bool resolve_inputs(){
-    m_resolve_called = true;
     deq_bool resolutions(resolve_inputs__by_tuple<type_tuple>(
       *this,m_lua_source,m_hard_coded_source));
     bool all_resolved = std::accumulate(
@@ -155,7 +180,6 @@ public:
     if(!all_resolved){
       print_unresolved_types__by_tuple<type_tuple>(resolutions);
     }
-    m_all_resolved = all_resolved;
     return all_resolved;
   } // resolve_inputs
 
@@ -272,45 +296,42 @@ public:
   /**\brief indicate whether a target was resolved */
   template <class T>
   bool resolved(str_cr_t target) const {
-    if(!m_resolve_called){
-      return false; // shd be error ?!?
-    }
-    // if the target is in the set of failures, then it was not resolved.
+    input_registry<T> const &i_reg(reg_instance<T>());
     registry<T> const & el_reg(get_registry<T>());
-    return (1 == el_reg.count(target));
+    return i_reg.get_resolve_called() && (1 == el_reg.count(target));
   }
 
 protected:
   template <class T>
   registry<T> & get_registry(){
-    return instance<T>().get_data_registry();
+    return reg_instance<T>().get_data_registry();
   }
 
   template <class T>
   registry<T> const & get_registry() const {
-    return instance<T>().get_data_registry();
+    return reg_instance<T>().get_data_registry();
   }
 
   template <class T>
   target_set_t & get_target_set(){
-    return instance<T>().get_target_set();
+    return reg_instance<T>().get_target_set();
   }
 
   template <class T>
   target_set_t & get_failed_target_set(){
-    return instance<T>().get_failed_set();
+    return reg_instance<T>().get_failed_set();
   }
 
   /**\brief Clear all registered targets on type T. */
   template <typename T, size_t I>
   void clear_registry_(){
-    instance<T>().clear();
+    reg_instance<T>().clear();
   }
 
-  template <class T, size_t I>
-  void define_type_names_(){
-    m_type_names[I] = typeid(T).name();
-  }
+  // template <class T, size_t I>
+  // void define_type_names_(){
+  //   m_type_names[I] = typeid(T).name();
+  // }
 
   /**\brief If resolution failed for this type (at index I), print out some
    * information about that.
@@ -321,7 +342,7 @@ protected:
     failed_set_t const &failures(get_failed_target_set<T>());
     if(!resolved){
       std::cout << "Did not resolve all targets for type "
-        << m_type_names[I]
+        << typeid(T).name() // m_type_names[I]
         << ". Unresolved targets: ";
       std::copy(failures.begin(), failures.end(),
                 std::ostream_iterator<string_t>(std::cout, ","));
@@ -366,6 +387,10 @@ protected:
         failures.insert(target);
       } // for(target : targets)
       bool found_all = !missed_any;
+      if(found_all){
+        reg_instance<T>().set_all_resolved();
+      }
+      reg_instance<T>().set_resolve_called();
       return found_all;
     } // resolve
   }; // struct resolve_inputs_
@@ -426,10 +451,6 @@ private:
   // state
   lua_source_ptr_t m_lua_source;
   hard_coded_source_ptr_t m_hard_coded_source;
-  std::array<bool,tsize> m_registered;
-  std::array<string_t,tsize> m_type_names;
-  bool m_resolve_called = false;
-  bool m_all_resolved = false;
 }; // class inputs_t
 
 } // ristra::
