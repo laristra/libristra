@@ -31,13 +31,19 @@ namespace ristra{
  * ics_function_t (initial condition function type), a callable wrapper to
  * ics_function_t (marshalls data to/from the initial condition function),
  *
- * inputs_t is defined with a virtual destructor; this enables clients to
+ * input_engine_t is defined with a virtual destructor; this enables clients to
  * inherit from it and change the accessibility of various functionality.
  *
  * A key enabler of inputs_t is the input_registry<T> class. This allows
  * the class to have a typed key-value store without type erasure. No RTTI
- * is used to do this. While input_t<traits> is not a singleton, its registries
- * are singletons.
+ * is used to do this. While input_engine_t is not a singleton, its registries
+ * are singletons. Keeping most of the registry data in singletons is first
+ * and foremost a syntactic enabler: it lets clients register arbitrary data
+ * types. A further benefit is that different clients can basically act as if
+ * input_engine_t were a singleton: you do not need to pass an input_engine_t
+ * to every user of init_value_t, for example. The one respect in which
+ * input_engine_t is NOT a singleton is registering input_sources and calling
+ * resolve_inputs(). That needs to be done by the calling process.
  *
  * To operate the class, one registers targets and one or more input sources.
  * Targets are strings that will be resolved from the input source(s). Currently,
@@ -48,7 +54,8 @@ namespace ristra{
  * Note that inputs are distinguished by name and type. That is, an int32_t
  * target named "foo" is considered different from a uint32_t named "foo".
  *
- * The current resolution priority is Lua file, then hard-coded source.
+ * The current resolution priority is Lua file, then hard-coded source. The
+ * hard-coded source thus acts as a default file.
  */
 template <class input_traits>
 class input_engine_t {
@@ -102,8 +109,10 @@ protected:
     }
 
     // singleton for each type
-    input_registry(){}
-    ~input_registry(){}
+    static input_registry& instance(){
+      static input_registry ir;
+      return ir;
+    }
 
     void set_all_resolved(){m_all_resolved = true;}
 
@@ -114,8 +123,11 @@ protected:
     bool get_resolve_called() const { return m_resolve_called;}
 
   private:
+
     bool m_resolve_called = false;
     bool m_all_resolved = false;
+    input_registry(){}
+    ~input_registry(){}
     input_registry(input_registry &) = delete;
     input_registry(input_registry&&) = delete;
   }; // registry
@@ -127,13 +139,6 @@ public:
   }
 
   virtual ~input_engine_t(){}
-
-protected:
-  template <typename T>
-  static input_registry<T>& reg_instance(){
-    static input_registry<T> ir;
-    return ir;
-  }
 
 private:
 
@@ -296,7 +301,7 @@ public:
   /**\brief indicate whether a target was resolved */
   template <class T>
   bool resolved(str_cr_t target) const {
-    input_registry<T> const &i_reg(reg_instance<T>());
+    input_registry<T> const &i_reg(input_registry<T>::instance());
     registry<T> const & el_reg(get_registry<T>());
     return i_reg.get_resolve_called() && (1 == el_reg.count(target));
   }
@@ -304,28 +309,28 @@ public:
 protected:
   template <class T>
   registry<T> & get_registry(){
-    return reg_instance<T>().get_data_registry();
+    return input_registry<T>::instance().get_data_registry();
   }
 
   template <class T>
   registry<T> const & get_registry() const {
-    return reg_instance<T>().get_data_registry();
+    return input_registry<T>::instance().get_data_registry();
   }
 
   template <class T>
   target_set_t & get_target_set(){
-    return reg_instance<T>().get_target_set();
+    return input_registry<T>::instance().get_target_set();
   }
 
   template <class T>
   target_set_t & get_failed_target_set(){
-    return reg_instance<T>().get_failed_set();
+    return input_registry<T>::instance().get_failed_set();
   }
 
   /**\brief Clear all registered targets on type T. */
   template <typename T, size_t I>
   void clear_registry_(){
-    reg_instance<T>().clear();
+    input_registry<T>::instance().clear();
   }
 
   // template <class T, size_t I>
@@ -388,9 +393,9 @@ protected:
       } // for(target : targets)
       bool found_all = !missed_any;
       if(found_all){
-        reg_instance<T>().set_all_resolved();
+        input_registry<T>::instance().set_all_resolved();
       }
-      reg_instance<T>().set_resolve_called();
+      input_registry<T>::instance().set_resolve_called();
       return found_all;
     } // resolve
   }; // struct resolve_inputs_
