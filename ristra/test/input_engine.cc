@@ -7,6 +7,7 @@
 #include "cinchtest.h"
 #include "ristra/flecsale-vector.h"
 #include "test_input_hard_coded_problems.h"
+#include "test_inputs.h"
 #include <array>
 
 using namespace ristra;
@@ -23,61 +24,61 @@ using ics_return_t = std::tuple<real_t,vector_t,real_t>;
 using ics_function_t =
   std::function<ics_return_t(vector_t const &, real_t const & t)>;
 
-struct input_traits{
-  using real_t = double;
-  using size_t = ::size_t;
-  using vector_t = std::array<real_t,2>;
-  using arr2r_t = std::array<real_t,2>;
-  using arr2s_t = std::array<size_t,2>;
-  using ics_return_t   = ::ics_return_t;
-  using ics_function_t = ::ics_function_t;
-  using types = std::tuple<real_t,
-                           std::string,
-                           arr2r_t,
-                           arr2s_t,
-                           size_t
-                           ,ics_function_t
-                           >;
-
-  struct Lua_ICS_Func_Wrapper{
-  // state
-    lua_result_t &lua_func;
-  // interface
-    ics_return_t operator()(vector_t const &x, real_t const t){
-      real_t d,p;
-      vector_t v{0.0,0.0};
-      std::tie(d, v, p) = lua_func(x[0], x[1], t).as<real_t,vector_t,real_t>();
-      return std::make_tuple( d, std::move(v), p);
-    }
-
-    explicit Lua_ICS_Func_Wrapper(lua_result_t &u)
-        : lua_func(u) {}
-  }; // struct Lua_ICS_Func_Wrapper
-}; // input_traits
+//struct input_traits{
+//  using real_t = double;
+//  using size_t = ::size_t;
+//  using vector_t = std::array<real_t,2>;
+//  using arr_d_r_t = std::array<real_t,2>;
+//  using arr_d_s_t = std::array<size_t,2>;
+//  using ics_return_t   = ::ics_return_t;
+//  using ics_function_t = ::ics_function_t;
+//  using types = std::tuple<real_t,
+//                           std::string,
+//                           arr_d_r_t,
+//                           arr_d_s_t,
+//                           size_t
+//                           ,ics_function_t
+//                           >;
+//
+//  struct Lua_ICS_Func_Wrapper{
+//  // state
+//    lua_result_t &lua_func;
+//  // interface
+//    ics_return_t operator()(vector_t const &x, real_t const t){
+//      real_t d,p;
+//      vector_t v{0.0,0.0};
+//      std::tie(d, v, p) = lua_func(x[0], x[1], t).as<real_t,vector_t,real_t>();
+//      return std::make_tuple( d, std::move(v), p);
+//    }
+//
+//    explicit Lua_ICS_Func_Wrapper(lua_result_t &u)
+//        : lua_func(u) {}
+//  }; // struct Lua_ICS_Func_Wrapper
+//}; // input_traits
 
 // This is our concrete input_engine_t class. It inherits from input_engine_t
 // in order to make the registries accessible for testing.
 // using test_inputs_t = input_engine_t<input_traits>;
-struct test_inputs_t : public input_engine_t<input_traits> {
-public:
-  using base_t = input_engine_t<input_traits>;
-
-  /**\brief relay the base class's state for testing */
-  template <class T> base_t::registry<T> &get_registry() {
-    return base_t::get_registry<T>();
-  } // get_registry
-
-  /**\brief relay the base class's state for testing */
-  template <class T> base_t::target_set_t &get_target_set_d() {
-    return base_t::get_target_set<T>();
-  } // get_registry
-
-  /**\brief relay the base class's state for testing */
-  template <class T> base_t::target_set_t &get_failed_target_set() {
-    return base_t::get_failed_target_set<T>();
-  } // get_registry
-
-};  // struct test_inputs_t
+//struct test_inputs_t : public input_engine_t<input_traits> {
+//public:
+//  using base_t = input_engine_t<input_traits>;
+//
+//  /**\brief relay the base class's state for testing */
+//  template <class T> base_t::registry<T> &get_registry() {
+//    return base_t::get_registry<T>();
+//  } // get_registry
+//
+//  /**\brief relay the base class's state for testing */
+//  template <class T> base_t::target_set_t &get_target_set() {
+//    return base_t::get_target_set<T>();
+//  } // get_registry
+//
+//  /**\brief relay the base class's state for testing */
+//  template <class T> base_t::target_set_t &get_failed_target_set() {
+//    return base_t::get_failed_target_set<T>();
+//  } // get_registry
+//
+//};  // struct test_inputs_t
 
 TEST(input_engine,instantiate){
   test_inputs_t t;
@@ -96,12 +97,12 @@ TEST(input_engine,register_target){
   t.clear_registry();
   t.register_target<double>("foo");
   {
-    targs_t const & real_targets(t.get_target_set_d<double>());
+    targs_t const & real_targets(t.get_target_set<double>());
     EXPECT_EQ(1ul,real_targets.count("foo"));
   }
   t.register_target<string_t>("gnu");
   {
-    targs_t const & string_targets(t.get_target_set_d<string_t>());
+    targs_t const & string_targets(t.get_target_set<string_t>());
     EXPECT_EQ(1ul,string_targets.count("gnu"));
     targs_t exp_targs = {"gnu"};
     EXPECT_EQ(exp_targs,string_targets);
@@ -109,37 +110,37 @@ TEST(input_engine,register_target){
   t.register_target<string_t>("flu");
   t.register_target<string_t>("zoo");
   {
-    targs_t const & string_targets(t.get_target_set_d<string_t>());
+    targs_t const & string_targets(t.get_target_set<string_t>());
     targs_t exp_targs = {"gnu","flu","zoo"};
     EXPECT_EQ(exp_targs,string_targets);
   }
   t.register_target<ics_f_t>("ics");
   {
-    targs_t const & ics_targets(t.get_target_set_d<ics_f_t>());
+    targs_t const & ics_targets(t.get_target_set<ics_f_t>());
     targs_t exp_targs = {"ics"};
     EXPECT_EQ(exp_targs,ics_targets);
   }
   t.register_target<ics_f_t>("jcs");
   {
-    targs_t const & ics_targets(t.get_target_set_d<ics_f_t>());
+    targs_t const & ics_targets(t.get_target_set<ics_f_t>());
     targs_t exp_targs = {"jcs","ics"};
     EXPECT_EQ(exp_targs,ics_targets);
   }
   t.register_target<string_t>("moo");
   {
-    targs_t const & string_targets(t.get_target_set_d<string_t>());
+    targs_t const & string_targets(t.get_target_set<string_t>());
     targs_t exp_targs = {"gnu","flu","moo","zoo"};
     EXPECT_EQ(exp_targs,string_targets);
   }
   t.register_target<size_t>("n_ns");
   {
-    targs_t const & size_targets(t.get_target_set_d<size_t>());
+    targs_t const & size_targets(t.get_target_set<size_t>());
     targs_t exp_targs = {"n_ns"};
     EXPECT_EQ(exp_targs,size_targets);
   }
-  t.register_target<input_traits::arr2r_t>("xmin");
+  t.register_target<input_traits::arr_d_r_t>("xmin");
   {
-    targs_t const & array_2_targets(t.get_target_set_d<input_traits::arr2r_t>());
+    targs_t const & array_2_targets(t.get_target_set<input_traits::arr_d_r_t>());
     targs_t exp_targs = {"xmin"};
     EXPECT_EQ(exp_targs,array_2_targets);
   }
@@ -150,8 +151,8 @@ TEST(input_engine,resolve_inputs_from_hc){
   using targs_t = test_inputs_t::target_set_t;
   using ics_f_t = test_inputs_t::ics_function_t;
   using targets_t = test_inputs_t::target_set_t;
-  using vec2r_t = input_traits::arr2r_t;
-  using vec2s_t = input_traits::arr2s_t;
+  using vec2r_t = input_traits::arr_d_r_t;
+  using vec2s_t = input_traits::arr_d_s_t;
 
   test_inputs_t t;
   targets_t real_t_targets = {
@@ -245,8 +246,8 @@ TEST(input_engine,resolve_inputs_from_hc_with_failures){
   using targs_t = test_inputs_t::target_set_t;
   using ics_f_t = test_inputs_t::ics_function_t;
   using targets_t = test_inputs_t::target_set_t;
-  using vec2r_t = input_traits::arr2r_t;
-  using vec2s_t = input_traits::arr2s_t;
+  using vec2r_t = input_traits::arr_d_r_t;
+  using vec2s_t = input_traits::arr_d_s_t;
 
   test_inputs_t t;
   targets_t real_t_targets = {
@@ -311,8 +312,8 @@ TEST(input_engine,resolve_inputs_from_lua){
   using targs_t = test_inputs_t::target_set_t;
   using ics_f_t = test_inputs_t::ics_function_t;
   using targets_t = test_inputs_t::target_set_t;
-  using vec2r_t = input_traits::arr2r_t;
-  using vec2s_t = input_traits::arr2s_t;
+  using vec2r_t = input_traits::arr_d_r_t;
+  using vec2s_t = input_traits::arr_d_s_t;
 
   test_inputs_t t;
   targets_t real_t_targets = {
