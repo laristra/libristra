@@ -34,11 +34,7 @@ struct default_input_traits{
                            ,ics_function_t
                            >;
 
-
-  // template <size_t Ndim, typename ics_return_tt>
   struct Lua_ICS_Func_Wrapper{
-  // state
-    lua_result_t &lua_func;
   // interface
     ics_return_t
     operator()(
@@ -54,6 +50,11 @@ struct default_input_traits{
 
     explicit Lua_ICS_Func_Wrapper(lua_result_t &u)
         : lua_func(u) {}
+
+  // state:
+    /* We interpret the lua_result as a function. Would prefer to verify
+       that is is a function. */
+    lua_result_t &lua_func;
   }; // struct Lua_ICS_Func_Wrapper
 
 }; // input_traits
