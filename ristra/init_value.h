@@ -5,7 +5,6 @@
 #pragma once
 
 #include "ristra/dbc.h"
-#include "ristra/inputs.h"
 #include "ristra/errors.h"
 #include <string>
 
@@ -24,14 +23,14 @@ enum class init_val_status_t : uint32_t {
 inline
 std::string init_val_status_name(init_val_status_t const &s);
 
-/**\class init_value: a value that needs to be supplied at the beginning of a simulation
+/**\class init_value_t: a value that needs to be supplied at the beginning of a simulation
  *
  * This allows one to easily declare an initialization value, without
- * worrying about the input_engine. The init_value instance will delegate to
+ * worrying about the input_engine. The init_value_t instance will delegate to
  * the input_engine.
  */
-template <typename T>
-class init_value{
+template <typename T, typename input_engine>
+class init_value_t{
 public:
 // types
 
@@ -43,27 +42,27 @@ public:
 // interface
   /**\brief get a reference to the value if that's possible.
    *
-   * If the init_value was resolve_failed by the input_engine, or if an invalid
+   * If the init_value_t was resolve_failed by the input_engine, or if an invalid
    * value was provided, an exception will be thrown.
    *
-   * You can check whether the init_value was resolved without exception by
+   * You can check whether the init_value_t was resolved without exception by
    * first invoking resolved().
    */
   T& get() {
     // to do: if checks expensive, re-use possible earlier checks
     // by re-ordering the logic here.
     // e.g. if(m_status == status_t::valid) return ie.get_value<T>(fname); etc.
-    input_engine &ie(get_input_engine());
+    input_engine ie;
     string_t fname(full_name());
     if(status_t::registered == m_status){
       // still just at registered: check if it was resolved
-      bool resolved = ie.resolved<T>(fname);
+      bool resolved = ie.template resolved<T>(fname);
       m_status = resolved ? status_t::initialized : status_t::resolve_failed;
       if(status_t::resolve_failed == m_status){
         Insist(false,"Failed to resolve init_value ");
       }
     }
-    T& t(ie.get_value<T>(fname));
+    T& t(ie.template get_value<T>(fname));
     bool valid(m_valid(t));
     if(!valid){
       m_status = status_t::invalid;
@@ -80,8 +79,8 @@ public:
    * Does not throw.*/
   bool resolved() {
     Require(m_status > status_t::unregistered,"");
-    input_engine &ie(get_input_engine());
-    bool resolved = ie.resolved<T>(full_name());
+    input_engine ie;
+    bool resolved = ie.template resolved<T>(full_name());
     if(resolved){
       m_status = status_t::initialized;
     }
@@ -96,8 +95,8 @@ public:
     if(!reslvd) {
       return false;
     }
-    input_engine &ie(get_input_engine());
-    T& t(ie.get_value<T>( full_name() ));
+    input_engine ie;
+    T& t(ie.template get_value<T>( full_name() ));
     bool valid = m_valid(t);
     m_status = valid ? status_t::valid : status_t::invalid;
     return valid;
@@ -111,7 +110,7 @@ public:
    *
    * Note: the validator is applied the first time get() is invoked.
    */
-  init_value(str_cr_t name, str_cr_t nmspace = "",
+  init_value_t(str_cr_t name, str_cr_t nmspace = "",
     validator val = [](T const &) { return true; })
     : m_name(name),
       m_namespace(nmspace),
@@ -124,8 +123,8 @@ public:
 private:
 // implementation
   void register_val() {
-    input_engine &ie(get_input_engine());
-    ie.register_target<T>( full_name());
+    input_engine ie;
+    ie.template register_target<T>( full_name());
     m_status = status_t::registered;
     return;
   }
@@ -142,7 +141,7 @@ private:
   string_t m_namespace;
   validator m_valid;
   status_t m_status;
-}; // struct init_value
+}; // struct init_value_t
 
 inline
 std::string init_val_status_name(init_val_status_t const &s){
