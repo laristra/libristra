@@ -7,8 +7,22 @@
 #pragma once
 
 #include "ristra/input_engine.h"
-#include "ristra/inputs.h"
+#include "detail/default_input_traits.h"
+#include "ristra/init_value.h"
 
+namespace ristra{
+
+// Configure input_engine macros from build system here:
+#ifdef RISTRA_DIMENSION
+constexpr uint8_t default_dim = RISTRA_DIMENSION;
+#else
+constexpr uint8_t default_dim = 2;
+#endif
+
+using input_traits = detail::default_input_traits<default_dim>;
+using default_input_engine = input_engine_t<input_traits>;
+
+} // ristra::
 
 struct test_inputs_t : public ristra::default_input_engine {
 public:
