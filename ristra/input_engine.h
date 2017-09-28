@@ -32,7 +32,8 @@ namespace ristra{
  * ics_function_t (marshalls data to/from the initial condition function),
  *
  * input_engine_t is defined with a virtual destructor; this enables clients to
- * inherit from it and change the accessibility of various functionality.
+ * inherit from it and change the accessibility of various functionality. That
+ * is useful for testing, if nothing else.
  *
  * A key enabler of inputs_t is the input_registry<T> class. This allows
  * the class to have a typed key-value store without type erasure. No RTTI
@@ -67,8 +68,8 @@ public:
   using vector_t = typename input_traits::vector_t;
   using string_t = std::string;
   using str_cr_t = string_t const &;
-  using ics_return_t = typename input_traits::ics_return_t;
-  using ics_function_t = typename input_traits::ics_function_t;
+  // using ics_return_t = typename input_traits::ics_return_t;
+  // using ics_function_t = typename input_traits::ics_function_t;
   using target_set_t = std::set<string_t>;
   using failed_set_t = std::set<string_t>;
   using deq_bool = std::deque<bool>;
@@ -92,7 +93,7 @@ protected:
     using target_set_t = std::set<key_t>;
     using failed_set_t = std::set<key_t>;
 
-    registry<T> & get_data_registry(){ return m_reg;}
+    registry<T> & get_data_registry() { return m_reg; }
 
     target_set_t & get_target_set() { return m_targets; }
 
@@ -118,11 +119,11 @@ protected:
 
     bool get_all_resolved() const {return m_all_resolved;}
 
-    void set_resolve_called(){m_resolve_called = true;}
+    void set_resolve_called() { m_resolve_called = true; }
 
-    bool get_resolve_called() const { return m_resolve_called;}
+    bool get_resolve_called() const { return m_resolve_called; }
 
-  private:
+   private:
 
     bool m_resolve_called = false;
     bool m_all_resolved = false;
@@ -133,7 +134,6 @@ protected:
   }; // registry
 
 public:
-
   input_engine_t(){
     // define_type_names__by_tuple<type_tuple>();
   }
@@ -147,26 +147,20 @@ private:
   input_engine_t& operator=(input_engine_t &) = delete;
 
 private:
-
-// meta
   // generate calls to each function for all types via std::tuple.
   apply_op_f_by_tuple(resolve_inputs_);
   apply_void_f_by_tuple(clear_registry_);
   apply_void_f_by_tuple(print_unresolved_types_);
-  // apply_void_f_by_tuple(define_type_names_);
-
-
+  apply_void_f_by_tuple(print_registered_type_);
 
 public:
-
-  // virtual ~input_engine_t(){}
+// Principal interface
 
   /**\brief Clear all registered targets on all types. */
   void clear_registry(){
     clear_registry__by_tuple<type_tuple>();
   }
 
-// interface
   /**\\brief For each target, look through input sources and attempt
    * to resolve each target.
    *
@@ -231,71 +225,20 @@ public:
     return;
   } // register_target
 
-  /**\brief Get the value from the input process.
+  /**\brief Method to get an initialization value.
    *
-   * \return: reference to requested object. The object itself lives in the
-   * input_engine's registry.
+   * \return: non-callable types: reference to T; std::function: a copy of the
+   * std::function object
    *
-   * N. B. The enable_if limits this to types that are not callable. Callable
-   * types are dealt with seperately. All the enable_if does is define an int
-   * template parameter equal to zero. The parameter is not used, so no matter
-   * what
+   * \tparam T: the type of thing you're retrieving
+   * \tparam ret_t: Return type. You almost certainly want the default.
    */
   template <class T,
-    typename std::enable_if<!ristra::is_callable<T>::value,int>::type = 0>
-  T& get_value(str_cr_t target_name){
-    registry<T> & reg(this->get_registry<T>());
-    typename registry<T>::iterator pv(reg.find(target_name));
-    if(pv == reg.end()){
-      // TODO figure out what to do if lookup fails
-      std::stringstream errstr;
-      errstr << "input_engine_t::get_value: invalid key " << target_name;
-      throw std::domain_error(errstr.str());
-    }
-    return pv->second;
-  } // get_value
-
-  /**\brief Get callable value from the input process.
-   *
-   * \return: reference to requested object. The object will be std::move'd
-   * to the ctor of the invoked type.
-   *
-   * Suggested use: use with T = std::function<>
-   *
-   * N. B. The enable_if limits this to types that are not callable. Callable
-   * types are dealt with seperately. All the enable_if does is define an int
-   * template parameter equal to zero. The parameter is not used, so no matter
-   * what
-   */
-  template <class Func_T,
-    typename std::enable_if<ristra::is_callable<Func_T>::value,int>::type = 0>
-  Func_T get_value(str_cr_t target_name){
-    registry<Func_T> &hc_registry(get_registry<Func_T>());
-    registry<lua_result_uptr_t> &lua_registry(
-        get_registry<lua_result_uptr_t>());
-    // check whether the result is in the Lua items registry
-    string_t lua_target(mk_lua_func_name(target_name));
-    typename registry<lua_result_uptr_t>::iterator plua_val(
-        lua_registry.find(lua_target));
-    bool is_lua(plua_val != lua_registry.end());
-    if(is_lua){
-      // get the lua_func_wrapper object, return std::function to it
-      lua_result_t & lfunc(*(plua_val->second));
-      typename input_traits::Lua_ICS_Func_Wrapper w(lfunc);
-      Func_T f(w);
-      return std::move(f);
-    }
-    // If not, look for it in the hard-coded items registry
-    typename registry<Func_T>::iterator pv(
-        hc_registry.find(target_name));
-    if(pv == hc_registry.end()){
-      // TODO figure out what to do if lookup fails
-      std::stringstream errstr;
-      errstr << "input_engine_t::get_value: invalid key " << target_name;
-      throw std::domain_error(errstr.str());
-    }
-    return pv->second;
-
+    typename ret_t =
+     typename std::conditional<ristra::is_callable<T>::value,T,T&>::type>
+  ret_t get_value(str_cr_t target_name){
+    value_getter<T> g;
+    return g(target_name,*this);
   } // get_value
 
   /**\brief indicate whether a target was resolved */
@@ -303,7 +246,18 @@ public:
   bool resolved(str_cr_t target) const {
     input_registry<T> const &i_reg(input_registry<T>::instance());
     registry<T> const & el_reg(get_registry<T>());
-    return i_reg.get_resolve_called() && (1 == el_reg.count(target));
+    bool res_called = i_reg.get_resolve_called();
+    bool in_reg = 1 == el_reg.count(target);
+    if(!res_called){
+      printf("%s:%i resolve not called for type '%s'\n", __FUNCTION__, __LINE__,
+        typeid(T).name());
+    }
+    return res_called && in_reg;
+  }
+
+  void print_registered_types(){
+    printf("%s:%i \n",__FUNCTION__,__LINE__);
+    print_registered_type__by_tuple<type_tuple>();
   }
 
 protected:
@@ -333,11 +287,6 @@ protected:
     input_registry<T>::instance().clear();
   }
 
-  // template <class T, size_t I>
-  // void define_type_names_(){
-  //   m_type_names[I] = typeid(T).name();
-  // }
-
   /**\brief If resolution failed for this type (at index I), print out some
    * information about that.
    */
@@ -356,8 +305,16 @@ protected:
     return;
   } // print_unresolved_types_
 
+  /**\brief Print registered types */
+  template <class T, size_t I>
+  void print_registered_type_(){
+    std::cout << "\t" << typeid(T).name() << "\n";
+    return;
+  }
+
   /**\brief Resolve the targets for any one particular type.
    *
+   * Written as a struct to enable us to partially specialize.
    * \return true if all targets for T resolved. */
   template <class T, size_t I>
   struct resolve_inputs_{
@@ -404,43 +361,87 @@ protected:
     return "lua_f_" + t;
   }
 
-  /* Specialization for initial conditions functions. */
-  template <size_t I>
-  struct resolve_inputs_<ics_function_t, I>{
+  /**\brief Functor that gets values for non-callable types. */
+  template <typename T/*,
+    typename std::enable_if<!ristra::is_callable<T>::value,int>::type = 0*/>
+  struct value_getter{
+    T &operator()(str_cr_t target_name,input_engine_t &inp){
+      registry<T> & reg(inp.get_registry<T>());
+      typename registry<T>::iterator pv(reg.find(target_name));
+      if(pv == reg.end()){
+        // TODO figure out what to do if lookup fails
+        std::stringstream errstr;
+        errstr << "input_engine_t::get_value: invalid key " << target_name;
+        throw std::domain_error(errstr.str());
+      }
+      return pv->second;
+    } // operator()
+  }; // struct value_getter
+
+  /**\brief Functor that gets value for std::function objects. */
+  template <class Ret, class ...Args>
+  struct value_getter<std::function<Ret(Args...)>>{
+
+    using func_t = std::function<Ret(Args...)>;
+
+    func_t
+    operator()(str_cr_t target_name,input_engine_t &inp){
+      registry<func_t> &hc_registry(inp.get_registry<func_t>());
+      typename registry<func_t>::iterator pv(hc_registry.find(target_name));
+      if(pv == hc_registry.end()){
+        // TODO figure out what to do if lookup fails
+        std::stringstream errstr;
+        errstr << "input_engine_t::get_value: invalid key " << target_name;
+        throw std::domain_error(errstr.str());
+      }
+      return pv->second;
+    } // get_value<std::function>
+  }; // struct value_getter<std::function>
+
+  /*\\brief Specialization for std::function
+   *
+   * How Lua functions are kept in the registry: the lua_source_t class returns
+   * a unique_ptr to a lua_result_t. The latter is the lowest level Ristra
+   * representation of the Lua function. resolve_inputs_ wraps the lua_result_t
+   * in a Lua_Func_Wrapper object, converting the unique_ptr to a shared_ptr
+   * to enable copying. The Lua_Func_Wrapper makes sure that the lua_result_t
+   * has the appropriate lifetime. Finally, resolve_inputs_ hands the
+   * Lua_Func_Wrapper instance to a std::function object, ensuring type
+   * uniformity with functions from other languages.
+   */
+  template <typename Ret_T, typename ...Args, size_t I>
+  struct resolve_inputs_<std::function<Ret_T(Args...)>, I>{
+    using func_t = std::function<Ret_T(Args...)>;
+
     bool operator()(input_engine_t &inp, lua_source_ptr_t &lua_source,
                hard_coded_source_ptr_t &hard_coded_source) {
-
-      // This is a bit more complex: we're going to store either
-      // a std::function that wraps a hard-coded function, or a
-      // lua wrapper object. So we will have multiple registries.
-
-      target_set_t &targets(inp.get_target_set<ics_function_t>());
-      registry<ics_function_t> &hc_registry(inp.get_registry<ics_function_t>());
-      registry<lua_result_uptr_t> &lua_registry(
-          inp.get_registry<lua_result_uptr_t>());
-      failed_set_t &failures(inp.get_failed_target_set<ics_function_t>());
-
+      target_set_t &targets(inp.get_target_set<func_t>());
+      registry<func_t> &hc_registry(inp.get_registry<func_t>());
+      failed_set_t &failures(inp.get_failed_target_set<func_t>());
       bool missed_any(false);
       for(auto target : targets){
         bool found_target(false);
         if(lua_source){
-          /* If the Lua module provides a function, put a unique_ptr to
-           * the Lua result into a registry. get_ics_function will handle
-           * wrapping that u_ptr in a callable object that marshals the data.*/
           lua_result_uptr_t tval;
           found_target = lua_source->get_value(target,tval);
           if(found_target){
-            string_t lua_target(mk_lua_func_name(target));
-            lua_registry[lua_target] = std::move(tval);
+            Lua_Func_Wrapper<func_t> lua_f(std::move(tval));
+            func_t cpp_f(lua_f);
+            hc_registry[target] = cpp_f;
             continue;
           } // if lua found
         }// if lua
-        // next try hard-coded case
+        // next try hard-coded (default) case
         if(hard_coded_source){
-          ics_function_t f;
+          func_t f;
           found_target = hard_coded_source->get_value(target,f);
           if(found_target){
-            hc_registry[target] = f;
+            // auto ins_pr =
+            hc_registry.insert(std::make_pair(target,f));
+            // bool inserted = ins_pr.second;
+            // Could have some error checking on whether the thing was
+            // inserted: if it weren't, that might mean this key is already
+            // inhabited, and that would be unexpected.
             continue;
           }
         }
@@ -448,9 +449,13 @@ protected:
         failures.insert(target);
       } // for target in targets
       bool found_all = !missed_any;
+      if(found_all){
+        input_registry<func_t>::instance().set_all_resolved();
+      }
+      input_registry<func_t>::instance().set_resolve_called();
       return found_all;
     }
-  }; // resolve_inputs for ics_function
+  }; // resolve_inputs for std::function
 
 private:
   // state
