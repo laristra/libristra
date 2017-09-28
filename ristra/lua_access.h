@@ -28,11 +28,58 @@ extern "C" {
 }
 
 #include <string>
+#include <type_traits>
 
 namespace ristra {
 
 using lua_result_t = detail::lua_result_t;
 using lua_result_uptr_t = detail::lua_result_uptr_t;
+using lua_result_sptr_t = std::shared_ptr<lua_result_t>;
+
+/**\brief Maintain a dynamically allocated Lua function with an interface that
+ * is compatible with std::function.
+ *
+ * Note that the generic form cannot be instantiated.
+ */
+template <typename ...T> struct Lua_Func_Wrapper{
+  Lua_Func_Wrapper(){
+    static_assert(!std::is_same<T...,T...>::value,
+      "Generic Lua_Func_Wrapper not implemented, use std::function "
+      "specialization");
+  }
+};
+
+/**\brief Maintain a dynamically allocated Lua function with an interface that
+ * is compatible with std::function.
+ *
+ * Instantiate via std::function<Ret(Args...)>
+ *
+ * Note the lua_result_t represents the Lua function via overloaded
+ * operator() that takes variable args. The returned lua_result_t is converted
+ * to Ret via the as() function.
+ *
+ * It is the user's responsibility to make sure that Args... is consistent with
+ * the Lua functions arity and type needs.
+ */
+template <typename Ret, typename ...Args>
+struct Lua_Func_Wrapper<std::function<Ret(Args...)>>{
+  Ret operator()(Args... args){
+    auto r = (*plua_func_)(args...).template as<Ret>();
+    return r;
+  }
+
+  /**\brief Construct from unique_ptr to lua_result_t */
+  explicit Lua_Func_Wrapper(lua_result_uptr_t &&lf)
+    : plua_func_(std::move(lf)) {}
+
+  /**\brief Construct from reference to lua_result_t */
+  explicit Lua_Func_Wrapper(lua_result_t &lf)
+    : plua_func_(std::make_shared<lua_result_t>(lf)) {}
+
+  // shared b/c Lua_Func_Wrapper needs to be copyable
+  lua_result_sptr_t plua_func_;
+}; // Lua_Func_Wrapper
+
 
 ////////////////////////////////////////////////////////////////////////////////
 /// \brief The top level object for the lua interface.

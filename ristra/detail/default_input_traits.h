@@ -34,29 +34,6 @@ struct default_input_traits{
                            ,ics_function_t
                            >;
 
-  struct Lua_ICS_Func_Wrapper{
-  // interface
-    ics_return_t
-    operator()(
-      arr_d_r_t const & x, real_t const t)
-    {
-      real_t d,p;
-      arr_d_r_t v;
-      // why not just return the tuple?
-      std::tie(d, v, p) =
-        lua_func(x, t).template as<real_t, arr_d_r_t, real_t>();
-      return std::make_tuple( d, std::move(v), p);
-    }
-
-    explicit Lua_ICS_Func_Wrapper(lua_result_t &u)
-        : lua_func(u) {}
-
-  // state:
-    /* We interpret the lua_result as a function. Would prefer to verify
-       that is is a function. */
-    lua_result_t &lua_func;
-  }; // struct Lua_ICS_Func_Wrapper
-
 }; // input_traits
 
 
