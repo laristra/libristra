@@ -6,6 +6,7 @@
 
 #include "ristra/dbc.h"
 #include "ristra/errors.h"
+#include "ristra/type_traits.h"
 #include <string>
 
 namespace ristra{
@@ -38,9 +39,13 @@ public:
   using string_t = std::string;
   using str_cr_t = string_t const &;
   using status_t = init_val_status_t;
+  using get_return_t =
+    typename std::conditional<ristra::is_callable<T>::value, T &&, T &>::type;
 
-// interface
+  // interface
   /**\brief get a reference to the value if that's possible.
+   *
+   * \return: non-callable type: T& , callable type: T&&
    *
    * If the init_value_t was resolve_failed by the input_engine, or if an invalid
    * value was provided, an exception will be thrown.
@@ -48,8 +53,9 @@ public:
    * You can check whether the init_value_t was resolved without exception by
    * first invoking resolved().
    */
-  T& get() {
-    // to do: if checks expensive, re-use possible earlier checks
+  get_return_t
+  get() {
+    // to do: if checks prove expensive, re-use possible earlier checks
     // by re-ordering the logic here.
     // e.g. if(m_status == status_t::valid) return ie.get_value<T>(fname); etc.
     input_engine ie;
@@ -59,10 +65,11 @@ public:
       bool resolved = ie.template resolved<T>(fname);
       m_status = resolved ? status_t::initialized : status_t::resolve_failed;
       if(status_t::resolve_failed == m_status){
-        Insist(false,"Failed to resolve init_value ");
+        Insist(false,"Failed to resolve init_value "+m_name+" in namespace "+
+          m_namespace);
       }
     }
-    T& t(ie.template get_value<T>(fname));
+    get_return_t t(ie.template get_value<T>(fname));
     bool valid(m_valid(t));
     if(!valid){
       m_status = status_t::invalid;
@@ -70,7 +77,7 @@ public:
       throw_runtime_error("Invalid init_value " + fname);
     }
     m_status = status_t::valid;
-    return t;
+    return std::forward<get_return_t>(t);
   }
 
   status_t &status() const { return m_status;}
