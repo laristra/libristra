@@ -24,62 +24,6 @@ using ics_return_t = std::tuple<real_t,vector_t,real_t>;
 using ics_function_t =
   std::function<ics_return_t(vector_t const &, real_t const & t)>;
 
-//struct input_traits{
-//  using real_t = double;
-//  using size_t = ::size_t;
-//  using vector_t = std::array<real_t,2>;
-//  using arr_d_r_t = std::array<real_t,2>;
-//  using arr_d_s_t = std::array<size_t,2>;
-//  using ics_return_t   = ::ics_return_t;
-//  using ics_function_t = ::ics_function_t;
-//  using types = std::tuple<real_t,
-//                           std::string,
-//                           arr_d_r_t,
-//                           arr_d_s_t,
-//                           size_t
-//                           ,ics_function_t
-//                           >;
-//
-//  struct Lua_ICS_Func_Wrapper{
-//  // state
-//    lua_result_t &lua_func;
-//  // interface
-//    ics_return_t operator()(vector_t const &x, real_t const t){
-//      real_t d,p;
-//      vector_t v{0.0,0.0};
-//      std::tie(d, v, p) = lua_func(x[0], x[1], t).as<real_t,vector_t,real_t>();
-//      return std::make_tuple( d, std::move(v), p);
-//    }
-//
-//    explicit Lua_ICS_Func_Wrapper(lua_result_t &u)
-//        : lua_func(u) {}
-//  }; // struct Lua_ICS_Func_Wrapper
-//}; // input_traits
-
-// This is our concrete input_engine_t class. It inherits from input_engine_t
-// in order to make the registries accessible for testing.
-// using test_inputs_t = input_engine_t<input_traits>;
-//struct test_inputs_t : public input_engine_t<input_traits> {
-//public:
-//  using base_t = input_engine_t<input_traits>;
-//
-//  /**\brief relay the base class's state for testing */
-//  template <class T> base_t::registry<T> &get_registry() {
-//    return base_t::get_registry<T>();
-//  } // get_registry
-//
-//  /**\brief relay the base class's state for testing */
-//  template <class T> base_t::target_set_t &get_target_set() {
-//    return base_t::get_target_set<T>();
-//  } // get_registry
-//
-//  /**\brief relay the base class's state for testing */
-//  template <class T> base_t::target_set_t &get_failed_target_set() {
-//    return base_t::get_failed_target_set<T>();
-//  } // get_registry
-//
-//};  // struct test_inputs_t
-
 TEST(input_engine,instantiate){
   test_inputs_t t;
   ASSERT_TRUE(true);
@@ -92,7 +36,7 @@ ICS_Func(test_inputs_t::vector_t,real_t){
 
 TEST(input_engine,register_target){
   using targs_t = test_inputs_t::target_set_t;
-  using ics_f_t = test_inputs_t::ics_function_t;
+  using ics_f_t = ics_function_t;
   test_inputs_t t;
   t.clear_registry();
   t.register_target<double>("foo");
@@ -149,7 +93,7 @@ TEST(input_engine,register_target){
 
 TEST(input_engine,resolve_inputs_from_hc){
   using targs_t = test_inputs_t::target_set_t;
-  using ics_f_t = test_inputs_t::ics_function_t;
+  using ics_f_t = ics_function_t;
   using targets_t = test_inputs_t::target_set_t;
   using vec2r_t = input_traits::arr_d_r_t;
   using vec2s_t = input_traits::arr_d_s_t;
@@ -158,10 +102,12 @@ TEST(input_engine,resolve_inputs_from_hc){
   targets_t real_t_targets = {
     "CFL","final_time","gas_constant","specific_heat"
   };
+
   targets_t size_t_targets = {"output_freq","max_steps"};
   targets_t string_t_targets = {
     "prefix","suffix","mesh_type","eos_type","file"
   };
+
   targets_t vec2r_targets = {"xmin","xmax"};
   targets_t vec2s_targets = {"dimensions"};
   targets_t ics_targets = {"ics_func"};
@@ -185,15 +131,12 @@ TEST(input_engine,resolve_inputs_from_hc){
 
   bool all_resolved = t.resolve_inputs();
   EXPECT_TRUE(all_resolved);
-
   EXPECT_EQ(0.51, t.get_value<real_t>("CFL"));
   EXPECT_EQ(1.41, t.get_value<real_t>("gas_constant"));
   EXPECT_EQ(1.01, t.get_value<real_t>("specific_heat"));
   EXPECT_EQ(0.21, t.get_value<real_t>("final_time"));
-
   EXPECT_EQ(71,t.get_value<size_t>("output_freq"));
   EXPECT_EQ(1000001,t.get_value<size_t>("max_steps"));
-
   EXPECT_EQ("mock_box_2d" ,t.get_value<string_t>("prefix"));
   EXPECT_EQ("dat", t.get_value<string_t>("suffix"));
   EXPECT_EQ("box", t.get_value<string_t>("mesh_type"));
@@ -208,23 +151,6 @@ TEST(input_engine,resolve_inputs_from_hc){
   vec2s_t exp_dims = {101,10};
   EXPECT_EQ(exp_dims,t.get_value<vec2s_t>("dimensions"));
 
-  // // try getting initial conditions function through the original
-  // // ics_function route
-  // {
-  //   ics_function_t f(t.get_ics_function("ics_func"));
-  //   {
-  //     auto result = f({-1,-2},23);
-  //     ics_return_t exp_result = {0.1,{0.0,0.0},0.125};
-  //     EXPECT_EQ(exp_result,result);
-  //   }
-  //   {
-  //     auto result = f({1,2},123000000);
-  //     ics_return_t exp_result = {2.0,{0.0,0.0},2.0};
-  //     EXPECT_EQ(exp_result,result);
-  //   }
-  // }
-  // now try getting initial conditions function through the new
-  // get_value<Callable_T> route
   {
     ics_function_t f(t.get_value<ics_function_t>("ics_func"));
     {
@@ -244,7 +170,7 @@ TEST(input_engine,resolve_inputs_from_hc){
 
 TEST(input_engine,resolve_inputs_from_hc_with_failures){
   using targs_t = test_inputs_t::target_set_t;
-  using ics_f_t = test_inputs_t::ics_function_t;
+  using ics_f_t = ics_function_t;
   using targets_t = test_inputs_t::target_set_t;
   using vec2r_t = input_traits::arr_d_r_t;
   using vec2s_t = input_traits::arr_d_s_t;
@@ -310,7 +236,7 @@ TEST(input_engine,resolve_inputs_from_hc_with_failures){
 
 TEST(input_engine,resolve_inputs_from_lua){
   using targs_t = test_inputs_t::target_set_t;
-  using ics_f_t = test_inputs_t::ics_function_t;
+  using ics_f_t = ics_function_t;
   using targets_t = test_inputs_t::target_set_t;
   using vec2r_t = input_traits::arr_d_r_t;
   using vec2s_t = input_traits::arr_d_s_t;
