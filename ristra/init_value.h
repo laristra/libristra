@@ -40,7 +40,7 @@ public:
   using str_cr_t = string_t const &;
   using status_t = init_val_status_t;
   using get_return_t =
-    typename std::conditional<ristra::is_callable<T>::value, T &&, T &>::type;
+    typename std::conditional<ristra::is_callable<T>::value, T, T &>::type;
 
   // interface
   /**\brief get a reference to the value if that's possible.
@@ -73,11 +73,10 @@ public:
     bool valid(m_valid(t));
     if(!valid){
       m_status = status_t::invalid;
-      printf("%s:%i \n",__FUNCTION__,__LINE__);
       throw_runtime_error("Invalid init_value " + fname);
     }
     m_status = status_t::valid;
-    return std::forward<get_return_t>(t);
+    return t;
   }
 
   status_t &status() const { return m_status;}
