@@ -17,7 +17,6 @@ set(ristra_HEADERS
   init_value.h
   input_source.h
   input_engine.h
-  inputs.h
   lua_access.h
   math_utils.h
   type_traits.h
