@@ -39,8 +39,7 @@ TEST(lua_utils, simple)
     "print(\"Hello World\")\n"
   );
 
-} // TEST
-
+} // TEST(lua_utils, simple)
 
 ///////////////////////////////////////////////////////////////////////////////
 //! \brief Test the simple use of embedded lua.
@@ -96,6 +95,59 @@ TEST(lua_utils, embedded)
     auto lua_res = lua_f(x,t);
     std::tie(d,v,p) = lua_res.as<double,vector_t,double>();
   }
-} // TEST
+} // TEST(lua_utils, embedded)
+
+TEST(lua_utils,funcs){
+  using rettuple = std::tuple<double,std::array<double,2>,double>;
+  using dcr = double const &;
+  using func_t = std::function<rettuple(dcr,dcr,dcr)>;
+
+  auto state = lua_t();
+  state.loadfile("mock_box_2d.lua");
+
+  auto hydro = state["hydro"];
+  lua_result_t lua_f = hydro["ics"];
+  {
+    auto tup = lua_f(1.0,1.0,1.0).as<rettuple>();
+    double d1 = std::get<0>(tup);
+    std::array<double,2> a = std::get<1>(tup);
+    double d2 = std::get<2>(tup);
+
+    EXPECT_EQ(d1,1.0);
+    EXPECT_EQ(d2,1.0);
+    EXPECT_EQ(a[0],0.0);
+    EXPECT_EQ(a[1],0.0);
+  }
+  // ok, now try to store the lua result deal as a std::function
+  // Lua_Func_Wrapper<rettuple, dcr,dcr,dcr> fw(lua_f);
+  Lua_Func_Wrapper<func_t> fw(lua_f);
+  {
+    // auto tup = fw.template <rettuple, dcr,dcr,dcr>(1.0,1.0,1.0);
+    auto tup = fw(1.0,1.0,1.0);
+    double d1 = std::get<0>(tup);
+    std::array<double,2> a = std::get<1>(tup);
+    double d2 = std::get<2>(tup);
+
+    EXPECT_EQ(d1,1.0);
+    EXPECT_EQ(d2,1.0);
+    EXPECT_EQ(a[0],0.0);
+    EXPECT_EQ(a[1],0.0);
+  }
+  func_t cpp_f(fw);
+  {
+    auto tup = cpp_f(1.0,1.0,1.0);
+    double d1 = std::get<0>(tup);
+    std::array<double,2> a = std::get<1>(tup);
+    double d2 = std::get<2>(tup);
+
+    EXPECT_EQ(d1,1.0);
+    EXPECT_EQ(d2,1.0);
+    EXPECT_EQ(a[0],0.0);
+    EXPECT_EQ(a[1],0.0);
+  }
+
+
+} // TEST(lua_utils,funcs){
+
 
 #endif // HAVE_LUA
