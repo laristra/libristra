@@ -4,7 +4,6 @@
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
 #include "ristra/init_value.h"
-// #include "ristra/inputs.h"
 #include "cinchtest.h"
 #include "test_input_hard_coded_problems.h"
 #include "test_inputs.h"
@@ -54,19 +53,6 @@ TEST(init_value,get){
   test_init_value<real_t> ivr_final_time("final_time");
 
   // now resolve
-  test_inputs_t::registry<real_t> & real_reg(t.get_registry<real_t>());
-  printf("%s:%i registry<real_t>@%p size = %lu\n", __FUNCTION__, __LINE__,
-    &real_reg, real_reg.size());
-  for(auto &item : real_reg){
-    printf("%s:%i %s\n",__FUNCTION__,__LINE__,item.first.c_str());
-  }
-
-  test_inputs_t::target_set_t & real_targs(t.get_target_set<real_t>());
-  // printf("%s:%i registry<real_t>@%p size = %lu\n", __FUNCTION__, __LINE__,
-  //   &real_reg, real_reg.size());
-  for(auto &item : real_targs){
-    printf("%s:%i \"%s\"\n",__FUNCTION__,__LINE__,item.c_str());
-  }
   bool all_resolved = t.resolve_inputs();
   EXPECT_TRUE(all_resolved);
   // now inspect values
@@ -85,17 +71,28 @@ TEST(init_value,get_with_failures){
   ristra::hard_coded_source_t *phcs =
       new ristra::hard_coded_source_t(ristra_test::make_mock_box_2d());
   t.register_hard_coded_source(phcs);
+  // some values that will resolve...
   test_init_value<real_t> ivr_final_time("final_time");
-  // some bogus values that will not resolve
+  test_init_value<vector_t> iv_xmin("xmin");
+  using ics_function_t = test_inputs_t::traits_t::ics_function_t;
+  test_init_value<ics_function_t> iv_ics("ics_func");
+  test_init_value<ics_function_t> iv_ics_bunk("ics_bunc");
+  // ...and some bogus values that will not resolve
   test_init_value<real_t> iv_foo("foo");
   test_init_value<vector_t> iv_moo("moo");
 
   // now resolve
   bool all_resolved = t.resolve_inputs();
   EXPECT_FALSE(all_resolved);
+
   // now inspect values
   real_t &final_time(ivr_final_time.get());
   EXPECT_EQ(0.21,final_time);
+
+  EXPECT_TRUE(iv_xmin.resolved());
+
+  ASSERT_TRUE(iv_ics.resolved());
+  // ics_function_t ics(iv_ics.get());
   EXPECT_FALSE(iv_foo.resolved());
   EXPECT_FALSE(iv_moo.resolved());
   EXPECT_THROW(iv_foo.get(),std::exception);
