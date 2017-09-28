@@ -30,7 +30,7 @@ namespace detail{
 
 #define lua_try_access_as(state, key, ...)                                     \
   (!state[key].empty()) ?                                                      \
-    state[key].template as<__VA_ARGS__>() :                                             \
+    state[key].template as<__VA_ARGS__>() :                                    \
     throw std::runtime_error(                                                  \
       "\'" + state[key].name() +                                               \
       "\' does not exist in the lua state you are accessing."                  \
