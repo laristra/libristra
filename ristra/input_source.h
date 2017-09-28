@@ -248,6 +248,23 @@ public:
     return g.get_value(f,t,*this);
   }
 
+  /**\brief Get a raw lua_result_t. */
+  std::pair<bool,lua_result_t>
+  get_lua_result_raw(str_cr_t k){
+    // check if there is a Lua key distinct from k
+    str_cr_t l_key(1 == m_lua_key.count(k) ? m_lua_key[k] : k);
+    // now recover the table to look in
+    str_cr_t from_name = m_table_map.at(k);
+    auto &from_table = m_tables.at(from_name);
+    // use lua key in table
+    bool found = true;
+    lua_result_t lua_result = from_table[l_key];
+    if (lua_result.empty()) {
+      found = false;
+    }
+    return std::make_pair(found,lua_result);
+  } // get_lua_result_raw
+
 private:
 
   void load_table(str_cr_t load_name){
