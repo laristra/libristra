@@ -65,11 +65,8 @@ public:
   using type_tuple = typename input_traits::types;
   using real_t = typename input_traits::real_t;
 
-  using vector_t = typename input_traits::vector_t;
   using string_t = std::string;
   using str_cr_t = string_t const &;
-  // using ics_return_t = typename input_traits::ics_return_t;
-  // using ics_function_t = typename input_traits::ics_function_t;
   using target_set_t = std::set<string_t>;
   using failed_set_t = std::set<string_t>;
   using deq_bool = std::deque<bool>;
@@ -312,6 +309,43 @@ protected:
     return;
   }
 
+  /**\brief Functor that gets values for non-callable types. */
+  template <typename T/*,
+    typename std::enable_if<!ristra::is_callable<T>::value,int>::type = 0*/>
+  struct value_getter{
+    T &operator()(str_cr_t target_name,input_engine_t &inp){
+      registry<T> & reg(inp.get_registry<T>());
+      typename registry<T>::iterator pv(reg.find(target_name));
+      if(pv == reg.end()){
+        // TODO figure out what to do if lookup fails
+        std::stringstream errstr;
+        errstr << "input_engine_t::get_value: invalid key " << target_name;
+        throw std::domain_error(errstr.str());
+      }
+      return pv->second;
+    } // operator()
+  }; // struct value_getter
+
+  /**\brief Functor that gets value for std::function objects. */
+  template <class Ret, class ...Args>
+  struct value_getter<std::function<Ret(Args...)>>{
+
+    using func_t = std::function<Ret(Args...)>;
+
+    func_t
+    operator()(str_cr_t target_name,input_engine_t &inp){
+      registry<func_t> &hc_registry(inp.get_registry<func_t>());
+      typename registry<func_t>::iterator pv(hc_registry.find(target_name));
+      if(pv == hc_registry.end()){
+        // TODO figure out what to do if lookup fails
+        std::stringstream errstr;
+        errstr << "input_engine_t::get_value: invalid key " << target_name;
+        throw std::domain_error(errstr.str());
+      }
+      return pv->second;
+    } // get_value<std::function>
+  }; // struct value_getter<std::function>
+
   /**\brief Resolve the targets for any one particular type.
    *
    * Written as a struct to enable us to partially specialize.
@@ -360,43 +394,6 @@ protected:
   static string_t mk_lua_func_name(string_t const &t){
     return "lua_f_" + t;
   }
-
-  /**\brief Functor that gets values for non-callable types. */
-  template <typename T/*,
-    typename std::enable_if<!ristra::is_callable<T>::value,int>::type = 0*/>
-  struct value_getter{
-    T &operator()(str_cr_t target_name,input_engine_t &inp){
-      registry<T> & reg(inp.get_registry<T>());
-      typename registry<T>::iterator pv(reg.find(target_name));
-      if(pv == reg.end()){
-        // TODO figure out what to do if lookup fails
-        std::stringstream errstr;
-        errstr << "input_engine_t::get_value: invalid key " << target_name;
-        throw std::domain_error(errstr.str());
-      }
-      return pv->second;
-    } // operator()
-  }; // struct value_getter
-
-  /**\brief Functor that gets value for std::function objects. */
-  template <class Ret, class ...Args>
-  struct value_getter<std::function<Ret(Args...)>>{
-
-    using func_t = std::function<Ret(Args...)>;
-
-    func_t
-    operator()(str_cr_t target_name,input_engine_t &inp){
-      registry<func_t> &hc_registry(inp.get_registry<func_t>());
-      typename registry<func_t>::iterator pv(hc_registry.find(target_name));
-      if(pv == hc_registry.end()){
-        // TODO figure out what to do if lookup fails
-        std::stringstream errstr;
-        errstr << "input_engine_t::get_value: invalid key " << target_name;
-        throw std::domain_error(errstr.str());
-      }
-      return pv->second;
-    } // get_value<std::function>
-  }; // struct value_getter<std::function>
 
   /*\\brief Specialization for std::function
    *
