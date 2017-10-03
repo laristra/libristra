@@ -7,6 +7,7 @@
 #include "cinchtest.h"
 #include "test_input_hard_coded_problems.h"
 #include "test_inputs.h"
+#include <array>
 
 // using namespace ristra;
 
@@ -16,7 +17,7 @@ TEST(init_value,header_compiles){
 
 using real_t = test_inputs_t::real_t;
 using targs_t = test_inputs_t::target_set_t;
-using vector_t = test_inputs_t::vector_t;
+using vector_t = std::array<double,2>;
 
 template <typename T> using test_init_value =
   ristra::init_value_t<T,test_inputs_t>;

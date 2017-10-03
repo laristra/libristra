@@ -5,7 +5,7 @@
 
 #include "ristra/input_engine.h"
 #include "cinchtest.h"
-#include "ristra/flecsale-vector.h"
+// #include "ristra/flecsale-vector.h"
 #include "test_input_hard_coded_problems.h"
 #include "test_inputs.h"
 #include <array>
@@ -30,8 +30,8 @@ TEST(input_engine,instantiate){
 } // TEST(input_engine,instantiate){
 
 ics_return_t
-ICS_Func(test_inputs_t::vector_t,real_t){
-  return {real_t(),test_inputs_t::vector_t(),real_t()};
+ICS_Func(vector_t,real_t){
+  return {real_t(),vector_t(),real_t()};
 }
 
 TEST(input_engine,register_target){
