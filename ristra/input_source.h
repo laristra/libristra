@@ -10,6 +10,7 @@
 #include <array>
 #include <map>
 #include <memory>
+#include <stdexcept>
 #include <string>
 
 namespace ristra{
@@ -193,11 +194,12 @@ public:
    */
   bool register_value(str_cr_t key, str_cr_t t_name, str_cr_t lua_key = ""){
     bool const will_replace = 0 < m_table_map.count(key);
-    if(will_replace){
-      printf("%s:%i will replace %s in table map\n", __FUNCTION__, __LINE__,
-        key.c_str());
-    }
-    m_table_map[key] =t_name;
+    // if(will_replace){
+    //   printf("%s:%i will replace %s in table map\n", __FUNCTION__, __LINE__,
+    //     key.c_str());
+    //   fflush(stdout);
+    // }
+    m_table_map[key] = t_name;
     if(!lua_key.empty()){
       m_lua_key[key] = lua_key;
     }
@@ -225,17 +227,31 @@ public:
     bool get_value(str_cr_t k, T &t,lua_source_t & ls){
       // check if there is a Lua key distinct from k
       str_cr_t l_key(1 == ls.m_lua_key.count(k) ? ls.m_lua_key[k] : k);
-      // now recover the table to look in
-      str_cr_t from_name = ls.m_table_map.at(k);
-      auto & from_table = ls.m_tables.at(from_name);
-      // use lua key in table
       bool found = true;
-      auto lua_val = from_table[l_key];
-      if(lua_val.empty()){
-        found = false;
+      // now recover the table to look in
+      try{
+        str_cr_t from_name = ls.m_table_map.at(k);
+        try{
+          auto & from_table = ls.m_tables.at(from_name);
+          // use lua key (not arg key) in table
+          auto lua_val = from_table[l_key];
+          if(lua_val.empty()){
+            found = false;
+          }
+          if(found){
+            t = lua_val.as<T>();
+          }
+        }
+        catch(std::exception &x){
+          printf("%s:%i Failed to find table '%s'\n",
+            __FUNCTION__, __LINE__, from_name.c_str());
+          throw x;
+        }
       }
-      if(found){
-        t = lua_val.as<T>();
+      catch(std::exception & x){
+        printf("%s:%i Failed to find table associated with key '%s'\n",
+          __FUNCTION__, __LINE__, k.c_str());
+        throw x;
       }
       return found;
     }
