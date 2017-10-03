@@ -64,20 +64,21 @@ template <typename ...T> struct Lua_Func_Wrapper{
 template <typename Ret, typename ...Args>
 struct Lua_Func_Wrapper<std::function<Ret(Args...)>>{
   Ret operator()(Args... args){
-    auto r = (*plua_func_)(args...).template as<Ret>();
+    auto r = lua_func_(args...).template as<Ret>();
     return r;
   }
 
   /**\brief Construct from unique_ptr to lua_result_t */
   explicit Lua_Func_Wrapper(lua_result_uptr_t &&lf)
-    : plua_func_(std::move(lf)) {}
+    : plua_func_(std::move(lf)), lua_func_(*plua_func_) {}
 
   /**\brief Construct from reference to lua_result_t */
   explicit Lua_Func_Wrapper(lua_result_t &lf)
-    : plua_func_(std::make_shared<lua_result_t>(lf)) {}
+    : plua_func_(std::make_shared<lua_result_t>(lf)),lua_func_(lf) {}
 
   // shared b/c Lua_Func_Wrapper needs to be copyable
   lua_result_sptr_t plua_func_;
+  lua_result_t &lua_func_;
 }; // Lua_Func_Wrapper
 
 
