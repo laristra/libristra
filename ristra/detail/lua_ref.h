@@ -110,6 +110,30 @@ inline size_t lua_push(lua_State * s, const std::array<double,N> & arr)
   }
   return N;
 }
+
+/// \brief Push an array type onto the stack.
+/// \param [in] s  The lua state to push a value to.
+/// \param [in] str  The array to push.
+template <typename Arr_T>
+inline size_t lua_push(lua_State * s, const Arr_T & arr)
+{
+  // Caller always checks for 1, we must check for the rest
+  auto constexpr N = Arr_T::length;
+  auto ret = lua_checkstack(s, N-1);
+  if ( !ret ) {
+    std::ostringstream ss;
+    ss << "Cannot grow stack " << (N - 1) << " slots operating on element \""
+       << "\"." << std::endl
+       << "Current stack size is " << lua_gettop(s) << ".";
+    throw_runtime_error(ss.str());
+  }
+  // push each element of the array
+  for(size_t i = 0; i < N; ++i){
+    lua_push( s, arr[i]);
+  }
+  return N;
+}
+
 /// \}
 
 ////////////////////////////////////////////////////////////////////////////////
