@@ -15,7 +15,7 @@ TEST(init_value,header_compiles){
   ASSERT_TRUE(true);
 }
 
-using real_t = test_inputs_t::real_t;
+using real_t = test_inputs_t::traits_t::real_t;
 using targs_t = test_inputs_t::target_set_t;
 using vector_t = std::array<double,2>;
 

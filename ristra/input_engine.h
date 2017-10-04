@@ -63,7 +63,6 @@ class input_engine_t {
 public:
   using traits_t = input_traits;
   using type_tuple = typename input_traits::types;
-  using real_t = typename input_traits::real_t;
 
   using string_t = std::string;
   using str_cr_t = string_t const &;
@@ -131,9 +130,7 @@ protected:
   }; // registry
 
 public:
-  input_engine_t(){
-    // define_type_names__by_tuple<type_tuple>();
-  }
+  input_engine_t(){}
 
   virtual ~input_engine_t(){}
 
