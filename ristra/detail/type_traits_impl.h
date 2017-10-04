@@ -31,6 +31,33 @@ struct and_<Cond, Conds...> :
                     std::false_type >::type
 {};
 
+
+template <class ...> using ignored_t = void;
+
+////////////////////////////////////////////////////////////////////////////////
+//! \brief Helper type to check that T has operator[]
+////////////////////////////////////////////////////////////////////////////////
+template <class T, class Index, class = void>
+struct has_subscript_operator_impl : std::false_type {};
+
+template <class T, class Index>
+struct has_subscript_operator_impl<T, Index,
+  ignored_t<decltype(std::declval<T>()[std::declval<Index>()])>>
+  : std::true_type {
+};
+
+////////////////////////////////////////////////////////////////////////////////
+//! \brief Helper type to check that T is callable with Args.
+////////////////////////////////////////////////////////////////////////////////
+template <class T, class, class ...Args>
+struct has_call_operator_impl : std::false_type {};
+
+template <class T, class ...Args>
+struct has_call_operator_impl<T,
+ ignored_t<decltype(std::declval<T>()(std::declval<Args>()...))>,
+ Args...>
+ : std::true_type {};
+
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief A helper type for checking if a particular type T is callable.
 ////////////////////////////////////////////////////////////////////////////////
