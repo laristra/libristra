@@ -41,7 +41,6 @@ inline std::string here_str_func(
   {
     std::string str = filename + std::string(":") + fname + ":" +
       std::to_string(line) + " " + s;
-    printf("%s:%i \n",__FUNCTION__,__LINE__);
     return str;
   }
 } // ristra::
