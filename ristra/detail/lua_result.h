@@ -224,26 +224,27 @@ public:
     return lua_value<T>::get(state());
   }
 
-  /* Note: clang 4.0 does not call this version from a static_cast.
-   * Is that an error? Undefined behavior? Not sure... Anyhoo, that's
+  /* Note: clang 4.0 does not call the version below from static_cast.
+   * Is that an error? Undefined behavior? GCC bug? Not sure... Anyhoo, that's
    * why there's to_tuple instead.
   */
-
   /// \brief Explicit type conversion operators for tuples.
   /// \tparam Args The element types of the tuple.
   /// \return The typecast tuple of values.
-  template< typename...Args >
-  explicit operator std::tuple<Args...>() const {
-    constexpr int N = sizeof...(Args);
-    using Tup = std::tuple<Args...>;
-    if ( refs_.size() != N )
-      throw_runtime_error("Expecting " + std::to_string(N) +
-        " results, stack has " + std::to_string(refs_.size()));
-    push_all();
-    Tup tup;
-    get_results<Tup,0,Args...>(tup);
-    return tup;
-  }
+ // template< typename...Args >
+ // explicit operator std::tuple<Args...>() const {
+ //   constexpr int N = sizeof...(Args);
+ //   using Tup = std::tuple<Args...>;
+ //   if ( refs_.size() != N )
+ //     HERE("");
+ //     throw_runtime_error(std::to_string(__LINE__) + ":Expecting " +
+ //       std::to_string(N) + " results, stack has " +
+ //       std::to_string(refs_.size()));
+ //   push_all();
+ //   Tup tup;
+ //   get_results<Tup,0,Args...>(tup);
+ //   return tup;
+ // }
 
   /// \brief Explicit conversion for tuples.
   /// \tparam Args The element types of the tuple.
@@ -253,8 +254,10 @@ public:
     constexpr int N = sizeof...(Args);
     using Tup = std::tuple<Args...>;
     if ( refs_.size() != N ){
-      throw_runtime_error("Expecting " + std::to_string(N) +
-        " results, stack has " + std::to_string(refs_.size()));
+      HERE("");
+      throw_runtime_error(std::to_string(__LINE__) + ":Expecting " +
+        std::to_string(N) + " results, stack has " +
+        std::to_string(refs_.size()));
     }
     push_all();
     Tup tup;
@@ -262,20 +265,54 @@ public:
     return tup;
   }
 
+  /* To deal with template deduction more effectively, the as() method now
+   * delegates to a templated struct that permits partial specialization.
+   * The overloaded function method didn't work right, as given
+   * std::tuple<Ts...>, GCC would choose operator std::tuple<Args...>, but
+   * clang would choose operator T with T=std::tuple<...>, which would fail
+   * in various ways.
+   */
+protected:
+
+  /**\brief Hope you don't get here... */
+  template <typename ...Ts>
+  struct as_impl{
+    auto operator()(lua_result_t const &) const {
+      Insist(false,"as_impl not implemented for generic case");
+    }
+  };
+
+  /**\brief as() for more than one type returns a single value. */
+  template <typename T>
+  struct as_impl<T>{
+    T operator()(lua_result_t const &lr) const {
+      return static_cast<T>(lr);
+    }
+  };
+
+  /**\brief as() for more than one type returns a tuple. */
+  template <typename T1, typename T2, typename ...Ts>
+  struct as_impl<T1,T2,Ts...>{
+    std::tuple<T1,T2,Ts...> operator()(lua_result_t const &lr) const {
+      return lr.to_tuple<T1,T2,Ts...>();
+    }
+  };
+
+  /**\brief as() for tuple. */
+  template <typename ...Ts>
+  struct as_impl<std::tuple<Ts...>>{
+    std::tuple<Ts...> operator()(lua_result_t const &lr) const {
+      return lr.to_tuple<Ts...>();
+    }
+  };
+
+public:
   /// \brief Explicit type conversion operators for single values.
   /// \tparam T The type to convert to.
   /// \return The typecast value.
-  template< typename T >
-  T as() const {
-    return static_cast<T>(*this);
-  }
-
-  /// \brief Explicit type conversion operators for tuples.
-  /// \tparam T1, T2, Args The element types of the tuple.
-  /// \return The typecast tuple of values.
-  template< typename T1, typename T2, typename...Ts >
+  template< typename ...Ts >
   auto as() const {
-    return to_tuple<T1,T2,Ts...>();
+    return as_impl<Ts...>()(*this);
   }
 
   /// \brief Evaluate a lua function.

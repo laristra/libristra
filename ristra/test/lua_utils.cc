@@ -54,7 +54,7 @@ TEST(lua_utils, embedded)
   state.loadfile( "lua_test.lua" );
 
   // run a simple function and check the result
-  ASSERT_EQ( 3, state["sum"]( 1, 2 ).as<int>() );
+  ASSERT_EQ( 3, state["sum"]( 1, 2 ).as<int>());
   ASSERT_NEAR( 3., state["sum"]( 1, 2 ).as<double>(), TEST_TOLERANCE );
 
   // try with different arguments
@@ -108,7 +108,7 @@ TEST(lua_utils,funcs){
   auto hydro = state["hydro"];
   lua_result_t lua_f = hydro["ics"];
   {
-    auto tup = lua_f(1.0,1.0,1.0).as<rettuple>();
+    rettuple tup = lua_f(1.0,1.0,1.0).as<rettuple>();
     double d1 = std::get<0>(tup);
     std::array<double,2> a = std::get<1>(tup);
     double d2 = std::get<2>(tup);
@@ -145,7 +145,6 @@ TEST(lua_utils,funcs){
     EXPECT_EQ(a[0],0.0);
     EXPECT_EQ(a[1],0.0);
   }
-
 
 } // TEST(lua_utils,funcs){
 
