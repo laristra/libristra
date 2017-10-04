@@ -210,7 +210,21 @@ class are_integral<T, Ts...>
 template< typename... Ts >
 constexpr bool are_integral_v = are_integral<Ts...>::value;
 
+////////////////////////////////////////////////////////////////////////////////
+//! \brief Identify if a class has a subscript operator.
+//! \see https://stackoverflow.com/questions/31305894/how-to-check-for-the-existence-of-a-subscript-operator
+////////////////////////////////////////////////////////////////////////////////
+template <class T, class Index>
+using has_subscript_operator = detail::has_subscript_operator_impl<T, Index>;
 
+////////////////////////////////////////////////////////////////////////////////
+//! \brief Confirm is_callable with a particular signature. Beware coercion.
+//!
+//! Differs from is_callable in that this checks the types of the arguments to
+//! the call operator.
+////////////////////////////////////////////////////////////////////////////////
+template <class T, class... Args>
+using has_call_operator = detail::has_call_operator_impl<T, void, Args...>;
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Extract the extents from an array of type T.
