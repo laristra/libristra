@@ -346,8 +346,9 @@ protected:
   /**\brief Resolve the targets for any one particular type.
    *
    * Written as a struct to enable us to partially specialize.
-   * \return true if all targets for T resolved. */
-  template <class T, size_t I>
+   * \return true if all targets for T resolved.
+   */
+  template <class T, size_t /*I*/>
   struct resolve_inputs_{
     bool operator()(input_engine_t & inp, lua_source_ptr_t &lua_source,
       hard_coded_source_ptr_t & hard_coded_source){
@@ -450,6 +451,41 @@ protected:
       return found_all;
     }
   }; // resolve_inputs for std::function
+
+  /**\brief Resolve the target for given particular type.
+   *
+   * Written as a struct to enable us to partially specialize.
+   * \return true if target resolved.
+   */
+  template <class T>
+  struct resolve_input_{
+    bool operator()(string_t const &target,
+      input_engine_t & inp,
+      lua_source_ptr_t &lua_source,
+      hard_coded_source_ptr_t & hard_coded_source){
+      bool found_target(false);
+      T tval = T();
+      // try to find in the Lua source, if there is one
+      if(lua_source){
+          lua_source.get();
+        found_target = lua_source->get_value(target,tval);
+        if(found_target){
+          registry[target] = std::move(tval);
+        }
+      }
+      // not there? no Lua file? Default to hard coded source
+      if(hard_coded_source){
+        found_target = hard_coded_source->get_value(target,tval);
+        if(found_target){
+          registry[target] = std::move(tval);
+        }
+      }
+      if(!found_target){
+        failures.insert(target);
+      }
+      return found_target;
+    } // resolve
+  }; // struct resolve_inputs_
 
 private:
   // state
