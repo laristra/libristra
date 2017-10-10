@@ -116,8 +116,9 @@ public:
    *
    * Note: the validator is applied the first time get() is invoked.
    */
-  init_value_t(str_cr_t name, str_cr_t nmspace = "",
-    validator val = [](T const &) { return true; })
+  init_value_t(str_cr_t name,
+    validator val = [](T const &) { return true; },
+    str_cr_t nmspace = "")
     : m_name(name),
       m_namespace(nmspace),
       m_valid(val)
