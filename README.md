@@ -7,6 +7,20 @@ The ristra library is a set of support utilities for ristra codes, including
 * physical units
 * input parsing
 
+Check out: use recursive clone!
+---------
+
+Be sure to clone recursively in order to get cinch submodule support!
+
+    git clone --recursive git@github.com:laristra/libristra.git
+
+If you do not, you will see an error like this when you run cmake:
+
+    CMake Error at CMakeLists.txt:38 (include):
+      include could not find load file:
+
+        /path/to/libristra/cinch/cmake/ProjectLists.txt
+
 Prerequisites
 -------------
 
