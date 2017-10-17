@@ -5,11 +5,11 @@
 #pragma once
 
 #include "ristra/detail/inputs_impl.h"
-#include "ristra/input_source.h"
 #include "ristra/detail/type_utils.h"
+#include "ristra/input_source.h"
 #include "ristra/type_traits.h"
 
-#include <algorithm>  // all_of
+#include <algorithm> // all_of
 #include <array>
 #include <deque>
 #include <iterator>
@@ -22,8 +22,8 @@
 #include <typeinfo>
 #include "unistd.h"
 
-namespace ristra{
-
+namespace ristra
+{
 /**\brief Class to register and resolve application inputs (no RTTI required).
  *
  * \tparam input_traits: structure that defines a number of types, including
@@ -47,7 +47,8 @@ namespace ristra{
  * resolve_inputs(). That needs to be done by the calling process.
  *
  * To operate the class, one registers targets and one or more input sources.
- * Targets are strings that will be resolved from the input source(s). Currently,
+ * Targets are strings that will be resolved from the input source(s).
+ * Currently,
  * there is support for a Lua source and a hard-coded C++ source. In the future,
  * we expect this to increase to Python, SQL, and (perhaps) multiple sources of
  * any given type.
@@ -59,8 +60,9 @@ namespace ristra{
  * hard-coded source thus acts as a default file.
  */
 template <class input_traits>
-class input_engine_t {
-public:
+class input_engine_t
+{
+ public:
   using traits_t = input_traits;
   using type_tuple = typename input_traits::types;
 
@@ -69,23 +71,26 @@ public:
   using target_set_t = std::set<string_t>;
   using failed_set_t = std::set<string_t>;
   using deq_bool = std::deque<bool>;
-  template <class reg_t> using registry = std::map<string_t,reg_t>;
+  template <class reg_t>
+  using registry = std::map<string_t, reg_t>;
 
   /**\brief Used only for type-switching in explicit specializations. */
-  template <typename T> struct type_t{};
+  template <typename T>
+  struct type_t {
+  };
 
   static constexpr size_t tsize = std::tuple_size<type_tuple>::value;
 
-protected:
+ protected:
   /**\brief A class for registering targets, associating resolved data and
    * targets, and recording failures associated with a given type.
    *
    * \tparam T: The type of the target data
    */
   template <class T>
-  struct input_registry{
+  struct input_registry {
     using key_t = std::string;
-    using data_t = std::map<key_t,T>;
+    using data_t = std::map<key_t, T>;
     using target_set_t = std::set<key_t>;
     using failed_set_t = std::set<key_t>;
 
@@ -93,67 +98,65 @@ protected:
 
     target_set_t & get_target_set() { return m_targets; }
 
-    failed_set_t &get_failed_set(){return m_failures;}
+    failed_set_t & get_failed_set() { return m_failures; }
 
     registry<T> m_reg;
     target_set_t m_targets;
     failed_set_t m_failures;
 
-    void clear(){
+    void clear()
+    {
       m_reg.clear();
       m_targets.clear();
       m_failures.clear();
     }
 
     // singleton for each type
-    static input_registry& instance(){
+    static input_registry & instance()
+    {
       static input_registry ir;
       return ir;
     }
 
-    void set_all_resolved(){m_all_resolved = true;}
+    void set_all_resolved() { m_all_resolved = true; }
 
-    bool get_all_resolved() const {return m_all_resolved;}
+    bool get_all_resolved() const { return m_all_resolved; }
 
     void set_resolve_called() { m_resolve_called = true; }
 
     bool get_resolve_called() const { return m_resolve_called; }
 
    private:
-
     bool m_resolve_called = false;
     bool m_all_resolved = false;
-    input_registry(){}
-    ~input_registry(){}
+    input_registry() {}
+    ~input_registry() {}
     input_registry(input_registry &) = delete;
-    input_registry(input_registry&&) = delete;
+    input_registry(input_registry &&) = delete;
   }; // registry
 
-public:
-  input_engine_t(){}
+ public:
+  input_engine_t() {}
 
-  virtual ~input_engine_t(){}
+  virtual ~input_engine_t() {}
 
-private:
-
+ private:
   input_engine_t(input_engine_t &) = delete;
 
-  input_engine_t& operator=(input_engine_t &) = delete;
+  input_engine_t & operator=(input_engine_t &) = delete;
 
-private:
+ private:
   // generate calls to each function for all types via std::tuple.
   apply_op_f_by_tuple(resolve_inputs_);
   apply_void_f_by_tuple(clear_registry_);
   apply_void_f_by_tuple(print_unresolved_types_);
   apply_void_f_by_tuple(print_registered_type_);
 
-public:
-// Principal interface
+ public:
+  // Principal interface
 
   /**\brief Clear all registered targets on all types. */
-  void clear_registry(){
-    clear_registry__by_tuple<type_tuple>();
-  }
+  void clear_registry() { clear_registry__by_tuple<type_tuple>(); }
 
   /**\\brief For each target, look through input sources and attempt
    * to resolve each target.
@@ -164,13 +167,13 @@ public:
    * in the hard-coded source. This makes the hard-coded source the
    * default.
    **/
-  bool resolve_inputs(){
+  bool resolve_inputs()
+  {
     deq_bool resolutions(resolve_inputs__by_tuple<type_tuple>(
-      *this,m_lua_source,m_hard_coded_source));
-    bool all_resolved = std::accumulate(
-        resolutions.begin(), resolutions.end(), true,
-        [](bool b1,bool b2) {return b1 && b2; });
-    if(!all_resolved){
+      *this, m_lua_source, m_hard_coded_source));
+    bool all_resolved = std::accumulate(resolutions.begin(), resolutions.end(),
+      true, [](bool b1, bool b2) { return b1 && b2; });
+    if (!all_resolved) {
       print_unresolved_types__by_tuple<type_tuple>(resolutions);
     }
     return all_resolved;
@@ -180,7 +183,8 @@ public:
    *
    * \param lua_source Pointer to lua_source_t
    */
-  void register_lua_source( lua_source_t * lua_source){
+  void register_lua_source(lua_source_t * lua_source)
+  {
     m_lua_source.reset(lua_source);
     return;
   }
@@ -190,7 +194,8 @@ public:
    *
    * \param hard_coded_source the hard_coded_source object
    */
-  void register_hard_coded_source(hard_coded_source_t * hard_coded_source){
+  void register_hard_coded_source(hard_coded_source_t * hard_coded_source)
+  {
     m_hard_coded_source.reset(hard_coded_source);
   }
 
@@ -199,12 +204,13 @@ public:
    * A separate sub-registry is maintained for each type.
    */
   template <class T>
-  void register_target(str_cr_t name){
+  void register_target(str_cr_t name)
+  {
     target_set_t & target_set = get_target_set<T>();
     // TODO could have some error checking here: what if something gets
     // registered more than once, for example?
     auto p = target_set.insert(name);
-    if(!p.second){
+    if (!p.second) {
       printf("%s:%i failed to insert target '%s'\n", __FUNCTION__, __LINE__,
         name.c_str());
     }
@@ -212,8 +218,9 @@ public:
   } // register_target
 
   template <class T> // TODO add validators, defaults, etc.
-  void register_targets(target_set_t &names){
-    for(auto & n : names){
+  void register_targets(target_set_t & names)
+  {
+    for (auto & n : names) {
       register_target<T>(n);
     }
     return;
@@ -229,55 +236,63 @@ public:
    */
   template <class T,
     typename ret_t =
-     typename std::conditional<ristra::is_callable<T>::value,T,T&>::type>
-  ret_t get_value(str_cr_t target_name){
+      typename std::conditional<ristra::is_callable<T>::value, T, T &>::type>
+  ret_t get_value(str_cr_t target_name)
+  {
     value_getter<T> g;
-    return g(target_name,*this);
+    return g(target_name, *this);
   } // get_value
 
   /**\brief indicate whether a target was resolved */
   template <class T>
-  bool resolved(str_cr_t target) const {
-    input_registry<T> const &i_reg(input_registry<T>::instance());
+  bool resolved(str_cr_t target) const
+  {
+    input_registry<T> const & i_reg(input_registry<T>::instance());
     registry<T> const & el_reg(get_registry<T>());
     bool res_called = i_reg.get_resolve_called();
     bool in_reg = 1 == el_reg.count(target);
-    if(!res_called){
+    if (!res_called) {
       printf("%s:%i resolve not called for type '%s'\n", __FUNCTION__, __LINE__,
         typeid(T).name());
     }
     return res_called && in_reg;
   }
 
-  void print_registered_types(){
-    printf("%s:%i \n",__FUNCTION__,__LINE__);
+  void print_registered_types()
+  {
+    printf("%s:%i \n", __FUNCTION__, __LINE__);
     print_registered_type__by_tuple<type_tuple>();
   }
 
-protected:
+ protected:
   template <class T>
-  registry<T> & get_registry(){
+  registry<T> & get_registry()
+  {
     return input_registry<T>::instance().get_data_registry();
   }
 
   template <class T>
-  registry<T> const & get_registry() const {
+  registry<T> const & get_registry() const
+  {
     return input_registry<T>::instance().get_data_registry();
   }
 
   template <class T>
-  target_set_t & get_target_set(){
+  target_set_t & get_target_set()
+  {
     return input_registry<T>::instance().get_target_set();
   }
 
   template <class T>
-  target_set_t & get_failed_target_set(){
+  target_set_t & get_failed_target_set()
+  {
     return input_registry<T>::instance().get_failed_set();
   }
 
   /**\brief Clear all registered targets on type T. */
   template <typename T, size_t I>
-  void clear_registry_(){
+  void clear_registry_()
+  {
     input_registry<T>::instance().clear();
   }
 
@@ -285,15 +300,16 @@ protected:
    * information about that.
    */
   template <class T, size_t I>
-  void print_unresolved_types_(deq_bool const &resolutions){
+  void print_unresolved_types_(deq_bool const & resolutions)
+  {
     bool const resolved(resolutions[I]);
-    failed_set_t const &failures(get_failed_target_set<T>());
-    if(!resolved){
+    failed_set_t const & failures(get_failed_target_set<T>());
+    if (!resolved) {
       std::cout << "Did not resolve all targets for type "
-        << typeid(T).name() // m_type_names[I]
-        << ". Unresolved targets: ";
+                << typeid(T).name() // m_type_names[I]
+                << ". Unresolved targets: ";
       std::copy(failures.begin(), failures.end(),
-                std::ostream_iterator<string_t>(std::cout, ","));
+        std::ostream_iterator<string_t>(std::cout, ","));
       std::cout << std::endl;
     }
     return;
@@ -301,22 +317,25 @@ protected:
 
   /**\brief Print registered types */
   template <class T, size_t I>
-  void print_registered_type_(){
+  void print_registered_type_()
+  {
     std::cout << "\t" << typeid(T).name() << "\n";
     return;
   }
 
   /**\brief Functor that gets values for non-callable types. */
-  template <typename T/*,
+  template <typename T /*,
     typename std::enable_if<!ristra::is_callable<T>::value,int>::type = 0*/>
-  struct value_getter{
-    T &operator()(str_cr_t target_name,input_engine_t &inp){
+  struct value_getter {
+    T & operator()(str_cr_t target_name, input_engine_t & inp)
+    {
       registry<T> & reg(inp.get_registry<T>());
       typename registry<T>::iterator pv(reg.find(target_name));
-      if(pv == reg.end()){
+      if (pv == reg.end()) {
         // TODO figure out what to do if lookup fails
         std::stringstream errstr;
-        errstr << "input_engine_t::get_value: invalid key " << target_name;
+        errstr << "input_engine_t::get_value: invalid key " << target_name
+               << "; type = " << typeid(T).name();
         throw std::domain_error(errstr.str());
       }
       return pv->second;
@@ -324,16 +343,15 @@ protected:
   }; // struct value_getter
 
   /**\brief Functor that gets value for std::function objects. */
-  template <class Ret, class ...Args>
-  struct value_getter<std::function<Ret(Args...)>>{
-
+  template <class Ret, class... Args>
+  struct value_getter<std::function<Ret(Args...)>> {
     using func_t = std::function<Ret(Args...)>;
 
-    func_t
-    operator()(str_cr_t target_name,input_engine_t &inp){
-      registry<func_t> &hc_registry(inp.get_registry<func_t>());
+    func_t operator()(str_cr_t target_name, input_engine_t & inp)
+    {
+      registry<func_t> & hc_registry(inp.get_registry<func_t>());
       typename registry<func_t>::iterator pv(hc_registry.find(target_name));
-      if(pv == hc_registry.end()){
+      if (pv == hc_registry.end()) {
         // TODO figure out what to do if lookup fails
         std::stringstream errstr;
         errstr << "input_engine_t::get_value: invalid key " << target_name;
@@ -349,31 +367,31 @@ protected:
    * \return true if all targets for T resolved.
    */
   template <class T, size_t /*I*/>
-  struct resolve_inputs_{
-    bool operator()(input_engine_t & inp, lua_source_ptr_t &lua_source,
-      hard_coded_source_ptr_t & hard_coded_source){
+  struct resolve_inputs_ {
+    bool operator()(input_engine_t & inp, lua_source_ptr_t & lua_source,
+      hard_coded_source_ptr_t & hard_coded_source)
+    {
       // temp:
-      target_set_t &targets(inp.get_target_set<T>());
-      registry<T> &registry(inp.get_registry<T>());
-      failed_set_t &failures(inp.get_failed_target_set<T>());
+      target_set_t & targets(inp.get_target_set<T>());
+      registry<T> & the_registry(inp.get_registry<T>());
+      failed_set_t & failures(inp.get_failed_target_set<T>());
       bool missed_any(false);
-      for(auto target : targets){
+      for (auto target : targets) {
         bool found_target(false);
         T tval = T();
         // try to find in the Lua source, if there is one
-        if(lua_source){
-            lua_source.get();
-          found_target = lua_source->get_value(target,tval);
-          if(found_target){
-            registry[target] = std::move(tval);
+        if (lua_source) {
+          found_target = lua_source->get_value(target, tval);
+          if (found_target) {
+            the_registry[target] = std::move(tval);
             continue;
           }
         }
         // not there? no Lua file? Default to hard coded source
-        if(hard_coded_source){
-          found_target = hard_coded_source->get_value(target,tval);
-          if(found_target){
-            registry[target] = std::move(tval);
+        if (hard_coded_source) {
+          found_target = hard_coded_source->get_value(target, tval);
+          if (found_target) {
+            the_registry[target] = std::move(tval);
             continue;
           }
         }
@@ -381,7 +399,7 @@ protected:
         failures.insert(target);
       } // for(target : targets)
       bool found_all = !missed_any;
-      if(found_all){
+      if (found_all) {
         input_registry<T>::instance().set_all_resolved();
       }
       input_registry<T>::instance().set_resolve_called();
@@ -389,9 +407,7 @@ protected:
     } // resolve
   }; // struct resolve_inputs_
 
-  static string_t mk_lua_func_name(string_t const &t){
-    return "lua_f_" + t;
-  }
+  static string_t mk_lua_func_name(string_t const & t) { return "lua_f_" + t; }
 
   /*\\brief Specialization for std::function
    *
@@ -404,35 +420,36 @@ protected:
    * Lua_Func_Wrapper instance to a std::function object, ensuring type
    * uniformity with functions from other languages.
    */
-  template <typename Ret_T, typename ...Args, size_t I>
-  struct resolve_inputs_<std::function<Ret_T(Args...)>, I>{
+  template <typename Ret_T, typename... Args, size_t I>
+  struct resolve_inputs_<std::function<Ret_T(Args...)>, I> {
     using func_t = std::function<Ret_T(Args...)>;
 
-    bool operator()(input_engine_t &inp, lua_source_ptr_t &lua_source,
-               hard_coded_source_ptr_t &hard_coded_source) {
-      target_set_t &targets(inp.get_target_set<func_t>());
-      registry<func_t> &hc_registry(inp.get_registry<func_t>());
-      failed_set_t &failures(inp.get_failed_target_set<func_t>());
+    bool operator()(input_engine_t & inp, lua_source_ptr_t & lua_source,
+      hard_coded_source_ptr_t & hard_coded_source)
+    {
+      target_set_t & targets(inp.get_target_set<func_t>());
+      registry<func_t> & hc_registry(inp.get_registry<func_t>());
+      failed_set_t & failures(inp.get_failed_target_set<func_t>());
       bool missed_any(false);
-      for(auto target : targets){
+      for (auto target : targets) {
         bool found_target(false);
-        if(lua_source){
+        if (lua_source) {
           lua_result_uptr_t tval;
-          found_target = lua_source->get_value(target,tval);
-          if(found_target){
+          found_target = lua_source->get_value(target, tval);
+          if (found_target) {
             Lua_Func_Wrapper<func_t> lua_f(std::move(tval));
             func_t cpp_f(lua_f);
             hc_registry[target] = cpp_f;
             continue;
           } // if lua found
-        }// if lua
+        } // if lua
         // next try hard-coded (default) case
-        if(hard_coded_source){
+        if (hard_coded_source) {
           func_t f;
-          found_target = hard_coded_source->get_value(target,f);
-          if(found_target){
+          found_target = hard_coded_source->get_value(target, f);
+          if (found_target) {
             // auto ins_pr =
-            hc_registry.insert(std::make_pair(target,f));
+            hc_registry.insert(std::make_pair(target, f));
             // bool inserted = ins_pr.second;
             // Could have some error checking on whether the thing was
             // inserted: if it weren't, that might mean this key is already
@@ -444,7 +461,7 @@ protected:
         failures.insert(target);
       } // for target in targets
       bool found_all = !missed_any;
-      if(found_all){
+      if (found_all) {
         input_registry<func_t>::instance().set_all_resolved();
       }
       input_registry<func_t>::instance().set_resolve_called();
@@ -452,42 +469,40 @@ protected:
     }
   }; // resolve_inputs for std::function
 
-  /**\brief Resolve the target for given particular type.
+  /**\brief Resolve one target for given particular type.
    *
    * Written as a struct to enable us to partially specialize.
    * \return true if target resolved.
    */
   template <class T>
-  struct resolve_input_{
-    bool operator()(string_t const &target,
-      input_engine_t & inp,
-      lua_source_ptr_t &lua_source,
-      hard_coded_source_ptr_t & hard_coded_source){
+  struct resolve_input_ {
+    bool operator()(string_t const & target, input_engine_t & inp,
+      lua_source_ptr_t & lua_source,
+      hard_coded_source_ptr_t & hard_coded_source)
+    {
+      registry<T> & the_registry(inp.get_registry<T>());
       bool found_target(false);
       T tval = T();
       // try to find in the Lua source, if there is one
-      if(lua_source){
-          lua_source.get();
-        found_target = lua_source->get_value(target,tval);
-        if(found_target){
-          registry[target] = std::move(tval);
+      if (lua_source) {
+        found_target = lua_source->get_value(target, tval);
+        if (found_target) {
+          the_registry[target] = std::move(tval);
         }
       }
       // not there? no Lua file? Default to hard coded source
-      if(hard_coded_source){
-        found_target = hard_coded_source->get_value(target,tval);
-        if(found_target){
-          registry[target] = std::move(tval);
+      if (hard_coded_source) {
+        found_target = hard_coded_source->get_value(target, tval);
+        if (found_target) {
+          the_registry[target] = std::move(tval);
         }
       }
-      if(!found_target){
-        failures.insert(target);
-      }
+      // Q: record any failure?
       return found_target;
     } // resolve
   }; // struct resolve_inputs_
 
-private:
+ private:
   // state
   lua_source_ptr_t m_lua_source;
   hard_coded_source_ptr_t m_hard_coded_source;

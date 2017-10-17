@@ -11,8 +11,8 @@
 // user includes
 #include "ristra/flecsale-array.h"
 
-namespace ristra {
-
+namespace ristra
+{
 ////////////////////////////////////////////////////////////////////////////////
 //!  \brief An alias of the dimensioned array type.
 //!
@@ -21,8 +21,7 @@ namespace ristra {
 //!    to be stored in the array.
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T, std::size_t D>
-using vector = array<T,D>;
-
+using vector = array<T, D>;
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Reflect a vector about a plane given a normal to that plane.
@@ -31,13 +30,10 @@ using vector = array<T,D>;
 //! \param [in] v  The vector to reflect.
 //! \param [in] n  The normal of the plane to reflect in.
 ////////////////////////////////////////////////////////////////////////////////
-template <
-  typename T, std::size_t D,
-  template<typename, std::size_t> class C
->
-C<T,D> reflect( const C<T,D> & v, const C<T,D> & n ) {
-
-  auto dot = dot_product( v, n );
+template <typename T, std::size_t D, template <typename, std::size_t> class C>
+C<T, D> reflect(const C<T, D> & v, const C<T, D> & n)
+{
+  auto dot = dot_product(v, n);
 
   auto rot = n;
   rot *= 2 * dot;

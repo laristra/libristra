@@ -5,8 +5,10 @@
 
 #include "announce.hh"
 
-namespace ristra{
-std::string announce(){
+namespace ristra
+{
+std::string announce()
+{
   return "Ristra version 1.0, Copyright (c) 2017 LANS LLC, all rights reserved";
 } // announce
 
