@@ -68,17 +68,20 @@
   Note: if you get errors like:
 
   inputs_non_static_impl.h:72:61: error: expected ‘(’ before ‘>’ token
-     99   auto l = {(func_name<typename parm_list::template type<Is> >())...};        \
+     99   auto l = {(func_name<typename parm_list::template type<Is> >())...}; \
 
   then the first thing to check is that you have the correct func_name!
 */
 
-namespace ristra{
-namespace detail{
-
+namespace ristra
+{
+namespace detail
+{
 /**\brief Helper class to grab the type of the Nth element of a tuple */
-template <typename T> struct param_list {
-  template <std::size_t N> using type = typename std::tuple_element<N, T>::type;
+template <typename T>
+struct param_list {
+  template <std::size_t N>
+  using type = typename std::tuple_element<N, T>::type;
 };
 
 /**\brief Find the index of the first occurence of a type in a tuple.
@@ -86,89 +89,84 @@ template <typename T> struct param_list {
 template <class T, class Tuple>
 struct tuple_index;
 
-template <class T, class ...Ts>
-struct tuple_index<T,std::tuple<T,Ts...>>{
+template <class T, class... Ts>
+struct tuple_index<T, std::tuple<T, Ts...>> {
   static constexpr size_t value = 0;
 };
 
-template <class T, class U, class ...Ts>
-struct tuple_index<T,std::tuple<U,Ts...>>{
-  static constexpr size_t value = 1 + tuple_index<T,std::tuple<Ts...>>::value;
+template <class T, class U, class... Ts>
+struct tuple_index<T, std::tuple<U, Ts...>> {
+  static constexpr size_t value = 1 + tuple_index<T, std::tuple<Ts...>>::value;
 };
 
 } // detail::
 } // ristra::
 
-
-#define apply_f_by_tuple(func_name)                                     \
-                                                                        \
-template <typename Tuple, std::size_t... Is>                            \
-inline                                                                  \
-auto func_name##_tuple_impl(std::index_sequence<Is...>) {               \
- using parm_list = detail::param_list<Tuple>;                           \
- using return_type =                                                    \
-  decltype(func_name<typename parm_list::template type<0>,0>());        \
- std::deque<return_type> d(                                             \
-  {func_name<typename parm_list::template type<Is>,Is>()...});          \
- return std::move(d);                                                   \
-}                                                                       \
-                                                                        \
-template <typename Tuple>                                               \
-inline                                                                  \
-auto func_name##_by_tuple() {                                           \
- constexpr size_t tsize(std::tuple_size<Tuple>::value);                 \
- return                                                                 \
-   func_name##_tuple_impl<Tuple>(std::make_index_sequence<tsize>{});    \
-}
+#define apply_f_by_tuple(func_name)                                          \
+                                                                             \
+  template <typename Tuple, std::size_t... Is>                               \
+  inline auto func_name##_tuple_impl(std::index_sequence<Is...>)             \
+  {                                                                          \
+    using parm_list = detail::param_list<Tuple>;                             \
+    using return_type =                                                      \
+      decltype(func_name<typename parm_list::template type<0>, 0>());        \
+    std::deque<return_type> d(                                               \
+      {func_name<typename parm_list::template type<Is>, Is>()...});          \
+    return std::move(d);                                                     \
+  }                                                                          \
+                                                                             \
+  template <typename Tuple>                                                  \
+  inline auto func_name##_by_tuple()                                         \
+  {                                                                          \
+    constexpr size_t tsize(std::tuple_size<Tuple>::value);                   \
+    return func_name##_tuple_impl<Tuple>(std::make_index_sequence<tsize>{}); \
+  }
 
 /**\brief Apply a  */
-#define apply_op_f_by_tuple(struct_name)                                \
-                                                                        \
-template <typename Tuple, typename ...Args, std::size_t... Is>          \
-inline                                                                  \
-auto struct_name##_tuple_impl(std::index_sequence<Is...>,               \
-                              Args&&...args) {                          \
- using parm_list = detail::param_list<Tuple>;                           \
- using return_type =                                                    \
-  decltype(struct_name<typename parm_list::template type<0>,0>()(       \
-    std::forward<Args>(args)...));                                      \
- std::deque<return_type> d(                                             \
-  {struct_name<typename parm_list::template type<Is>,Is>()(             \
-    std::forward<Args>(args)...)...});                                  \
- return std::move(d);                                                   \
-}                                                                       \
-                                                                        \
-template <typename Tuple, typename ...Args>                             \
-inline                                                                  \
-auto struct_name##_by_tuple(Args&&...args) {                            \
- constexpr size_t tsize(std::tuple_size<Tuple>::value);                 \
- return                                                                 \
-   struct_name##_tuple_impl<Tuple>(std::make_index_sequence<tsize>{},   \
-                                   std::forward<Args>(args)...);        \
-}
+#define apply_op_f_by_tuple(struct_name)                               \
+                                                                       \
+  template <typename Tuple, typename... Args, std::size_t... Is>       \
+  inline auto struct_name##_tuple_impl(                                \
+    std::index_sequence<Is...>, Args &&... args)                       \
+  {                                                                    \
+    using parm_list = detail::param_list<Tuple>;                       \
+    using return_type =                                                \
+      decltype(struct_name<typename parm_list::template type<0>, 0>()( \
+        std::forward<Args>(args)...));                                 \
+    std::deque<return_type> d(                                         \
+      {struct_name<typename parm_list::template type<Is>, Is>()(       \
+        std::forward<Args>(args)...)...});                             \
+    return std::move(d);                                               \
+  }                                                                    \
+                                                                       \
+  template <typename Tuple, typename... Args>                          \
+  inline auto struct_name##_by_tuple(Args &&... args)                  \
+  {                                                                    \
+    constexpr size_t tsize(std::tuple_size<Tuple>::value);             \
+    return struct_name##_tuple_impl<Tuple>(                            \
+      std::make_index_sequence<tsize>{}, std::forward<Args>(args)...); \
+  }
 
-
-
-#define apply_void_f_by_tuple(func_name)                                \
-                                                                        \
-template <typename Tuple, typename ...Args, std::size_t... Is>          \
-inline                                                                  \
-void func_name##_tuple_impl(std::index_sequence<Is...>,Args&&...args) { \
- using parm_list = detail::param_list<Tuple>;                           \
- auto d =                                                               \
-   {(func_name<typename parm_list::template type<Is>,Is>(               \
-        std::forward<Args>(args)... ),0)...};                               \
- return;                                                                \
-}                                                                       \
-                                                                        \
-template <typename Tuple, typename ...Args>                              \
-inline                                                                  \
-void func_name##_by_tuple(Args && ...args) {                               \
- constexpr size_t tsize(std::tuple_size<Tuple>::value);                 \
- func_name##_tuple_impl<Tuple>(std::make_index_sequence<tsize>{},      \
-                               std::forward<Args>(args)...);                 \
- return;                                                                \
-}
-
+#define apply_void_f_by_tuple(func_name)                               \
+                                                                       \
+  template <typename Tuple, typename... Args, std::size_t... Is>       \
+  inline void func_name##_tuple_impl(                                  \
+    std::index_sequence<Is...>, Args &&... args)                       \
+  {                                                                    \
+    using parm_list = detail::param_list<Tuple>;                       \
+    auto d = {(func_name<typename parm_list::template type<Is>, Is>(   \
+                 std::forward<Args>(args)...),                         \
+      0)...};                                                          \
+    return;                                                            \
+  }                                                                    \
+                                                                       \
+  template <typename Tuple, typename... Args>                          \
+  inline void func_name##_by_tuple(Args &&... args)                    \
+  {                                                                    \
+    constexpr size_t tsize(std::tuple_size<Tuple>::value);             \
+    func_name##_tuple_impl<Tuple>(                                     \
+      std::make_index_sequence<tsize>{}, std::forward<Args>(args)...); \
+    return;                                                            \
+  }
 
 // End of file

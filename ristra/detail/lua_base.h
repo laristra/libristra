@@ -15,39 +15,34 @@
 #endif
 
 // user includes
-#include "ristra/errors.h"
 #include "ristra/detail/lua_utils.h"
 #include "ristra/detail/lua_value.h"
+#include "ristra/errors.h"
 
 #include <iomanip>
 #include <sstream>
 
-namespace ristra {
-namespace detail{
-
+namespace ristra
+{
+namespace detail
+{
 ////////////////////////////////////////////////////////////////////////////////
 /// \brief A base class for several of the implemented objects.
 /// This class mainly contains a lua state pointer which all derived
 /// classes will use.  It also has some utility member functions.
 ////////////////////////////////////////////////////////////////////////////////
-class lua_base_t {
-
-protected:
-
+class lua_base_t
+{
+ protected:
   /// \brief The state pointer.
   lua_state_ptr_t state_;
 
-public:
-
+ public:
   /// \brief Default constructor.
-  lua_base_t()
-    : state_( luaL_newstate(), [](lua_State * s) { lua_close(s); } )
-  {}
+  lua_base_t() : state_(luaL_newstate(), [](lua_State * s) { lua_close(s); }) {}
 
   /// \brief Copy constructor.
-  lua_base_t(const lua_state_ptr_t & state)
-    : state_(state)
-  {}
+  lua_base_t(const lua_state_ptr_t & state) : state_(state) {}
 
   /// \brief Return the raw state pointer.
   /// \remark Non-const version.
@@ -65,16 +60,16 @@ public:
     std::stringstream os;
     auto t = lua_type(s, i);
     switch (t) {
-      case LUA_TSTRING:  // strings
+      case LUA_TSTRING: // strings
         os << "string >> " << lua_tostring(s, i);
         break;
-      case LUA_TBOOLEAN:  // booleans
+      case LUA_TBOOLEAN: // booleans
         os << "bool   >> " << (lua_toboolean(s, i) ? "true" : "false");
         break;
-      case LUA_TNUMBER:  // numbers
+      case LUA_TNUMBER: // numbers
         os << "number >> " << lua_tonumber(s, i);
         break;
-      default:  // other values
+      default: // other values
         os << "other  >> " << lua_typename(s, t);
         break;
     }
@@ -84,19 +79,18 @@ public:
   /// \brief Dump the stack to an output stream/
   /// \param [in,out] os The stream to output to.
   /// \return A reference to the output stream.
-  std::ostream& dump_stack(std::ostream& os) const
+  std::ostream & dump_stack(std::ostream & os) const
   {
     auto s = state();
     auto top = lua_gettop(s);
-    if ( top ) {
+    if (top) {
       os << "Row : Type   >> Value" << std::endl;
-      for (int i = 1; i <= top; i++) {  /* repeat for each level */
+      for (int i = 1; i <= top; i++) { /* repeat for each level */
         os << std::setw(3) << i << " : ";
         os << get_row(i);
-        os << std::endl;  // put a separator
+        os << std::endl; // put a separator
       }
-    }
-    else {
+    } else {
       os << "(stack empty)" << std::endl;
     }
     return os;
@@ -109,14 +103,14 @@ public:
     auto top = lua_gettop(s);
     std::cerr << "Row : Type   >> Value" << std::endl;
     std::cerr << std::setw(3) << top << " : " << get_row(-1) << std::endl;
-    //lua_pop(state(), 1);
+    // lua_pop(state(), 1);
   }
 
   /// \brief the output operator.
   /// \param [in,out] os  The output stream.
   /// \param [in] s  The object whose stack to dump.
   /// \return The output stream.
-  friend std::ostream& operator<<(std::ostream& os, const lua_base_t & s)
+  friend std::ostream & operator<<(std::ostream & os, const lua_base_t & s)
   {
     return s.dump_stack(os);
   }
@@ -126,4 +120,3 @@ public:
 } // ristra::
 
 #endif // HAVE_LUA
-

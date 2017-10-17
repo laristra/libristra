@@ -19,30 +19,27 @@
 
 // use lua
 extern "C" {
-  #include <lua.h>
+#include <lua.h>
 }
 
 #include <memory>
 #include <string>
 
-namespace ristra {
-namespace detail{
+namespace ristra
+{
+namespace detail
+{
+#define lua_try_access_as(state, key, ...)                \
+  (!state[key].empty())                                   \
+    ? state[key].template as<__VA_ARGS__>()               \
+    : throw std::runtime_error("\'" + state[key].name() + \
+        "\' does not exist in the lua state you are accessing.")
 
-#define lua_try_access_as(state, key, ...)                                     \
-  (!state[key].empty()) ?                                                      \
-    state[key].template as<__VA_ARGS__>() :                                    \
-    throw std::runtime_error(                                                  \
-      "\'" + state[key].name() +                                               \
-      "\' does not exist in the lua state you are accessing."                  \
-    )
-
-#define lua_try_access(state, key)                                             \
-  (!state[key].empty()) ?                                                      \
-    state[key] :                                                               \
-    throw std::runtime_error(                                                  \
-      "\'" + state[key].name() +                                               \
-      "\' does not exist in the lua state you are accessing."                  \
-    )
+#define lua_try_access(state, key)                        \
+  (!state[key].empty())                                   \
+    ? state[key]                                          \
+    : throw std::runtime_error("\'" + state[key].name() + \
+        "\' does not exist in the lua state you are accessing.")
 
 ///!\brief Get lua type as std::string
 inline std::string lua_typestring(lua_State * s, int index)
@@ -59,4 +56,3 @@ using lua_state_ptr_t = std::shared_ptr<lua_State>;
 } // ristra::
 
 #endif // HAVE_LUA
-

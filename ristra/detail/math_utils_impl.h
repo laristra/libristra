@@ -12,10 +12,10 @@
 // system includes
 #include <utility>
 
-namespace ristra {
-namespace detail {
-
-
+namespace ristra
+{
+namespace detail
+{
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Template helpers to compute averages.
 ////////////////////////////////////////////////////////////////////////////////
@@ -26,8 +26,8 @@ namespace detail {
 //! \tparam T  The type of the result.
 //! \remark This is the last function called when all the arguments have been
 //!         chopped off.
-template< class T >
-constexpr void average( T & res )
+template <class T>
+constexpr void average(T & res)
 {
   // nothing left to do
 }
@@ -40,8 +40,8 @@ constexpr void average( T & res )
 //! \tparam Args  The remainder of the arguments.
 //! \remark This is the main function called that adds the contribution
 //!         of each argument recursively.
-template< class T, class U, class ... Args >
-constexpr void average( T & res, U && u, Args&&... args )
+template <class T, class U, class... Args>
+constexpr void average(T & res, U && u, Args &&... args)
 {
   res += u;
   average(res, std::forward<Args>(args)...);

@@ -9,24 +9,26 @@
 #include <iostream>
 #include <sstream>
 
-namespace ristra{
+namespace ristra
+{
+namespace dbc
+{
+std::ostream * p_str = &std::cerr;
 
-namespace dbc{
-
-std::ostream *p_str = &std::cerr;
-
-std::string build_message(std::string const & cond,const char * file_name,
-  const char * func_name, int line){
+std::string build_message(std::string const & cond, const char * file_name,
+  const char * func_name, int line)
+{
   std::stringstream s;
-  s << file_name << ":" << line << ":" << func_name << " assertion '"
-    << cond << "' failed." << std::endl;
+  s << file_name << ":" << line << ":" << func_name << " assertion '" << cond
+    << "' failed." << std::endl;
   return s.str();
 } // build_message
 
 bool assertf(bool cond, std::string const & cond_str, const char * file_name,
-  const char * func_name, int line, action_t &action){
-  if(!cond){
-    action(cond_str,file_name,func_name,line);
+  const char * func_name, int line, action_t & action)
+{
+  if (!cond) {
+    action(cond_str, file_name, func_name, line);
   }
   return cond;
 } // assertf
@@ -34,6 +36,5 @@ bool assertf(bool cond, std::string const & cond_str, const char * file_name,
 } // dbc::
 
 } // ristra::
-
 
 // End of file

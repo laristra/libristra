@@ -17,47 +17,46 @@
 #include <functional>
 #include <limits>
 
-namespace ristra {
-namespace detail {
-
+namespace ristra
+{
+namespace detail
+{
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief The main interface to multiply arguments together.
 //! \return The rusult of arg1*arg2*...
 ////////////////////////////////////////////////////////////////////////////////
-template<typename... Args>
+template <typename... Args>
 constexpr auto multiply(Args... args)
-{ return detail::multiply(args...); }
-
-
+{
+  return detail::multiply(args...);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //!  \brief select the appropriate counter type at compile time.
 //!
 //!  \tparam N The maximum dimension to be indexed.
 ////////////////////////////////////////////////////////////////////////////////
-template< std::size_t N, bool >
+template <std::size_t N, bool>
 struct select_counter;
 
 //! \copydoc select_counter
 //! \remark this version gets instantiated for 32bit indexing
-template< std::size_t N >
-struct select_counter<N,true>
-{
+template <std::size_t N>
+struct select_counter<N, true> {
   using type = uint32_t;
 };
 
 //! \copydoc select_counter
 //! \remark this version gets instantiated for large numbers
-template< std::size_t N >
-struct select_counter<N,false>
-{
+template <std::size_t N>
+struct select_counter<N, false> {
   using type = uint64_t;
 };
 
 //! \brief a helper for selecting the appropriate counter
-template< std::size_t N >
+template <std::size_t N>
 using select_counter_t =
-  typename select_counter<N, (N < std::numeric_limits<uint32_t>::max()) >::type;
+  typename select_counter<N, (N < std::numeric_limits<uint32_t>::max())>::type;
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief statically fill an array with a constant value
@@ -66,8 +65,8 @@ using select_counter_t =
 
 template <std::size_t N>
 struct fill {
-  template <typename T, typename ...Tn>
-  static constexpr auto apply(T v, Tn ...vs)
+  template <typename T, typename... Tn>
+  static constexpr auto apply(T v, Tn... vs)
   {
     return fill<N - 1>::apply(v, v, vs...);
   }
@@ -75,16 +74,14 @@ struct fill {
 
 template <>
 struct fill<1> {
-  template <typename T, typename ...Tn>
-  static constexpr auto apply(T v, Tn ...vs)
+  template <typename T, typename... Tn>
+  static constexpr auto apply(T v, Tn... vs)
   {
     return std::array<T, sizeof...(vs) + 1>{v, vs...};
   }
-
 };
 
 //! @}
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief This is the main interface to make_array.
@@ -102,10 +99,10 @@ constexpr std::array<T, N> make_array(T val)
 //! \brief A std::tie-like function using constant references.
 //! \param [in] first,rest The values of the tuple to reference.
 ////////////////////////////////////////////////////////////////////////////////
-template < typename T, typename... Ts >
-std::tuple<T&, const Ts&...> ctie( T& first, const Ts&... rest )
+template <typename T, typename... Ts>
+std::tuple<T &, const Ts &...> ctie(T & first, const Ts &... rest)
 {
-  return std::make_tuple( std::ref(first), std::cref(rest)... );
+  return std::make_tuple(std::ref(first), std::cref(rest)...);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -113,15 +110,15 @@ std::tuple<T&, const Ts&...> ctie( T& first, const Ts&... rest )
 //! \remark This is the main interface
 //! \tparam T  The tuple type
 ////////////////////////////////////////////////////////////////////////////////
-template < typename T >
+template <typename T>
 using reference_wrapper_t = typename detail::reference_wrapper<T>::type;
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief return an lvalue reference to val.
 ////////////////////////////////////////////////////////////////////////////////
-template<typename T>
-T &as_lvalue(T &&val) {
+template <typename T>
+T & as_lvalue(T && val)
+{
   return val;
 }
 
