@@ -3,14 +3,15 @@
 // Aug 17, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
-#include "ristra/announce.hh"
 #include "cinchtest.h"
+#include "ristra/announce.hh"
 
-TEST(announce, only){
+TEST(announce, only)
+{
   std::string ann = ristra::announce();
   std::string exp =
     "Ristra version 1.0, Copyright (c) 2017 LANS LLC, all rights reserved";
-  EXPECT_EQ(ann,exp);
+  EXPECT_EQ(ann, exp);
 }
 
 // End of file

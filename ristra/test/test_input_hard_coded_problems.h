@@ -3,13 +3,12 @@
 // May 10, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
-
 #pragma once
 
 #include "input_source.h"
 
-namespace ristra_test{
-
+namespace ristra_test
+{
 using real_t = double;
 
 /* To create a hard-coded test problem, simply take a hard_coded_source

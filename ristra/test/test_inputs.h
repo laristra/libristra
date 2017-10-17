@@ -3,15 +3,14 @@
 // Sep 25, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
-
 #pragma once
 
-#include "ristra/input_engine.h"
 #include "detail/default_input_traits.h"
 #include "ristra/init_value.h"
+#include "ristra/input_engine.h"
 
-namespace ristra{
-
+namespace ristra
+{
 // Configure input_engine macros from build system here:
 #ifdef RISTRA_DIMENSION
 constexpr uint8_t default_dim = RISTRA_DIMENSION;
@@ -25,26 +24,31 @@ using default_input_engine = input_engine_t<input_traits>;
 } // ristra::
 
 struct test_inputs_t : public ristra::default_input_engine {
-public:
+ public:
   using base_t = ristra::default_input_engine;
   using traits_t = base_t::traits_t;
 
   /**\brief relay the base class's state for testing */
-  template <class T> base_t::registry<T> &get_registry() {
+  template <class T>
+  base_t::registry<T> & get_registry()
+  {
     return base_t::get_registry<T>();
   } // get_registry
 
   /**\brief relay the base class's state for testing */
-  template <class T> base_t::target_set_t &get_target_set() {
+  template <class T>
+  base_t::target_set_t & get_target_set()
+  {
     return base_t::get_target_set<T>();
   } // get_registry
 
   /**\brief relay the base class's state for testing */
-  template <class T> base_t::target_set_t &get_failed_target_set() {
+  template <class T>
+  base_t::target_set_t & get_failed_target_set()
+  {
     return base_t::get_failed_target_set<T>();
   } // get_registry
 
-};  // struct test_inputs_t
-
+}; // struct test_inputs_t
 
 // End of file
