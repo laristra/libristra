@@ -5,6 +5,7 @@
 #pragma once
 
 #include <cxxabi.h> // works for clang 3.9.0, reported ok for GCC
+#include <string>
 
 namespace ristra
 {
