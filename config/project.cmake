@@ -160,8 +160,9 @@ install(FILES ${CMAKE_BINARY_DIR}/ristra.h DESTINATION include)
 #------------------------------------------------------------------------------#
 # Add library targets
 #------------------------------------------------------------------------------#
-
-cinch_add_library_target(ristra ristra)
+set(IS_RISTRA_NESTED FALSE)
+cinch_add_library_target(ristra ristra IS_RISTRA_NESTED)
+set_target_properties(ristra PROPERTIES LINKER_LANGUAGE CXX)
 
 #------------------------------------------------------------------------------#
 # configure .cmake file (for other projects)
