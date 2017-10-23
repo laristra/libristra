@@ -241,6 +241,35 @@ class lua_source_t : public input_source<lua_source_t>
     return will_replace;
   } // register_table
 
+  /**\brief get the length of the item associated with the key.
+   *
+   * \param key: the key to look up
+   * Note: throws exception if key is not found */
+  size_t get_size(str_cr_t key){
+    size_t sz;
+    str_cr_t l_key(1 == m_lua_key.count(key) ? m_lua_key[key] : key);
+    bool found = true;
+    // now recover the table to look in
+    try {
+      str_cr_t from_name = m_table_map.at(key);
+      try {
+        auto & from_table = m_tables.at(from_name);
+        // use lua key (not arg key) in table
+        auto lua_val = from_table[l_key];
+        sz = lua_val.size();
+      }  catch (std::exception & x) {
+        printf("%s:%i Failed to find the table '%s' for the key '%s'\n",
+          __PRETTY_FUNCTION__, __LINE__, from_name.c_str(),key.c_str());
+        throw x;
+      }
+    } catch (std::exception & x) {
+      printf("%s:%i Failed to find any table associated with key '%s'\n",
+        __PRETTY_FUNCTION__, __LINE__, key.c_str());
+      throw x;
+    }
+    return sz;
+  } // get_size
+
   /**\brief Templated functor (thus specializable) to get values from Lua. */
   template <typename T>
   struct value_getter {
