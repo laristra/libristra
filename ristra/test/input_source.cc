@@ -198,5 +198,11 @@ TEST(input_source, lua_source_t_get_value)
     EXPECT_TRUE(ok);
     EXPECT_EQ(0.25, grouth);
   }
+  // now test get_size
+  {
+    ls.register_value("materials","hydro");
+    size_t sz = ls.get_size("materials");
+    EXPECT_EQ(3u,sz);
+  }
 }
 // End of file

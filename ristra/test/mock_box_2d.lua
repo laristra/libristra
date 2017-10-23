@@ -31,6 +31,11 @@ hydro = {
     else
       return 1.0, {0,0}, 1.0
     end
-  end
+  end,
+  materials = {
+    [1] = "a",
+    [2] = "b",
+    [3] = "c"
+  }
 }
 
