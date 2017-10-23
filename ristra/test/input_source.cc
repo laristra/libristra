@@ -203,6 +203,8 @@ TEST(input_source, lua_source_t_get_value)
     ls.register_value("materials","hydro");
     size_t sz = ls.get_size("materials");
     EXPECT_EQ(3u,sz);
+    size_t sz_fooble = ls.get_size("fooble");
+    EXPECT_EQ(0u,sz_fooble);
   }
 }
 // End of file
