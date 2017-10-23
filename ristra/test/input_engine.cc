@@ -127,7 +127,10 @@ TEST(input_engine, resolve_inputs_from_hc)
 
   hard_coded_source_t * phcs =
     new hard_coded_source_t(ristra_test::make_mock_box_2d());
+  EXPECT_FALSE(t.has_hard_coded_source());
   t.register_hard_coded_source(phcs);
+  EXPECT_TRUE(t.has_hard_coded_source());
+  EXPECT_FALSE(t.has_lua_source());
 
   bool all_resolved = t.resolve_inputs();
   EXPECT_TRUE(all_resolved);

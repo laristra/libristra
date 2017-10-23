@@ -199,6 +199,14 @@ class input_engine_t
     m_hard_coded_source.reset(hard_coded_source);
   }
 
+  bool has_lua_source() const {
+    return static_cast<bool>(m_lua_source);
+  }
+
+  bool has_hard_coded_source() const {
+    return static_cast<bool>(m_hard_coded_source);
+  }
+
   /**\brief Register a target for any non-function type.
    *
    * A separate sub-registry is maintained for each type.
