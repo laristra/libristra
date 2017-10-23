@@ -264,6 +264,29 @@ class input_engine_t
     print_registered_type__by_tuple<type_tuple>();
   }
 
+  /**\brief Get a value outside of the usual registry path.
+   *
+   * Use this to get a value on the spur of the moment: it will resolve
+   * the key, and if successful, return the corresponding value. If resolution
+   * fails, it will throw a std::runtime_error.
+   *
+   * \todo Need to decide between these different paths/approaches.
+   */
+  template <class T,
+    typename ret_t =
+      typename std::conditional<ristra::is_callable<T>::value, T, T &>::type>
+  ret_t get_instant_value(str_cr_t target_name)
+  {
+    resolve_input_<T> r;
+    bool resolved = r(target_name, *this, m_lua_source, m_hard_coded_source);
+    if(!resolved){
+      string_t err = "get_instant_value: Could not resolve key '" +
+        target_name + "' using type '" + typeid(T).name() + "'";
+      throw_runtime_error(err);
+    }
+    return get_value<T>(target_name);
+  } // get_instant_value
+
  protected:
   template <class T>
   registry<T> & get_registry()
@@ -491,16 +514,58 @@ class input_engine_t
         }
       }
       // not there? no Lua file? Default to hard coded source
-      if (hard_coded_source) {
+      if (!found_target && hard_coded_source) {
         found_target = hard_coded_source->get_value(target, tval);
         if (found_target) {
           the_registry[target] = std::move(tval);
         }
       }
-      // Q: record any failure?
       return found_target;
-    } // resolve
-  }; // struct resolve_inputs_
+    } // operator()
+  }; // struct resolve_input_
+
+  /*\\brief Specialization for std::function
+   *
+   * How Lua functions are kept in the registry: the lua_source_t class returns
+   * a unique_ptr to a lua_result_t. The latter is the lowest level Ristra
+   * representation of the Lua function. resolve_input_ wraps the lua_result_t
+   * in a Lua_Func_Wrapper object, converting the unique_ptr to a shared_ptr
+   * to enable copying. The Lua_Func_Wrapper makes sure that the lua_result_t
+   * has the appropriate lifetime. Finally, resolve_input_ hands the
+   * Lua_Func_Wrapper instance to a std::function object, ensuring type
+   * uniformity with functions from other languages.
+   */
+  template <typename Ret_T, typename... Args>
+  struct resolve_input_<std::function<Ret_T(Args...)>> {
+    using func_t = std::function<Ret_T(Args...)>;
+
+    bool operator()(str_cr_t target, input_engine_t & inp,
+      lua_source_ptr_t & lua_source,
+      hard_coded_source_ptr_t & hard_coded_source)
+    {
+      registry<func_t> & hc_registry(inp.get_registry<func_t>());
+      bool found_target(false);
+      if (lua_source) {
+        lua_result_uptr_t tval;
+        found_target = lua_source->get_value(target, tval);
+        if (found_target) {
+          Lua_Func_Wrapper<func_t> lua_f(std::move(tval));
+          func_t cpp_f(lua_f);
+          hc_registry[target] = cpp_f;
+        } // if lua found
+      } // if lua
+      // if not there, or no there there, next try hard-coded (default) case
+      if (!found_target && hard_coded_source) {
+        func_t f;
+        found_target = hard_coded_source->get_value(target, f);
+        if (found_target) {
+          hc_registry.insert(std::make_pair(target, f));
+        }
+      }
+      return found_target;
+    } // operator()
+  }; // resolve_input_ for std::function
+
 
  private:
   // state
