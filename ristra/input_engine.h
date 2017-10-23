@@ -199,12 +199,31 @@ class input_engine_t
     m_hard_coded_source.reset(hard_coded_source);
   }
 
+  /**\brief Check whether input_engine has a Lua input source. */
   bool has_lua_source() const {
     return static_cast<bool>(m_lua_source);
   }
 
+  /**\brief Check whether input_engine has a hard-coded input source. */
   bool has_hard_coded_source() const {
     return static_cast<bool>(m_hard_coded_source);
+  }
+
+  /**\brief Get reference to Lua input source.
+   *
+   * Throws exception if no Lua source registered.*/
+  lua_source_t &get_lua_source() const {
+    Require( has_lua_source(),"Cannot get reference to non-existent source!");
+    return *m_lua_source;
+  }
+
+  /**\brief Get reference to hard-coded input source.
+   *
+   * Throws exception if no hard-coded source registered.*/
+  hard_coded_source_t &get_hard_coded_source() const {
+    Require(
+      has_hard_coded_source(), "Cannot get reference to non-existent source!");
+    return *m_hard_coded_source;
   }
 
   /**\brief Register a target for any non-function type.
