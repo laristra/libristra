@@ -125,9 +125,24 @@ TEST(input_source, lua_source_t_get_value)
     EXPECT_TRUE(ok);
   }
   {
+    ls.register_table("eos","hydro");
+    ls.register_value("eos_type","eos","type");
+    ls.register_value("gas_constant","eos");
+    ls.register_value("specific_heat","eos");
+
     string_t eos_type;
     bool ok = ls.get_value<string_t>("eos_type", eos_type);
     EXPECT_EQ("ideal_gas", eos_type);
+    EXPECT_TRUE(ok);
+
+    real_t gas_constant;
+    ok = ls.get_value<real_t>("gas_constant", gas_constant);
+    EXPECT_EQ(1.4, gas_constant);
+    EXPECT_TRUE(ok);
+
+    real_t specific_heat;
+    ok = ls.get_value<real_t>("specific_heat", specific_heat);
+    EXPECT_EQ(1.0, specific_heat);
     EXPECT_TRUE(ok);
   }
   {
@@ -140,18 +155,6 @@ TEST(input_source, lua_source_t_get_value)
     real_t CFL;
     bool ok = ls.get_value<real_t>("CFL", CFL);
     EXPECT_EQ(0.5, CFL);
-    EXPECT_TRUE(ok);
-  }
-  {
-    real_t gas_constant;
-    bool ok = ls.get_value<real_t>("gas_constant", gas_constant);
-    EXPECT_EQ(1.4, gas_constant);
-    EXPECT_TRUE(ok);
-  }
-  {
-    real_t specific_heat;
-    bool ok = ls.get_value<real_t>("specific_heat", specific_heat);
-    EXPECT_EQ(1.0, specific_heat);
     EXPECT_TRUE(ok);
   }
   {

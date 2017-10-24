@@ -171,11 +171,10 @@ class lua_source_t : public input_source<lua_source_t>
     m_lua_state.loadfile(filename);
     // where are tables located?
     m_table_map["hydro"] = "base_state";
-    m_table_map["eos"] = "hydro";
     m_table_map["mesh"] = "hydro";
     load_table("hydro");
     load_table("mesh");
-    load_table("eos");
+
     // where are values located?
     m_table_map["prefix"] = "hydro";
     m_table_map["suffix"] = "hydro";
@@ -184,11 +183,6 @@ class lua_source_t : public input_source<lua_source_t>
     m_table_map["CFL"] = "hydro";
     m_table_map["final_time"] = "hydro";
     m_table_map["max_steps"] = "hydro";
-
-    m_table_map["eos_type"] = "eos";
-    m_lua_key["eos_type"] = "type";
-    m_table_map["gas_constant"] = "eos";
-    m_table_map["specific_heat"] = "eos";
 
     m_table_map["mesh_type"] = "mesh";
     m_lua_key["mesh_type"] = "type";
