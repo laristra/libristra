@@ -206,5 +206,20 @@ TEST(input_source, lua_source_t_get_value)
     size_t sz_fooble = ls.get_size("fooble");
     EXPECT_EQ(0u,sz_fooble);
   }
+} // TEST(input_source, lua_source_t_get_value)
+
+TEST(input_source, lua_source_t_get_table)
+{
+  using namespace ristra;
+  using string_t = lua_source_t::string_t;
+  using real_t = lua_source_t::real_t;
+  string_t fname("mock_box_2d.lua");
+  lua_source_t ls(fname);
+  lua_result_t &hydro_input(ls.get_table("hydro"));
+  lua_result_t eos(hydro_input["eos"]);
+  std::string eos_type(lua_try_access_as(eos,"type",std::string));
+  std::string exp_eos_type("ideal_gas");
+  EXPECT_TRUE(exp_eos_type == eos_type);
 }
+
 // End of file

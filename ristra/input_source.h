@@ -313,6 +313,19 @@ class lua_source_t : public input_source<lua_source_t>
     return g.get_value(f, t, *this);
   }
 
+  /**\brief Get direct access to a Lua table. */
+  lua_result_t &get_table(str_cr_t table_name){
+    // Two steps to lookup: first get the name of the
+    try {
+      lua_result_t & from_table = m_tables.at(table_name);
+      return from_table;
+    } catch (std::exception & x) {
+      printf("%s:%i Failed to find table named '%s'\n",
+        __PRETTY_FUNCTION__, __LINE__, table_name.c_str());
+      throw x;
+    }
+  } // get_table
+
   /**\brief Get a raw lua_result_t. */
   std::pair<bool, lua_result_t> get_lua_result_raw(str_cr_t k)
   {
