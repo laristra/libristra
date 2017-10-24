@@ -248,9 +248,12 @@ class lua_result_t : public lua_base_t
     using Tup = std::tuple<Args...>;
     if (refs_.size() != N) {
       HERE("");
-      throw_runtime_error(std::to_string(__LINE__) + ":Expecting " +
+      std::string err_msg = std::to_string(__LINE__) + ":Expecting " +
         std::to_string(N) + " results, stack has " +
-        std::to_string(refs_.size()));
+        std::to_string(refs_.size());
+      printf("%s:%i err_msg coming: '%s'\n", __FUNCTION__, __LINE__,
+        err_msg.c_str());
+      Insist(false, err_msg);
     }
     push_all();
     Tup tup;
