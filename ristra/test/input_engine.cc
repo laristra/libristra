@@ -271,6 +271,11 @@ TEST(input_engine, resolve_inputs_from_lua)
   string_t fname("mock_box_2d.lua");
   // lua_source_t * pls = new lua_source_t(fname);
   lua_source_ptr_t pls(mk_lua(fname));
+  pls -> register_table("eos","hydro");
+  pls -> register_value("eos_type","eos","type");
+  pls -> register_value("gas_constant","eos");
+  pls -> register_value("specific_heat","eos");
+
   t.register_lua_source(pls.release());
 
   hard_coded_source_t * phcs =
