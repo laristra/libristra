@@ -13,7 +13,6 @@ set(geometry_HEADERS
   shapes/quadrilateral.h
   shapes/tetrahedron.h
   shapes/triangle.h
-
   PARENT_SCOPE
 )
 
