@@ -1,26 +1,14 @@
 /*~--------------------------------------------------------------------------~*
- *  @@@@@@@@  @@           @@@@@@   @@@@@@@@ @@
- * /@@/////  /@@          @@////@@ @@////// /@@
- * /@@       /@@  @@@@@  @@    // /@@       /@@
- * /@@@@@@@  /@@ @@///@@/@@       /@@@@@@@@@/@@
- * /@@////   /@@/@@@@@@@/@@       ////////@@/@@
- * /@@       /@@/@@//// //@@    @@       /@@/@@
- * /@@       @@@//@@@@@@ //@@@@@@  @@@@@@@@ /@@
- * //       ///  //////   //////  ////////  //
- *
- * Copyright (c) 2016 Los Alamos National Laboratory, LLC
- * All rights reserved
  *~--------------------------------------------------------------------------~*/
 
-#ifndef flecsi_sp_space_vector_h
-#define flecsi_sp_space_vector_h
+#ifndef ristra_sp_space_vector_h
+#define ristra_sp_space_vector_h
 
 #include <array>
 #include <cmath>
 
-#include <flecsi/utils/dimensioned_array.h>
-#include <flecsi/utils/common.h>
-#include "flecsi-sp/geometry/point.h"
+#include "ristra/utils/dimensioned_array.h"
+#include "ristra/geometry/point.h"
 
 /*!
  * \file space_vector.h
@@ -28,7 +16,7 @@
  * \date Initial file creation: Sep 23, 2015
  */
 
-namespace flecsi {
+namespace ristra {
 namespace sp {
 namespace geometry {
 
@@ -41,7 +29,7 @@ namespace geometry {
   for more information on the vector_t interface.
  */
 template <typename T, size_t D>
-using space_vector = flecsi::utils::dimensioned_array<T, D, 2>;
+using space_vector = ristra::utils::dimensioned_array__<T, D, 2>;
 
 /*!
   \function point_to_vector(const point<T, D> & a)
@@ -101,7 +89,7 @@ T magnitude(const space_vector<T, D> & a)
 {
   T sum(0);
   for (size_t d(0); d < D; ++d) {
-    sum += flecsi::utils::square(a[d]);
+    sum += a[d]*a[d];
   } // for
 
   return std::sqrt(sum);
@@ -162,13 +150,11 @@ space_vector<T, 3> normal(
   return tmp;
 } // normal
 
+} // namespace geometry
 } // namespace sp
-} // namespace flecsi
-} // namespace flecsi
+} // namespace ristra
 
-#endif // flecsi_sp_space_vector_h
+#endif // ristra_sp_space_vector_h
 
 /*~-------------------------------------------------------------------------~-*
- * Formatting options
- * vim: set tabstop=2 shiftwidth=2 expandtab :
  *~-------------------------------------------------------------------------~-*/

@@ -13,7 +13,7 @@
 #include <tuple>
 
 
-namespace flecsi {
+namespace ristra {
 namespace sp {
 namespace utils {
 namespace detail {

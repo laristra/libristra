@@ -10,14 +10,13 @@
 #pragma once
 
 // user includes 
-#include "flecsi-sp/utils/detail/template_helpers_impl.h"
-#include "flecsi-sp/common/types.h"
+#include "ristra/utils/detail/template_helpers_impl.h"
 
 // system includes
 #include <functional>
 #include <limits>
 
-namespace flecsi {
+namespace ristra {
 namespace sp {
 namespace utils {
 
@@ -52,7 +51,8 @@ struct select_counter<N,true>
 template< std::size_t N >
 struct select_counter<N,false>
 {
-  using type = common::counter_t;
+  //using type = common::counter_t;
+  using type = size_t;
 };
 
 //! \brief a helper for selecting the appropriate counter

@@ -10,8 +10,8 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
-#include "ristra/detail/inputs_impl.h"
-#include "ristra/lua_access.h"
+#include "detail/inputs_impl.h"
+#include "ristra/unflatten/lua_access.h"
 
 namespace ristra
 {

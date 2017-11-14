@@ -10,11 +10,11 @@
 #pragma once
 
 // user includes
-#include "detail/math_utils_impl.h"
+#include "ristra/uflatten/detail/math_utils_impl.h"
 
-#include "ristra/detail/template_helpers.h"
-#include "ristra/errors.h"
-#include "ristra/type_traits.h"
+#include "ristra/unflatten/detail/template_helpers.h"
+#include "ristra/unflatten/errors.h"
+#include "ristra/unflatten/type_traits.h"
 
 // system includes
 #include <algorithm>

@@ -1,23 +1,10 @@
 /*~--------------------------------------------------------------------------~*
- *  @@@@@@@@  @@           @@@@@@   @@@@@@@@ @@
- * /@@/////  /@@          @@////@@ @@////// /@@
- * /@@       /@@  @@@@@  @@    // /@@       /@@
- * /@@@@@@@  /@@ @@///@@/@@       /@@@@@@@@@/@@
- * /@@////   /@@/@@@@@@@/@@       ////////@@/@@
- * /@@       /@@/@@//// //@@    @@       /@@/@@
- * /@@       @@@//@@@@@@ //@@@@@@  @@@@@@@@ /@@
- * //       ///  //////   //////  ////////  //
- *
- * Copyright (c) 2016 Los Alamos National Laboratory, LLC
- * All rights reserved
  *~--------------------------------------------------------------------------~*/
 
-#ifndef flecsi_sp_point_h
-#define flecsi_sp_point_h
+#ifndef ristra_sp_point_h
+#define ristra_sp_point_h
 
-#include "flecsi-sp/math/vector.h"
-
-#include <flecsi/utils/common.h>
+#include "ristra/math/vector.h"
 
 #include <cmath>
 
@@ -27,7 +14,7 @@
 // \date Initial file creation: Sep 23, 2015
 ///
 
-namespace flecsi {
+namespace ristra {
 namespace sp {
 namespace geometry {
 
@@ -50,7 +37,7 @@ T distance(const point<T, D> & a, const point<T, D> & b)
 {
   T sum(0);
   for (size_t d(0); d < D; ++d) {
-    sum += flecsi::utils::square(a[d] - b[d]);
+    sum += (a[d] - b[d])*(a[d] - b[d]);
   } // for
 
   return std::sqrt(sum);
@@ -91,13 +78,11 @@ auto centroid(std::initializer_list<point<T, D>> vert_list)
   return tmp;
 } // centroid
 
+} // namespace geometry
 } // namespace sp
-} // namespace flecsi
-} // namespace flecsi
+} // namespace ristra
 
-#endif // flecsi_sp_point_h
+#endif // ristra_sp_point_h
 
 /*~-------------------------------------------------------------------------~-*
- * Formatting options
- * vim: set tabstop=2 shiftwidth=2 expandtab :
  *~-------------------------------------------------------------------------~-*/

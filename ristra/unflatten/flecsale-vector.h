@@ -9,7 +9,7 @@
 #pragma once
 
 // user includes
-#include "ristra/flecsale-array.h"
+#include "ristra/unflatten/flecsale-array.h"
 
 namespace ristra
 {

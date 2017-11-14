@@ -3,7 +3,7 @@
 // Aug 17, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
-#include "announce.hh"
+#include "announce.h"
 
 namespace ristra
 {

@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "input_source.h"
+#include "ristra/unflatten/input_source.h"
 
 namespace ristra_test
 {

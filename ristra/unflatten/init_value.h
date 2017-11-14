@@ -5,9 +5,9 @@
 #pragma once
 
 #include <string>
-#include "ristra/dbc.h"
-#include "ristra/errors.h"
-#include "ristra/type_traits.h"
+#include "ristra/unflatten/dbc.h"
+#include "ristra/unflatten/errors.h"
+#include "ristra/unflatten/type_traits.h"
 
 namespace ristra
 {

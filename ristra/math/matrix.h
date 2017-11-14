@@ -9,13 +9,13 @@
 #pragma once
 
 // user includes
-#include "flecsi-sp/math/multi_array.h"
-#include "flecsi-sp/math/vector.h"
+#include "ristra/math/multi_array.h"
+#include "ristra/math/vector.h"
 
 // system includes
  #include <cmath>
 
-namespace flecsi {
+namespace ristra {
 namespace sp {
 namespace math {
 

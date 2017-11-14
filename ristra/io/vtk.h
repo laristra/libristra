@@ -11,8 +11,7 @@
 #pragma once
 
 // user includes
-#include "flecsi-sp/io/write_binary.h"
-#include "flecsi-sp/common/types.h"
+#include "ristra/io/write_binary.h"
 
 // system includes
 #include <typeindex>
@@ -146,7 +145,7 @@ public :
     else {
 
       std::size_t cnt = 0;
-      for (common::counter_t p=0; p<npoints; p++ ) {
+      for (size_t p=0; p<npoints; p++ ) {
         for (int d=0; d<ndims; d++ ) 
           file_ << data[cnt++] << " ";
       }
@@ -344,7 +343,7 @@ public :
       auto n = data.size() / ndims;
       std::size_t cnt = 0;
       
-      for (common::counter_t p=0; p<n; p++ ) {
+      for (size_t p=0; p<n; p++ ) {
         for (int d=0; d<ndims; d++ ) 
           file_ << data[cnt++] << " ";
       }

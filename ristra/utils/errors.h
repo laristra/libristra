@@ -10,7 +10,7 @@
 #pragma once
 
 // user includes
-#include "flecsi-sp/utils/exceptions.h"
+#include "ristra/utils/exceptions.h"
 
 // system includes
 #include <iostream>

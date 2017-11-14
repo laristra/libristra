@@ -9,16 +9,16 @@
 #pragma once
 
 // user includes
-#include "flecsi-sp/utils/type_traits.h"
-#include "flecsi-sp/utils/template_helpers.h"
-#include "flecsi-sp/utils/tuple_visit.h"
+#include "ristra/utils/type_traits.h"
+#include "ristra/utils/template_helpers.h"
+#include "ristra/utils/tuple_visit.h"
 
 // system includes
 #include <algorithm>
 #include <array>
 #include <cassert>
 
-namespace flecsi {
+namespace ristra {
 namespace sp {
 namespace math {
 

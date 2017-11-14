@@ -9,9 +9,9 @@
 #pragma once
 
 // user includes
-#include "flecsi-sp/utils/detail/tuple_visit_impl.h"
+#include "ristra/utils/detail/tuple_visit_impl.h"
 
-namespace flecsi {
+namespace ristra {
 namespace sp {
 namespace utils {
 

@@ -3,9 +3,10 @@
 // Aug 29, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
-#include "ristra/init_value.h"
 #include <array>
+
 #include "cinchtest.h"
+#include "ristra/unflatten/init_value.h"
 #include "test_input_hard_coded_problems.h"
 #include "test_inputs.h"
 

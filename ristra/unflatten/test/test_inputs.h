@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include "detail/default_input_traits.h"
-#include "ristra/init_value.h"
-#include "ristra/input_engine.h"
+#include "ristra/unflatten/detail/default_input_traits.h"
+#include "ristra/unflatten/init_value.h"
+#include "ristra/unflatten/input_engine.h"
 
 namespace ristra
 {

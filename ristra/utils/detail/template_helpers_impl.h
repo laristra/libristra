@@ -12,7 +12,7 @@
 // system includes
 #include <array>
 
-namespace flecsi {
+namespace ristra {
 namespace sp {
 namespace utils {
 namespace detail {

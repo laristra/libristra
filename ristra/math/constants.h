@@ -9,9 +9,9 @@
 #pragma once
 
 // user includes
-#include "flecsi-sp/common/types.h"
+#include "ristra/common/types.h"
 
-namespace flecsi {
+namespace ristra {
 namespace sp {
 namespace math {
 

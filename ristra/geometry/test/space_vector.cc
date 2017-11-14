@@ -14,9 +14,9 @@
 
 #include <cinchtest.h>
 
-#include "flecsi-sp/geometry/space_vector.h"
+#include "ristra/geometry/space_vector.h"
 
-using namespace flecsi::sp::geometry;
+using namespace ristra::sp::geometry;
 
 using vector_1d_t = space_vector<double,1>;
 using vector_2d_t = space_vector<double,2>;

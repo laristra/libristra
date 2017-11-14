@@ -1,7 +1,6 @@
-/*~-------------------------------------------------------------------------~~*
- * Copyright (c) 2017 Los Alamos National Laboratory, LLC
- * All rights reserved
- *~-------------------------------------------------------------------------~~*/
+/*~--------------------------------------------------------------------------~*
+ *~--------------------------------------------------------------------------~*/
+
 ////////////////////////////////////////////////////////////////////////////////
 /// \file
 /// \brief Some utility functions for hexahedrons.
@@ -9,10 +8,10 @@
 #pragma once
 
 // user includes
-#include "flecsi-sp/geometry/shapes/geometric_shapes.h"
-#include "flecsi-sp/geometry/shapes/quadrilateral.h"
+#include "ristra/geometry/shapes/geometric_shapes.h"
+#include "ristra/geometry/shapes/quadrilateral.h"
 
-namespace flecsi {
+namespace ristra {
 namespace sp {
 namespace geometry {
 namespace shapes {
@@ -179,6 +178,9 @@ public:
 };
 
 } // namespace shapes
-} // namespace geom
-} // namespace ale
-} // namespace ale
+} // namespace geometry
+} // namespace sp
+} // namespace ristra
+
+/*~-------------------------------------------------------------------------~-*
+ *~-------------------------------------------------------------------------~-*/

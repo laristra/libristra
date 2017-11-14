@@ -16,7 +16,7 @@ cinch_minimum_required(1.0)
 # Set the project name
 #------------------------------------------------------------------------------#
 
-project(ristra)
+project(Ristra)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
@@ -49,7 +49,6 @@ if(ENABLE_EXCEPTIONS)
   add_definitions( -DENABLE_EXCEPTIONS)
 endif()
 
-
 #------------------------------------------------------------------------------#
 # Some precision setup
 #------------------------------------------------------------------------------#
@@ -72,7 +71,7 @@ add_definitions( -DTEST_TOLERANCE=${TEST_TOLERANCE} )
 # Support for embedded interpreters
 #------------------------------------------------------------------------------#
 
-find_package (PythonLibs QUIET)
+find_package(PythonLibs QUIET)
 
 option(ENABLE_PYTHON "Enable Python Support" ${PYTHONLIBS_FOUND})
 
@@ -89,7 +88,7 @@ endif ()
 
 # find lua for embedding
 # Note: Not sure about the version: I'm OK with Lua 3.3
-find_package (Lua 5 QUIET)
+find_package(Lua 5 QUIET)
 
 option(ENABLE_LUA "Enable Lua Support" ${LUA_FOUND})
 
@@ -160,22 +159,22 @@ install(FILES ${CMAKE_BINARY_DIR}/ristra.h DESTINATION include)
 #------------------------------------------------------------------------------#
 # Add library targets
 #------------------------------------------------------------------------------#
-set(IS_RISTRA_NESTED FALSE)
-cinch_add_library_target(ristra ristra IS_RISTRA_NESTED)
-set_target_properties(ristra PROPERTIES LINKER_LANGUAGE CXX)
+
+cinch_add_library_target(Ristra ristra)
 
 #------------------------------------------------------------------------------#
 # configure .cmake file (for other projects)
 #------------------------------------------------------------------------------#
+
 set(CONF_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include")
 set(CONF_LIB_DIRS "${CMAKE_INSTALL_PREFIX}/lib")
 set(CONF_LIB_NAME "${CONF_LIB_DIRS}/libristra${CMAKE_SHARED_LIBRARY_SUFFIX}")
 message(STATUS "CMAKE_SHARED_LIBRARY_SUFFIX = " ${CMAKE_SHARED_LIBRARY_SUFFIX})
 
-configure_file(${PROJECT_SOURCE_DIR}/ristraConfig.cmake.in
-  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/ristraConfig.cmake" @ONLY)
+configure_file(${PROJECT_SOURCE_DIR}/config/RistraConfig.cmake.in
+  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraConfig.cmake" @ONLY)
 
-install(FILES "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/ristraConfig.cmake"
+install(FILES "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraConfig.cmake"
   DESTINATION share/cmake)
 
 #------------------------------------------------------------------------------#

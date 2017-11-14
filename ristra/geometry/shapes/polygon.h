@@ -1,19 +1,19 @@
-/*~-------------------------------------------------------------------------~~*
- * Copyright (c) 2017 Los Alamos National Laboratory, LLC
- * All rights reserved
- *~-------------------------------------------------------------------------~~*/
+/*~--------------------------------------------------------------------------~*
+ *~--------------------------------------------------------------------------~*/
+
 ////////////////////////////////////////////////////////////////////////////////
 /// \file polygon.h
 /// \brief Some utility functions for polygons.
 ////////////////////////////////////////////////////////////////////////////////
+
 #pragma once
 
 // user includes
-#include "flecsi-sp/geometry/shapes/geometric_shapes.h"
-#include "flecsi-sp/geometry/shapes/triangle.h"
-#include "flecsi-sp/math/general.h"
+#include "ristra/geometry/shapes/geometric_shapes.h"
+#include "ristra/geometry/shapes/triangle.h"
+#include "ristra/math/general.h"
 
-namespace flecsi {
+namespace ristra {
 namespace sp {
 namespace geometry {
 namespace shapes {
@@ -730,6 +730,9 @@ public:
 };
 
 } // namspeace shapes
-} // namespace geom
-} // namespace ale
-} // namespace ale
+} // namespace geometry
+} // namespace sp
+} // namespace ristra
+
+/*~-------------------------------------------------------------------------~-*
+ *~-------------------------------------------------------------------------~-*/

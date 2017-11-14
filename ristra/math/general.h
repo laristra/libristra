@@ -10,11 +10,11 @@
 #pragma once
 
 // user includes
-#include "flecsi-sp/math/detail/general_impl.h"
+#include "ristra/math/detail/general_impl.h"
 
-#include "flecsi-sp/utils/errors.h"
-#include "flecsi-sp/utils/template_helpers.h"
-#include "flecsi-sp/utils/type_traits.h"
+#include "ristra/utils/errors.h"
+#include "ristra/utils/template_helpers.h"
+#include "ristra/utils/type_traits.h"
 
 // system includes
 #include <algorithm> 
@@ -22,7 +22,7 @@
 #include <numeric>
 #include <cmath>
 
-namespace flecsi {
+namespace ristra {
 namespace sp {
 namespace math {
 

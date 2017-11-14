@@ -14,13 +14,12 @@
 
 #include <cinchtest.h>
 
-#include "flecsi-sp/geometry/point.h"
+#include "ristra/geometry/point.h"
+#include "ristra/utils/dimensioned_array.h"
 
-#include <flecsi/utils/dimensioned_array.h>
-
-using namespace flecsi;
-using namespace flecsi::sp::geometry;
-using namespace flecsi::utils;
+using namespace ristra;
+using namespace ristra::sp::geometry;
+using namespace ristra::utils;
 
 using point_1d_t = point<double,1>;
 using point_2d_t = point<double,2>;

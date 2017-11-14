@@ -15,7 +15,7 @@
 
 
 
-namespace flecsi {
+namespace ristra {
 namespace sp {
 namespace utils {
 

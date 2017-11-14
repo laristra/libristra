@@ -13,12 +13,12 @@
 #ifdef HAVE_LUA
 
 // user includes
-#include "ristra/detail/lua_base.h"
-#include "ristra/detail/lua_ref.h"
-#include "ristra/detail/lua_result.h"
-#include "ristra/detail/lua_utils.h"
-#include "ristra/detail/lua_value.h"
-#include "ristra/errors.h"
+#include "detail/lua_base.h"
+#include "detail/lua_ref.h"
+#include "detail/lua_result.h"
+#include "detail/lua_utils.h"
+#include "detail/lua_value.h"
+#include "ristra/unflatten/errors.h"
 
 // use lua
 extern "C" {

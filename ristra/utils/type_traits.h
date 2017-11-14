@@ -10,14 +10,14 @@
 #pragma once
 
 // user includes
-#include "flecsi-sp/utils/detail/type_traits_impl.h"
+#include "ristra/utils/detail/type_traits_impl.h"
 
 // system inculdes
 #include <iterator>
 #include <type_traits>
 #include <utility>
 
-namespace flecsi {
+namespace ristra {
 namespace sp {
 namespace utils {
 

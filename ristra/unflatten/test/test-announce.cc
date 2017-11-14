@@ -4,7 +4,7 @@
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
 #include "cinchtest.h"
-#include "ristra/announce.hh"
+#include "ristra/unflatten/announce.h"
 
 TEST(announce, only)
 {

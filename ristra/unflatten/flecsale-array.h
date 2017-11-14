@@ -9,8 +9,8 @@
 #pragma once
 
 // user includes
-#include "ristra/detail/template_helpers.h"
-#include "ristra/type_traits.h"
+#include "detail/template_helpers.h"
+#include "ristra/unflatten/type_traits.h"
 // #include "flecsale/utils/tuple_visit.h"
 
 // system includes

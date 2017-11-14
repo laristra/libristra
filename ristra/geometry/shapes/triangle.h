@@ -1,7 +1,6 @@
-/*~-------------------------------------------------------------------------~~*
- * Copyright (c) 2017 Los Alamos National Laboratory, LLC
- * All rights reserved
- *~-------------------------------------------------------------------------~~*/
+/*~--------------------------------------------------------------------------~*
+ *~--------------------------------------------------------------------------~*/
+
 ////////////////////////////////////////////////////////////////////////////////
 /// \file triangle.h
 /// \brief Some utility functions for triangles.
@@ -9,10 +8,10 @@
 #pragma once
 
 // user includes
-#include "flecsi-sp/geometry/shapes/geometric_shapes.h"
-#include "flecsi-sp/math/general.h"
+#include "ristra/geometry/shapes/geometric_shapes.h"
+#include "ristra/math/general.h"
 
-namespace flecsi {
+namespace ristra {
 namespace sp {
 namespace geometry {
 namespace shapes {
@@ -162,6 +161,9 @@ struct triangle<3> {
 };
 
 } // namespace shapes
-} // namespace geom
-} // namespace ale
-} // namespace ale
+} // namespace geometry
+} // namespace sp
+} // namespace ristra
+
+/*~-------------------------------------------------------------------------~-*
+ *~-------------------------------------------------------------------------~-*/

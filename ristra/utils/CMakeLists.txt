@@ -5,6 +5,7 @@
 
 set(utils_HEADERS
   array_ref.h
+  dimensioned_array.h
   errors.h
   exceptions.h
   fixed_vector.h
@@ -18,7 +19,6 @@ set(utils_HEADERS
 set(utils_SOURCES
   PARENT_SCOPE
 )
-
 
 #----------------------------------------------------------------------------~-#
 # Formatting options for vim.

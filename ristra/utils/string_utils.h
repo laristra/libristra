@@ -14,7 +14,7 @@
 #include <sstream>
 #include <string>
 
-namespace flecsi {
+namespace ristra {
 namespace sp {
 namespace utils {
 
