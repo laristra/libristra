@@ -111,22 +111,58 @@ if (ENABLE_PYTHON)
    add_definitions( -DHAVE_PYTHON )
 endif ()
 
-# find lua for embedding
-# Note: Not sure about the version: I'm OK with Lua 3.3
-find_package (Lua 5 QUIET)
+#------------------------------------------------------------------------------#
+# Lua 5.3
+#------------------------------------------------------------------------------#
+find_package (Lua QUIET HINTS  $ENV{LUA_ROOT} $ENV{LUA_DIR})
+set(LUA_FOUND2 FALSE)
+if( NOT "${LUA_FOUND}" )
+  # alternative: look for Lua files from env vars
+  message(STATUS "Looking for Lua through env vars")
+  # Sigh. CMake.
+  set(LUA_INCLUDE_DIR1 $ENV{LUA_INCLUDE})
+  set(LUA_INCLUDE_DIR2 $ENV{LUA_INCLUDE_DIR})
+  if(LUA_INCLUDE_DIR1)
+    set(LUA_INCLUDE_DIR ${LUA_INCLUDE_DIR1})
+    set(LUA_LIBRARY_PATH $ENV{LUA_LIB})
+    if(UNIX)
+      if(APPLE)
+        set(LUA_LIBRARIES ${LUA_LIBRARY_PATH}/liblua.a)
+      else()
+        set(LUA_LIBRARIES ${LUA_LIBRARY_PATH}/liblua.a dl)
+      endif()
+    endif()
+    set(LUA_FOUND2 TRUE)
+  elseif(LUA_INCLUDE_DIR2)
+    set(LUA_INCLUDE_DIR ${LUA_INCLUDE_DIR2})
+    set(LUA_LIBRARY $ENV{LUA_LIBRARY})
+    set(LUA_LIBRARIES ${LUA_LIBRARY})
+    set(LUA_FOUND2 TRUE)
+  endif()
 
-option(ENABLE_LUA "Enable Lua Support" ${LUA_FOUND})
-
-if(ENABLE_LUA AND NOT LUA_FOUND)
-  message(FATAL_ERROR "Lua requested, but not found")
+else()
+  message(STATUS "Found Lua through find_package")
 endif()
-
-if (ENABLE_LUA)
-   message (STATUS "Found Lua: ${LUA_INCLUDE_DIR}")
-   include_directories( ${LUA_INCLUDE_DIR} )
-   list( APPEND RISTRA_LIBRARIES ${LUA_LIBRARIES} )
-   add_definitions( -DHAVE_LUA )
-endif ()
+set(enable_lua_default OFF)
+if(LUA_FOUND OR LUA_FOUND2)
+  set(enable_lua_default ON)
+endif()
+option(ENABLE_LUA "Enable Lua Support"  ${enable_lua_default})
+if(${ENABLE_LUA})
+  if(NOT ("${LUA_FOUND}" OR "${LUA_FOUND2}"))
+    message(STATUS "ENABLE_LUA: " ${ENABLE_LUA})
+    message(STATUS "LUA_FOUND: " ${LUA_FOUND})
+    message(STATUS "LUA_FOUND2: " ${LUA_FOUND2})
+    message(FATAL_ERROR "Lua requested, but not found")
+  else()
+    message (STATUS "Found Lua: LUA_INCLUDE_DIR: '${LUA_INCLUDE_DIR}', libs = '${LUA_LIBRARIES}'")
+    include_directories( ${LUA_INCLUDE_DIR} )
+    list( APPEND RISTRA_LIBRARIES ${LUA_LIBRARIES} )
+    add_definitions( -DHAVE_LUA )
+  endif ()
+else()
+  message(STATUS "Not using Lua")
+endif()
 
 #------------------------------------------------------------------------------#
 # Boost
@@ -134,9 +170,16 @@ endif ()
 # Note that this find package only sets the header information. To find
 # library dependencies, add COMPONENTS and specify the ones that you need.
 #------------------------------------------------------------------------------#
+find_package(Boost REQUIRED)
 
-# TO DO: how important is this version of Boost? Can change to >= 1.58?
-find_package(Boost 1.58.0 REQUIRED)
+if(NOT ${Boost_FOUND})
+  # alternative: try to guess from env vars
+  message(STATUS "Trying to guess Boost from env vars")
+  set(boost_inc_from_env $ENV{BOOST_INCLUDEDIR})
+  get_filename_component(boost_root_from_env ${boost_inc_from_env} DIRECTORY)
+  message(STATUS "boost_root_from_env: " ${boost_root_from_env})
+  find_package(Boost REQUIRED HINTS ${boost_root_from_env})
+endif()
 include_directories(${Boost_INCLUDE_DIRS})
 
 #------------------------------------------------------------------------------#
@@ -189,7 +232,7 @@ cinch_add_library_target(ristra ristra IS_RISTRA_NESTED)
 set_target_properties(ristra PROPERTIES LINKER_LANGUAGE CXX)
 
 #------------------------------------------------------------------------------#
-# configure .cmake file (for other projects)
+# configure .cmake file (exported to other projects)
 #------------------------------------------------------------------------------#
 set(CONF_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include")
 set(CONF_LIB_DIRS "${CMAKE_INSTALL_PREFIX}/lib")

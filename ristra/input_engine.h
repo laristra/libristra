@@ -6,12 +6,14 @@
 
 #include "ristra/detail/inputs_impl.h"
 #include "ristra/detail/type_utils.h"
+#include "ristra/dbc.h"
 #include "ristra/input_source.h"
 #include "ristra/type_traits.h"
 
 #include <algorithm> // all_of
 #include <array>
 #include <deque>
+#include <iostream>
 #include <iterator>
 #include <map>
 #include <memory>
@@ -309,7 +311,7 @@ class input_engine_t
     if(!resolved){
       string_t err = "get_instant_value: Could not resolve key '" +
         target_name + "' using type '" + typeid(T).name() + "'";
-      throw_runtime_error(err);
+      Insist(false,err);
     }
     return get_value<T>(target_name);
   } // get_instant_value
@@ -483,6 +485,7 @@ class input_engine_t
       bool missed_any(false);
       for (auto target : targets) {
         bool found_target(false);
+#ifdef HAVE_LUA
         if (lua_source) {
           lua_result_uptr_t tval;
           found_target = lua_source->get_value(target, tval);
@@ -493,6 +496,7 @@ class input_engine_t
             continue;
           } // if lua found
         } // if lua
+#endif // HAVE_LUA
         // next try hard-coded (default) case
         if (hard_coded_source) {
           func_t f;

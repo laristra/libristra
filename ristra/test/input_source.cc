@@ -81,6 +81,8 @@ TEST(input_source, hard_coded_source_t_get_value)
   }
 } // TEST(hard_coded_source_t,get_value){
 
+#ifdef HAVE_LUA
+
 TEST(input_source, lua_source_t_instantiate)
 {
   using namespace ristra;
@@ -224,5 +226,7 @@ TEST(input_source, lua_source_t_get_table)
   std::string exp_eos_type("ideal_gas");
   EXPECT_TRUE(exp_eos_type == eos_type);
 }
+
+#endif // HAVE_LUA
 
 // End of file

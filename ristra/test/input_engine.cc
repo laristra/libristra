@@ -241,6 +241,8 @@ TEST(input_engine, resolve_inputs_from_hc_with_failures)
   phcs->clear_registry<input_traits::types>();
 } // TEST(input_engine,resolve_inputs_from_hc_with_failures){
 
+#ifdef HAVE_LUA
+
 TEST(input_engine, resolve_inputs_from_lua)
 {
   using targs_t = test_inputs_t::target_set_t;
@@ -338,5 +340,7 @@ TEST(input_engine, resolve_inputs_from_lua)
   phcs->clear_registry<input_traits::types>();
   // delete pls;
 } // TEST(input_engine,resolve_inputs_from_lua){
+
+#endif // HAVE_LUA
 
 // End of file

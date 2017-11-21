@@ -154,4 +154,20 @@ class lua_t : public detail::lua_base_t
 
 } // ristra::
 
+#else // HAVE_LUA
+
+  struct lua_result_stub{
+    template <typename T>
+    bool get_value(std::string const &/**/, T &/**/) const {return false;}
+  }; // lua_result_uptr_t_stub
+
+  using lua_result_uptr_t = std::unique_ptr<lua_result_stub>;
+
+  template <typename T>
+  struct Lua_Func_Wrapper_stub{
+    explicit Lua_Func_Wrapper_stub(T&& /**/){}
+  }; // Lua_Func_Wrapper stub
+
+  template <typename T> using Lua_Func_Wrapper = Lua_Func_Wrapper_stub<T>;
+
 #endif // HAVE_LUA
