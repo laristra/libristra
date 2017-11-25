@@ -8,8 +8,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // user includes
-#include "ristra/flecsale-vector.h"
-#include "ristra/math_utils.h"
+#include "ristra/initialization/flecsale-vector.h"
+#include "ristra/initialization/math_utils.h"
 
 // system includes
 #include <cinchtest.h>

@@ -1,16 +1,25 @@
-# - Config file for the libristra package
-# It defines the following variables
-#  RISTRA_INCLUDE_DIRS - include directories for FooBar
-#  RISTRA_LIBRARIES    - libraries to link against
+#~----------------------------------------------------------------------------~#
+#~----------------------------------------------------------------------------~#
 
-# Compute paths
-# ?? get_filename_component(RISTRA_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+#------------------------------------------------------------------------------#
+# Set the path to the Ristra headers.
+#------------------------------------------------------------------------------#
 
-# ?? Our library dependencies (contains definitions for IMPORTED targets)
-#if(NOT TARGET ristra AND NOT Ristra_BINARY_DIR)
-#  include("${RISTRA_CMAKE_DIR}/ristraTargets.cmake")
-#endif()
+set(Ristra_INCLUDE_DIRS @RISTRA_INCLUDE_DIR@)
 
-set(RISTRA_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
-set(RISTRA_LIB_DIRS "@CONF_LIB_DIRS@")
-set(RISTRA_LIBRARIES "@CONF_LIB_NAME@")
+#------------------------------------------------------------------------------#
+# Ristra library dependencies (contains definitions for IMPORTED targets)
+#------------------------------------------------------------------------------#
+
+if(NOT TARGET Ristra AND NOT Ristra_BINARY_DIR)
+  include(@RISTRA_CMAKE_DIR@/RistraTargets.cmake)
+endif()
+
+#------------------------------------------------------------------------------#
+# Set the Ristra libraries.
+#------------------------------------------------------------------------------#
+
+set(Ristra_LIBRARIES Ristra)
+
+#~---------------------------------------------------------------------------~-#
+#~---------------------------------------------------------------------------~-#

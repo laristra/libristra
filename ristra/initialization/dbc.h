@@ -5,7 +5,7 @@
 #pragma once
 
 #define IM_OK_TO_INCLUDE_DBC_IMPL
-#include "ristra/unflatten/detail/dbc_impl.h"
+#include "ristra/initialization/detail/dbc_impl.h"
 #undef IM_OK_TO_INCLUDE_DBC_IMPL
 #include <functional>
 #include <sstream>

@@ -10,7 +10,7 @@
 #ifdef HAVE_LUA
 
 // user includes
-#include "ristra/lua_access.h"
+#include "ristra/initialization/lua_access.h"
 
 #include <cinchtest.h>
 

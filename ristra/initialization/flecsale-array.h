@@ -10,7 +10,7 @@
 
 // user includes
 #include "detail/template_helpers.h"
-#include "ristra/unflatten/type_traits.h"
+#include "ristra/initialization/type_traits.h"
 // #include "flecsale/utils/tuple_visit.h"
 
 // system includes

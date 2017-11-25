@@ -45,6 +45,7 @@ endif()
 #------------------------------------------------------------------------------#
 
 OPTION (ENABLE_EXCEPTIONS "Enable C++ exceptions (really?)"  ON)
+
 if(ENABLE_EXCEPTIONS)
   add_definitions( -DENABLE_EXCEPTIONS)
 endif()
@@ -86,8 +87,10 @@ if (ENABLE_PYTHON)
    add_definitions( -DHAVE_PYTHON )
 endif ()
 
-# find lua for embedding
-# Note: Not sure about the version: I'm OK with Lua 3.3
+#------------------------------------------------------------------------------#
+# Lua
+#------------------------------------------------------------------------------#
+
 find_package(Lua 5 QUIET)
 
 option(ENABLE_LUA "Enable Lua Support" ${LUA_FOUND})
@@ -96,11 +99,11 @@ if(ENABLE_LUA AND NOT LUA_FOUND)
   message(FATAL_ERROR "Lua requested, but not found")
 endif()
 
-if (ENABLE_LUA)
+if(ENABLE_LUA)
    message (STATUS "Found Lua: ${LUA_INCLUDE_DIR}")
-   include_directories( ${LUA_INCLUDE_DIR} )
-   list( APPEND RISTRA_LIBRARIES ${LUA_LIBRARIES} )
-   add_definitions( -DHAVE_LUA )
+   include_directories(${LUA_INCLUDE_DIR})
+   list(APPEND RISTRA_LIBRARIES ${LUA_LIBRARIES})
+   add_definitions(-DHAVE_LUA)
 endif ()
 
 #------------------------------------------------------------------------------#
@@ -166,16 +169,30 @@ cinch_add_library_target(Ristra ristra)
 # configure .cmake file (for other projects)
 #------------------------------------------------------------------------------#
 
-set(CONF_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include")
-set(CONF_LIB_DIRS "${CMAKE_INSTALL_PREFIX}/lib")
-set(CONF_LIB_NAME "${CONF_LIB_DIRS}/libristra${CMAKE_SHARED_LIBRARY_SUFFIX}")
-message(STATUS "CMAKE_SHARED_LIBRARY_SUFFIX = " ${CMAKE_SHARED_LIBRARY_SUFFIX})
+export(
+  TARGETS Ristra
+  FILE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraTargets.cmake
+)
+
+export(PACKAGE Ristra)
+
+set(RISTRA_LIBRARY_DIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR})
+set(RISTRA_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
+set(RISTRA_CMAKE_DIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/Ristra)
 
 configure_file(${PROJECT_SOURCE_DIR}/config/RistraConfig.cmake.in
-  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraConfig.cmake" @ONLY)
+  ${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraConfig.cmake @ONLY)
 
-install(FILES "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraConfig.cmake"
-  DESTINATION share/cmake)
+install(
+  FILES ${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraConfig.cmake
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/Ristra
+)
+
+install(
+  EXPORT RistraTargets
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/Ristra
+  COMPONENT dev
+)
 
 #------------------------------------------------------------------------------#
 # Add distclean target
