@@ -12,7 +12,6 @@
 #include "ristra/math/general.h"
 
 namespace ristra {
-namespace sp {
 namespace geometry {
 namespace shapes {
 
@@ -162,7 +161,6 @@ struct triangle<3> {
 
 } // namespace shapes
 } // namespace geometry
-} // namespace sp
 } // namespace ristra
 
 /*~-------------------------------------------------------------------------~-*

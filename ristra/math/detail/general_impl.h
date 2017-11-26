@@ -12,8 +12,7 @@
 // system includes
 #include <utility>
 
-namespace flecsi {
-namespace sp {
+namespace ristra {
 namespace math {
 namespace detail {
 
@@ -53,5 +52,4 @@ constexpr void average( T & res, U && u, Args&&... args )
 
 } // namespace detail
 } // namespace math
-} // namespace ale
-} // namespace ale
+} // namespace ristra

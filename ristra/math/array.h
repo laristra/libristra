@@ -20,7 +20,6 @@
 #include <iostream>
 
 namespace ristra {
-namespace sp {
 namespace math {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -667,6 +666,5 @@ auto & operator<<(std::ostream& os, const array<T,N>& a)
 }
 
 
-} // namespace
-} // namespace
-} // namespace
+} // namespace math
+} // namespace ristra

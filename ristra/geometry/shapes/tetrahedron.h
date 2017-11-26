@@ -12,7 +12,6 @@
 #include "ristra/math/general.h"
 
 namespace ristra {
-namespace sp {
 namespace geometry {
 namespace shapes {
 
@@ -77,7 +76,6 @@ struct tetrahedron {
 
 } // namespace shapes
 } // namespace geometry
-} // namespace sp
 } // namespace ristra
 
 /*~-------------------------------------------------------------------------~-*

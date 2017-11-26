@@ -8,12 +8,12 @@
 
 #include <string>
 
-namespace ristra
-{
+namespace ristra {
+
 std::string announce();
 
-} // ristra::
+} // namespace ristra
 
-#endif // include guard
+#endif
 
 // End of file

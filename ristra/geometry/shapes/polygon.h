@@ -14,7 +14,6 @@
 #include "ristra/math/general.h"
 
 namespace ristra {
-namespace sp {
 namespace geometry {
 namespace shapes {
 
@@ -731,7 +730,6 @@ public:
 
 } // namspeace shapes
 } // namespace geometry
-} // namespace sp
 } // namespace ristra
 
 /*~-------------------------------------------------------------------------~-*

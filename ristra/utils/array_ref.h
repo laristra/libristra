@@ -17,7 +17,6 @@
 #include <vector>
 
 namespace ristra {
-namespace sp {
 namespace utils {
     
 ////////////////////////////////////////////////////////////////////////////////
@@ -263,6 +262,5 @@ array_ref<T> make_array_ref(const std::array<T,N>& a) {
     
 /// @}
     
-}      // End namespace
-}      // End namespace
-}      // End namespace
+} // namespace utils
+} // namespace ristra

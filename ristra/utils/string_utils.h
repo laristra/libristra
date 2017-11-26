@@ -15,7 +15,6 @@
 #include <string>
 
 namespace ristra {
-namespace sp {
 namespace utils {
 
 
@@ -103,6 +102,5 @@ std::string file_extension(const std::string & str)
  
 }
 
-} // namspeace
-} // namspeace
-} // namspeace
+} // namspeace utils
+} // namspeace ristra

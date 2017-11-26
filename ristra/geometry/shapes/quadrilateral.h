@@ -11,7 +11,6 @@
 #include "ristra/geometry/shapes/polygon.h"
 
 namespace ristra {
-namespace sp {
 namespace geometry {
 namespace shapes {
 
@@ -190,7 +189,6 @@ struct quadrilateral<3> {
 
 } // namespace shapes
 } // namespace geometry
-} // namespace sp
 } // namespace ristra
 
 /*~-------------------------------------------------------------------------~-*

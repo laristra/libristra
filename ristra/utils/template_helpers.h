@@ -17,7 +17,6 @@
 #include <limits>
 
 namespace ristra {
-namespace sp {
 namespace utils {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -126,7 +125,5 @@ T &as_lvalue(T &&val) {
   return val;
 }
 
-} // namespace
-} // namespace
-} // namespace
-
+} // namespace utils
+} // namespace ristra

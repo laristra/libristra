@@ -2,18 +2,17 @@
  * Copyright (c) 2017 Los Alamos National Laboratory, LLC
  * All rights reserved
  *~-------------------------------------------------------------------------~~*/
+
 ////////////////////////////////////////////////////////////////////////////////
 ///
 /// \file
 /// \brief Functions to write binary files in vtk format.
 ///
 ////////////////////////////////////////////////////////////////////////////////
-
 // user includes
 #include "ristra/io/vtk.h"
 
-namespace flecsi {
-namespace sp {
+namespace ristra {
 namespace io {
 
 
@@ -30,6 +29,5 @@ const vtk_writer::type_map_t vtk_writer::type_map =
     { typeid(unsigned long), "unsigned_long" },
   };
 
-} // namespace
-} // namespace
-} // namespace
+} // namespace io
+} // namespace ristra

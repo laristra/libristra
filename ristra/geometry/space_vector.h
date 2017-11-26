@@ -17,7 +17,6 @@
  */
 
 namespace ristra {
-namespace sp {
 namespace geometry {
 
 /*!
@@ -151,7 +150,6 @@ space_vector<T, 3> normal(
 } // normal
 
 } // namespace geometry
-} // namespace sp
 } // namespace ristra
 
 #endif // ristra_sp_space_vector_h

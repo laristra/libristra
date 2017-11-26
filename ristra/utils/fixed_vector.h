@@ -20,7 +20,6 @@
 #include <cassert>
 
 namespace ristra {
-namespace sp {
 namespace utils {
     
 ////////////////////////////////////////////////////////////////////////////////
@@ -387,6 +386,5 @@ bool operator==( const fixed_vector<T,N>& lhs,
   return std::equal( lhs.begin(), lhs.end(), rhs.begin() );
 }
     
-}      // End namespace
-}      // End namespace
-}      // End namespace
+} // namespace utils
+} // namespace ristra

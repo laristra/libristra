@@ -12,7 +12,6 @@
 #include "ristra/utils/detail/tuple_visit_impl.h"
 
 namespace ristra {
-namespace sp {
 namespace utils {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -33,6 +32,5 @@ Callable tuple_visit(Callable&& f, Head&& aTuple, Tail&&... aTail)
 }
 
 
-} // namespace
-} // namespace
-} // namespace
+} // namespace utils
+} // namespace ristra

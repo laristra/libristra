@@ -12,7 +12,6 @@
 #include "ristra/common/types.h"
 
 namespace ristra {
-namespace sp {
 namespace math {
 
 //////////////////////////////////////////////////////////////////////////////
@@ -25,6 +24,5 @@ constexpr common::real_t pi = 3.14159265358979323846;
 
 // @}
 
-} // namespace
-} // namespace
-} // namespace
+} // namespace math
+} // namespace ristra

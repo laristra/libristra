@@ -15,7 +15,6 @@
 ///
 
 namespace ristra {
-namespace sp {
 namespace geometry {
 
 ///
@@ -79,7 +78,6 @@ auto centroid(std::initializer_list<point<T, D>> vert_list)
 } // centroid
 
 } // namespace geometry
-} // namespace sp
 } // namespace ristra
 
 #endif // ristra_sp_point_h

@@ -16,8 +16,7 @@
 #include <iostream>
 #include <fstream>
 
-namespace flecsi {
-namespace sp {
+namespace ristra {
 namespace io {
 
 // data types
@@ -159,6 +158,5 @@ inline void WriteString(std::ofstream &file, const char *S) {
   WriteBinary<int32>(file,0);
 }
 
-} // namspace
-} // namspace
-} // namspace
+} // namspace io
+} // namspace ristra

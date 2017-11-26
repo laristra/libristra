@@ -16,7 +16,6 @@
  #include <cmath>
 
 namespace ristra {
-namespace sp {
 namespace math {
 
 
@@ -457,6 +456,5 @@ auto projection_matrix( const C<T,D> & n ) {
   return mat;
 }
 
-} // namespace
-} // namespace
-} // namespace
+} // namespace math
+} // namespace ristra

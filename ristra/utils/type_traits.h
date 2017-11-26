@@ -18,7 +18,6 @@
 #include <utility>
 
 namespace ristra {
-namespace sp {
 namespace utils {
 
 
@@ -245,7 +244,5 @@ struct special_decay<std::reference_wrapper<T>>
 template <class T>
 using special_decay_t = typename special_decay<T>::type;
 
-} // namespace
-} // namespace
-} // namespace
-
+} // namespace utils
+} // namespace ristra

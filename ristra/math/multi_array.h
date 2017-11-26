@@ -19,7 +19,6 @@
 #include <cassert>
 
 namespace ristra {
-namespace sp {
 namespace math {
 
 
@@ -913,6 +912,5 @@ auto & operator<<(std::ostream& os, const multi_array<T,D1,D2>& a)
 }
 
 
-} // namespace
-} // namespace
-} // namespace
+} // namespace math
+} // namespace ristra

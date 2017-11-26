@@ -23,7 +23,6 @@
 #include <cmath>
 
 namespace ristra {
-namespace sp {
 namespace math {
 
 
@@ -454,6 +453,5 @@ T triple_product(const C<T, 3> &a, const C<T, 3> &b, const C<T, 3> &c)
 }
 
 
-} // namespace
-} // namespace
-} // namespace
+} // namespace math
+} // namespace ristra

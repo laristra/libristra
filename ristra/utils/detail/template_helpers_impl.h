@@ -13,7 +13,6 @@
 #include <array>
 
 namespace ristra {
-namespace sp {
 namespace utils {
 namespace detail {
 
@@ -66,8 +65,7 @@ struct reference_wrapper < Tuple<Args...> >
 
 //! @}
 
-} // namespace 
-} // namespace 
-} // namespace
-} // namespace
+} // namespace detail
+} // namespace utils
+} // namespace ristra
 

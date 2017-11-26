@@ -18,8 +18,7 @@
 #include <typeinfo>
 #include <unordered_map>
 
-namespace flecsi {
-namespace sp {
+namespace ristra {
 namespace io {
 
 
@@ -370,6 +369,5 @@ private :
 };
 
 
-} // namespace
-} // namespace
-} // namespace
+} // namespace io
+} // namespace ristra

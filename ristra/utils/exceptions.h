@@ -16,7 +16,6 @@
 
 
 namespace ristra {
-namespace sp {
 namespace utils {
 
 
@@ -77,6 +76,5 @@ public:
 };
 
 
-} // namespace
-} // namespace
-} // namespace
+} // namespace utils
+} // namespace ristra

@@ -9,7 +9,6 @@
 
 
 namespace ristra {
-namespace sp {
 namespace geometry {
 namespace shapes {
 
@@ -29,7 +28,6 @@ enum class geometric_shapes_t
 
 } // namespace shapes
 } // namespace geometry
-} // namespace sp
 } // namespace ristra
 
 /*~-------------------------------------------------------------------------~-*

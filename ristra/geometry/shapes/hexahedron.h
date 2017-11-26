@@ -12,7 +12,6 @@
 #include "ristra/geometry/shapes/quadrilateral.h"
 
 namespace ristra {
-namespace sp {
 namespace geometry {
 namespace shapes {
 
@@ -179,7 +178,6 @@ public:
 
 } // namespace shapes
 } // namespace geometry
-} // namespace sp
 } // namespace ristra
 
 /*~-------------------------------------------------------------------------~-*

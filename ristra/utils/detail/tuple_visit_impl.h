@@ -14,7 +14,6 @@
 
 
 namespace ristra {
-namespace sp {
 namespace utils {
 namespace detail {
 
@@ -48,7 +47,6 @@ struct visit_tuple_ws<0u>
 };
 
 
-} // namespace
-} // namespace
-} // namespace
-} // namespace
+} // namespace detail
+} // namespace utils
+} // namespace ristra

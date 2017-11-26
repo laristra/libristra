@@ -13,7 +13,6 @@
 #include <utility>
 
 namespace ristra {
-namespace sp {
 namespace utils {
 namespace detail {
 
@@ -75,8 +74,7 @@ constexpr auto extract_extents_helper( std::index_sequence<I...> )
   return  extents;
 };
 
-} // namespace
-} // namespace
-} // namespace
-} // namespace
+} // namespace detail
+} // namespace utils
+} // namespace ristra
 

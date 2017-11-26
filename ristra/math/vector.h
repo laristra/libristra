@@ -12,7 +12,6 @@
 #include "ristra/math/array.h"
 
 namespace ristra {
-namespace sp {
 namespace math {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -50,6 +49,5 @@ C<T,D> reflect( const C<T,D> & v, const C<T,D> & n ) {
   return tmp;
 }
 
-} // namespace
-} // namespace
-} // namespace
+} // namespace math
+} // namespace ristra
