@@ -16,7 +16,7 @@
 
 #include "ristra/geometry/space_vector.h"
 
-using namespace ristra::sp::geometry;
+using namespace ristra::geometry;
 
 using vector_1d_t = space_vector<double,1>;
 using vector_2d_t = space_vector<double,2>;

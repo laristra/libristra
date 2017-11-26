@@ -18,7 +18,7 @@
 #include "ristra/utils/dimensioned_array.h"
 
 using namespace ristra;
-using namespace ristra::sp::geometry;
+using namespace ristra::geometry;
 using namespace ristra::utils;
 
 using point_1d_t = point<double,1>;
