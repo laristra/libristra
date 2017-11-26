@@ -9,18 +9,8 @@
 #------------------------------------------------------------------------------#
 
 set(ristra_HEADERS
-  announce.hh
-  flecsale-array.h
+  announce.h
   dbc.h
-  errors.h
-  here.h
-  init_value.h
-  input_source.h
-  input_engine.h
-  lua_access.h
-  math_utils.h
-  type_traits.h
-  flecsale-vector.h
   detail/dbc_impl.h
   detail/default_input_traits.h
   detail/inputs_impl.h
@@ -29,10 +19,23 @@ set(ristra_HEADERS
   detail/lua_result.h
   detail/lua_utils.h
   detail/lua_value.h
+  detail/math_utils_impl.h
   detail/template_helpers.h
   detail/template_helpers_impl.h
   detail/type_traits_impl.h
   detail/type_utils.h
+  errors.h
+  flecsale-array.h
+  flecsale-vector.h
+  here.h
+  init_value.h
+  input_engine.h
+  input_source.h
+  lua_access.h
+  math_utils.h
+  static_warning.h
+  type_traits.h
+  PARENT_SCOPE
 )
 
 #------------------------------------------------------------------------------#
@@ -43,23 +46,6 @@ set(ristra_HEADERS
 set(ristra_SOURCES
   announce.cc
   detail/dbc_impl.cc
-)
-
-#------------------------------------------------------------------------------#
-# Export header list to parent scope.
-#------------------------------------------------------------------------------#
-
-set(ristra_HEADERS
-  ${ristra_HEADERS}
-  PARENT_SCOPE
-)
-
-#------------------------------------------------------------------------------#
-# Export source list to parent scope.
-#------------------------------------------------------------------------------#
-
-set(ristra_SOURCES
-  ${ristra_SOURCES}
   PARENT_SCOPE
 )
 

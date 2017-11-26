@@ -5,14 +5,17 @@
 
 set(utils_HEADERS
   array_ref.h
+  detail/template_helpers_impl.h
+  detail/tuple_visit_impl.h
+  detail/type_traits_impl.h
   dimensioned_array.h
   errors.h
   exceptions.h
   fixed_vector.h
   string_utils.h
-  template_helpers.h  detail/template_helpers_impl.h
-  tuple_visit.h       detail/tuple_visit_impl.h
-  type_traits.h       detail/type_traits_impl.h
+  template_helpers.h
+  tuple_visit.h
+  type_traits.h
   PARENT_SCOPE
 )
 
