@@ -6,6 +6,7 @@
 #pragma once
 
 #include <array>
+#include <functional>
 #include <map>
 #include <memory>
 #include <stdexcept>
@@ -369,6 +370,9 @@ class lua_source_t : public input_source<lua_source_t>
 #endif // HAVE_LUA
 }; // lua_source_t
 
+
+#ifdef HAVE_LUA
+
 // specialization for lua_result_t (i.e. Lua function ptr): convert
 // lua_result_t value to a unique_ptr
 template <>
@@ -392,6 +396,7 @@ struct lua_source_t::value_getter<lua_result_uptr_t> {
     return found;
   }
 };
+#endif //HAVE_LUA
 
 using lua_source_ptr_t = std::unique_ptr<lua_source_t>;
 
