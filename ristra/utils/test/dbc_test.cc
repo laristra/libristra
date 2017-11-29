@@ -1,27 +1,30 @@
-// dbc_test_no_assert.cc
+// assert.cc
 // T. M. Kelley
 // May 02, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
+/* This file tests FleCSI DBC assertions with action set to THROW and
+ * DBC turned on.
+ */
+
 #include "cinchtest.h"
 /* Test will take control of the test environment */
-#ifdef RISTRA_DBC_THROW
-#undef RISTRA_DBC_THROW
+#ifndef RISTRA_REQUIRE_ON
+#define RISTRA_REQUIRE_ON
 #endif
-
-#ifdef RISTRA_REQUIRE_ON
-#undef RISTRA_REQUIRE_ON
+#ifndef RISTRA_DBC_THROW
+#define RISTRA_DBC_THROW
 #endif
 
 #ifdef RISTRA_DBC_NOTIFY
 #undef RISTRA_DBC_NOTIFY
 #endif
 
-#include "flecsi/utils/dbc.h"
+#include "ristra/utils/dbc.h"
 
 using namespace ristra::dbc;
 
-TEST(dbc_no_assert, compiles) { ASSERT_TRUE(true); }
+TEST(dbc, compiles) { ASSERT_TRUE(true); }
 
 /**\brief Is s1 a substring of s2? */
 inline bool is_substring_of(std::string const & s1, std::string const & s2)
@@ -40,7 +43,7 @@ inline bool check_messages(std::string const & s1, std::string const & s2)
   return msg_ok;
 } // check_messages
 
-TEST(dbc_no_assert, Equal)
+TEST(dbc, Equal)
 {
   // int
   {
@@ -55,25 +58,25 @@ TEST(dbc_no_assert, Equal)
       fail_line = __LINE__;ret_val = Equal(i,j);
 // clang-format on
 /* Should not get here with exceptions*/
-#if (RISTRA_REQUIRE_ON && RISTRA_DBC_THROW)
+#if (defined RISTRA_REQUIRE_ON && defined RISTRA_DBC_THROW)
       EXPECT_TRUE(false);
-#elif RISTRA_REQUIRE_ON
+#elif defined RISTRA_REQUIRE_ON
       EXPECT_EQ(false, ret_val);
 #else
-      EXPECT_FALSE(ret_val);
+      EXPECT_EQ(true, ret_val);
 #endif
     } catch (std::exception & e) {
       // exact message depends on build details. This part shd be invariant:
       std::stringstream exp_msg;
-      exp_msg << "flecsi/utils/test/dbc_test_no_assert.cc:" << fail_line
-              << ":TestBody Assertion 'i != j' failed";
+      exp_msg << "ristra/utils/test/dbc_test.cc:" << fail_line
+              << ":TestBody assertion 'i != j' failed";
       std::string excmsg(e.what());
       EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));
     }
   } // int
 } // TEST(dbc,Equal){
 
-TEST(dbc_no_assert, InOpenRange)
+TEST(dbc, InOpenRange)
 {
   // int
   {
@@ -88,25 +91,25 @@ TEST(dbc_no_assert, InOpenRange)
       fail_line = __LINE__;ret_val = InOpenRange(i,j,k);
 // clang-format on
 /* Should not get here with exceptions*/
-#if (RISTRA_REQUIRE_ON && RISTRA_DBC_THROW)
+#if (defined RISTRA_REQUIRE_ON && defined RISTRA_DBC_THROW)
       EXPECT_TRUE(false);
-#elif RISTRA_REQUIRE_ON
+#elif defined RISTRA_REQUIRE_ON
       EXPECT_EQ(false, ret_val);
 #else
-      EXPECT_FALSE(ret_val);
+      EXPECT_EQ(true, ret_val);
 #endif
     } catch (std::exception & e) {
       // exact message depends on build details. This part shd be invariant:
       std::stringstream exp_msg;
-      exp_msg << "flecsi/utils/test/dbc_test_no_assert.cc:" << fail_line
-              << ":TestBody Assertion 'i (1) was not in range (2,4)' failed";
+      exp_msg << "ristra/utils/test/dbc_test.cc:" << fail_line
+              << ":TestBody assertion 'i (1) was not in range (2,4)' failed";
       std::string excmsg(e.what());
       EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));
     }
   } // int
 } // TEST(dbc,InOpenRange){
 
-TEST(dbc_no_assert, Insist)
+TEST(dbc, Insist)
 {
   // int
   {
@@ -114,10 +117,10 @@ TEST(dbc_no_assert, Insist)
     int j = 2;
     int k = 4;
     int fail_line = -1;
-    try {
-      fail_line = __LINE__;
-      Insist(i == j, "i == j")
-#if (RISTRA_REQUIRE_ON && RISTRA_DBC_THROW)
+    try {// clang-format off
+      fail_line = __LINE__; Insist(i == j, "i == j")
+      //  clang-format on
+#if (defined RISTRA_REQUIRE_ON && defined RISTRA_DBC_THROW)
         EXPECT_TRUE(false); // Should not get here with exceptions
 #else
         EXPECT_TRUE(true);
@@ -125,15 +128,15 @@ TEST(dbc_no_assert, Insist)
     } catch (std::exception & e) {
       // exact message depends on build details. This part shd be invariant:
       std::stringstream exp_msg;
-      exp_msg << "flecsi/utils/test/dbc_test_no_assert.cc:" << fail_line
-              << ":TestBody Assertion 'i == j' failed";
+      exp_msg << "ristra/utils/test/dbc_test.cc:" << fail_line
+              << ":TestBody assertion 'i == j' failed";
       std::string excmsg(e.what());
       EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));
     }
   } // int
-} // TEST(dbc,InOpenRange){
+} // TEST(dbc,Insist
 
-TEST(dbc_no_assert, LessThan)
+TEST(dbc, LessThan)
 {
   // int
   {
@@ -143,19 +146,19 @@ TEST(dbc_no_assert, LessThan)
     int fail_line = -1;
     try {
       bool ret_val = LessThan(i, j);
-      EXPECT_TRUE(ret_val);
-      fail_line = __LINE__;
-      ret_val = LessThan(j, i);
-#if (RISTRA_REQUIRE_ON && RISTRA_DBC_THROW)
+      EXPECT_TRUE(ret_val); // clang-format off
+      fail_line = __LINE__; ret_val = LessThan(j, i);
+      // clang-format on
+#if (defined RISTRA_REQUIRE_ON && defined RISTRA_DBC_THROW)
       EXPECT_TRUE(false); // Should not get here with exceptions
 #else
-      EXPECT_FALSE(ret_val);
+      EXPECT_TRUE(true);
 #endif
     } catch (std::exception & e) {
       // exact message depends on build details. This part shd be invariant:
       std::stringstream exp_msg;
-      exp_msg << "flecsi/utils/test/dbc_test_no_assert.cc:" << fail_line
-              << ":TestBody Assertion 'j (2) >= 1' failed";
+      exp_msg << "ristra/utils/test/dbc_test.cc:" << fail_line
+              << ":TestBody assertion 'j (2) >= 1' failed";
       std::string excmsg(e.what());
       EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));
     }

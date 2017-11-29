@@ -20,7 +20,7 @@
 #define RISTRA_REQUIRE_ON
 #endif
 
-#include "flecsi/utils/dbc.h"
+#include "ristra/utils/dbc.h"
 
 using namespace ristra::dbc;
 
@@ -79,10 +79,12 @@ TEST(dbc_notify, Equal)
     EXPECT_FALSE(ret_val);
     std::string fail_msg(outs.str());
     std::stringstream exp_msg;
-    exp_msg << "flecsi/utils/test/dbc_test_notify.cc:" << fail_line
+    exp_msg << "ristra/utils/test/dbc_test_notify.cc:" << fail_line
             << ":TestBody assertion 'i != j' failed";
     EXPECT_TRUE(check_messages(exp_msg.str(), fail_msg));
   } catch (std::exception & e) {
+    printf("%s:%i: With DBC notify enabled, no exception should be thrown!!\n",
+      __FUNCTION__, __LINE__);
     EXPECT_TRUE(false); // shouldn't get here!
   }
   restore_stream();
@@ -103,12 +105,14 @@ TEST(dbc_notify, InOpenRange)
     fail_line = __LINE__;ret_val = InOpenRange(i,j,k);
     // clang-format on
     std::stringstream exp_msg;
-    exp_msg << "flecsi/utils/test/dbc_test_notify.cc:" << fail_line
+    exp_msg << "ristra/utils/test/dbc_test_notify.cc:" << fail_line
             << ":TestBody assertion 'i (1) was not in range (2,4)' failed";
     std::string excmsg(outs.str());
     EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));
     /* Should not get here with exceptions*/
   } catch (std::exception & e) {
+    printf("%s:%i: With DBC notify enabled, no exception should be thrown!!\n",
+      __FUNCTION__, __LINE__);
     EXPECT_TRUE(false);
   }
   restore_stream();
@@ -122,14 +126,16 @@ TEST(dbc_notify, Insist)
   int fail_line = -1;
   std::stringstream outs;
   divert_stream(&outs);
-  try {
-    fail_line = __LINE__;
-    Insist(i == j, "i == j") std::stringstream exp_msg;
-    exp_msg << "flecsi/utils/test/dbc_test_notify.cc:" << fail_line
+  try { // clang-format off
+    fail_line = __LINE__; Insist(i == j, "i == j"); // clang-format on
+    std::stringstream exp_msg;
+    exp_msg << "ristra/utils/test/dbc_test_notify.cc:" << fail_line
             << ":TestBody assertion 'i == j' failed";
     std::string excmsg(outs.str());
     EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));
   } catch (std::exception & e) {
+    printf("%s:%i: With DBC notify enabled, no exception should be thrown!!\n",
+      __FUNCTION__, __LINE__);
     EXPECT_TRUE(false);
   }
   restore_stream();
@@ -150,11 +156,13 @@ TEST(dbc_notify, LessThan)
     fail_line = __LINE__;ret_val = LessThan(j, i);
     // clang-format on
     std::stringstream exp_msg;
-    exp_msg << "flecsi/utils/test/dbc_test_notify.cc:" << fail_line
+    exp_msg << "ristra/utils/test/dbc_test_notify.cc:" << fail_line
             << ":TestBody assertion 'j (2) >= 1' failed";
     std::string excmsg(outs.str());
     EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));
   } catch (std::exception & e) {
+    printf("%s:%i: With DBC notify enabled, no exception should be thrown!!\n",
+      __FUNCTION__, __LINE__);
     EXPECT_TRUE(false);
   }
   restore_stream();

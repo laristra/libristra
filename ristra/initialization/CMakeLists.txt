@@ -8,10 +8,8 @@
 # scope below.
 #------------------------------------------------------------------------------#
 
-set(ristra_HEADERS
+set(initialization_HEADERS
   announce.h
-  dbc.h
-  detail/dbc_impl.h
   detail/default_input_traits.h
   detail/inputs_impl.h
   detail/lua_base.h
@@ -43,9 +41,8 @@ set(ristra_HEADERS
 # scope below.
 #------------------------------------------------------------------------------#
 
-set(ristra_SOURCES
+set(initialization_SOURCES
   announce.cc
-  detail/dbc_impl.cc
   PARENT_SCOPE
 )
 
@@ -55,15 +52,14 @@ set(ristra_SOURCES
 
 cinch_add_unit(ristra-test
   SOURCES
-    #announce.cc
     test/test-announce.cc
-    test/lua_utils.cc
-    test/init_value.cc
-    test/input_source.cc
-    test/input_engine.cc
-    test/test_input_hard_coded_problems.cc
-    test/type_traits.cc
-    test/flecsale-vector.cc
+    # test/lua_utils.cc
+    # test/init_value.cc
+    # test/input_source.cc
+    # test/input_engine.cc
+    # test/test_input_hard_coded_problems.cc
+    # test/type_traits.cc
+    # test/flecsale-vector.cc
   LIBRARIES Ristra ${RISTRA_LIBRARIES}
   INPUTS
     test/lua_test.lua

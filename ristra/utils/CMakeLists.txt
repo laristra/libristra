@@ -5,6 +5,8 @@
 
 set(utils_HEADERS
   array_ref.h
+  dbc.h
+  detail/dbc_impl.h
   detail/template_helpers_impl.h
   detail/tuple_visit_impl.h
   detail/type_traits_impl.h
@@ -20,7 +22,21 @@ set(utils_HEADERS
 )
 
 set(utils_SOURCES
+  detail/dbc_impl.cc
   PARENT_SCOPE
+)
+
+cinch_add_unit(ristra-utils-test
+  SOURCES
+    test/dbc_test.cc
+    test/dbc_test_no_assert.cc
+  LIBRARIES Ristra ${RISTRA_LIBRARIES}
+)
+
+cinch_add_unit(ristra-dbc-notify-test
+  SOURCES
+    test/dbc_test_notify.cc
+  LIBRARIES Ristra ${RISTRA_LIBRARIES}
 )
 
 #----------------------------------------------------------------------------~-#

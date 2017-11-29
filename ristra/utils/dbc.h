@@ -5,7 +5,7 @@
 #pragma once
 
 #define IM_OK_TO_INCLUDE_DBC_IMPL
-#include "ristra/initialization/detail/dbc_impl.h"
+#include "ristra/utils/detail/dbc_impl.h"
 #undef IM_OK_TO_INCLUDE_DBC_IMPL
 #include <functional>
 #include <sstream>
@@ -62,7 +62,6 @@ inline void throw_exception(std::string const & cond, const char * file_name,
 inline void notify(std::string const & cond, const char * file_name,
   const char * func_name, int line)
 {
-  // printf("%s:%i \n",__FUNCTION__,__LINE__);
   std::ostream & s(*p_str);
   s << build_message(cond, file_name, func_name, line);
   return;
@@ -72,6 +71,7 @@ inline void do_nothing(std::string const &, const char *, const char *, int)
 {
   // printf("%s:%i \n",__FUNCTION__,__LINE__);
 }
+
 
 namespace
 {
