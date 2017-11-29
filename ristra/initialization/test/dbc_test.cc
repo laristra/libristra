@@ -9,20 +9,20 @@
 
 #include "cinchtest.h"
 /* Test will take control of the test environment */
-#ifndef FLECSI_REQUIRE_ON
-#define FLECSI_REQUIRE_ON
+#ifndef RISTRA_REQUIRE_ON
+#define RISTRA_REQUIRE_ON
 #endif
-#ifndef FLECSI_DBC_THROW
-#define FLECSI_DBC_THROW
+#ifndef RISTRA_DBC_THROW
+#define RISTRA_DBC_THROW
 #endif
 
-#ifdef FLECSI_DBC_NOTIFY
-#undef FLECSI_DBC_NOTIFY
+#ifdef RISTRA_DBC_NOTIFY
+#undef RISTRA_DBC_NOTIFY
 #endif
 
 #include "flecsi/utils/dbc.h"
 
-using namespace flecsi::dbc;
+using namespace ristra::dbc;
 
 TEST(dbc, compiles) { ASSERT_TRUE(true); }
 
@@ -58,9 +58,9 @@ TEST(dbc, Equal)
       fail_line = __LINE__;ret_val = Equal(i,j);
 // clang-format on
 /* Should not get here with exceptions*/
-#if (defined FLECSI_REQUIRE_ON && defined FLECSI_DBC_THROW)
+#if (defined RISTRA_REQUIRE_ON && defined RISTRA_DBC_THROW)
       EXPECT_TRUE(false);
-#elif defined FLECSI_REQUIRE_ON
+#elif defined RISTRA_REQUIRE_ON
       EXPECT_EQ(false, ret_val);
 #else
       EXPECT_EQ(true, ret_val);
@@ -91,9 +91,9 @@ TEST(dbc, InOpenRange)
       fail_line = __LINE__;ret_val = InOpenRange(i,j,k);
 // clang-format on
 /* Should not get here with exceptions*/
-#if (defined FLECSI_REQUIRE_ON && defined FLECSI_DBC_THROW)
+#if (defined RISTRA_REQUIRE_ON && defined RISTRA_DBC_THROW)
       EXPECT_TRUE(false);
-#elif defined FLECSI_REQUIRE_ON
+#elif defined RISTRA_REQUIRE_ON
       EXPECT_EQ(false, ret_val);
 #else
       EXPECT_EQ(true, ret_val);
@@ -120,7 +120,7 @@ TEST(dbc, Insist)
     try {
       fail_line = __LINE__;
       Insist(i == j, "i == j")
-#if (defined FLECSI_REQUIRE_ON && defined FLECSI_DBC_THROW)
+#if (defined RISTRA_REQUIRE_ON && defined RISTRA_DBC_THROW)
         EXPECT_TRUE(false); // Should not get here with exceptions
 #else
         EXPECT_TRUE(true);
@@ -149,7 +149,7 @@ TEST(dbc, LessThan)
       EXPECT_TRUE(ret_val);
       fail_line = __LINE__;
       ret_val = LessThan(j, i);
-#if (defined FLECSI_REQUIRE_ON && defined FLECSI_DBC_THROW)
+#if (defined RISTRA_REQUIRE_ON && defined RISTRA_DBC_THROW)
       EXPECT_TRUE(false); // Should not get here with exceptions
 #else
       EXPECT_TRUE(true);

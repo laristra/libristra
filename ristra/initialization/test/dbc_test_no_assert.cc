@@ -5,21 +5,21 @@
 
 #include "cinchtest.h"
 /* Test will take control of the test environment */
-#ifdef FLECSI_DBC_THROW
-#undef FLECSI_DBC_THROW
+#ifdef RISTRA_DBC_THROW
+#undef RISTRA_DBC_THROW
 #endif
 
-#ifdef FLECSI_REQUIRE_ON
-#undef FLECSI_REQUIRE_ON
+#ifdef RISTRA_REQUIRE_ON
+#undef RISTRA_REQUIRE_ON
 #endif
 
-#ifdef FLECSI_DBC_NOTIFY
-#undef FLECSI_DBC_NOTIFY
+#ifdef RISTRA_DBC_NOTIFY
+#undef RISTRA_DBC_NOTIFY
 #endif
 
 #include "flecsi/utils/dbc.h"
 
-using namespace flecsi::dbc;
+using namespace ristra::dbc;
 
 TEST(dbc_no_assert, compiles) { ASSERT_TRUE(true); }
 
@@ -55,9 +55,9 @@ TEST(dbc_no_assert, Equal)
       fail_line = __LINE__;ret_val = Equal(i,j);
 // clang-format on
 /* Should not get here with exceptions*/
-#if (REQUIRE_ON && FLECSI_DBC_THROW)
+#if (RISTRA_REQUIRE_ON && RISTRA_DBC_THROW)
       EXPECT_TRUE(false);
-#elif REQUIRE_ON
+#elif RISTRA_REQUIRE_ON
       EXPECT_EQ(false, ret_val);
 #else
       EXPECT_FALSE(ret_val);
@@ -88,9 +88,9 @@ TEST(dbc_no_assert, InOpenRange)
       fail_line = __LINE__;ret_val = InOpenRange(i,j,k);
 // clang-format on
 /* Should not get here with exceptions*/
-#if (REQUIRE_ON && FLECSI_DBC_THROW)
+#if (RISTRA_REQUIRE_ON && RISTRA_DBC_THROW)
       EXPECT_TRUE(false);
-#elif REQUIRE_ON
+#elif RISTRA_REQUIRE_ON
       EXPECT_EQ(false, ret_val);
 #else
       EXPECT_FALSE(ret_val);
@@ -117,7 +117,7 @@ TEST(dbc_no_assert, Insist)
     try {
       fail_line = __LINE__;
       Insist(i == j, "i == j")
-#if (REQUIRE_ON && FLECSI_DBC_THROW)
+#if (RISTRA_REQUIRE_ON && RISTRA_DBC_THROW)
         EXPECT_TRUE(false); // Should not get here with exceptions
 #else
         EXPECT_TRUE(true);
@@ -146,7 +146,7 @@ TEST(dbc_no_assert, LessThan)
       EXPECT_TRUE(ret_val);
       fail_line = __LINE__;
       ret_val = LessThan(j, i);
-#if (REQUIRE_ON && FLECSI_DBC_THROW)
+#if (RISTRA_REQUIRE_ON && RISTRA_DBC_THROW)
       EXPECT_TRUE(false); // Should not get here with exceptions
 #else
       EXPECT_FALSE(ret_val);

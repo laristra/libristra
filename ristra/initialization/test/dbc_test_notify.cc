@@ -6,23 +6,23 @@
 /* Test will take control of the test environment */
 #include "cinchtest.h"
 
-// #if defined FLECSI_REQUIRE_ON && defined FLECSI_DBC_NOTIFY
+// #if defined RISTRA_REQUIRE_ON && defined RISTRA_DBC_NOTIFY
 
-#ifdef FLECSI_DBC_THROW
-#undef FLECSI_DBC_THROW
+#ifdef RISTRA_DBC_THROW
+#undef RISTRA_DBC_THROW
 #endif
 
-#ifndef FLECSI_DBC_NOTIFY
-#define FLECSI_DBC_NOTIFY
+#ifndef RISTRA_DBC_NOTIFY
+#define RISTRA_DBC_NOTIFY
 #endif
 
-#ifndef FLECSI_REQUIRE_ON
-#define FLECSI_REQUIRE_ON
+#ifndef RISTRA_REQUIRE_ON
+#define RISTRA_REQUIRE_ON
 #endif
 
 #include "flecsi/utils/dbc.h"
 
-using namespace flecsi::dbc;
+using namespace ristra::dbc;
 
 TEST(dbc_notify, compiles) { ASSERT_TRUE(true); }
 
