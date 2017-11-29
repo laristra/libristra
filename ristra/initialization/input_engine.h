@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include "detail/inputs_impl.h"
-#include "detail/type_utils.h"
-#include "ristra/dbc.h"
+#include "ristra/initialization/detail/inputs_impl.h"
+#include "ristra/initialization/detail/type_utils.h"
 #include "ristra/initialization/input_source.h"
 #include "ristra/initialization/type_traits.h"
+#include "ristra/utils/dbc.h"
 
 #include <algorithm> // all_of
 #include <array>

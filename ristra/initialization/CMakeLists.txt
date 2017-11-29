@@ -53,13 +53,13 @@ set(initialization_SOURCES
 cinch_add_unit(ristra-test
   SOURCES
     test/test-announce.cc
-    # test/lua_utils.cc
-    # test/init_value.cc
-    # test/input_source.cc
-    # test/input_engine.cc
-    # test/test_input_hard_coded_problems.cc
-    # test/type_traits.cc
-    # test/flecsale-vector.cc
+    test/lua_utils.cc
+    test/init_value.cc
+    test/input_source.cc
+    test/input_engine.cc
+    test/test_input_hard_coded_problems.cc
+    test/type_traits.cc
+    test/flecsale-vector.cc
   LIBRARIES Ristra ${RISTRA_LIBRARIES}
   INPUTS
     test/lua_test.lua
