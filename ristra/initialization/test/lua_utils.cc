@@ -7,7 +7,9 @@
 /// \brief Tests related to embedded lua.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifdef HAVE_LUA
+#include<ristra-config.h>
+
+#ifdef RISTRA_ENABLE_LUA
 
 // user includes
 #include "ristra/initialization/lua_access.h"
@@ -50,11 +52,11 @@ TEST(lua_utils, embedded)
 
   // run a simple function and check the result
   ASSERT_EQ(3, state["sum"](1, 2).as<int>());
-  ASSERT_NEAR(3., state["sum"](1, 2).as<double>(), TEST_TOLERANCE);
+  ASSERT_NEAR(3., state["sum"](1, 2).as<double>(), RISTRA_TEST_TOLERANCE);
 
   // try with different arguments
   ASSERT_EQ(3, state["sum"](1., 2.).as<int>());
-  ASSERT_NEAR(3., state["sum"](1., 2.).as<double>(), TEST_TOLERANCE);
+  ASSERT_NEAR(3., state["sum"](1., 2.).as<double>(), RISTRA_TEST_TOLERANCE);
 
   // try a function that returns tuples
   auto tup1 = state["split"](1, 2.5).as<int, double>();
@@ -144,4 +146,4 @@ TEST(lua_utils, funcs)
 
 } // TEST(lua_utils,funcs){
 
-#endif // HAVE_LUA
+#endif // RISTRA_ENABLE_LUA

@@ -290,4 +290,4 @@ auto python_call_function( PyObject * py_func, Args&&... args )
 } // namespace utils
 } // namespace ristra
 
-#endif // HAVE_PYTHON
+#endif // RISTRA_ENABLE_PYTHON

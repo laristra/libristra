@@ -844,5 +844,5 @@ public:
 } // namespace utils
 } // namespace ristra
 
-#endif // HAVE_LUA
+#endif // RISTRA_ENABLE_LUA
   

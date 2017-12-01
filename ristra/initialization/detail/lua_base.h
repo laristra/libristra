@@ -8,7 +8,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#ifdef HAVE_LUA
+#include<ristra-config.h>
+
+#ifdef RISTRA_ENABLE_LUA
 
 #ifndef LUA_ACCESS_H_INCLUDED
 #error "Use top-level entry point, lua_access.h!!"
@@ -17,7 +19,7 @@
 // user includes
 #include "ristra/initialization/detail/lua_utils.h"
 #include "ristra/initialization/detail/lua_value.h"
-#include "ristra/initialization/errors.h"
+#include "ristra/utils/errors.h"
 
 #include <iomanip>
 #include <sstream>
@@ -119,4 +121,4 @@ class lua_base_t
 } // detail::
 } // ristra::
 
-#endif // HAVE_LUA
+#endif // RISTRA_ENABLE_LUA

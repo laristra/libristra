@@ -8,13 +8,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#ifdef HAVE_LUA
+#include<ristra-config.h>
+
+#ifdef RISTRA_ENABLE_LUA
 
 #ifndef LUA_ACCESS_H_INCLUDED
 #error "Use top-level entry point, lua_access.h!!"
 #endif
 
-#include "ristra/initialization/errors.h"
+#include "ristra/utils/errors.h"
 
 #include <vector>
 
@@ -194,4 +196,4 @@ inline lua_ref_t make_lua_ref(const lua_state_ptr_t & state)
 } // detail::
 } // ristra::
 
-#endif // HAVE_LUA
+#endif // RISTRA_ENABLE_LUA

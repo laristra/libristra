@@ -8,14 +8,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#ifdef HAVE_LUA
+#include<ristra-config.h>
+
+#ifdef RISTRA_ENABLE_LUA
 
 #ifndef LUA_ACCESS_H_INCLUDED
 #error "Use top-level entry point, lua_access.h!!"
 #endif
 
 // user includes
-#include "ristra/initialization/errors.h"
+#include "ristra/utils/errors.h"
 
 // use lua
 extern "C" {
@@ -55,4 +57,4 @@ using lua_state_ptr_t = std::shared_ptr<lua_State>;
 } // detail::
 } // ristra::
 
-#endif // HAVE_LUA
+#endif // RISTRA_ENABLE_LUA

@@ -4,11 +4,13 @@
 
 #pragma once
 
-#include "detail/inputs_impl.h"
-#include "detail/type_utils.h"
-#include "ristra/dbc.h"
+#include<ristra-config.h>
+
+#include "ristra/initialization/detail/inputs_impl.h"
+#include "ristra/initialization/detail/type_utils.h"
 #include "ristra/initialization/input_source.h"
-#include "ristra/initialization/type_traits.h"
+#include "ristra/utils/type_traits.h"
+#include "ristra/utils/dbc.h"
 
 #include <algorithm> // all_of
 #include <array>
@@ -265,7 +267,7 @@ class input_engine_t
    */
   template <class T,
     typename ret_t =
-      typename std::conditional<ristra::is_callable<T>::value, T, T &>::type>
+      typename std::conditional<utils::is_callable<T>::value, T, T &>::type>
   ret_t get_value(str_cr_t target_name)
   {
     value_getter<T> g;
@@ -303,7 +305,7 @@ class input_engine_t
    */
   template <class T,
     typename ret_t =
-      typename std::conditional<ristra::is_callable<T>::value, T, T &>::type>
+      typename std::conditional<utils::is_callable<T>::value, T, T &>::type>
   ret_t get_instant_value(str_cr_t target_name)
   {
     resolve_input_<T> r;
@@ -485,7 +487,7 @@ class input_engine_t
       bool missed_any(false);
       for (auto target : targets) {
         bool found_target(false);
-#ifdef HAVE_LUA
+#ifdef RISTRA_ENABLE_LUA
         if (lua_source) {
           lua_result_uptr_t tval;
           found_target = lua_source->get_value(target, tval);
@@ -496,7 +498,7 @@ class input_engine_t
             continue;
           } // if lua found
         } // if lua
-#endif // HAVE_LUA
+#endif // RISTRA_ENABLE_LUA
         // next try hard-coded (default) case
         if (hard_coded_source) {
           func_t f;

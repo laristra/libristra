@@ -106,4 +106,4 @@ public:
 } // end of Catalyst namespace
 
 
-#endif // HAVE_CATALYST
+#endif // RISTRA_ENABLE_CATALYST

@@ -88,4 +88,4 @@ TEST(lua_utils, embedded)
   
 } // TEST
 
-#endif // HAVE_LUA
+#endif // RISTRA_ENABLE_LUA

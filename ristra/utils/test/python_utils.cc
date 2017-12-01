@@ -82,4 +82,4 @@ TEST(python_utils, embedded)
 } // TEST
 
 
-#endif // HAVE_PYTHON
+#endif // RISTRA_ENABLE_PYTHON

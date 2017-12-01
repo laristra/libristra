@@ -8,15 +8,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#ifdef HAVE_LUA
+#include<ristra-config.h>
+
+#ifdef RISTRA_ENABLE_LUA
 
 #ifndef LUA_ACCESS_H_INCLUDED
 #error "Use top-level entry point, lua_access.h!!"
 #endif
 
-#include "ristra/initialization/dbc.h"
 #include "ristra/initialization/detail/type_utils.h"
-#include "ristra/initialization/errors.h"
+#include "ristra/utils/errors.h"
+#include "ristra/utils/dbc.h"
 
 namespace ristra
 {
@@ -425,4 +427,4 @@ using lua_result_uptr_t = std::unique_ptr<lua_result_t>;
 } // detail::
 } // ristra::
 
-#endif // HAVE_LUA
+#endif // RISTRA_ENABLE_LUA

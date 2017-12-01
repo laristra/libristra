@@ -3,6 +3,8 @@
 // May 08, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
+#include<ristra-config.h>
+
 #include "ristra/initialization/input_source.h"
 #include <array>
 #include "cinchtest.h"
@@ -81,7 +83,7 @@ TEST(input_source, hard_coded_source_t_get_value)
   }
 } // TEST(hard_coded_source_t,get_value){
 
-#ifdef HAVE_LUA
+#ifdef RISTRA_ENABLE_LUA
 
 TEST(input_source, lua_source_t_instantiate)
 {
@@ -227,6 +229,6 @@ TEST(input_source, lua_source_t_get_table)
   EXPECT_TRUE(exp_eos_type == eos_type);
 }
 
-#endif // HAVE_LUA
+#endif // RISTRA_ENABLE_LUA
 
 // End of file

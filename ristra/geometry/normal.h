@@ -11,8 +11,7 @@
 
 
 // user includes
-#include "std/type_traits.h"
-#include "flecsale/utils/type_traits.h.h"
+#include "ristra/utils/type_traits.h"
 
 
 namespace ristra {

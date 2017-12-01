@@ -3,6 +3,8 @@
 // May 08, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
+#include<ristra-config.h>
+
 #include "ristra/initialization/input_engine.h"
 #include "cinchtest.h"
 // #include "ristra/flecsale-vector.h"
@@ -241,7 +243,7 @@ TEST(input_engine, resolve_inputs_from_hc_with_failures)
   phcs->clear_registry<input_traits::types>();
 } // TEST(input_engine,resolve_inputs_from_hc_with_failures){
 
-#ifdef HAVE_LUA
+#ifdef RISTRA_ENABLE_LUA
 
 TEST(input_engine, resolve_inputs_from_lua)
 {
@@ -341,6 +343,6 @@ TEST(input_engine, resolve_inputs_from_lua)
   // delete pls;
 } // TEST(input_engine,resolve_inputs_from_lua){
 
-#endif // HAVE_LUA
+#endif // RISTRA_ENABLE_LUA
 
 // End of file

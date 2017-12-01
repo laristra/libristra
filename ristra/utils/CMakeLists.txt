@@ -8,6 +8,8 @@ set(utils_HEADERS
   array_ref.h
   array_view.h
   const_string.h
+  dbc.h              detail/dbc_impl.h
+  dimensioned_array.h
   exceptions.h
   errors.h
   filter_iterator.h
@@ -27,6 +29,11 @@ set(utils_HEADERS
   zip.h              detail/zip_impl.h
   
   PARENT_SCOPE # THIS NEEDS TO BE HERE
+)
+
+set(utils_SOURCES
+  detail/dbc_impl.cc
+  PARENT_SCOPE
 )
 
 cinch_add_unit( array_view SOURCES test/array_view.cc )
@@ -52,8 +59,16 @@ cinch_add_unit( tasks SOURCES test/tasks.cc )
 cinch_add_unit( tuple_for_each SOURCES test/tuple_for_each.cc )
 cinch_add_unit( tuple_visit SOURCES test/tuple_visit.cc )
 cinch_add_unit( tuple_zip SOURCES test/tuple_zip.cc )
-cinch_add_unit( type_traits SOURCES test/type_traits.cc )
+cinch_add_unit( type_traits_helpers SOURCES test/type_traits_helpers.cc )
 cinch_add_unit( zip SOURCES test/zip.cc )
+
+cinch_add_unit( dbc
+  SOURCES
+    test/dbc_test.cc
+    test/dbc_test_no_assert.cc
+    test/dbc_test_notify.cc
+  LIBRARIES Ristra ${RISTRA_LIBRARIES}
+)
 
 #----------------------------------------------------------------------------~-#
 # Formatting options for vim.

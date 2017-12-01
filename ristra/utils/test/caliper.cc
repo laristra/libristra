@@ -60,4 +60,4 @@ TEST(caliper, simple)
 
 } // TEST
 
-#endif // HAVE_CALIPER
+#endif // RISTRA_ENABLE_CALIPER

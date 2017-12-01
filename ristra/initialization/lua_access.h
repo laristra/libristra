@@ -10,7 +10,9 @@
 
 #define LUA_ACCESS_H_INCLUDED
 
-#ifdef HAVE_LUA
+#include<ristra-config.h>
+
+#ifdef RISTRA_ENABLE_LUA
 
 // user includes
 #include "detail/lua_base.h"
@@ -18,7 +20,7 @@
 #include "detail/lua_result.h"
 #include "detail/lua_utils.h"
 #include "detail/lua_value.h"
-#include "ristra/initialization/errors.h"
+#include "ristra/utils/errors.h"
 
 // use lua
 extern "C" {
@@ -154,7 +156,7 @@ class lua_t : public detail::lua_base_t
 
 } // ristra::
 
-#else // HAVE_LUA
+#else // RISTRA_ENABLE_LUA
 
   struct lua_result_stub{
     template <typename T>
@@ -170,4 +172,4 @@ class lua_t : public detail::lua_base_t
 
   template <typename T> using Lua_Func_Wrapper = Lua_Func_Wrapper_stub<T>;
 
-#endif // HAVE_LUA
+#endif // RISTRA_ENABLE_LUA

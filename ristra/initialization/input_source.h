@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include<ristra-config.h>
+
 #include <array>
 #include <functional>
 #include <map>
@@ -160,7 +162,7 @@ inline hard_coded_source_ptr_t mk_hard_coded_source()
 class lua_source_t : public input_source<lua_source_t>
 {
  public:
-#ifdef HAVE_LUA
+#ifdef RISTRA_ENABLE_LUA
   using table_map_t = std::map<string_t, string_t>;
   using lua_keys_t = std::map<string_t, string_t>;
   using tables_t = std::map<string_t, lua_result_t>;
@@ -367,11 +369,11 @@ class lua_source_t : public input_source<lua_source_t>
   {
     return false;
   }
-#endif // HAVE_LUA
+#endif // RISTRA_ENABLE_LUA
 }; // lua_source_t
 
 
-#ifdef HAVE_LUA
+#ifdef RISTRA_ENABLE_LUA
 
 // specialization for lua_result_t (i.e. Lua function ptr): convert
 // lua_result_t value to a unique_ptr
@@ -396,7 +398,7 @@ struct lua_source_t::value_getter<lua_result_uptr_t> {
     return found;
   }
 };
-#endif //HAVE_LUA
+#endif //RISTRA_ENABLE_LUA
 
 using lua_source_ptr_t = std::unique_ptr<lua_source_t>;
 

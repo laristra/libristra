@@ -1,0 +1,67 @@
+/*~--------------------------------------------------------------------------~*
+ * Copyright (c) 2017 Los Alamos National Laboratory, LLC
+ * All rights reserved
+ *~--------------------------------------------------------------------------~*/
+
+#pragma once
+
+// for size_t
+#include <cstddef>
+
+//----------------------------------------------------------------------------//
+// CMake defines
+//----------------------------------------------------------------------------//
+
+// define the floating point precision
+#cmakedefine RISTRA_DOUBLE_PRECISION
+
+// define the test tolerance 
+#define RISTRA_TEST_TOLERANCE @RISTRA_TEST_TOLERANCE@
+
+// do we have catalyst
+#cmakedefine RISTRA_ENABLE_CATALYST
+   
+// do we have python
+#cmakedefine RISTRA_ENABLE_PYTHON
+
+// do we have lua-utils
+#cmakedefine RISTRA_ENABLE_LUA
+
+// do we have mpi
+#cmakedefine RISTRA_ENABLE_MPI
+
+// do we have caliper
+#cmakedefine RISTRA_ENABLE_CALIPER
+
+// turn on exceptions
+#cmakedefine RISTRA_ENABLE_EXCEPTIONS
+
+// dbc notification action
+#cmakedefine RISTRA_DBC_THROW
+#cmakedefine RISTRA_DBC_NOTIFY
+
+// Pre/Post Condition Assertions
+#cmakedefine RISTRA_DBC_REQUIRE
+
+//----------------------------------------------------------------------------//
+// Configuration
+//----------------------------------------------------------------------------//
+
+namespace ristra {
+namespace config {
+
+//! real precision type
+#ifdef RISTRA_DOUBLE_PRECISION
+using real_t = double;
+#else
+using real_t = float;
+#endif
+
+//! the maximum string lenght
+static constexpr std::size_t max_char_length = 256;
+
+//! the test tolerance
+static constexpr real_t test_tolerance = RISTRA_TEST_TOLERANCE;
+
+} // namespace config
+} // namespace ristra

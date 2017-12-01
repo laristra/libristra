@@ -4,10 +4,10 @@
 
 #pragma once
 
+#include "ristra/utils/errors.h"
+#include "ristra/utils/type_traits.h"
+#include "ristra/utils/dbc.h"
 #include <string>
-#include "ristra/initialization/dbc.h"
-#include "ristra/initialization/errors.h"
-#include "ristra/initialization/type_traits.h"
 
 namespace ristra
 {
@@ -41,7 +41,7 @@ class init_value_t
   using str_cr_t = string_t const &;
   using status_t = init_val_status_t;
   using get_return_t =
-    typename std::conditional<ristra::is_callable<T>::value, T, T &>::type;
+    typename std::conditional<utils::is_callable<T>::value, T, T &>::type;
 
   // interface
   /**\brief get a reference to the value if that's possible.
