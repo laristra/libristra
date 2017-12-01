@@ -1,5 +1,5 @@
 /*~-------------------------------------------------------------------------~~*
- * Copyright (c) 2017 Los Alamos National Laboratory, LLC
+ * Copyright (c) 2016 Los Alamos National Laboratory, LLC
  * All rights reserved
  *~-------------------------------------------------------------------------~~*/
 ////////////////////////////////////////////////////////////////////////////////
@@ -9,8 +9,10 @@
 
 #pragma once
 
+#include<ristra-config.h>
+
 // user includes
-#include "ristra/utils/exceptions.h"
+#include "exceptions.h"
 
 // system includes
 #include <iostream>
@@ -18,7 +20,7 @@
 
 
 //! if exceptions are enabled, set the throw macro
-#ifdef ENABLE_EXCEPTIONS
+#ifdef RISTRA_ENABLE_EXCEPTIONS
 #define THROW_EXCEPTION(e) do { throw e; } while (0)
 #else
 #define THROW_EXCEPTION(e) do { std::abort(); } while (0)
@@ -29,11 +31,11 @@
 //! \brief Raise a runtime error.
 //! \param[in] the message to display
 /////////////////////////////////////////////////////////////////////
-#define raise_runtime_error(msg)                                        \
+#define throw_runtime_error(msg)                                        \
   do {                                                                  \
     std::cerr << __FILE__ << ", line " << __LINE__ << std::endl;        \
     std::cerr << msg << std::endl;                                      \
-    THROW_EXCEPTION(ale::utils::ExceptionRunTime());                    \
+    THROW_EXCEPTION(ristra::utils::ExceptionRunTime());                    \
   } while(0)
 
 
@@ -41,21 +43,21 @@
 //! \brief Raise a logic error.
 //! \param[in] the message to display
 /////////////////////////////////////////////////////////////////////
-#define raise_logic_error(msg)                                          \
+#define throw_logic_error(msg)                                          \
   do {                                                                  \
     std::cerr << __FILE__ << ", line " << __LINE__ << std::endl;        \
     std::cerr << msg << std::endl;                                      \
-    THROW_EXCEPTION(ale::utils::ExceptionLogic());                      \
+    THROW_EXCEPTION(ristra::utils::ExceptionLogic());                      \
   } while(0)
 
 /////////////////////////////////////////////////////////////////////
 //! \brief Raise a file-related error.
 //! \param[in] the file in question
 /////////////////////////////////////////////////////////////////////
-#define raise_file_error(file)                                          \
+#define throw_file_error(file)                                          \
   do {                                                                  \
     std::cerr << __FILE__ << ", line " << __LINE__ << std::endl;        \
-    THROW_EXCEPTION(ale::utils::ExceptionFileError(file));              \
+    THROW_EXCEPTION(ristra::utils::ExceptionFileError(file));              \
   } while(0)
 
 
@@ -63,11 +65,11 @@
 //! \brief Raise a not-implemented error.
 //! \param[in] the message to display
 /////////////////////////////////////////////////////////////////////
-#define raise_implemented_error(msg)                                    \
+#define throw_implemented_error(msg)                                    \
   do {                                                                  \
     std::cerr << __FILE__ << ", line " << __LINE__ << std::endl;        \
     std::cerr << msg << std::endl;                                      \
-    THROW_EXCEPTION(ale::utils::ExceptionNotImplemented());             \
+    THROW_EXCEPTION(ristra::utils::ExceptionNotImplemented());             \
   } while(0)
 
 /////////////////////////////////////////////////////////////////////
@@ -77,7 +79,7 @@
 /////////////////////////////////////////////////////////////////////
 #define assert_true(cond, msg)                                          \
   if ( ! (cond) )                                                       \
-    raise_runtime_error("Assertion falied: " << msg)
+    throw_runtime_error("Assertion falied: " << msg)
 
 /////////////////////////////////////////////////////////////////////
 //! \brief Display a warning.

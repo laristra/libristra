@@ -1,0 +1,48 @@
+<Servers>
+    <Server name="Flecsale Darwin Paraview Rev-Conn" resource="csrc://localhost">
+        <CommandStartup>
+            <Options>
+                <Option name="MACHINE" label="Remote Machine" save="true">
+                    <String default="darwin-fe.lanl.gov"/>
+                </Option>
+                <Option name="SSH_USER" label="SSH Username" save="true">
+                    <String default="pascalgrosset"/>
+                </Option>
+                <Option name="SSH_EXE" label="SSH Executable" save="true">
+                    <File default="/usr/bin/ssh"/>
+                </Option>
+                <Option name="REMOTESCRIPT" label="The remote script that generates the job submission">
+                    <String default="/projects/groups/vizproject/flecsale_vis/paraview/runScripts/pvserver_jobsub_darwin.sh"/>
+                </Option>
+                <Option name="PV_SERVER_PORT" label="Server Port: ">
+                    <Range type="int" min="1" max="65535" step="1" default="11111"/>
+                </Option>
+                <Option name="NUMPROC" label="Number Of Processes" save="true">
+                    <Range type="int" min="1" max="4096" step="4" default="8"/>
+                </Option>
+                <Option name="MEMORY" label="Memory (GB) per mpi-task" save="true">
+                    <Range type="int" min="1" max="48" step="2" default="12"/>
+                </Option>
+                <Option name="NUMHOURS" label="Number Of mins to reserve" save="true">
+                    <Range type="int" min="1" max="72" step="2" default="10"/>
+                </Option>
+                <Option name="SESSIONID" label="Session Identifier">
+                    <String default="pvServerDarwin"/>
+                </Option>
+            </Options>
+            <Command exec="$SSH_EXE$" delay="5">
+                <Arguments>
+                    <Argument value="$MACHINE$"/>
+                    <Argument value="-l"/>
+                    <Argument value="$SSH_USER$"/>
+                    <Argument value="$REMOTESCRIPT$"/>
+                    <Argument value="$PV_SERVER_PORT$"/>
+                    <Argument value="$NUMPROC$"/>
+                    <Argument value="$MEMORY$"/>
+                    <Argument value="$NUMHOURS$"/>
+                    <Argument value="$SESSIONID$"/>
+                </Arguments>
+            </Command>
+        </CommandStartup>
+    </Server>
+</Servers>

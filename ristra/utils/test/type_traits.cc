@@ -3,13 +3,15 @@
 // Aug 17, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
-#include "ristra/initialization/type_traits.h"
+#include "ristra/utils/type_traits.h"
 #include "cinchtest.h"
 
 // some containers that yeild interesting types
 #include <array>
 #include <map>
 #include <vector>
+
+using namespace ristra::utils;
 
 struct A {
   template <class T,
@@ -29,14 +31,14 @@ struct A {
 
 struct B {
   template <class T,
-    typename std::enable_if<ristra::is_callable<T>::value, int>::type = 0>
+    typename std::enable_if<is_callable<T>::value, int>::type = 0>
   std::string try_me()
   {
     return "is_callable";
   }
 
   template <class T,
-    typename std::enable_if<!ristra::is_callable<T>::value, int>::type = 0>
+    typename std::enable_if<!is_callable<T>::value, int>::type = 0>
   std::string try_me()
   {
     return "isnt_callable";
@@ -108,47 +110,47 @@ using t7 = std::map<std::string, std::string>;
 
 TEST(type_traits, has_call_operator)
 {
-  bool const case1_ok = ristra::has_call_operator<t1, double, int>::value;
+  bool const case1_ok = has_call_operator<t1, double, int>::value;
   EXPECT_TRUE(case1_ok);
 
   bool const case2_ok =
-    ristra::has_call_operator<t1, double, std::string>::value;
+    has_call_operator<t1, double, std::string>::value;
   EXPECT_FALSE(case2_ok);
 
-  bool const case3_ok = ristra::has_call_operator<t6, double, double>::value;
+  bool const case3_ok = has_call_operator<t6, double, double>::value;
   EXPECT_FALSE(case3_ok);
 
-  bool const case4_ok = ristra::has_call_operator<t4>::value;
+  bool const case4_ok = has_call_operator<t4>::value;
   EXPECT_FALSE(case4_ok);
 }
 
 TEST(type_traits, subscriptable)
 {
-  bool const case1_ok = tester<ristra::is_callable, t1>::value;
+  bool const case1_ok = tester<is_callable, t1>::value;
   EXPECT_TRUE(case1_ok);
 
-  bool const case2_ok = ristra::has_subscript_operator<t6, size_t>::value;
+  bool const case2_ok = has_subscript_operator<t6, size_t>::value;
   EXPECT_TRUE(case2_ok);
 
-  bool const case3_ok = ristra::has_subscript_operator<t6, int>::value;
+  bool const case3_ok = has_subscript_operator<t6, int>::value;
   EXPECT_TRUE(case3_ok);
 
-  bool const case4_ok = ristra::has_subscript_operator<C, int>::value;
+  bool const case4_ok = has_subscript_operator<C, int>::value;
   EXPECT_FALSE(case4_ok);
 
-  bool const case5_ok = ristra::has_subscript_operator<t2, int>::value;
+  bool const case5_ok = has_subscript_operator<t2, int>::value;
   EXPECT_FALSE(case5_ok);
 
-  bool const case6_ok = ristra::has_subscript_operator<t3, int>::value;
+  bool const case6_ok = has_subscript_operator<t3, int>::value;
   EXPECT_TRUE(case6_ok);
 
-  bool const case7_ok = ristra::has_subscript_operator<t4, int>::value;
+  bool const case7_ok = has_subscript_operator<t4, int>::value;
   EXPECT_FALSE(case7_ok);
 
-  bool const case8_ok = ristra::has_subscript_operator<t7, std::string>::value;
+  bool const case8_ok = has_subscript_operator<t7, std::string>::value;
   EXPECT_TRUE(case8_ok);
 
-  bool const case9_ok = ristra::has_subscript_operator<t7, int>::value;
+  bool const case9_ok = has_subscript_operator<t7, int>::value;
   EXPECT_FALSE(case9_ok);
 
 } // TEST(type_traits,subscriptable)

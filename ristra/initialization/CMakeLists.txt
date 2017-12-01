@@ -22,7 +22,6 @@ set(ristra_HEADERS
   detail/math_utils_impl.h
   detail/template_helpers.h
   detail/template_helpers_impl.h
-  detail/type_traits_impl.h
   detail/type_utils.h
   errors.h
   flecsale-array.h
@@ -34,7 +33,6 @@ set(ristra_HEADERS
   lua_access.h
   math_utils.h
   static_warning.h
-  type_traits.h
   PARENT_SCOPE
 )
 

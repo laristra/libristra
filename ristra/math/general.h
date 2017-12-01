@@ -287,7 +287,7 @@ template< template<typename...> class C, typename T, typename...Args >
 auto min(const C<T,Args...> &a, const C<T,Args...> &b) 
 {
   C<T,Args...> tmp;
-  for ( common::counter_t i=0; i<a.size(); i++ )
+  for ( std::size_t i=0; i<a.size(); i++ )
     tmp[i] = std::min( a[i], b[i] );
   return tmp;
 }
@@ -316,7 +316,7 @@ template< template<typename...> class C, typename T, typename...Args >
 auto max(const C<T,Args...> &a, const C<T,Args...> &b) 
 {
   C<T,Args...> tmp;
-  for ( common::counter_t i=0; i<a.size(); i++ )
+  for ( std::size_t i=0; i<a.size(); i++ )
     tmp[i] = std::max( a[i], b[i] );
   return tmp;
 }
@@ -389,7 +389,7 @@ template <
 >
 C<T, 3> normal(const C<T, 3> &a, const C<T, 3> &b) 
 {
-  raise_runtime_error("you should never get here");
+  throw_runtime_error("you should never get here");
   return { 0, 0, 0 }; // FIXME - this is here as a hack
 }
 

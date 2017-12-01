@@ -11,8 +11,11 @@
 
 // system includes
 #include <cstring>
+#include <iterator>
+#include <locale>
 #include <sstream>
 #include <string>
+#include <vector>
 
 namespace ristra {
 namespace utils {
@@ -101,6 +104,78 @@ std::string file_extension(const std::string & str)
     return "";
  
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//! \brief Remove the extension from a filename
+//! \param [in] str  the input string
+//! \return the name without extension
+////////////////////////////////////////////////////////////////////////////////
+inline
+std::string remove_extension(const std::string & str) {
+    auto lastdot = str.find_last_of(".");
+    if (lastdot == std::string::npos) return str;
+    return str.substr(0, lastdot); 
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! \brief Remove the extension from a filename
+//! \param [in] str  the input string
+//! \return the name without extension
+////////////////////////////////////////////////////////////////////////////////
+inline
+std::pair<std::string, std::string>
+split_extension(const std::string & str) {
+  auto lastdot = str.find_last_of(".");
+  if (lastdot == std::string::npos)
+    return std::make_pair( str, "");
+  else
+    return std::make_pair( str.substr(0, lastdot), str.substr(lastdot+1) ); 
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+//! \brief split a string using a list of delimeters
+//! \param [in] str  the input string
+//! \param [in] delim  the list of delimeters
+//! \return the list of split strings
+////////////////////////////////////////////////////////////////////////////////
+inline
+std::vector<std::string> split(
+  const std::string & str, 
+  std::vector<char> delim = {' '}
+) {
+
+  if (str.empty()) return {};
+
+  struct tokens_t : std::ctype<char>
+  {
+    using ctype_base = std::ctype_base;
+    using cctype = std::ctype<char>;
+    using ccmask = cctype::mask;
+    
+    tokens_t(const std::vector<char> & delims) 
+      : cctype(get_table(delims)) {}
+
+    static ctype_base::mask const * get_table(
+      const std::vector<char> & delims
+    ) {
+      static const ccmask * const_rc = cctype::classic_table();
+      static ccmask rc[cctype::table_size];
+      std::memcpy(rc, const_rc, cctype::table_size*sizeof(ccmask));
+      for (const auto & d : delims) 
+        rc[d] = ctype_base::space;
+      return &rc[0];
+    }
+  };
+
+  std::stringstream ss(str);
+  ss.imbue(std::locale(std::locale(), new tokens_t(delim)));
+  std::istream_iterator<std::string> begin(ss);
+  std::istream_iterator<std::string> end;
+  std::vector<std::string> vstrings(begin, end);
+  return vstrings;
+}
+
 
 } // namspeace utils
 } // namspeace ristra
