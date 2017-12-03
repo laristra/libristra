@@ -10,6 +10,7 @@ set(math_HEADERS
   general.h
   matrix.h
   multi_array.h
+  tuple.h
   vector.h
   PARENT_SCOPE
 )
@@ -18,6 +19,9 @@ set(math_SOURCES
   PARENT_SCOPE
 )
 
+cinch_add_unit(test_tuple SOURCES test/tuple.cc)
+cinch_add_unit(test_vector SOURCES test/vector.cc)
+cinch_add_unit(test_matrix SOURCES test/matrix.cc)
 
 #----------------------------------------------------------------------------~-#
 # Formatting options for vim.

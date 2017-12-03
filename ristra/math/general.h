@@ -331,6 +331,11 @@ template< class T >
 constexpr auto sqr( T && x )
 { return std::forward<T>(x) * std::forward<T>(x); }
 
+//! \brief cube operator.
+template< class T >
+constexpr auto cube( T && x )
+{ return std::forward<T>(x) * std::forward<T>(x) * std::forward<T>(x); }
+
 //! \brief returns 1 if +ve, -1 if -ve
 template <typename T> 
 constexpr int sgn( const T & val ) {
