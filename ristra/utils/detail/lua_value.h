@@ -17,7 +17,7 @@
 #endif
 
 // user includes
-#include "ristra/initialization/detail/lua_utils.h"
+#include "ristra/utils/detail/lua_utils.h"
 #include "ristra/utils/errors.h"
 
 // use lua
@@ -29,10 +29,10 @@ extern "C" {
 #include <string>
 #include <type_traits>
 
-namespace ristra
-{
-namespace detail
-{
+namespace ristra {
+namespace utils {
+namespace detail {
+
 ////////////////////////////////////////////////////////////////////////////////
 /// \defgroup lua_value lua_value
 /// \brief A struct to extract and typecast values from the lua stack.
@@ -185,7 +185,8 @@ struct lua_value<Array<T, N> > {
 
 /// \}
 
-} // detail::
-} // ristra::
+} // namespace detail
+} // namespace utils
+} // namespace ristra
 
 #endif // RISTRA_ENABLE_LUA

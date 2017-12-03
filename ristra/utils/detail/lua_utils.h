@@ -27,10 +27,10 @@ extern "C" {
 #include <memory>
 #include <string>
 
-namespace ristra
-{
-namespace detail
-{
+namespace ristra {
+namespace utils {
+namespace detail {
+
 #define lua_try_access_as(state, key, ...)                \
   (!state[key].empty())                                   \
     ? state[key].template as<__VA_ARGS__>()               \
@@ -54,7 +54,8 @@ inline std::string lua_typestring(lua_State * s, int index)
 //! destroy it unless all objects are destroyed.
 using lua_state_ptr_t = std::shared_ptr<lua_State>;
 
-} // detail::
-} // ristra::
+} // detail
+} // utils
+} // ristra
 
 #endif // RISTRA_ENABLE_LUA

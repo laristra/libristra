@@ -268,7 +268,7 @@ TEST(input_engine, resolve_inputs_from_lua)
   t.register_targets<string_t>(string_t_targets);
   t.register_targets<vec2r_t>(vec2r_targets);
   t.register_targets<vec2s_t>(vec2s_targets);
-  t.register_targets<lua_result_uptr_t>(ics_targets);
+  t.register_targets<utils::lua_result_uptr_t>(ics_targets);
 
   t.register_targets<ics_function_t>(ics_targets);
 

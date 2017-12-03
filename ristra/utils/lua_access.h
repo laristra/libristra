@@ -32,8 +32,9 @@ extern "C" {
 #include <string>
 #include <type_traits>
 
-namespace ristra
-{
+namespace ristra {
+namespace utils {
+
 using lua_result_t = detail::lua_result_t;
 using lua_result_uptr_t = detail::lua_result_uptr_t;
 using lua_result_sptr_t = std::shared_ptr<lua_result_t>;
@@ -154,9 +155,13 @@ class lua_t : public detail::lua_base_t
   auto operator()(const std::string & script) { return run_string(script); }
 }; // class lua_t
 
-} // ristra::
+} // utils
+} // ristra
 
 #else // RISTRA_ENABLE_LUA
+
+namespace ristra {
+namespace utils {
 
   struct lua_result_stub{
     template <typename T>
@@ -171,5 +176,8 @@ class lua_t : public detail::lua_base_t
   }; // Lua_Func_Wrapper stub
 
   template <typename T> using Lua_Func_Wrapper = Lua_Func_Wrapper_stub<T>;
+
+} // utils
+} // ristra
 
 #endif // RISTRA_ENABLE_LUA

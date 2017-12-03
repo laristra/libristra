@@ -15,7 +15,12 @@ set(utils_HEADERS
   filter_iterator.h
   fixed_vector.h
   functional.h
-  lua_utils.h
+  lua_access.h
+  detail/lua_base.h
+  detail/lua_ref.h
+  detail/lua_result.h
+  detail/lua_utils.h
+  detail/lua_value.h
   python_utils.h
   string_utils.h
   static_for.h
@@ -46,8 +51,8 @@ cinch_add_unit( fixed_vector SOURCES test/fixed_vector.cc )
 
 cinch_add_unit( lua_utils
   SOURCES test/lua_utils.cc
-  INPUTS test/lua_test.lua
-  LIBRARIES ${LUA_LIBRARIES} )
+  INPUTS test/lua_test.lua test/mock_box_2d.lua
+  LIBRARIES Ristra ${RISTRA_LIBRARIES} )
 
 cinch_add_unit( python_utils 
   SOURCES test/python_utils.cc 

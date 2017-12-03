@@ -16,14 +16,14 @@
 #error "Use top-level entry point, lua_access.h!!"
 #endif
 
-#include "ristra/initialization/detail/type_utils.h"
+#include "ristra/utils/detail/type_utils.h"
 #include "ristra/utils/errors.h"
 #include "ristra/utils/dbc.h"
 
-namespace ristra
-{
-namespace detail
-{
+namespace ristra {
+namespace utils {
+namespace detail {
+
 ////////////////////////////////////////////////////////////////////////////////
 /// \brief This class stores a reference to a lua value.
 /// The class is used to convert the refered lua value to a desired type.  It is
@@ -424,7 +424,8 @@ class lua_result_t : public lua_base_t
 
 using lua_result_uptr_t = std::unique_ptr<lua_result_t>;
 
-} // detail::
-} // ristra::
+} // namespace detail
+} // namespace utils
+} // namespace ristra
 
 #endif // RISTRA_ENABLE_LUA

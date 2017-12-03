@@ -20,10 +20,10 @@
 
 #include <vector>
 
-namespace ristra
-{
-namespace detail
-{
+namespace ristra {
+namespace utils {
+namespace detail {
+
 ////////////////////////////////////////////////////////////////////////////////
 /// \defgroup lua_push lua_push
 /// \brief Functions to push values onto the lua stack.
@@ -193,7 +193,8 @@ inline lua_ref_t make_lua_ref(const lua_state_ptr_t & state)
   return {state, luaL_ref(s, LUA_REGISTRYINDEX), lua_type(s, -1)};
 }
 
-} // detail::
-} // ristra::
+} // namespace detail
+} // namespace utils
+} // namespace ristra
 
 #endif // RISTRA_ENABLE_LUA

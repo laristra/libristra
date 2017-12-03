@@ -17,17 +17,17 @@
 #endif
 
 // user includes
-#include "ristra/initialization/detail/lua_utils.h"
-#include "ristra/initialization/detail/lua_value.h"
+#include "ristra/utils/detail/lua_utils.h"
+#include "ristra/utils/detail/lua_value.h"
 #include "ristra/utils/errors.h"
 
 #include <iomanip>
 #include <sstream>
 
-namespace ristra
-{
-namespace detail
-{
+namespace ristra {
+namespace utils {
+namespace detail {
+
 ////////////////////////////////////////////////////////////////////////////////
 /// \brief A base class for several of the implemented objects.
 /// This class mainly contains a lua state pointer which all derived
@@ -118,7 +118,8 @@ class lua_base_t
   }
 }; // class lua_base_t
 
-} // detail::
-} // ristra::
+} // namespace detail
+} // namespace utils
+} // namespace ristra
 
 #endif // RISTRA_ENABLE_LUA

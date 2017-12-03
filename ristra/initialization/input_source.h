@@ -14,7 +14,7 @@
 #include <stdexcept>
 #include <string>
 #include "ristra/initialization/detail/inputs_impl.h"
-#include "ristra/initialization/lua_access.h"
+#include "ristra/utils/lua_access.h"
 
 namespace ristra
 {
@@ -165,7 +165,7 @@ class lua_source_t : public input_source<lua_source_t>
 #ifdef RISTRA_ENABLE_LUA
   using table_map_t = std::map<string_t, string_t>;
   using lua_keys_t = std::map<string_t, string_t>;
-  using tables_t = std::map<string_t, lua_result_t>;
+  using tables_t = std::map<string_t, utils::lua_result_t>;
 
   explicit lua_source_t(str_cr_t filename) : m_lua_state(), m_filename(filename)
   {
@@ -311,10 +311,10 @@ class lua_source_t : public input_source<lua_source_t>
   }
 
   /**\brief Get direct access to a Lua table. */
-  lua_result_t &get_table(str_cr_t table_name){
+  utils::lua_result_t &get_table(str_cr_t table_name){
     // Two steps to lookup: first get the name of the
     try {
-      lua_result_t & from_table = m_tables.at(table_name);
+      utils::lua_result_t & from_table = m_tables.at(table_name);
       return from_table;
     } catch (std::exception & x) {
       printf("%s:%i Failed to find table named '%s'\n",
@@ -324,7 +324,7 @@ class lua_source_t : public input_source<lua_source_t>
   } // get_table
 
   /**\brief Get a raw lua_result_t. */
-  std::pair<bool, lua_result_t> get_lua_result_raw(str_cr_t k)
+  std::pair<bool, utils::lua_result_t> get_lua_result_raw(str_cr_t k)
   {
     // check if there is a Lua key distinct from k
     str_cr_t l_key(1 == m_lua_key.count(k) ? m_lua_key[k] : k);
@@ -333,7 +333,7 @@ class lua_source_t : public input_source<lua_source_t>
     auto & from_table = m_tables.at(from_name);
     // use lua key in table
     bool found = true;
-    lua_result_t lua_result = from_table[l_key];
+    utils::lua_result_t lua_result = from_table[l_key];
     if (lua_result.empty()) {
       found = false;
     }
@@ -347,7 +347,7 @@ class lua_source_t : public input_source<lua_source_t>
     if ("base_state" == from_name) {
       m_tables.emplace(load_name, lua_try_access(m_lua_state, load_name));
     } else {
-      lua_result_t & from_state = m_tables.at(from_name);
+      utils::lua_result_t & from_state = m_tables.at(from_name);
       m_tables.emplace(load_name, lua_try_access(from_state, load_name));
     }
     // printf("%s:%i Loaded table
@@ -355,7 +355,7 @@ class lua_source_t : public input_source<lua_source_t>
     return;
   }
 
-  lua_t m_lua_state;
+  utils::lua_t m_lua_state;
   string_t m_filename;
   table_map_t m_table_map;
   tables_t m_tables;
@@ -378,8 +378,8 @@ class lua_source_t : public input_source<lua_source_t>
 // specialization for lua_result_t (i.e. Lua function ptr): convert
 // lua_result_t value to a unique_ptr
 template <>
-struct lua_source_t::value_getter<lua_result_uptr_t> {
-  bool get_value(str_cr_t k, lua_result_uptr_t & t, lua_source_t & ls)
+struct lua_source_t::value_getter<utils::lua_result_uptr_t> {
+  bool get_value(str_cr_t k, utils::lua_result_uptr_t & t, lua_source_t & ls)
   {
     // check if there is a Lua key distinct from k
     str_cr_t l_key(1 == ls.m_lua_key.count(k) ? ls.m_lua_key[k] : k);
@@ -393,7 +393,7 @@ struct lua_source_t::value_getter<lua_result_uptr_t> {
       found = false;
     }
     if (found) {
-      t = std::make_unique<lua_result_t>(lua_val);
+      t = std::make_unique<utils::lua_result_t>(lua_val);
     }
     return found;
   }
