@@ -12,7 +12,6 @@ set(initialization_HEADERS
   announce.h
   detail/default_input_traits.h
   detail/inputs_impl.h
-  detail/type_utils.h
   init_value.h
   input_engine.h
   input_source.h

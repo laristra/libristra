@@ -8,30 +8,42 @@ set(utils_HEADERS
   array_ref.h
   array_view.h
   const_string.h
-  dbc.h              detail/dbc_impl.h
-  dimensioned_array.h
-  exceptions.h
-  errors.h
-  filter_iterator.h
-  fixed_vector.h
-  functional.h
-  lua_access.h
+  dbc.h
+  detail/array_view_impl.h
+  detail/dbc_impl.h
   detail/lua_base.h
   detail/lua_ref.h
   detail/lua_result.h
   detail/lua_utils.h
   detail/lua_value.h
+  detail/template_helpers_impl.h
+  detail/tuple_for_each_impl.h
+  detail/tuple_visit_impl.h
+  detail/tuple_zip_impl.h
+  detail/type_traits_impl.h
+  detail/type_utils.h
+  detail/zip_impl.h
+  dimensioned_array.h
+  errors.h
+  exceptions.h
+  filter_iterator.h
+  fixed_vector.h
+  functional.h
+  here.h
+  lua_access.h
   python_utils.h
-  string_utils.h
   static_for.h
+  string_utils.h
   tasks.h
-  template_helpers.h detail/template_helpers_impl.h
+  template_helpers.h
   time_utils.h
-  tuple_for_each.h   detail/tuple_for_each_impl.h
-  tuple_visit.h      detail/tuple_visit_impl.h
-  tuple_zip.h        detail/tuple_zip_impl.h
-  type_traits.h      detail/type_traits_impl.h
-  zip.h              detail/zip_impl.h
+  trivial_string.h
+  tuple_for_each.h
+  tuple_to_array.h
+  tuple_visit.h
+  tuple_zip.h
+  type_traits.h
+  zip.h
   
   PARENT_SCOPE # THIS NEEDS TO BE HERE
 )
