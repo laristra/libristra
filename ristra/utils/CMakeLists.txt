@@ -79,11 +79,17 @@ cinch_add_unit( tuple_zip SOURCES test/tuple_zip.cc )
 cinch_add_unit( type_traits_helpers SOURCES test/type_traits_helpers.cc )
 cinch_add_unit( zip SOURCES test/zip.cc )
 
+cinch_add_unit( dbc_notify
+  SOURCES
+    test/dbc_test_notify.cc
+  LIBRARIES Ristra ${RISTRA_LIBRARIES}
+)
+
+
 cinch_add_unit( dbc
   SOURCES
     test/dbc_test.cc
     test/dbc_test_no_assert.cc
-    test/dbc_test_notify.cc
   LIBRARIES Ristra ${RISTRA_LIBRARIES}
 )
 
