@@ -12,6 +12,10 @@
 #include <cstdio>
 #include <string>
 
+
+#define RISTRA_HERE \
+  __FILE__ << " :: " << __FUNCTION__ << " :: L" << __LINE__
+
 // Macro: call here_func(), using standard values for most arguments
 #define HERE(message) \
   ristra::here_func(__FILE__, __FUNCTION__, __LINE__, message)
