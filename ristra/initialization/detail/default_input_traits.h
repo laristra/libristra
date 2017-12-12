@@ -7,7 +7,6 @@
 #include <functional>
 #include <string>
 #include <tuple>
-#include "ristra/utils/detail/lua_result.h"
 
 namespace ristra
 {

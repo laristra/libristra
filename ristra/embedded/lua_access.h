@@ -33,7 +33,7 @@ extern "C" {
 #include <type_traits>
 
 namespace ristra {
-namespace utils {
+namespace embedded {
 
 using lua_result_t = detail::lua_result_t;
 using lua_result_uptr_t = detail::lua_result_uptr_t;
@@ -161,7 +161,7 @@ class lua_t : public detail::lua_base_t
 #else // RISTRA_ENABLE_LUA
 
 namespace ristra {
-namespace utils {
+namespace embedded {
 
   struct lua_result_stub{
     template <typename T>

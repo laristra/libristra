@@ -17,15 +17,15 @@
 #endif
 
 // user includes
-#include "ristra/utils/detail/lua_utils.h"
-#include "ristra/utils/detail/lua_value.h"
+#include "ristra/embedded/detail/lua_utils.h"
+#include "ristra/embedded/detail/lua_value.h"
 #include "ristra/utils/errors.h"
 
 #include <iomanip>
 #include <sstream>
 
 namespace ristra {
-namespace utils {
+namespace embedded {
 namespace detail {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -119,7 +119,7 @@ class lua_base_t
 }; // class lua_base_t
 
 } // namespace detail
-} // namespace utils
+} // namespace embedded
 } // namespace ristra
 
 #endif // RISTRA_ENABLE_LUA

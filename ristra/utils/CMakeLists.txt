@@ -11,17 +11,11 @@ set(utils_HEADERS
   dbc.h
   detail/array_view_impl.h
   detail/dbc_impl.h
-  detail/lua_base.h
-  detail/lua_ref.h
-  detail/lua_result.h
-  detail/lua_utils.h
-  detail/lua_value.h
   detail/template_helpers_impl.h
   detail/tuple_for_each_impl.h
   detail/tuple_visit_impl.h
   detail/tuple_zip_impl.h
   detail/type_traits_impl.h
-  detail/type_utils.h
   detail/zip_impl.h
   dimensioned_array.h
   errors.h
@@ -30,8 +24,6 @@ set(utils_HEADERS
   fixed_vector.h
   functional.h
   here.h
-  lua_access.h
-  python_utils.h
   static_for.h
   string_utils.h
   tasks.h
@@ -60,16 +52,6 @@ cinch_add_unit( caliper
   LIBRARIES ${Caliper_LIBRARIES} )
 
 cinch_add_unit( fixed_vector SOURCES test/fixed_vector.cc )
-
-cinch_add_unit( lua_utils
-  SOURCES test/lua_utils.cc
-  INPUTS test/lua_test.lua test/mock_box_2d.lua
-  LIBRARIES Ristra ${RISTRA_LIBRARIES} )
-
-cinch_add_unit( python_utils 
-  SOURCES test/python_utils.cc 
-  INPUTS test/python_test.py
-  LIBRARIES ${PYTHON_LIBRARIES} )
 
 cinch_add_unit( static_for SOURCES test/static_for.cc )
 cinch_add_unit( tasks SOURCES test/tasks.cc )

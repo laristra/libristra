@@ -20,7 +20,7 @@
 #include <Python.h>
 
 namespace ristra {
-namespace utils {
+namespace embedded {
 
 //! \brief The python char type.
 #if PY_MAJOR_VERSION < 3
@@ -287,7 +287,7 @@ auto python_call_function( PyObject * py_func, Args&&... args )
 }
 
 
-} // namespace utils
+} // namespace embedded
 } // namespace ristra
 
 #endif // RISTRA_ENABLE_PYTHON

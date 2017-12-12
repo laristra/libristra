@@ -21,7 +21,7 @@
 #include <vector>
 
 namespace ristra {
-namespace utils {
+namespace embedded {
 namespace detail {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -194,7 +194,7 @@ inline lua_ref_t make_lua_ref(const lua_state_ptr_t & state)
 }
 
 } // namespace detail
-} // namespace utils
+} // namespace embedded
 } // namespace ristra
 
 #endif // RISTRA_ENABLE_LUA

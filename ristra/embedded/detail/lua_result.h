@@ -16,12 +16,11 @@
 #error "Use top-level entry point, lua_access.h!!"
 #endif
 
-#include "ristra/utils/detail/type_utils.h"
 #include "ristra/utils/errors.h"
 #include "ristra/utils/dbc.h"
 
 namespace ristra {
-namespace utils {
+namespace embedded {
 namespace detail {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -425,7 +424,7 @@ class lua_result_t : public lua_base_t
 using lua_result_uptr_t = std::unique_ptr<lua_result_t>;
 
 } // namespace detail
-} // namespace utils
+} // namespace embedded
 } // namespace ristra
 
 #endif // RISTRA_ENABLE_LUA

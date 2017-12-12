@@ -28,7 +28,7 @@ extern "C" {
 #include <string>
 
 namespace ristra {
-namespace utils {
+namespace embedded {
 namespace detail {
 
 #define lua_try_access_as(state, key, ...)                \

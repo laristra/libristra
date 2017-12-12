@@ -17,7 +17,7 @@
 #endif
 
 // user includes
-#include "ristra/utils/detail/lua_utils.h"
+#include "ristra/embedded/detail/lua_utils.h"
 #include "ristra/utils/errors.h"
 
 // use lua
@@ -30,7 +30,7 @@ extern "C" {
 #include <type_traits>
 
 namespace ristra {
-namespace utils {
+namespace embedded {
 namespace detail {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -186,7 +186,7 @@ struct lua_value<Array<T, N> > {
 /// \}
 
 } // namespace detail
-} // namespace utils
+} // namespace embedded
 } // namespace ristra
 
 #endif // RISTRA_ENABLE_LUA

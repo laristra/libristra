@@ -13,7 +13,9 @@
 #include "detail/type_traits_impl.h"
 
 // system inculdes
+#include <cxxabi.h> // works for clang 3.9.0, reported ok for GCC
 #include <iterator>
+#include <string>
 #include <type_traits>
 #include <utility>
 
@@ -227,5 +229,22 @@ struct special_decay<std::reference_wrapper<T>> {
 template <class T>
 using special_decay_t = typename special_decay<T>::type;
 
-} // utils::
-} // ristra::
+
+////////////////////////////////////////////////////////////////////////////////
+//! \brief Use non-standard approach to demangle the type_info name.
+////////////////////////////////////////////////////////////////////////////////
+template <class T>
+std::string type_as_string()
+{
+  std::string tname = typeid(T).name();
+  int stat;
+  char * demangled_name = abi::__cxa_demangle(tname.c_str(), NULL, NULL, &stat);
+  if (0 == stat) {
+    tname = demangled_name;
+    free(demangled_name);
+  }
+  return tname;
+} // type_as_string
+
+} // namespace utils
+} // namespace ristra

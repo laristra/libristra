@@ -8,7 +8,6 @@
 
 #include "ristra/initialization/detail/inputs_impl.h"
 #include "ristra/initialization/input_source.h"
-#include "ristra/utils/detail/type_utils.h"
 #include "ristra/utils/type_traits.h"
 #include "ristra/utils/dbc.h"
 
@@ -489,10 +488,10 @@ class input_engine_t
         bool found_target(false);
 #ifdef RISTRA_ENABLE_LUA
         if (lua_source) {
-          utils::lua_result_uptr_t tval;
+          embedded::lua_result_uptr_t tval;
           found_target = lua_source->get_value(target, tval);
           if (found_target) {
-            utils::Lua_Func_Wrapper<func_t> lua_f(std::move(tval));
+            embedded::Lua_Func_Wrapper<func_t> lua_f(std::move(tval));
             func_t cpp_f(lua_f);
             hc_registry[target] = cpp_f;
             continue;
@@ -579,10 +578,10 @@ class input_engine_t
       registry<func_t> & hc_registry(inp.get_registry<func_t>());
       bool found_target(false);
       if (lua_source) {
-        utils::lua_result_uptr_t tval;
+        embedded::lua_result_uptr_t tval;
         found_target = lua_source->get_value(target, tval);
         if (found_target) {
-          utils::Lua_Func_Wrapper<func_t> lua_f(std::move(tval));
+          embedded::Lua_Func_Wrapper<func_t> lua_f(std::move(tval));
           func_t cpp_f(lua_f);
           hc_registry[target] = cpp_f;
         } // if lua found

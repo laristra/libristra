@@ -18,11 +18,11 @@
 
 // Python include should go last cause it conflicts with alot of other 
 // includes.
-#include "ristra/utils/python_utils.h"
+#include "ristra/embedded/python_utils.h"
 
 
 // explicitly use some stuff
-using namespace ristra::utils;
+using namespace ristra::embedded;
 using ristra::config::test_tolerance;
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -222,8 +222,8 @@ TEST(input_source, lua_source_t_get_table)
   using real_t = lua_source_t::real_t;
   string_t fname("mock_box_2d.lua");
   lua_source_t ls(fname);
-  utils::lua_result_t &hydro_input(ls.get_table("hydro"));
-  utils::lua_result_t eos(hydro_input["eos"]);
+  embedded::lua_result_t &hydro_input(ls.get_table("hydro"));
+  embedded::lua_result_t eos(hydro_input["eos"]);
   std::string eos_type(lua_try_access_as(eos,"type",std::string));
   std::string exp_eos_type("ideal_gas");
   EXPECT_TRUE(exp_eos_type == eos_type);

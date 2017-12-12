@@ -13,7 +13,7 @@
 #ifdef RISTRA_ENABLE_LUA
 
 // user includes
-#include <ristra/utils/lua_access.h>
+#include <ristra/embedded/lua_access.h>
 
 // system includes
 #include<array>
@@ -21,7 +21,7 @@
 
 
 // explicitly use some stuff
-using namespace ristra::utils;
+using namespace ristra::embedded;
 using ristra::config::test_tolerance;
 
 ///////////////////////////////////////////////////////////////////////////////
