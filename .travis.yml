@@ -1,0 +1,51 @@
+language: cpp
+
+sudo: required
+
+services:
+- docker
+
+env:
+  matrix:
+    - DISTRO=ubuntu BUILD_TYPE=Debug
+    - DISTRO=fedora BUILD_TYPE=Release
+
+matrix:
+  allow_failures:
+    - compiler: gcc
+      env: DISTRO=ubuntu INTERNAL_FLECSI=OFF BUILD_TYPE=Release
+    - compiler: clang
+      env: DISTRO=ubuntu INTERNAL_FLECSI=OFF BUILD_TYPE=Release
+
+before_install:
+ - git fetch --unshallow && git fetch --tags #for versioning
+
+script:
+ - cp -vr docker ${HOME}/docker
+ - sed -i "1s/fedora/${DISTRO}/" ${HOME}/docker/Dockerfile
+ - cd ../../
+ - mv -v ${TRAVIS_REPO_SLUG} $HOME/docker
+ - docker build --build-arg BUILD_TYPE=${BUILD_TYPE} 
+                --build-arg CC=${CC} --build-arg CXX=${CXX}
+                --build-arg TRAVIS_BRANCH=${TRAVIS_BRANCH} --build-arg TRAVIS_JOB_NUMBER=${TRAVIS_JOB_NUMBER}
+                --build-arg TRAVIS_PULL_REQUEST=${TRAVIS_PULL_REQUEST} --build-arg TRAVIS_JOB_ID=${TRAVIS_JOB_ID}
+                --build-arg TRAVIS_TAG=${TRAVIS_TAG} --build-arg TRAVIS_REPO_SLUG=${TRAVIS_REPO_SLUG}
+                --build-arg TRAVIS_COMMIT=${TRAVIS_COMMIT}
+                -t ${TRAVIS_REPO_SLUG}:${DISTRO} ${HOME}/docker/ &&
+   CON=$(docker run -d ${TRAVIS_REPO_SLUG}:${DISTRO} /bin/bash) &&
+   docker cp ${CON}:/home/flecsi/.ccache ${HOME}/
+
+after_success:
+  - if [[ ${DOCKERHUB} = true && ${DOCKER_USERNAME} && ${DOCKER_PASSWORD} && ${TRAVIS_PULL_REQUEST} == false && ${TRAVIS_BRANCH} == master && ${CC} = gcc ]]; then
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+      docker push "${TRAVIS_REPO_SLUG}:${DISTRO}";
+    fi
+
+compiler:
+  - gcc
+  - clang
+
+notifications:
+  branches:
+    only:
+      - master
