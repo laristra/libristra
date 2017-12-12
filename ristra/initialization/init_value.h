@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "ristra/utils/errors.h"
+#include "ristra/exception/dbc/dbc.h"
+#include "ristra/exception/errors.h"
 #include "ristra/utils/type_traits.h"
-#include "ristra/utils/dbc.h"
 #include <string>
 
 namespace ristra

@@ -16,8 +16,8 @@
 #error "Use top-level entry point, lua_access.h!!"
 #endif
 
-#include "ristra/utils/errors.h"
-#include "ristra/utils/dbc.h"
+#include "ristra/exception/errors.h"
+#include "ristra/exception/dbc/dbc.h"
 
 namespace ristra {
 namespace embedded {

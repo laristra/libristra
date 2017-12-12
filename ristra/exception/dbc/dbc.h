@@ -7,7 +7,7 @@
 #include<ristra-config.h>
 
 #define IM_OK_TO_INCLUDE_DBC_IMPL
-#include "ristra/utils/detail/dbc_impl.h"
+#include "ristra/exception/dbc/dbc_impl.h"
 #undef IM_OK_TO_INCLUDE_DBC_IMPL
 #include <functional>
 #include <sstream>
@@ -49,10 +49,10 @@
  *  for the things that absolutely must always be true.
  */
 
-namespace ristra
-{
-namespace dbc
-{
+namespace ristra {
+namespace exception {
+namespace dbc {
+
 // Possible DBC actions
 inline void throw_exception(std::string const & cond, const char * file_name,
   const char * func_name, int line)
@@ -162,43 +162,51 @@ inline bool less_than_func(gt_t const & x, gt_t const & min, char const * name,
   return cond;
 } // GreaterThan
 
-} // dbc::
-} // ristra::
+} // namespace dbc
+} // namespace exception
+} // namespace ristra
 
 #define Insist(c, cs)     \
-  ::ristra::dbc::assertf( \
-    c, cs, __FILE__, __FUNCTION__, __LINE__, ristra::dbc::dbc_action);
+  ristra::exception::dbc::assertf( \
+    c, cs, __FILE__, __FUNCTION__, __LINE__, \
+    ristra::exception::dbc::dbc_action);
 
 #ifdef RISTRA_REQUIRE_ON
 /*! \def Require(condition,descriptive_string): Precondition assertion. */
 #define Require(c, cs)    \
-  ::ristra::dbc::assertf( \
-    c, cs, __FILE__, __FUNCTION__, __LINE__, ristra::dbc::dbc_action);
+  ristra::exception::dbc::assertf( \
+    c, cs, __FILE__, __FUNCTION__, __LINE__, \
+    ristra::exception::dbc::dbc_action);
 /*! \def Check(condition,descriptive_string): Invariant assertion. */
 #define Check(c, cs)      \
-  ::ristra::dbc::assertf( \
-    c, cs, __FILE__, __FUNCTION__, __LINE__, ristra::dbc::dbc_action);
+  ristra::exception::dbc::assertf( \
+    c, cs, __FILE__, __FUNCTION__, __LINE__, \
+    ristra::exception::dbc::dbc_action);
 /*! \def Ensure(condition,descriptive_string): Postcondition assertion. */
 #define Ensure(c, cs)     \
-  ::ristra::dbc::assertf( \
-    c, cs, __FILE__, __FUNCTION__, __LINE__, ristra::dbc::dbc_action);
+  ristra::exception::dbc::assertf( \
+    c, cs, __FILE__, __FUNCTION__, __LINE__, \
+    ristra::exception::dbc::dbc_action);
 /*! \def Equal(x,y): Assert x == y */
 #define Equal(a, b) \
-  ::ristra::dbc::equal_func(a, b, #a, #b, __FILE__, __FUNCTION__, __LINE__);
+  ristra::exception::dbc::equal_func(a, b, #a, #b, __FILE__, __FUNCTION__, \
+      __LINE__);
 /*! \def InOpenRange(x,min,max): Assert x > min && x < max */
 #define InOpenRange(x, mn, mx)       \
-  ::ristra::dbc::in_open_range_func( \
+  ristra::exception::dbc::in_open_range_func( \
     x, mn, mx, #x, __FILE__, __FUNCTION__, __LINE__);
 /*! \def GreaterThan(x,min): Assert x > min */
 #define GreaterThan(x, mn) \
-  ::ristra::dbc::greater_than_func(x, mn, #x, __FILE__, __FUNCTION__, __LINE__);
+  ristra::exception::dbc::greater_than_func(x, mn, #x, __FILE__, __FUNCTION__, \
+      __LINE__);
 /*! \def GreaterEqual(x,min): Assert x >= min */
 #define GreaterEqual(x, mn)          \
-  ::ristra::dbc::greater_equal_func( \
+  ristra::exception::dbc::greater_equal_func( \
     x, mn, #x, __FILE__, __FUNCTION__, __LINE__);
 /*! \def LessThan(x,max): Assert x < max */
 #define LessThan(x, mx) \
-  ::ristra::dbc::less_than_func(x, mx, #x, __FILE__, __FUNCTION__, __LINE__);
+  ristra::exception::dbc::less_than_func(x, mx, #x, __FILE__, __FUNCTION__, \
+      __LINE__);
 
 #else // REQUIRE_ON
 

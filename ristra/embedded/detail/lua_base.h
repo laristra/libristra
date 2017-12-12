@@ -19,7 +19,7 @@
 // user includes
 #include "ristra/embedded/detail/lua_utils.h"
 #include "ristra/embedded/detail/lua_value.h"
-#include "ristra/utils/errors.h"
+#include "ristra/exception/errors.h"
 
 #include <iomanip>
 #include <sstream>

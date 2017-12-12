@@ -20,7 +20,7 @@
 #include "detail/lua_result.h"
 #include "detail/lua_utils.h"
 #include "detail/lua_value.h"
-#include "ristra/utils/errors.h"
+#include "ristra/exception/errors.h"
 
 // use lua
 extern "C" {

@@ -21,9 +21,9 @@
 #define RISTRA_REQUIRE_ON
 #endif
 
-#include "ristra/utils/dbc.h"
+#include "ristra/exception/dbc/dbc.h"
 
-using namespace ristra::dbc;
+using namespace ristra::exception::dbc;
 
 TEST(dbc_notify, compiles) { ASSERT_TRUE(true); }
 
@@ -80,7 +80,7 @@ TEST(dbc_notify, Equal)
     EXPECT_FALSE(ret_val);
     std::string fail_msg(outs.str());
     std::stringstream exp_msg;
-    exp_msg << "ristra/utils/test/dbc_test_notify.cc:" << fail_line
+    exp_msg << __FILE__ << ":" << fail_line
             << ":TestBody assertion 'i != j' failed";
     EXPECT_TRUE(check_messages(exp_msg.str(), fail_msg));
   } catch (std::exception & e) {
@@ -106,7 +106,7 @@ TEST(dbc_notify, InOpenRange)
     fail_line = __LINE__;ret_val = InOpenRange(i,j,k);
     // clang-format on
     std::stringstream exp_msg;
-    exp_msg << "ristra/utils/test/dbc_test_notify.cc:" << fail_line
+    exp_msg << __FILE__ << ":" << fail_line
             << ":TestBody assertion 'i (1) was not in range (2,4)' failed";
     std::string excmsg(outs.str());
     EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));
@@ -130,7 +130,7 @@ TEST(dbc_notify, Insist)
   try { // clang-format off
     fail_line = __LINE__; Insist(i == j, "i == j"); // clang-format on
     std::stringstream exp_msg;
-    exp_msg << "ristra/utils/test/dbc_test_notify.cc:" << fail_line
+    exp_msg << __FILE__ << ":" << fail_line
             << ":TestBody assertion 'i == j' failed";
     std::string excmsg(outs.str());
     EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));
@@ -157,7 +157,7 @@ TEST(dbc_notify, LessThan)
     fail_line = __LINE__;ret_val = LessThan(j, i);
     // clang-format on
     std::stringstream exp_msg;
-    exp_msg << "ristra/utils/test/dbc_test_notify.cc:" << fail_line
+    exp_msg << __FILE__ << ":" << fail_line
             << ":TestBody assertion 'j (2) >= 1' failed";
     std::string excmsg(outs.str());
     EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));

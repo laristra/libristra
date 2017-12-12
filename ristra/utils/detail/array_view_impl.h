@@ -11,7 +11,7 @@
 
 // user includes
 #include "ristra/utils/type_traits.h"
-#include "ristra/utils/errors.h"
+#include "ristra/exception/errors.h"
 #include "ristra/utils/template_helpers.h"
 
 namespace ristra {

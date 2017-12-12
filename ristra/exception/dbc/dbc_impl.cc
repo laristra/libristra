@@ -9,10 +9,10 @@
 #include <iostream>
 #include <sstream>
 
-namespace ristra
-{
-namespace dbc
-{
+namespace ristra {
+namespace exception {
+namespace dbc {
+
 std::ostream * p_str = &std::cerr;
 
 std::string build_message(std::string const & cond, const char * file_name,
@@ -33,8 +33,8 @@ bool assertf(bool cond, std::string const & cond_str, const char * file_name,
   return cond;
 } // assertf
 
-} // dbc::
-
-} // ristra::
+} // namespace dbc
+} // namespace exception
+} // namespace ristra
 
 // End of file

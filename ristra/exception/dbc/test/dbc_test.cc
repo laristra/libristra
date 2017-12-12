@@ -22,9 +22,9 @@
 #undef RISTRA_DBC_NOTIFY
 #endif
 
-#include "ristra/utils/dbc.h"
+#include "ristra/exception/dbc/dbc.h"
 
-using namespace ristra::dbc;
+using namespace ristra::exception::dbc;
 
 TEST(dbc, compiles) { ASSERT_TRUE(true); }
 
@@ -70,7 +70,7 @@ TEST(dbc, Equal)
     } catch (std::exception & e) {
       // exact message depends on build details. This part shd be invariant:
       std::stringstream exp_msg;
-      exp_msg << "ristra/utils/test/dbc_test.cc:" << fail_line
+      exp_msg << __FILE__ << ":" << fail_line
               << ":TestBody assertion 'i != j' failed";
       std::string excmsg(e.what());
       EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));
@@ -103,7 +103,7 @@ TEST(dbc, InOpenRange)
     } catch (std::exception & e) {
       // exact message depends on build details. This part shd be invariant:
       std::stringstream exp_msg;
-      exp_msg << "ristra/utils/test/dbc_test.cc:" << fail_line
+      exp_msg << __FILE__ << ":" << fail_line
               << ":TestBody assertion 'i (1) was not in range (2,4)' failed";
       std::string excmsg(e.what());
       EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));
@@ -130,7 +130,7 @@ TEST(dbc, Insist)
     } catch (std::exception & e) {
       // exact message depends on build details. This part shd be invariant:
       std::stringstream exp_msg;
-      exp_msg << "ristra/utils/test/dbc_test.cc:" << fail_line
+      exp_msg << __FILE__ << ":" << fail_line
               << ":TestBody assertion 'i == j' failed";
       std::string excmsg(e.what());
       EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));
@@ -159,7 +159,7 @@ TEST(dbc, LessThan)
     } catch (std::exception & e) {
       // exact message depends on build details. This part shd be invariant:
       std::stringstream exp_msg;
-      exp_msg << "ristra/utils/test/dbc_test.cc:" << fail_line
+      exp_msg << __FILE__ << ":" << fail_line
               << ":TestBody assertion 'j (2) >= 1' failed";
       std::string excmsg(e.what());
       EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));

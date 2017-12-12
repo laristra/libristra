@@ -14,10 +14,10 @@
 
 /* Implementations for the DBC system. Do not include this directly. */
 
-namespace ristra
-{
-namespace dbc
-{
+namespace ristra {
+namespace exception {
+namespace dbc {
+
 using action_t =
   std::function<void(std::string const &, const char *, const char *, int)>;
 
@@ -50,7 +50,8 @@ bool assertf_l(bool cond, error_msg_generator & gen, const char * file_name,
   return cond;
 }
 
-} // dbc::
-} // ristra::
+} // namespace dbc
+} // namespace exception
+} // namespace ristra
 
 // End of file

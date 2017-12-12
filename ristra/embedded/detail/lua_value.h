@@ -18,7 +18,7 @@
 
 // user includes
 #include "ristra/embedded/detail/lua_utils.h"
-#include "ristra/utils/errors.h"
+#include "ristra/exception/errors.h"
 
 // use lua
 extern "C" {
