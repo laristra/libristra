@@ -17,6 +17,7 @@ namespace shapes {
 //////////////////////////////////////////////////////////////////////////////
 enum class geometric_shapes_t 
 {
+  none,
   triangle,
   quadrilateral,
   polygon,

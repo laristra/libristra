@@ -30,6 +30,7 @@ set(utils_HEADERS
   tuple_to_array.h
   tuple_visit.h
   tuple_zip.h
+  type_traits.h
   zip.h
   
   PARENT_SCOPE # THIS NEEDS TO BE HERE

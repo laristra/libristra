@@ -9,7 +9,10 @@
 #pragma once
 
 // user includes
-#include "ristra/math/vector.h"
+#include <ristra/math/vector.h>
+
+// system includes
+#include <cmath>
 
 namespace ristra  {
 namespace geometry {
