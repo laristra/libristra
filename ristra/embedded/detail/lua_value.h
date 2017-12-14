@@ -17,8 +17,8 @@
 #endif
 
 // user includes
+#include "ristra/assertions/errors.h"
 #include "ristra/embedded/detail/lua_utils.h"
-#include "ristra/exception/errors.h"
 
 // use lua
 extern "C" {

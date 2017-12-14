@@ -9,8 +9,8 @@ set(embedded_HEADERS
   detail/lua_result.h
   detail/lua_utils.h
   detail/lua_value.h
-  lua_access.h
-  python_utils.h
+  embed_lua.h
+  embed_python.h
   
   PARENT_SCOPE # THIS NEEDS TO BE HERE
 )

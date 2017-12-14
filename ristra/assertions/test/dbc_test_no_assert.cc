@@ -20,9 +20,9 @@
 #undef RISTRA_DBC_NOTIFY
 #endif
 
-#include "ristra/exception/dbc/dbc.h"
+#include "ristra/assertions/dbc.h"
 
-using namespace ristra::exception::dbc;
+using namespace ristra::assertions::dbc;
 
 TEST(dbc_no_assert, compiles) { ASSERT_TRUE(true); }
 

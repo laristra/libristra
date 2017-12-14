@@ -10,7 +10,7 @@
 #include <sstream>
 
 namespace ristra {
-namespace exception {
+namespace assertions {
 namespace dbc {
 
 std::ostream * p_str = &std::cerr;

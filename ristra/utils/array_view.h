@@ -10,8 +10,9 @@
 #pragma once
 
 // user includes
+#include "ristra/assertions/errors.h"
+#include "ristra/compatibility/type_traits.h"
 #include "ristra/utils/type_traits.h"
-#include "ristra/exception/errors.h"
 #include "ristra/utils/template_helpers.h"
 
 // system includes
@@ -2176,7 +2177,7 @@ public:
       // has same rank
       && std::rank<ArrayType>::value == Rank 
       // has same type
-      && is_same_v< std::remove_all_extents_t<ArrayType>, value_type >
+      && compatibility::is_same_v< std::remove_all_extents_t<ArrayType>, value_type >
     >* = nullptr
   >
   constexpr explicit strided_array_view(ArrayType & arr) noexcept :
@@ -2414,7 +2415,7 @@ public:
   template <
     typename OtherValueType, std::ptrdiff_t OtherRank,
     typename Dummy = std::enable_if_t< 
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> >
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> >
     >
   >
   constexpr bool operator==(const strided_array_view<OtherValueType, OtherRank>& other) const noexcept
@@ -2426,7 +2427,7 @@ public:
   template <
     typename OtherValueType, std::ptrdiff_t OtherRank,
     typename Dummy = std::enable_if_t<
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> >
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> >
     >
   >
   constexpr bool operator!=(const strided_array_view<OtherValueType, OtherRank>& other) const noexcept
@@ -2437,7 +2438,7 @@ public:
   template <
     typename OtherValueType, std::ptrdiff_t OtherRank,
     typename Dummy = std::enable_if_t<
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
     >
   >
   constexpr bool operator<(const strided_array_view<OtherValueType, OtherRank>& other) const noexcept
@@ -2448,7 +2449,7 @@ public:
   template < 
     typename OtherValueType, std::ptrdiff_t OtherRank,
     typename Dummy = std::enable_if_t<
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
     >
   >
   constexpr bool operator<=(const strided_array_view<OtherValueType, OtherRank>& other) const noexcept
@@ -2459,7 +2460,7 @@ public:
   template <
     typename OtherValueType, std::ptrdiff_t OtherRank,
     typename Dummy = std::enable_if_t<
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
     >
   >
   constexpr bool operator>(const strided_array_view<OtherValueType, OtherRank>& other) const noexcept
@@ -2470,7 +2471,7 @@ public:
   template <
     typename OtherValueType, std::ptrdiff_t OtherRank,
     typename Dummy = std::enable_if_t<
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
     >
   >
   constexpr bool operator>=(const strided_array_view<OtherValueType, OtherRank>& other) const noexcept
@@ -2698,7 +2699,7 @@ public:
       // has same rank
       && std::rank<ArrayType>::value == Rank 
       // has same type
-      &&  is_same_v< std::remove_all_extents_t<ArrayType>, value_type >
+      &&  compatibility::is_same_v< std::remove_all_extents_t<ArrayType>, value_type >
     >* = nullptr
   >
   constexpr explicit array_view(ArrayType & arr) noexcept :
@@ -2929,7 +2930,7 @@ public:
   template <
     typename OtherValueType, std::ptrdiff_t OtherRank,
     typename Dummy = std::enable_if_t< 
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> >
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> >
     >
   >
   constexpr bool operator==(const array_view<OtherValueType, OtherRank>& other) const noexcept
@@ -2941,7 +2942,7 @@ public:
   template <
     typename OtherValueType, std::ptrdiff_t OtherRank,
     typename Dummy = std::enable_if_t<
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> >
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> >
     >
   >
   constexpr bool operator!=(const array_view<OtherValueType, OtherRank>& other) const noexcept
@@ -2952,7 +2953,7 @@ public:
   template <
     typename OtherValueType, std::ptrdiff_t OtherRank,
     typename Dummy = std::enable_if_t<
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
     >
   >
   constexpr bool operator<(const array_view<OtherValueType, OtherRank>& other) const noexcept
@@ -2963,7 +2964,7 @@ public:
   template < 
     typename OtherValueType, std::ptrdiff_t OtherRank,
     typename Dummy = std::enable_if_t<
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
     >
   >
   constexpr bool operator<=(const array_view<OtherValueType, OtherRank>& other) const noexcept
@@ -2974,7 +2975,7 @@ public:
   template <
     typename OtherValueType, std::ptrdiff_t OtherRank,
     typename Dummy = std::enable_if_t<
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
     >
   >
   constexpr bool operator>(const array_view<OtherValueType, OtherRank>& other) const noexcept
@@ -2985,7 +2986,7 @@ public:
   template <
     typename OtherValueType, std::ptrdiff_t OtherRank,
     typename Dummy = std::enable_if_t<
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
     >
   >
   constexpr bool operator>=(const array_view<OtherValueType, OtherRank>& other) const noexcept
@@ -3206,7 +3207,7 @@ public:
       // has same rank
       && std::rank<ArrayType>::value == Rank 
       // has same type
-      &&  is_same_v< std::remove_all_extents_t<ArrayType>, value_type >
+      &&  compatibility::is_same_v< std::remove_all_extents_t<ArrayType>, value_type >
     >* = nullptr
   >
   constexpr explicit static_array_view(ArrayType & arr) noexcept :
@@ -3448,7 +3449,7 @@ public:
   template <
     typename OtherValueType, std::ptrdiff_t OtherFirstDim, std::ptrdiff_t... OtherRestDims,
     typename Dummy = std::enable_if_t< 
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> >
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> >
     >
   >
   constexpr bool operator==(
@@ -3461,7 +3462,7 @@ public:
   template <
     typename OtherValueType, std::ptrdiff_t OtherFirstDim, std::ptrdiff_t... OtherRestDims,
     typename Dummy = std::enable_if_t<
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> >
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> >
     >
   >
   constexpr bool operator!=(
@@ -3473,7 +3474,7 @@ public:
   template <
     typename OtherValueType, std::ptrdiff_t OtherFirstDim, std::ptrdiff_t... OtherRestDims,
     typename Dummy = std::enable_if_t<
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
     >
   >
   constexpr bool operator<(
@@ -3485,7 +3486,7 @@ public:
   template < 
     typename OtherValueType, std::ptrdiff_t OtherFirstDim, std::ptrdiff_t... OtherRestDims,
     typename Dummy = std::enable_if_t<
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
     >
   >
   constexpr bool operator<=(
@@ -3497,7 +3498,7 @@ public:
   template <
     typename OtherValueType, std::ptrdiff_t OtherFirstDim, std::ptrdiff_t... OtherRestDims,
     typename Dummy = std::enable_if_t<
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
     >
   >
   constexpr bool operator>(
@@ -3509,7 +3510,7 @@ public:
   template <
     typename OtherValueType, std::ptrdiff_t OtherFirstDim, std::ptrdiff_t... OtherRestDims,
     typename Dummy = std::enable_if_t<
-      is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
+      compatibility::is_same_v< std::remove_cv_t<value_type>, std::remove_cv_t<OtherValueType> > 
     >
   >
   constexpr bool operator>=(

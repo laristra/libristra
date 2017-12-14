@@ -21,9 +21,9 @@
 #define RISTRA_REQUIRE_ON
 #endif
 
-#include "ristra/exception/dbc/dbc.h"
+#include "ristra/assertions/dbc.h"
 
-using namespace ristra::exception::dbc;
+using namespace ristra::assertions::dbc;
 
 TEST(dbc_notify, compiles) { ASSERT_TRUE(true); }
 

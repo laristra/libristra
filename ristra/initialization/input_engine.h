@@ -6,7 +6,7 @@
 
 #include<ristra-config.h>
 
-#include "ristra/exception/dbc/dbc.h"
+#include "ristra/assertions/dbc.h"
 #include "ristra/initialization/detail/inputs_impl.h"
 #include "ristra/initialization/input_source.h"
 #include "ristra/utils/type_traits.h"

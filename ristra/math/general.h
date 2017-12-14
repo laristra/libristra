@@ -12,7 +12,7 @@
 // user includes
 #include "ristra/math/detail/general_impl.h"
 
-#include "ristra/exception/errors.h"
+#include "ristra/assertions/errors.h"
 #include "ristra/utils/template_helpers.h"
 #include "ristra/utils/type_traits.h"
 

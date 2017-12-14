@@ -18,13 +18,14 @@
 
 // Macro: call here_func(), using standard values for most arguments
 #define HERE(message) \
-  ristra::here_func(__FILE__, __FUNCTION__, __LINE__, message)
+  ristra::assertions::here_func(__FILE__, __FUNCTION__, __LINE__, message)
 
 #define HERE_STR(message) \
-  ristra::here_str_func(__FILE__, __FUNCTION__, __LINE__, message)
+  ristra::assertions::here_str_func(__FILE__, __FUNCTION__, __LINE__, message)
 
-namespace ristra
-{
+namespace ristra {
+namespace assertions {
+
 // Print a diagnostic message, along with source code location
 inline void here_func(char const * const filename, char const * const fname,
   int const line, std::string const & s)
@@ -39,9 +40,6 @@ inline std::string here_str_func(char const * const filename,
     filename + std::string(":") + fname + ":" + std::to_string(line) + " " + s;
   return str;
 }
-} // ristra::
+} // namespace assertions
+} // namespace ristra
 
-/*~-------------------------------------------------------------------------~-*
- * Formatting options
- * vim: set tabstop=2 shiftwidth=2 expandtab :
- *~-------------------------------------------------------------------------~-*/

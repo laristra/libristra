@@ -14,7 +14,7 @@
 
 // user includes
 #include "ristra/utils/string_utils.h"
-#include "ristra/exception/errors.h"
+#include "ristra/assertions/errors.h"
 
 // use python
 #include <Python.h>

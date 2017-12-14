@@ -21,6 +21,7 @@ set(utils_HEADERS
   functional.h
   static_for.h
   string_utils.h
+  static_warning.h
   tasks.h
   template_helpers.h
   time_utils.h
@@ -29,7 +30,6 @@ set(utils_HEADERS
   tuple_to_array.h
   tuple_visit.h
   tuple_zip.h
-  type_traits.h
   zip.h
   
   PARENT_SCOPE # THIS NEEDS TO BE HERE

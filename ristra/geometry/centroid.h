@@ -10,7 +10,7 @@
 
 
 // user includes
-#include "ristra/exception/errors.h"
+#include "ristra/assertions/errors.h"
 #include "ristra/utils/type_traits.h"
 #include "detail/centroid_impl.h"
 

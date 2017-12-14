@@ -16,7 +16,7 @@
 #error "Use top-level entry point, lua_access.h!!"
 #endif
 
-#include "ristra/exception/errors.h"
+#include "ristra/assertions/errors.h"
 
 #include <vector>
 

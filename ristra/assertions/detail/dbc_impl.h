@@ -15,7 +15,7 @@
 /* Implementations for the DBC system. Do not include this directly. */
 
 namespace ristra {
-namespace exception {
+namespace assertions {
 namespace dbc {
 
 using action_t =

@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "ristra/exception/dbc/dbc.h"
-#include "ristra/exception/errors.h"
+#include "ristra/assertions/dbc.h"
+#include "ristra/assertions/errors.h"
 #include "ristra/utils/type_traits.h"
 #include <string>
 

@@ -36,7 +36,7 @@
   do {                                                                         \
     std::cerr << RISTRA_HERE << std::endl;                                     \
     std::cerr << msg << std::endl;                                             \
-    THROW_EXCEPTION(ristra::utils::ExceptionRunTime());                        \
+    THROW_EXCEPTION(ristra::assertions::ExceptionRunTime());                        \
   } while(0)
 
 
@@ -48,7 +48,7 @@
   do {                                                                         \
     std::cerr << RISTRA_HERE << std::endl;                                     \
     std::cerr << msg << std::endl;                                             \
-    THROW_EXCEPTION(ristra::utils::ExceptionLogic());                          \
+    THROW_EXCEPTION(ristra::assertions::ExceptionLogic());                          \
   } while(0)
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -58,7 +58,7 @@
 #define throw_file_error(file)                                          \
   do {                                                                  \
     std::cerr << RISTRA_HERE << std::endl;                                     \
-    THROW_EXCEPTION(ristra::utils::ExceptionFileError(file));              \
+    THROW_EXCEPTION(ristra::assertions::ExceptionFileError(file));              \
   } while(0)
 
 
@@ -70,7 +70,7 @@
   do {                                                                  \
     std::cerr << RISTRA_HERE << std::endl;                                     \
     std::cerr << msg << std::endl;                                      \
-    THROW_EXCEPTION(ristra::utils::ExceptionNotImplemented());             \
+    THROW_EXCEPTION(ristra::assertions::ExceptionNotImplemented());             \
   } while(0)
 
 ////////////////////////////////////////////////////////////////////////////////

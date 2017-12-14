@@ -10,12 +10,10 @@
 
 set(initialization_HEADERS
   announce.h
-  detail/default_input_traits.h
   detail/inputs_impl.h
   init_value.h
   input_engine.h
   input_source.h
-  static_warning.h
   PARENT_SCOPE
 )
 

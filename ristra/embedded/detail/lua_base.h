@@ -17,9 +17,9 @@
 #endif
 
 // user includes
+#include "ristra/assertions/errors.h"
 #include "ristra/embedded/detail/lua_utils.h"
 #include "ristra/embedded/detail/lua_value.h"
-#include "ristra/exception/errors.h"
 
 #include <iomanip>
 #include <sstream>

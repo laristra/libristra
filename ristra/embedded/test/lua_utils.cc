@@ -13,7 +13,7 @@
 #ifdef RISTRA_ENABLE_LUA
 
 // user includes
-#include <ristra/embedded/lua_access.h>
+#include <ristra/embedded/embed_lua.h>
 
 // system includes
 #include<array>
