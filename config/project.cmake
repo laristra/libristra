@@ -217,7 +217,25 @@ set(${_variableName} \"${${_variableName}}\")"
 endforeach()
 
 #------------------------------------------------------------------------------#
-# configure .cmake file (for other projects)
+# Prepare variables for ProjectConfig file.
+#------------------------------------------------------------------------------#
+
+get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  PROPERTY INCLUDE_DIRECTORIES)
+
+foreach(dir ${dirs})
+  if(NOT ${dir} MATCHES ${CMAKE_CURRENT_SOURCE_DIR})
+    list(APPEND RISTRA_EXTERNAL_INCLUDE_DIRS ${dir})
+  endif()
+endforeach()
+
+set(RISTRA_LIBRARY_DIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR})
+set(RISTRA_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include
+  ${RISTRA_EXTERNAL_INCLUDE_DIRS})
+set(RISTRA_CMAKE_DIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/Ristra)
+
+#------------------------------------------------------------------------------#
+# Export targets and package.
 #------------------------------------------------------------------------------#
 
 export(
@@ -227,9 +245,9 @@ export(
 
 export(PACKAGE Ristra)
 
-set(RISTRA_LIBRARY_DIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR})
-set(RISTRA_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
-set(RISTRA_CMAKE_DIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/Ristra)
+#------------------------------------------------------------------------------#
+# configure .cmake file (for other projects)
+#------------------------------------------------------------------------------#
 
 configure_file(${PROJECT_SOURCE_DIR}/config/RistraConfig.cmake.in
   ${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraConfig.cmake @ONLY)
