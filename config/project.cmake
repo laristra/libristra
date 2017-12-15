@@ -208,13 +208,27 @@ include_directories(${CMAKE_BINARY_DIR})
 cinch_add_library_target(Ristra ristra)
 
 #------------------------------------------------------------------------------#
-# configure .cmake file (for other projects)
+# Extract all project options so they can be exported to the ProjectConfig.cmake
+# file.
 #------------------------------------------------------------------------------#
+
+get_cmake_property(_variableNames VARIABLES)
+string (REGEX MATCHALL "(^|;)RISTRA_[A-Za-z0-9_]*" _matchedVars "${_variableNames}")
+foreach (_variableName ${_matchedVars})
+  set( RISTRA_CONFIG_CODE
+    "${RISTRA_CONFIG_CODE}
+set(${_variableName} \"${${_variableName}}\")"
+  )
+endforeach()
 
 export(
   TARGETS Ristra
   FILE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraTargets.cmake
 )
+
+#------------------------------------------------------------------------------#
+# configure .cmake file (for other projects)
+#------------------------------------------------------------------------------#
 
 export(PACKAGE Ristra)
 
@@ -235,15 +249,3 @@ install(
   DESTINATION ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/Ristra
   COMPONENT dev
 )
-
-#------------------------------------------------------------------------------#
-# Add distclean target
-#------------------------------------------------------------------------------#
-
-add_custom_target(distclean rm -rf ${CMAKE_BINARY_DIR}/*)
-
-#~---------------------------------------------------------------------------~-#
-# Formatting options
-# vim: set tabstop=2 shiftwidth=2 expandtab :
-# sublime: none needed--NYUK NYUK NYUK!
-#~---------------------------------------------------------------------------~-#
