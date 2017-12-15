@@ -21,7 +21,7 @@ set(assertions_SOURCES
 cinch_add_unit( dbc_notify
   SOURCES
     test/dbc_test_notify.cc
-  LIBRARIES Ristra ${RISTRA_LIBRARIES}
+  LIBRARIES Ristra
 )
 
 
@@ -29,5 +29,5 @@ cinch_add_unit( dbc
   SOURCES
     test/dbc_test.cc
     test/dbc_test_no_assert.cc
-  LIBRARIES Ristra ${RISTRA_LIBRARIES}
+  LIBRARIES Ristra
 )

@@ -38,7 +38,7 @@ cinch_add_unit(ristra-test
     test/input_source.cc
     test/input_engine.cc
     test/test_input_hard_coded_problems.cc
-  LIBRARIES Ristra ${RISTRA_LIBRARIES}
+  LIBRARIES Ristra
   INPUTS
     test/mock_box_2d.lua
 )

@@ -18,7 +18,7 @@ set(embedded_HEADERS
 cinch_add_unit( lua_utils
   SOURCES test/lua_utils.cc
   INPUTS test/lua_test.lua test/mock_box_2d.lua
-  LIBRARIES Ristra ${RISTRA_LIBRARIES} )
+  LIBRARIES Ristra )
 
 cinch_add_unit( python_utils 
   SOURCES test/python_utils.cc 

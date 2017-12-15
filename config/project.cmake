@@ -201,6 +201,7 @@ include_directories(${CMAKE_BINARY_DIR})
 #------------------------------------------------------------------------------#
 
 cinch_add_library_target(Ristra ristra)
+cinch_target_link_libraries( Ristra ${RISTRA_LIBRARIES} )
 
 #------------------------------------------------------------------------------#
 # Extract all project options so they can be exported to the ProjectConfig.cmake
