@@ -1,4 +1,4 @@
-FROM fedora:latest
+FROM laristra/flecsi-buildenv:fedora
 
 ARG CC
 ARG CXX
@@ -16,12 +16,17 @@ ARG TRAVIS_TAG
 ARG TRAVIS_REPO_SLUG
 ARG TRAVIS_COMMIT
 
+USER flecsi
+
+WORKDIR  /home/flecsi/libristra
 RUN mkdir build
 WORKDIR build
 
 RUN cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
           -DENABLE_UNIT_TESTS=ON \
           ..
-RUN make VERBOSE=1 -j2
-RUN make test ARGS="-V"
+RUN make -j2 || make
+RUN make test ARGS="CTEST_OUTPUT_ON_FAILURE=1"
 RUN make install DESTDIR=${PWD}
+
+WORKDIR /home/flecsi
