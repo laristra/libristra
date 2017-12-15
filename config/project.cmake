@@ -30,15 +30,10 @@ set(CINCH_HEADER_SUFFIXES "\\.h")
 # If a C++14 compiler is available, then set the appropriate flags
 #------------------------------------------------------------------------------#
 
-include(cxx14)
-
-check_for_cxx14_compiler(CXX14_COMPILER)
-
-if(CXX14_COMPILER)
-    enable_cxx14()
-else()
-    message(FATAL_ERROR "C++14 compatible compiler not found")
-endif()
+# We need C++ 14
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED on)
+set(CMAKE_CXX_EXTENSIONS off)
 
 #------------------------------------------------------------------------------#
 # Enable exceptions
@@ -221,14 +216,14 @@ set(${_variableName} \"${${_variableName}}\")"
   )
 endforeach()
 
+#------------------------------------------------------------------------------#
+# configure .cmake file (for other projects)
+#------------------------------------------------------------------------------#
+
 export(
   TARGETS Ristra
   FILE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraTargets.cmake
 )
-
-#------------------------------------------------------------------------------#
-# configure .cmake file (for other projects)
-#------------------------------------------------------------------------------#
 
 export(PACKAGE Ristra)
 
