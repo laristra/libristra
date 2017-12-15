@@ -2,7 +2,7 @@
 # Set the path to the Ristra headers.
 #------------------------------------------------------------------------------#
 
-set(RISTRA_INCLUDE_DIRS @RISTRA_INCLUDE_DIR@)
+set(RISTRA_INCLUDE_DIRS @RISTRA_INCLUDE_DIR@ @RISTRA_EXTERNAL_INCLUDE_DIRS@)
 
 
 #------------------------------------------------------------------------------#

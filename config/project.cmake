@@ -230,8 +230,7 @@ foreach(dir ${dirs})
 endforeach()
 
 set(RISTRA_LIBRARY_DIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR})
-set(RISTRA_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include
-  ${RISTRA_EXTERNAL_INCLUDE_DIRS})
+set(RISTRA_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
 set(RISTRA_CMAKE_DIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/Ristra)
 
 #------------------------------------------------------------------------------#
