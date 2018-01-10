@@ -16,9 +16,13 @@ ARG TRAVIS_TAG
 ARG TRAVIS_REPO_SLUG
 ARG TRAVIS_COMMIT
 
+COPY libristra/ /home/flecsi/libristra
+USER root
+RUN chown -R flecsi:flecsi /home/flecsi/libristra
 USER flecsi
 
-WORKDIR  /home/flecsi/libristra
+USER flecsi
+WORKDIR /home/flecsi/libristra
 RUN mkdir build
 WORKDIR build
 
