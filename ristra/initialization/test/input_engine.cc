@@ -30,9 +30,9 @@ TEST(input_engine, instantiate)
   ASSERT_TRUE(true);
 } // TEST(input_engine,instantiate){
 
-ics_return_t ICS_Func(vector_t, real_t)
+auto ICS_Func(vector_t, real_t)
 {
-  return {real_t(), vector_t(), real_t()};
+  return ics_return_t{real_t(), vector_t(), real_t()};
 }
 
 TEST(input_engine, register_target)
@@ -165,12 +165,12 @@ TEST(input_engine, resolve_inputs_from_hc)
     ics_function_t f(t.get_value<ics_function_t>("ics_func"));
     {
       auto result = f({-1, -2}, 23);
-      ics_return_t exp_result = {0.1, {0.0, 0.0}, 0.125};
+      ics_return_t exp_result{0.1, {0.0, 0.0}, 0.125};
       EXPECT_EQ(exp_result, result);
     }
     {
       auto result = f({1, 2}, 123000000);
-      ics_return_t exp_result = {2.0, {0.0, 0.0}, 2.0};
+      ics_return_t exp_result{2.0, {0.0, 0.0}, 2.0};
       EXPECT_EQ(exp_result, result);
     }
   }
@@ -329,12 +329,12 @@ TEST(input_engine, resolve_inputs_from_lua)
     ics_function_t f(t.get_value<ics_function_t>("ics_func"));
     {
       auto result = f({-1, -2}, 23);
-      ics_return_t exp_result = {0.125, {0.0, 0.0}, 0.1};
+      ics_return_t exp_result{0.125, {0.0, 0.0}, 0.1};
       EXPECT_EQ(exp_result, result);
     }
     {
       auto result = f({1, 2}, 123000000);
-      ics_return_t exp_result = {1.0, {0.0, 0.0}, 1.0};
+      ics_return_t exp_result{1.0, {0.0, 0.0}, 1.0};
       EXPECT_EQ(exp_result, result);
     }
   }

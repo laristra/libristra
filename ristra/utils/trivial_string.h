@@ -21,8 +21,10 @@ namespace utils {
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief A constexpr, trivially copyable string.
+//! \tparam N  The maximum length of the string.
 ////////////////////////////////////////////////////////////////////////////////
-class trivial_string_t {
+template< std::size_t N >
+class trivial_string__ {
 
 public:
 
@@ -61,7 +63,7 @@ public:
 private:
 
   //! the length of the string
-  static constexpr size_type size_ = config::max_char_length;
+  static constexpr size_type size_ = N;
 
   //! a trivially copyable character array
   std::array<value_type, size_> str_;
@@ -70,10 +72,12 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 //! \brief Convert a std::string to a character array
-///////////////////////////////////////////////////////////////////////////////
-static auto to_trivial_string( const std::string & str )
+//! \tparam N  The maximum length of the string.
+////////////////////////////////////////////////////////////////////////////////
+template< std::size_t N >
+auto to_trivial_string( const std::string & str )
 {
-  trivial_string_t tmp;
+  trivial_string__<N> tmp;
   strcpy( tmp.data(), str.c_str() );
   return tmp;
 }

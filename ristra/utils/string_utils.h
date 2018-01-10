@@ -177,5 +177,17 @@ std::vector<std::string> split(
 }
 
 
-} // namspeace utils
-} // namspeace ristra
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Tack on an iteration number to a string
+///////////////////////////////////////////////////////////////////////////////
+inline auto zero_padded( 
+  std::size_t n, std::size_t padding = 6 
+)
+{
+  std::stringstream ss;
+  ss << std::setw( padding ) << std::setfill( '0' ) << n;
+  return ss.str();
+}
+
+} // namespace
+} // namespace
