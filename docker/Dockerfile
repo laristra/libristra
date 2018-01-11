@@ -18,7 +18,7 @@ ARG TRAVIS_COMMIT
 
 USER flecsi
 RUN pwd
-RUN ls
+RUN ls -ltr
 RUN mkdir build
 WORKDIR build
 
