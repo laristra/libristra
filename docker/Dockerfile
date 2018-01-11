@@ -17,8 +17,7 @@ ARG TRAVIS_REPO_SLUG
 ARG TRAVIS_COMMIT
 
 USER flecsi
-
-WORKDIR  /home/flecsi/libristra
+RUN pwd
 RUN mkdir build
 WORKDIR build
 
