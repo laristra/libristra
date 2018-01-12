@@ -13,15 +13,16 @@ using registry = spec_t::registry<T>;
 // using ristra::vector;
 // template <typename T, uint8_t dim> using vector = std::array<T,dim>;
 
-spec_t::ics_return_t<2> ics_func_2d(
+auto ics_func_2d(
   std::array<real_t, 2> const & xs, real_t const & t)
 {
+  using ics_return_t = spec_t::ics_return_t<2>;
   double const & x(xs[0]);
   double const & y(xs[1]);
   if (x < 0 && y < 0) {
-    return {0.1, {0.0, 0.0}, 0.125};
+    return ics_return_t{0.1, {0.0, 0.0}, 0.125};
   }
-  return {2.0, {0.0, 0.0}, 2.0};
+  return ics_return_t{2.0, {0.0, 0.0}, 2.0};
 } // ics_func_2d
 
 spec_t make_mock_box_2d()
