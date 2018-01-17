@@ -1,35 +1,36 @@
-/*~--------------------------------------------------------------------------~*
- *~--------------------------------------------------------------------------~*/
+/*~-------------------------------------------------------------------------~~*
+ * Copyright (c) 2016 Los Alamos National Laboratory, LLC
+ * All rights reserved
+ *~-------------------------------------------------------------------------~~*/
+////////////////////////////////////////////////////////////////////////////////
+/// \file
+/// \brief Provides a dimensioned array which functions as a vector.
+////////////////////////////////////////////////////////////////////////////////
+#pragma once
 
-#ifndef ristra_sp_point_h
-#define ristra_sp_point_h
+// user includes
+#include <ristra/math/vector.h>
 
-#include "ristra/math/vector.h"
-
+// system includes
 #include <cmath>
 
-///
-// \file point.h
-// \authors bergen
-// \date Initial file creation: Sep 23, 2015
-///
-
-namespace ristra {
+namespace ristra  {
 namespace geometry {
 
-///
-// \class point point.h
-// \brief point defines an interface for storing and manipulating
-// coordinate data associated with a geometric domain.
-//
-// The point type is implemented using \ref dimensioned_array.  Look there
-// for more information on the point interface.
-///
+
+////////////////////////////////////////////////////////////////////////////////
+//!  \brief The dimensioned_array type provides a general base for defining
+//!  contiguous array types that have a specific dimension.
+//!
+//!  \tparam T The type of the array, e.g., P.O.D. type.
+//!  \tparam D The dimension of the array, i.e., the number of elements
+//!    to be stored in the array.
+////////////////////////////////////////////////////////////////////////////////
 template <typename T, std::size_t D> 
 using point = math::vector<T,D>;
 
 ///
-// \function distance
+/// \function distance
 ///
 template <typename T, size_t D>
 T distance(const point<T, D> & a, const point<T, D> & b)
@@ -77,10 +78,5 @@ auto centroid(std::initializer_list<point<T, D>> vert_list)
   return tmp;
 } // centroid
 
-} // namespace geometry
-} // namespace ristra
-
-#endif // ristra_sp_point_h
-
-/*~-------------------------------------------------------------------------~-*
- *~-------------------------------------------------------------------------~-*/
+} // namespace
+} // namespace

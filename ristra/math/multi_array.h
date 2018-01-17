@@ -9,7 +9,7 @@
 #pragma once
 
 // user includes
-#include "ristra/utils/type_traits.h"
+#include "ristra/compatibility/type_traits.h"
 #include "ristra/utils/template_helpers.h"
 #include "ristra/utils/tuple_visit.h"
 
@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <array>
 #include <cassert>
+#include <iomanip>
 
 namespace ristra {
 namespace math {
@@ -725,7 +726,7 @@ auto operator+( const multi_array<T,N...>& lhs,
 //! \param[in] rhs The scalar on the right hand side of the operator.
 //! \return A reference to the current object.
 template <typename T, typename U, size_t... N>
-std::enable_if_t< utils::is_arithmetic_v< std::decay_t<U> >, multi_array<T,N...> >
+std::enable_if_t< compatibility::is_arithmetic_v< std::decay_t<U> >, multi_array<T,N...> >
 operator+( const multi_array<T,N...>& lhs, 
            const U& rhs )
 {
@@ -737,7 +738,7 @@ operator+( const multi_array<T,N...>& lhs,
 }
 
 template <typename T, typename U, size_t... N>
-std::enable_if_t< utils::is_arithmetic_v< std::decay_t<U> >, multi_array<T,N...> >
+std::enable_if_t< compatibility::is_arithmetic_v< std::decay_t<U> >, multi_array<T,N...> >
 operator+( const U& lhs, 
            const multi_array<T,N...>& rhs )
 {
@@ -772,7 +773,7 @@ auto operator-( const multi_array<T,N...>& lhs,
 //! \param[in] rhs The scalar on the right hand side of the operator.
 //! \return A reference to the current object.
 template <typename T, typename U, size_t... N>
-std::enable_if_t< utils::is_arithmetic_v< std::decay_t<U> >, multi_array<T,N...> >
+std::enable_if_t< compatibility::is_arithmetic_v< std::decay_t<U> >, multi_array<T,N...> >
 operator-( const multi_array<T,N...>& lhs, 
            const U& rhs )
 {
@@ -784,7 +785,7 @@ operator-( const multi_array<T,N...>& lhs,
 }
 
 template <typename T, typename U, size_t... N>
-std::enable_if_t< utils::is_arithmetic_v< std::decay_t<U> >, multi_array<T,N...> >
+std::enable_if_t< compatibility::is_arithmetic_v< std::decay_t<U> >, multi_array<T,N...> >
 operator-( const U& lhs, 
            const multi_array<T,N...>& rhs )
 {
@@ -820,7 +821,7 @@ auto operator*( const multi_array<T,N...>& lhs,
 //! \param[in] rhs The scalar on the right hand side of the operator.
 //! \return A reference to the current object.
 template <typename T, typename U, size_t... N>
-std::enable_if_t< utils::is_arithmetic_v< std::decay_t<U> >, multi_array<T,N...> >
+std::enable_if_t< compatibility::is_arithmetic_v< std::decay_t<U> >, multi_array<T,N...> >
 operator*( const multi_array<T,N...>& lhs, 
            const U& rhs )
 {
@@ -832,7 +833,7 @@ operator*( const multi_array<T,N...>& lhs,
 }
 
 template <typename T, typename U, size_t... N>
-std::enable_if_t< utils::is_arithmetic_v< std::decay_t<U> >, multi_array<T,N...> >
+std::enable_if_t< compatibility::is_arithmetic_v< std::decay_t<U> >, multi_array<T,N...> >
 operator*( const U& lhs,
            const multi_array<T,N...>& rhs )
 {
@@ -869,7 +870,7 @@ auto operator/( const multi_array<T,N...>& lhs,
 //! \param[in] rhs The scalar on the right hand side of the operator.
 //! \return A reference to the current object.
 template <typename T, typename U, size_t... N>
-std::enable_if_t< utils::is_arithmetic_v< std::decay_t<U> >, multi_array<T,N...> >
+std::enable_if_t< compatibility::is_arithmetic_v< std::decay_t<U> >, multi_array<T,N...> >
 operator/( const multi_array<T,N...>& lhs, 
            const U& rhs )
 {
@@ -882,7 +883,7 @@ operator/( const multi_array<T,N...>& lhs,
 }
 
 template <typename T, typename U, size_t... N>
-std::enable_if_t< utils::is_arithmetic_v< std::decay_t<U> >, multi_array<T,N...> >
+std::enable_if_t< compatibility::is_arithmetic_v< std::decay_t<U> >, multi_array<T,N...> >
 operator/( const U& lhs, 
            const multi_array<T,N...>& rhs )
 {

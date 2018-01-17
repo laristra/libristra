@@ -30,43 +30,31 @@ set(CINCH_HEADER_SUFFIXES "\\.h")
 # If a C++14 compiler is available, then set the appropriate flags
 #------------------------------------------------------------------------------#
 
-include(cxx14)
-
-check_for_cxx14_compiler(CXX14_COMPILER)
-
-if(CXX14_COMPILER)
-    enable_cxx14()
-else()
-    message(FATAL_ERROR "C++14 compatible compiler not found")
-endif()
+# We need C++ 14
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED on)
+set(CMAKE_CXX_EXTENSIONS off)
 
 #------------------------------------------------------------------------------#
 # Enable exceptions
 #------------------------------------------------------------------------------#
 
-OPTION (ENABLE_EXCEPTIONS "Enable C++ exceptions (really?)"  ON)
-
-if(ENABLE_EXCEPTIONS)
-  add_definitions( -DENABLE_EXCEPTIONS)
-endif()
+OPTION (RISTRA_ENABLE_EXCEPTIONS "Enable C++ exceptions (really?)"  ON)
 
 #------------------------------------------------------------------------------#
 # Some precision setup
 #------------------------------------------------------------------------------#
 
 # double or single precision
-OPTION (DOUBLE_PRECISION "Use double precision reals"  ON)
+OPTION (RISTRA_DOUBLE_PRECISION "Use double precision reals"  ON)
 
-if( DOUBLE_PRECISION )
+if( RISTRA_DOUBLE_PRECISION )
   message(STATUS "Note: Double precision build activated.")
-  add_definitions( -DDOUBLE_PRECISION )
-  SET (TEST_TOLERANCE 1.0e-14 CACHE STRING "The testing tolerance" )
+  SET (RISTRA_TEST_TOLERANCE 1.0e-14 CACHE STRING "The testing tolerance" )
 else()
   message(STATUS "Note: Single precision build activated.")
-  SET (TEST_TOLERANCE 1.0e-6 CACHE STRING "The testing tolerance" )
+  SET (RISTRA_TEST_TOLERANCE 1.0e-6 CACHE STRING "The testing tolerance" )
 endif()
-
-add_definitions( -DTEST_TOLERANCE=${TEST_TOLERANCE} )
 
 #------------------------------------------------------------------------------#
 # Support for embedded interpreters
@@ -74,36 +62,35 @@ add_definitions( -DTEST_TOLERANCE=${TEST_TOLERANCE} )
 
 find_package(PythonLibs QUIET)
 
-option(ENABLE_PYTHON "Enable Python Support" ${PYTHONLIBS_FOUND})
+option(RISTRA_ENABLE_PYTHON "Enable Python Support" ${PYTHONLIBS_FOUND})
 
-if(ENABLE_PYTHON AND NOT PYTHONLIBS_FOUND)
+if(RISTRA_ENABLE_PYTHON AND NOT PYTHONLIBS_FOUND)
   message(FATAL_ERROR "Python requested, but not found")
 endif()
 
-if (ENABLE_PYTHON)
+if (RISTRA_ENABLE_PYTHON)
    message (STATUS "Found PythonLibs: ${PYTHON_INCLUDE_DIRS}")
    include_directories( ${PYTHON_INCLUDE_DIRS} )
    list( APPEND RISTRA_LIBRARIES ${PYTHON_LIBRARIES} )
-   add_definitions( -DHAVE_PYTHON )
 endif ()
 
 #------------------------------------------------------------------------------#
 # Lua
 #------------------------------------------------------------------------------#
 
-find_package(Lua 5 QUIET)
+# lua_rawlen requires Lua version 5.2 at least
+find_package(Lua 5.2 QUIET)
 
-option(ENABLE_LUA "Enable Lua Support" ${LUA_FOUND})
+option(RISTRA_ENABLE_LUA "Enable Lua Support" ${LUA_FOUND})
 
-if(ENABLE_LUA AND NOT LUA_FOUND)
+if(RISTRA_ENABLE_LUA AND NOT LUA_FOUND)
   message(FATAL_ERROR "Lua requested, but not found")
 endif()
 
-if(ENABLE_LUA)
+if(RISTRA_ENABLE_LUA)
    message (STATUS "Found Lua: ${LUA_INCLUDE_DIR}")
    include_directories(${LUA_INCLUDE_DIR})
    list(APPEND RISTRA_LIBRARIES ${LUA_LIBRARIES})
-   add_definitions(-DHAVE_LUA)
 endif ()
 
 #------------------------------------------------------------------------------#
@@ -134,14 +121,59 @@ set_property(CACHE RISTRA_DBC_ACTION PROPERTY STRINGS ${RISTRA_DBC_ACTIONS})
 set(RISTRA_DBC_REQUIRE ON CACHE BOOL
   "Enable DBC Pre/Post Condition Assertions")
 
-if(RISTRA_DBC_ACTION STREQUAL "throw")
-  add_definitions(-DRISTRA_DBC_THROW)
-elseif(RISTRA_DBC_ACTION STREQUAL "notify")
-  add_definitions(-DRISTRA_DBC_NOTIFY)
+#------------------------------------------------------------------------------#
+# Caliper
+#------------------------------------------------------------------------------#
+
+find_package(Caliper QUIET)
+
+option(RISTRA_ENABLE_CALIPER "Enable Caliper Support" ${Caliper_FOUND})
+
+if(RISTRA_ENABLE_CALIPER AND NOT Caliper_FOUND)
+  message(FATAL_ERROR "Caliper requested, but not found")
 endif()
 
-if(RISTRA_DBC_REQUIRE)
-  add_definitions(-DRISTRA_REQUIRE_ON)
+if(RISTRA_ENABLE_CALIPER)
+  message(STATUS "Found Caliper: ${Caliper_INCLUDE_DIRS}")
+  include_directories(${Caliper_INCLUDE_DIRS})
+  list( APPEND RISTRA_LIBRARIES ${Caliper_LIBRARIES} )
+endif()
+
+#------------------------------------------------------------------------------#
+# Catalyst
+#------------------------------------------------------------------------------#
+
+option(RISTRA_ENABLE_CATALYST "Link the sim with Catalyst for in situ" OFF)
+
+if (RISTRA_ENABLE_CATALYST)
+  find_package(ParaView REQUIRED COMPONENTS vtkPVPythonCatalyst)
+
+  message(STATUS "Found Paraview: ${ParaView_DIR}")
+  message(STATUS "IO with Paraview Catalyst enabled" )
+
+  include("${PARAVIEW_USE_FILE}")
+
+  if (NOT PARAVIEW_USE_MPI)
+    message(SEND_ERROR "ParaView must be built with MPI enabled")
+  endif()
+
+  list( APPEND RISTRA_LIBRARIES vtkPVPythonCatalyst vtkParallelMPI )
+endif()
+
+#------------------------------------------------------------------------------#
+# Legion / MPI
+#------------------------------------------------------------------------------#
+
+find_package(MPI)
+
+option(RISTRA_ENABLE_MPI "Enable MPI Support" ${MPI_FOUND})
+
+if(RISTRA_ENABLE_MPI AND NOT MPI_FOUND)
+  message(FATAL_ERROR "MPI requested, but not found")
+endif()
+
+if(RISTRA_ENABLE_MPI)
+  include_directories(${MPI_C_INCLUDE_PATH})
 endif()
 
 #------------------------------------------------------------------------------#
@@ -156,17 +188,54 @@ cinch_load_extras()
 
 configure_file(${PROJECT_SOURCE_DIR}/config/ristra.h.in
   ${CMAKE_BINARY_DIR}/ristra.h @ONLY)
-include_directories(${CMAKE_BINARY_DIR})
 install(FILES ${CMAKE_BINARY_DIR}/ristra.h DESTINATION include)
+
+configure_file(${PROJECT_SOURCE_DIR}/config/ristra-config.h.in
+  ${CMAKE_BINARY_DIR}/ristra-config.h @ONLY)
+install(FILES ${CMAKE_BINARY_DIR}/ristra-config.h DESTINATION include)
+
+include_directories(${CMAKE_BINARY_DIR})
 
 #------------------------------------------------------------------------------#
 # Add library targets
 #------------------------------------------------------------------------------#
 
 cinch_add_library_target(Ristra ristra)
+cinch_target_link_libraries( Ristra ${RISTRA_LIBRARIES} )
 
 #------------------------------------------------------------------------------#
-# configure .cmake file (for other projects)
+# Extract all project options so they can be exported to the ProjectConfig.cmake
+# file.
+#------------------------------------------------------------------------------#
+
+get_cmake_property(_variableNames VARIABLES)
+string (REGEX MATCHALL "(^|;)RISTRA_[A-Za-z0-9_]*" _matchedVars "${_variableNames}")
+foreach (_variableName ${_matchedVars})
+  set( RISTRA_CONFIG_CODE
+    "${RISTRA_CONFIG_CODE}
+set(${_variableName} \"${${_variableName}}\")"
+  )
+endforeach()
+
+#------------------------------------------------------------------------------#
+# Prepare variables for ProjectConfig file.
+#------------------------------------------------------------------------------#
+
+get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  PROPERTY INCLUDE_DIRECTORIES)
+
+foreach(dir ${dirs})
+  if(NOT ${dir} MATCHES ${CMAKE_CURRENT_SOURCE_DIR})
+    list(APPEND RISTRA_EXTERNAL_INCLUDE_DIRS ${dir})
+  endif()
+endforeach()
+
+set(RISTRA_LIBRARY_DIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR})
+set(RISTRA_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
+set(RISTRA_CMAKE_DIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/Ristra)
+
+#------------------------------------------------------------------------------#
+# Export targets and package.
 #------------------------------------------------------------------------------#
 
 export(
@@ -176,9 +245,9 @@ export(
 
 export(PACKAGE Ristra)
 
-set(RISTRA_LIBRARY_DIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR})
-set(RISTRA_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
-set(RISTRA_CMAKE_DIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/Ristra)
+#------------------------------------------------------------------------------#
+# configure .cmake file (for other projects)
+#------------------------------------------------------------------------------#
 
 configure_file(${PROJECT_SOURCE_DIR}/config/RistraConfig.cmake.in
   ${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraConfig.cmake @ONLY)
@@ -193,15 +262,3 @@ install(
   DESTINATION ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/Ristra
   COMPONENT dev
 )
-
-#------------------------------------------------------------------------------#
-# Add distclean target
-#------------------------------------------------------------------------------#
-
-add_custom_target(distclean rm -rf ${CMAKE_BINARY_DIR}/*)
-
-#~---------------------------------------------------------------------------~-#
-# Formatting options
-# vim: set tabstop=2 shiftwidth=2 expandtab :
-# sublime: none needed--NYUK NYUK NYUK!
-#~---------------------------------------------------------------------------~-#

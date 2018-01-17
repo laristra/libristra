@@ -9,7 +9,7 @@
 #pragma once
 
 // user includes
-#include "ristra/common/types.h"
+#include "ristra-config.h"
 
 namespace ristra {
 namespace math {
@@ -20,7 +20,7 @@ namespace math {
 // @{
 
 //! \brief The mathematical constant pi.
-constexpr common::real_t pi = 3.14159265358979323846;
+constexpr config::real_t pi = 3.14159265358979323846;
 
 // @}
 

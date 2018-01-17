@@ -3,6 +3,8 @@
 // May 08, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
+#include<ristra-config.h>
+
 #include "ristra/initialization/input_engine.h"
 #include "cinchtest.h"
 // #include "ristra/flecsale-vector.h"
@@ -28,9 +30,9 @@ TEST(input_engine, instantiate)
   ASSERT_TRUE(true);
 } // TEST(input_engine,instantiate){
 
-ics_return_t ICS_Func(vector_t, real_t)
+auto ICS_Func(vector_t, real_t)
 {
-  return {real_t(), vector_t(), real_t()};
+  return ics_return_t{real_t(), vector_t(), real_t()};
 }
 
 TEST(input_engine, register_target)
@@ -163,12 +165,12 @@ TEST(input_engine, resolve_inputs_from_hc)
     ics_function_t f(t.get_value<ics_function_t>("ics_func"));
     {
       auto result = f({-1, -2}, 23);
-      ics_return_t exp_result = {0.1, {0.0, 0.0}, 0.125};
+      ics_return_t exp_result{0.1, {0.0, 0.0}, 0.125};
       EXPECT_EQ(exp_result, result);
     }
     {
       auto result = f({1, 2}, 123000000);
-      ics_return_t exp_result = {2.0, {0.0, 0.0}, 2.0};
+      ics_return_t exp_result{2.0, {0.0, 0.0}, 2.0};
       EXPECT_EQ(exp_result, result);
     }
   }
@@ -241,7 +243,7 @@ TEST(input_engine, resolve_inputs_from_hc_with_failures)
   phcs->clear_registry<input_traits::types>();
 } // TEST(input_engine,resolve_inputs_from_hc_with_failures){
 
-#ifdef HAVE_LUA
+#ifdef RISTRA_ENABLE_LUA
 
 TEST(input_engine, resolve_inputs_from_lua)
 {
@@ -266,7 +268,7 @@ TEST(input_engine, resolve_inputs_from_lua)
   t.register_targets<string_t>(string_t_targets);
   t.register_targets<vec2r_t>(vec2r_targets);
   t.register_targets<vec2s_t>(vec2s_targets);
-  t.register_targets<lua_result_uptr_t>(ics_targets);
+  t.register_targets<embedded::lua_result_uptr_t>(ics_targets);
 
   t.register_targets<ics_function_t>(ics_targets);
 
@@ -327,12 +329,12 @@ TEST(input_engine, resolve_inputs_from_lua)
     ics_function_t f(t.get_value<ics_function_t>("ics_func"));
     {
       auto result = f({-1, -2}, 23);
-      ics_return_t exp_result = {0.125, {0.0, 0.0}, 0.1};
+      ics_return_t exp_result{0.125, {0.0, 0.0}, 0.1};
       EXPECT_EQ(exp_result, result);
     }
     {
       auto result = f({1, 2}, 123000000);
-      ics_return_t exp_result = {1.0, {0.0, 0.0}, 1.0};
+      ics_return_t exp_result{1.0, {0.0, 0.0}, 1.0};
       EXPECT_EQ(exp_result, result);
     }
   }
@@ -341,6 +343,6 @@ TEST(input_engine, resolve_inputs_from_lua)
   // delete pls;
 } // TEST(input_engine,resolve_inputs_from_lua){
 
-#endif // HAVE_LUA
+#endif // RISTRA_ENABLE_LUA
 
 // End of file

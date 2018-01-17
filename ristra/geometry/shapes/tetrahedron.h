@@ -58,14 +58,18 @@ struct tetrahedron {
     const T & pt0, const T & pt1, const T & pt2, const T & pt3 ) 
   {
     auto det = 
-      pt0[0]*pt1[1]*pt2[2] + 
-      pt0[1]*pt1[2]*pt3[0] + 
-      pt0[2]*pt2[0]*pt3[1] + 
-      pt1[0]*pt2[1]*pt3[2] -
-      pt3[0]*pt2[1]*pt1[2] - 
-      pt3[1]*pt2[2]*pt0[0] - 
-      pt3[2]*pt1[0]*pt0[1] - 
-      pt2[0]*pt1[1]*pt0[2];
+      pt3[0] * pt2[1] * pt1[2] - pt2[0] * pt3[1] * pt1[2] -
+      pt3[0] * pt1[1] * pt2[2] + pt1[0] * pt3[1] * pt2[2] +
+      pt2[0] * pt1[1] * pt3[2] - pt1[0] * pt2[1] * pt3[2] -
+      pt3[0] * pt2[1] * pt0[2] + pt2[0] * pt3[1] * pt0[2] +
+      pt3[0] * pt0[1] * pt2[2] - pt0[0] * pt3[1] * pt2[2] -
+      pt2[0] * pt0[1] * pt3[2] + pt0[0] * pt2[1] * pt3[2] +
+      pt3[0] * pt1[1] * pt0[2] - pt1[0] * pt3[1] * pt0[2] -
+      pt3[0] * pt0[1] * pt1[2] + pt0[0] * pt3[1] * pt1[2] +
+      pt1[0] * pt0[1] * pt3[2] - pt0[0] * pt1[1] * pt3[2] -
+      pt2[0] * pt1[1] * pt0[2] + pt1[0] * pt2[1] * pt0[2] +
+      pt2[0] * pt0[1] * pt1[2] - pt0[0] * pt2[1] * pt1[2] -
+      pt1[0] * pt0[1] * pt2[2] + pt0[0] * pt1[1] * pt2[2];
     return std::abs(det) / 6;
   }
   

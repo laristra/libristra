@@ -3,6 +3,8 @@
 // May 08, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
+#include<ristra-config.h>
+
 #include "ristra/initialization/input_source.h"
 #include <array>
 #include "cinchtest.h"
@@ -81,7 +83,7 @@ TEST(input_source, hard_coded_source_t_get_value)
   }
 } // TEST(hard_coded_source_t,get_value){
 
-#ifdef HAVE_LUA
+#ifdef RISTRA_ENABLE_LUA
 
 TEST(input_source, lua_source_t_instantiate)
 {
@@ -220,13 +222,13 @@ TEST(input_source, lua_source_t_get_table)
   using real_t = lua_source_t::real_t;
   string_t fname("mock_box_2d.lua");
   lua_source_t ls(fname);
-  lua_result_t &hydro_input(ls.get_table("hydro"));
-  lua_result_t eos(hydro_input["eos"]);
+  embedded::lua_result_t &hydro_input(ls.get_table("hydro"));
+  embedded::lua_result_t eos(hydro_input["eos"]);
   std::string eos_type(lua_try_access_as(eos,"type",std::string));
   std::string exp_eos_type("ideal_gas");
   EXPECT_TRUE(exp_eos_type == eos_type);
 }
 
-#endif // HAVE_LUA
+#endif // RISTRA_ENABLE_LUA
 
 // End of file

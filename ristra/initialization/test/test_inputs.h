@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "ristra/initialization/detail/default_input_traits.h"
+#include "default_input_traits.h"
 #include "ristra/initialization/init_value.h"
 #include "ristra/initialization/input_engine.h"
 

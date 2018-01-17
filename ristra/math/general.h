@@ -12,7 +12,7 @@
 // user includes
 #include "ristra/math/detail/general_impl.h"
 
-#include "ristra/utils/errors.h"
+#include "ristra/assertions/errors.h"
 #include "ristra/utils/template_helpers.h"
 #include "ristra/utils/type_traits.h"
 
@@ -287,7 +287,7 @@ template< template<typename...> class C, typename T, typename...Args >
 auto min(const C<T,Args...> &a, const C<T,Args...> &b) 
 {
   C<T,Args...> tmp;
-  for ( common::counter_t i=0; i<a.size(); i++ )
+  for ( std::size_t i=0; i<a.size(); i++ )
     tmp[i] = std::min( a[i], b[i] );
   return tmp;
 }
@@ -316,7 +316,7 @@ template< template<typename...> class C, typename T, typename...Args >
 auto max(const C<T,Args...> &a, const C<T,Args...> &b) 
 {
   C<T,Args...> tmp;
-  for ( common::counter_t i=0; i<a.size(); i++ )
+  for ( std::size_t i=0; i<a.size(); i++ )
     tmp[i] = std::max( a[i], b[i] );
   return tmp;
 }
@@ -330,6 +330,11 @@ auto max(const C<T,Args...> &a, const C<T,Args...> &b)
 template< class T >
 constexpr auto sqr( T && x )
 { return std::forward<T>(x) * std::forward<T>(x); }
+
+//! \brief cube operator.
+template< class T >
+constexpr auto cube( T && x )
+{ return std::forward<T>(x) * std::forward<T>(x) * std::forward<T>(x); }
 
 //! \brief returns 1 if +ve, -1 if -ve
 template <typename T> 
@@ -389,7 +394,7 @@ template <
 >
 C<T, 3> normal(const C<T, 3> &a, const C<T, 3> &b) 
 {
-  raise_runtime_error("you should never get here");
+  throw_runtime_error("you should never get here");
   return { 0, 0, 0 }; // FIXME - this is here as a hack
 }
 
