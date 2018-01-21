@@ -4,6 +4,7 @@
 #~----------------------------------------------------------------------------~#
 
 set(io_HEADERS
+  catalyst/adaptor.h
   vtk.h
   write_binary.h
   PARENT_SCOPE
