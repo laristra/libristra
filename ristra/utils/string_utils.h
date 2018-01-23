@@ -11,6 +11,7 @@
 
 // system includes
 #include <cstring>
+#include <iomanip>
 #include <iterator>
 #include <locale>
 #include <sstream>
