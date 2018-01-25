@@ -8,7 +8,7 @@ services:
 env:
   matrix:
     - DISTRO=ubuntu BUILD_TYPE=Debug
-    - DISTRO=fedora BUILD_TYPE=Release
+    - DISTRO=fedora BUILD_TYPE=Release DOCKERHUB=true
 
 before_install:
  - git fetch --unshallow && git fetch --tags #for versioning

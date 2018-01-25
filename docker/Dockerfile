@@ -1,4 +1,4 @@
-FROM laristra/flecsi-buildenv:fedora
+FROM laristra/flecsi:fedora_serial
 
 ARG CC
 ARG CXX
