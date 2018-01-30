@@ -21,7 +21,6 @@ USER root
 RUN chown -R flecsi:flecsi /home/flecsi/libristra
 USER flecsi
 
-USER flecsi
 WORKDIR /home/flecsi/libristra
 RUN mkdir build
 WORKDIR build
@@ -29,7 +28,7 @@ WORKDIR build
 RUN cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
           -DENABLE_UNIT_TESTS=ON \
           ..
-RUN make -j2 || make
+RUN make -j2 || make VERBOSE=1
 RUN make test ARGS="CTEST_OUTPUT_ON_FAILURE=1"
 RUN make install DESTDIR=${PWD}
 
