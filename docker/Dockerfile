@@ -30,6 +30,8 @@ RUN cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
           ..
 RUN make -j2 || make VERBOSE=1
 RUN make test ARGS="CTEST_OUTPUT_ON_FAILURE=1"
-RUN make install DESTDIR=${PWD}
+
+USER root
+RUN make install
 
 WORKDIR /home/flecsi
