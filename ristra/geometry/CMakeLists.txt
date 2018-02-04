@@ -23,10 +23,10 @@ set(geometry_SOURCES
   PARENT_SCOPE
 )
 
-cinch_add_unit(centroid SOURCES test/centroid.cc )
-cinch_add_unit(point SOURCES test/point.cc )
-cinch_add_unit(shapes SOURCES shapes/test/shapes.cc )
-cinch_add_unit(space_vector SOURCES test/space_vector.cc )
+cinch_add_unit(ristra_centroid SOURCES test/centroid.cc )
+cinch_add_unit(ristra_point SOURCES test/point.cc )
+cinch_add_unit(ristra_shapes SOURCES shapes/test/shapes.cc )
+cinch_add_unit(ristra_space_vector SOURCES test/space_vector.cc )
 
 #~---------------------------------------------------------------------------~-#
 # Formatting options
