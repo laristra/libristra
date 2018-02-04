@@ -19,9 +19,9 @@ set(math_SOURCES
   PARENT_SCOPE
 )
 
-cinch_add_unit(test_tuple SOURCES test/tuple.cc)
-cinch_add_unit(test_vector SOURCES test/vector.cc)
-cinch_add_unit(test_matrix SOURCES test/matrix.cc)
+cinch_add_unit(ristra_tuple SOURCES test/tuple.cc)
+cinch_add_unit(ristra_vector SOURCES test/vector.cc)
+cinch_add_unit(ristra_matrix SOURCES test/matrix.cc)
 
 #----------------------------------------------------------------------------~-#
 # Formatting options for vim.

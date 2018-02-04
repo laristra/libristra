@@ -15,12 +15,12 @@ set(embedded_HEADERS
   PARENT_SCOPE # THIS NEEDS TO BE HERE
 )
 
-cinch_add_unit( lua_utils
+cinch_add_unit( ristra_iua_utils
   SOURCES test/lua_utils.cc
   INPUTS test/lua_test.lua test/mock_box_2d.lua
   LIBRARIES Ristra )
 
-cinch_add_unit( python_utils 
+cinch_add_unit( ristra_python_utils 
   SOURCES test/python_utils.cc 
   INPUTS test/python_test.py
   LIBRARIES ${PYTHON_LIBRARIES} )
