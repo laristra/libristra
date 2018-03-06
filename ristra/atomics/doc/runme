@@ -1,0 +1,5 @@
+#!/bin/bash
+
+tex    ristra-atomics
+dvips  ristra-atomics
+ps2pdf ristra-atomics.ps ristra-atomics.pdf

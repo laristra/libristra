@@ -1,0 +1,250 @@
+
+% Plain TeX, not LaTeX.
+
+% ------------------------------------------------------------------------------
+% Setup
+% ------------------------------------------------------------------------------
+
+% ------------------------
+% basics
+% ------------------------
+
+\let\noarrow  = t
+\let\nobibtex = t
+\ifx\eplain\undefined \input eplain \fi
+
+\magnification = \magstep0
+\baselineskip  = 12pt
+\parskip       = 0.5\baselineskip
+\parindent     = 0.0truein
+
+\raggedbottom
+\leftdisplays
+\nopagenumbers
+
+\special{papersize=8.5in,11.0in}
+\hsize   = 6.5truein
+\vsize   = 9.0truein
+\hoffset = 0.0truein
+\voffset = 0.0truein
+
+% suppress "underfull \hbox" messages
+\hbadness=10000
+
+
+% ------------------------
+% fonts
+% ------------------------
+
+\font\hvbig = fvsb8r  at 16pt
+\font\hv    = fvsr8r  at 10pt
+\font\bf    = fvsb8r  at 10pt
+\font\bfmed = fvsb8r  at 11pt
+\font\it    = fvsro8r at 10pt
+\font\tt    = fvmr8r  at 10pt
+\font\ttbf  = fvmb8r  at 10pt
+\hv
+
+
+% ------------------------
+% macros
+% ------------------------
+
+\def\section#1{\bigskip{\bfmed#1.}}
+
+
+
+% ------------------------------------------------------------------------------
+% Title
+% ------------------------------------------------------------------------------
+
+\centerline{\hvbig Ristra Atomics Library}
+\medskip
+\smallskip
+
+
+
+% ------------------------------------------------------------------------------
+% Background
+% ------------------------------------------------------------------------------
+
+\section{Background}
+The Standard C++ Library's {\tt <atomic>} header defines an {\tt atomic<T>}
+class template with basic functionality for any trivially-copyable type {\tt T};
+informally, any type {\tt T} for which a shallow copy, as with {\tt memcpy},
+has the correct semantics. Integral and pointer (but not floating-point)
+specializations support {\tt \&=}, {\tt |=}, and {\tt \^{}=} (integral only);
+{\tt +=} and {\tt -=}; and prefix and postfix {\tt ++} and {\tt --}. Other
+viable operations, such as {\tt *=} and {\tt <<=}, are not provided.
+
+Sandia National Laboratory's {\it Kokkos} provides a variety of atomic
+operations in functional form. {\tt Kokkos::atomic\_fetch\_add(x,y)}, for
+instance, is an atomic {\tt x += y}. As with C++, some viable operations
+are missing. Floating-point data are supported, but pointers are not.
+
+
+
+% ------------------------------------------------------------------------------
+% Ristra Atomics
+% ------------------------------------------------------------------------------
+
+\section{Ristra Atomics}
+Our new, ``header-only'' Ristra Atomics C++ library provides a class template
+{\tt ristra::atomics::atomic<T,SCHEME>}, a superset of the atomic operations
+of C++ and Kokkos, and several available ``atomicity schemes'' for achieving
+the requisite atomicity. Schemes include our own general ones, as well as
+forwards to C++ or Kokkos capabilities (Kokkos inclusion is optional) when
+available. A scheme is specified by providing any of several available tag
+classes as {\tt atomic}'s second template argument. This compile-time mechanism
+facilitates function overloading and inlining, giving runtime efficiency.
+
+
+
+% ------------------------------------------------------------------------------
+% Atomicity Schemes
+% ------------------------------------------------------------------------------
+
+\section{Atomicity Schemes}
+Ristra Atomics provides the following atomicity schemes.
+
+{
+\leftskip 0.30truein
+\rightskip 0.30truein
+\raggedright
+\gutter = 0.01truein
+\triplecolumns
+
+\hbox{\vbox{
+{\ttbf cpp}
+\hfill\break
+Forward to the C++ library's capability.
+\hfill\break
+\hfill\break
+{\ttbf kokkos}
+\hfill\break
+Forward to the Kokkos library's capability.
+\hfill\break
+\hfill\break
+{\ttbf lock}
+\hfill\break
+Embed the operation in a {\tt lock\_guard<mutex>}.
+}}
+\columnfill
+
+\vskip-0.1truein % Argh
+\hbox{\vbox{
+{\ttbf strong}
+\hfill\break
+Atomicize the operation via a strong compare-and-swap (CAS) loop.
+\hfill\break
+\hfill\break
+{\ttbf strong::pun}
+\hfill\break
+Like {\tt strong}, but with {\tt T} punned to a same-sized integral type
+for CAS. May give better performance on some architectures.
+}}
+\columnfill
+
+\hbox{\vbox{
+{\ttbf weak}
+\hfill\break
+Like {\tt strong}, but using a weak CAS.
+\hfill\break
+\hfill\break
+{\ttbf weak::pun}
+\hfill\break
+Like {\tt strong::pun}, but using a weak CAS.
+\hfill\break
+\hfill\break
+{\ttbf serial}
+\hfill\break
+Perform the operation without atomicizing it.
+}}
+\columnfill
+
+}
+
+\singlecolumn
+
+% Another awesome TeXism.
+% Because NOT doing incomprehensible formatting stuff
+% would just make things too easy for the user. :-)
+\vskip-3.3truein
+
+
+
+% ------------------------------------------------------------------------------
+% Operations
+% ------------------------------------------------------------------------------
+
+\section{Operations}
+Atomic operations in Ristra Atomics are available in several forms.
+Operators:
+{\tt +=},
+{\tt -=},
+{\tt *=},
+{\tt /=},
+{\tt \%=},
+{\tt <<=},
+{\tt >>=},
+{\tt \&=},
+{\tt |=},
+{\tt \^{}=},
+{\tt ++value},
+{\tt value++},
+{\tt --value}, and
+{\tt value--}.
+Functions and member functions:
+{\tt add},
+{\tt sub},
+{\tt mul},
+{\tt div},
+{\tt mod},
+{\tt lshift},
+{\tt rshift},
+{\tt andeq},
+{\tt oreq},
+{\tt xoreq},
+{\tt preinc},
+{\tt postinc},
+{\tt predec}, and
+{\tt postdec}.
+{\bf Example}: for {\tt x} of atomic type, {\tt x.add(2)} and {\tt add(x,2)}
+both perform {\tt x += 2} atomically. Also available:
+{\tt inc == preinc},
+{\tt dec == predec},
+{\tt min}, and
+{\tt max}.
+{\bf Example}: {\tt x.min(y)} computes {\tt x = min(x,y)} atomically.
+
+
+
+% ------------------------------------------------------------------------------
+% Data Types
+% ------------------------------------------------------------------------------
+
+\section{Data Types}
+Integral, floating-point, pointer, and general trivially-copyable data are all
+supported. Bear in mind that the availability of a specific atomic computation
+necessarily depends on the data type, atomicity scheme, and operation. The
+{\tt kokkos} scheme doesn't support pointers, while {\tt cpp} doesn't support
+floating-point values. No scheme supports bitwise operations on floating-point
+values, which in C++ have no bitwise operations to begin with. Only our own
+schemes support operations on values of user-defined types -- and, then, only
+if the type has been outfitted with a non-atomic version of the operation.
+
+
+
+% ------------------------------------------------------------------------------
+% Summary
+% ------------------------------------------------------------------------------
+
+\section{Summary}
+Ristra Atomics is an easy-to-use, header-only C++ library for performing atomic
+operations on integral, pointer, floating-point, and general trivially-copyable
+data. It supports several of its own atomicizing schemes, and provides access
+to the capabilities in C++ and in Kokkos. The library thus brings together two
+existing sets of capabilities, adds more, and embeds them all into a coherent
+notational and logical interface.
+
+\bye
