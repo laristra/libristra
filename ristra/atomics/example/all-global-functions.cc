@@ -46,13 +46,14 @@ In this file, we illustrate combinations of the following:
         success, failure
 
 The point of this file is to illustrate every combination that works, and every
-one that doesn't. The former are in working code, the latter are commented-out.
+combination that doesn't work. The former are in working code, while the latter
+are commented-out.
 
 Each commented-out case - i.e., each case that doesn't work - is unavailable for
 one or more of the following reasons:
 
    - C++ std::atomic<T> (used by the "cpp" scheme) doesn't support certain
-     operations - in particular *=, /=, %=, <<=, >>=, min, and max) - even
+     operations - in particular, *=, /=, %=, <<=, >>=, min, and max - even
      for integral T.
 
    - C++ std::atomic<T> has no ++ or -- that accepts a memory_order sync.
@@ -60,7 +61,7 @@ one or more of the following reasons:
    - C++ std::atomic<T> has no operators that accept the success, failure
      memory_order combination. (The compare_exchange_*() functions accept
      those; but those functions are used by our various "strong" and "weak"
-     schemes, not by our cpp scheme).
+     [pun] schemes, not by our cpp scheme).
 
    - The kokkos, lock, and serial schemes don't accept any memory_order
      parameters (sync, or success and failure).
@@ -85,16 +86,16 @@ one or more of the following reasons:
 We think that this list covers all the reasons for something not working. :-)
 Note, again, that a particular case may fail for multiple reasons.
 
-At this time, if you try to use an unavailable variant, the compiler may or
-may not emit a particularly comprehensible error message. This is because our
+At this time, if you try to use an invalid variant, the compiler may or may
+not emit a particularly comprehensible error message. This is because our
 functions - the ones that are called directly, below - generally pass their
 arguments down through a series of lower-level functions, eventually reaching
-some final destination (e.g. an actual += operator for some underlying data
-type, or a member function of std::atomic<>) where the work is supposed to
-occur. For the cases that don't work, a failure happens at some point in this
-process, and this may mean a long, meandering series of error messages. We may
-be able to improve this, perhaps by using "SFINAE" constructs in the high-level
-functions that call the lower-level functions. At the moment, we don't do this.
+a final destination (e.g. an actual += operator for some underlying data type,
+or a member function of std::atomic<>) where the work is supposed to occur.
+For the cases that don't work, a failure happens at some point in the process,
+and this may mean a long, meandering series of error messages. We may be able
+to improve this, perhaps by using SFINAE constructs in higher-level functions
+that call the lower-level functions. At the moment, we don't do this.
 */
 
 //#define ATOMICS_KOKKOS

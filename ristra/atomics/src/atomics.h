@@ -57,10 +57,10 @@ namespace atomics {
 // Represented by classes, to be used for overloading
 // -----------------------------------------------------------------------------
 
-// Use the built-in C++ std::atomic capabilities
+// C++ std::atomic capabilities
 struct cpp { };
 
-// Use Kokkos
+// Kokkos
 #if defined(ATOMICS_KOKKOS)
    struct kokkos { };
 #endif
@@ -118,9 +118,9 @@ namespace internal {
 #define _atomics_stringify(x) #x
 #define  atomics_stringify(x) _atomics_stringify(x)
 
-// print_var
+// atomics_print_var
 // Simple macro for printing something's name and value.
-#define print_var(x) std::cout << #x " == " << (x) << std::endl
+#define atomics_print_var(x) std::cout << #x " == " << (x) << std::endl
 
 #if defined(ATOMICS_PRINT)
 
@@ -437,14 +437,14 @@ inline T apply(
    debug_apply<T,SCHEME,NMUX,OPERATION>("strong",sync);
 
    T old = T(atom);
-   T neu, rv;
+   T neu, ret;
 
    do {
       neu = old;
-      rv = operation(neu);
+      ret = operation(neu);
    } while (!atom.compare_exchange_strong(old, neu, sync));
 
-   return rv;
+   return ret;
 }
 
 // memory order success, failure
@@ -459,14 +459,14 @@ inline T apply(
    debug_apply<T,SCHEME,NMUX,OPERATION>("strong", success, failure);
 
    T old = T(atom);
-   T neu, rv;
+   T neu, ret;
 
    do {
       neu = old;
-      rv = operation(neu);
+      ret = operation(neu);
    } while (!atom.compare_exchange_strong(old, neu, success, failure));
 
-   return rv;
+   return ret;
 }
 
 } // namespace internal
@@ -497,7 +497,7 @@ inline T apply_pun(
    union u {
       T tee;
       P pun;
-      // Need default ctor on this and similar unions, to avoid
+      // Need default ctor on this and similar unions, to avoid compilation
       // error due to call to implicitly-deleted default ctor
       inline u() { }
    } old, neu;
@@ -506,13 +506,13 @@ inline T apply_pun(
    atomics_assert(sizeof(old) == sizeof(T));
    atomics_assert(sizeof(old) == sizeof(P));
 
-   T rv;
+   T ret;
    do {
       neu.pun = old.pun;
-      rv = operation(neu.tee);
+      ret = operation(neu.tee);
    } while (!punxstrong(atom, old.pun, neu.pun, sync));
 
-   return rv;
+   return ret;
 }
 
 template<class P, class T, class SCHEME, std::size_t NMUX, class OPERATION>
@@ -535,13 +535,13 @@ inline T apply_pun(
    atomics_assert(sizeof(old) == sizeof(T));
    atomics_assert(sizeof(old) == sizeof(P));
 
-   T rv;
+   T ret;
    do {
       neu.pun = old.pun;
-      rv = operation(neu.tee);
+      ret = operation(neu.tee);
    } while (!punxstrong(atom, old.pun, neu.pun, success, failure));
 
-   return rv;
+   return ret;
 }
 
 
@@ -577,33 +577,34 @@ inline T apply_pun(
 // old integral types
 // ------------------------
 
-// != requirements are sufficient, because sizeof(short) <= sizeof(int) <= ...
+// != requirements are sufficient,
+// because sizeof(signed char) <= sizeof(short) <= sizeof(int) <= ...
 
-// for long long
+// to long long
 atomics_make_apply(
    sizeof(T) == sizeof(long long) &&
    sizeof(T) != sizeof(long),
    strong, long long)
 
-// for long
+// to long
 atomics_make_apply(
    sizeof(T) == sizeof(long) &&
    sizeof(T) != sizeof(int),
    strong, long)
 
-// for int
+// to int
 atomics_make_apply(
    sizeof(T) == sizeof(int) &&
    sizeof(T) != sizeof(short),
    strong, int)
 
-// for short
+// to short
 atomics_make_apply(
    sizeof(T) == sizeof(short) &&
    sizeof(T) != sizeof(signed char),
    strong, short)
 
-// for signed char
+// to signed char
 atomics_make_apply(
    sizeof(T) == sizeof(signed char),
    strong, signed char)
@@ -631,14 +632,14 @@ inline T apply(
    debug_apply<T,SCHEME,NMUX,OPERATION>("weak",sync);
 
    T old = T(atom);
-   T neu, rv;
+   T neu, ret;
 
    do {
       neu = old;
-      rv = operation(neu);
+      ret = operation(neu);
    } while (!atom.compare_exchange_weak(old, neu, sync));
 
-   return rv;
+   return ret;
 }
 
 // memory order success, failure
@@ -653,14 +654,14 @@ inline T apply(
    debug_apply<T,SCHEME,NMUX,OPERATION>("weak", success, failure);
 
    T old = T(atom);
-   T neu, rv;
+   T neu, ret;
 
    do {
       neu = old;
-      rv = operation(neu);
+      ret = operation(neu);
    } while (!atom.compare_exchange_weak(old, neu, success, failure));
 
-   return rv;
+   return ret;
 }
 
 } // namespace internal
@@ -698,13 +699,13 @@ inline T apply_pun(
    atomics_assert(sizeof(old) == sizeof(T));
    atomics_assert(sizeof(old) == sizeof(P));
 
-   T rv;
+   T ret;
    do {
       neu.pun = old.pun;
-      rv = operation(neu.tee);
+      ret = operation(neu.tee);
    } while (!punxweak(atom, old.pun, neu.pun, sync));
 
-   return rv;
+   return ret;
 }
 
 template<class P, class T, class SCHEME, std::size_t NMUX, class OPERATION>
@@ -727,13 +728,13 @@ inline T apply_pun(
    atomics_assert(sizeof(old) == sizeof(T));
    atomics_assert(sizeof(old) == sizeof(P));
 
-   T rv;
+   T ret;
    do {
       neu.pun = old.pun;
-      rv = operation(neu.tee);
+      ret = operation(neu.tee);
    } while (!punxweak(atom, old.pun, neu.pun, success, failure));
 
-   return rv;
+   return ret;
 }
 
 
@@ -744,31 +745,31 @@ inline T apply_pun(
 
 // Re-use the macro from the strong::pun section...
 
-// for long long
+// to long long
 atomics_make_apply(
    sizeof(T) == sizeof(long long) &&
    sizeof(T) != sizeof(long),
    weak, long long)
 
-// for long
+// to long
 atomics_make_apply(
    sizeof(T) == sizeof(long) &&
    sizeof(T) != sizeof(int),
    weak, long)
 
-// for int
+// to int
 atomics_make_apply(
    sizeof(T) == sizeof(int) &&
    sizeof(T) != sizeof(short),
    weak, int)
 
-// for short
+// to short
 atomics_make_apply(
    sizeof(T) == sizeof(short) &&
    sizeof(T) != sizeof(signed char),
    weak, short)
 
-// for signed char
+// to signed char
 atomics_make_apply(
    sizeof(T) == sizeof(signed char),
    weak, signed char)
@@ -829,23 +830,27 @@ inline T apply(
 // -----------------------------------------------------------------------------
 // mineq
 // maxeq
-// Might as well have these return T &, even if their wrappings into atomic
-// operations dumb the return type to T.
+// Might as well have these return A &, even if their wrappings into atomic
+// operations dumb the return type to A.
+// Note: these are intentionally written the way they are, as opposed to using,
+// say, std::min and std::max to do the work. The way they're written, A and B
+// could both be user-defined types, with only the operator<s and a conversion,
+// implicit or explicit, from a B to an A.
 // -----------------------------------------------------------------------------
 
 // mineq
-template<class T, class X>
-inline T &mineq(T &a, const X &b)
+template<class A, class B>
+inline A &mineq(A &a, const B &b)
 {
-   if (b < a) a = T(b);
+   if (b < a) a = A(b);
    return a;
 }
 
 // maxeq
-template<class T, class X>
-inline T &maxeq(T &a, const X &b)
+template<class A, class B>
+inline A &maxeq(A &a, const B &b)
 {
-   if (a < b) a = T(b);
+   if (a < b) a = A(b);
    return a;
 }
 
@@ -856,7 +861,7 @@ inline T &maxeq(T &a, const X &b)
 // Code for this printing was originally located in the atomics-macro-class.h
 // and atomics-macro-class-prepost.h files, which are #included multiple times
 // later in this file. We moved the printing business here in order to make the
-// primary code in those files clearer and less cluttered.
+// code in those files less cluttered.
 // -----------------------------------------------------------------------------
 
 namespace internal {
@@ -1234,7 +1239,9 @@ namespace internal {
 template<class T, class SCHEME, std::size_t NMUX>
 class atomic : public std::atomic<T> {
 
-   // T must be trivially copyable
+   // T must be trivially copyable.
+   // std::atomic<T> already checks this, but we might
+   // as well make the error message more direct.
    static_assert(
       std::is_trivially_copyable<T>::value,
      "atomics::atomic requires a trivially copyable type"
@@ -1246,10 +1253,12 @@ class atomic : public std::atomic<T> {
 public:
 
    // ------------------------
-   // Singleton std::mutex
+   // A singleton std::mutex
+   // for each atomic<> type.
    // ------------------------
 
    class mutex {
+      // private!
       inline mutex() noexcept { }
       inline mutex(const mutex &) noexcept { }
       inline mutex &operator=(const mutex &) noexcept { return *this; }
