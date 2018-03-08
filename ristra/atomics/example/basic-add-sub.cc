@@ -17,9 +17,9 @@ Example:
    addsub 10 1000000 cpp
 
 That's 20 total threads (10 pairs of threads), with half running:
-   atom.add<SCHEME>(1);  // add 1
+   atom.add<SCHEME>(1); // add 1
 and the other half running:
-   atom.sub<SCHEME>(1);  // subtract 1
+   atom.sub<SCHEME>(1); // subtract 1
 with the cpp scheme.
 */
 
@@ -37,8 +37,8 @@ with the cpp scheme.
 using namespace ristra::atomics;
 
 // command-line parameters
-std::size_t npairs = 0;  // number of *pairs* of threads
-std::size_t niters = 0;  // number of iterations
+std::size_t npairs = 0; // number of *pairs* of threads
+std::size_t niters = 0; // number of iterations
 
 // atomic value
 // See comment in add.cc; the same applies here.

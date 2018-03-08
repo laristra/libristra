@@ -28,7 +28,7 @@ public:
       #ifdef ATOMICS_PRINT
          debug_binary_cpp(atomics_stringify(atomics_cpp),atom,val,sync);
       #endif
-      return atom.atomics_cpp(val,sync);  // e.g. atom.fetch_add(val,sync)
+      return atom.atomics_cpp(val,sync); // e.g. atom.fetch_add(val,sync)
    }
    #endif
 
@@ -38,12 +38,12 @@ public:
    // ------------------------
 
    // Apply Kokkos' function atomics_kokkos
-   #if defined(ATOMICS_KOKKOS)  // <== using Kokkos at all?
-   #if defined(atomics_kokkos)  // <== Kokkos supports this operation?
+   #if defined(ATOMICS_KOKKOS) // <== using Kokkos at all?
+   #if defined(atomics_kokkos) // <== Kokkos supports this operation?
    template<class T, class SCHEME, std::size_t NMUX>
    inline T operator()(
       atomic<T,SCHEME,NMUX> &atom,
-      const kokkos  // for overload resolution vs. other operator()s
+      const kokkos // for overload resolution vs. other operator()s
    ) const {
       #ifdef ATOMICS_PRINT
          debug_binary_kokkos(atomics_stringify(atomics_kokkos),atom,val);
@@ -79,7 +79,7 @@ public:
       #ifdef ATOMICS_PRINT
          debug_binary_op(atomics_stringify(atomics_op),lhs,val);
       #endif
-      return lhs atomics_op val;  // e.g. lhs += val
+      return lhs atomics_op val; // e.g. lhs += val
    }
    #endif
 
@@ -93,7 +93,7 @@ public:
       #ifdef ATOMICS_PRINT
          debug_binary_fun(atomics_stringify(atomics_fun),lhs,val);
       #endif
-      return atomics::atomics_fun(lhs,val);  // e.g. atomics::mineq(lhs,val)
+      return atomics::atomics_fun(lhs,val); // e.g. atomics::mineq(lhs,val)
    }
    #endif
 };

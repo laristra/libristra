@@ -18,6 +18,9 @@
 //
 // -----------------------------------------------------------------------------
 
+/// \file
+/// \brief Support for atomic operations on general data
+
 #ifndef ristra_atomics_h
 #define ristra_atomics_h
 
@@ -29,7 +32,7 @@
 
 // Kokkos (optional)
 #if defined(ATOMICS_KOKKOS)
-#include "Kokkos_Atomic.hpp"
+#include <Kokkos_Atomic.hpp>
 #endif
 
 // For debug-mode assertions
@@ -40,15 +43,23 @@
 // For print-mode printing
 #if defined(ATOMICS_PRINT)
 #include <iostream>
-#include "boost/core/demangle.hpp"
+#include <boost/core/demangle.hpp>
 #endif
 
-// Everything in the rest of this file is placed into the following namespaces.
+// Everything in the rest of this file is placed into the ristra::atomics.
 // Helper constructs, scattered throughout the file, are additionally placed
-// into a namespace called "internal" wherever they appear. That's my way of
-// saying, "for internal use; call directly only if you know what you're doing."
+// into a namespace called "internal" wherever they appear. That's my way
+// of saying, "for internal use; call only if you know what you're doing."
+
+/// As for other Ristra projects
 namespace ristra {
+
+/// Atomics support
 namespace atomics {
+
+/// Miscellaneous "internal use only" constructs
+namespace internal {
+}
 
 
 
@@ -57,26 +68,33 @@ namespace atomics {
 // Represented by classes, to be used for overloading
 // -----------------------------------------------------------------------------
 
-// C++ std::atomic capabilities
-struct cpp { };
+/// Tag: atomicize via C++ std::atomic functions
+class cpp { };
 
-// Kokkos
 #if defined(ATOMICS_KOKKOS)
-   struct kokkos { };
+/// Tag: atomicize via Kokkos atomic functions
+class kokkos { };
 #endif
 
-// Our own schemes
-struct strong { struct pun { }; };
-struct weak   { struct pun { }; };
-struct lock   { };
-struct serial { };
-
-// Alternative notation
-struct pun {
-   using strong = atomics::strong::pun;
-   using weak   = atomics::weak  ::pun;
+/// Tag: atomicize via strong compare-and-swap loop
+class strong {
+public:
+   /// Tag: pun type to integral in CAS
+   class pun { };
 };
-using mutex = lock; // our mutex, not std::'s
+
+/// Tag: atomicize via weak compare-and-swap loop
+class weak {
+public:
+   /// Tag: pun type to integral in CAS
+   class pun { };
+};
+
+/// Tag: atomicize via lock_guard(mutex)
+class lock { };
+
+/// Tag: don't atomicize
+class serial { };
 
 // Default scheme
 // You can change the default by #defining ATOMICS_DEFAULT_SCHEME
@@ -124,17 +142,15 @@ namespace internal {
 
 #if defined(ATOMICS_PRINT)
 
-// print_type
-// Prints type T's type name as determined by Boost's demangle().
+/// Print type T's type name as determined by Boost's demangle()
 template<class T>
 inline void print_type() noexcept
 {
    std::cout << boost::core::demangle(typeid(T).name());
 }
 
-// print_mord
-// Prints the name of a std::memory_order value.
-inline void print_mord(const std::memory_order sync) noexcept
+/// Print the name of a std::memory_order value
+inline void print_memord(const std::memory_order sync) noexcept
 {
    if (sync == std::memory_order_relaxed)
       std::cout << "memory_order_relaxed" << std::endl;
@@ -176,13 +192,17 @@ namespace internal {
 // atomic parameter's own SCHEME, and the given (or not given) override S,
 // are fed into get_scheme, below, which selects S (if not char) or SCHEME.
 
+/// Traits; the default extracts S
 template<class SCHEME, class S>
-struct get_scheme {
+class get_scheme {
+public:
    using scheme = S;
 };
 
+/// Traits; the S == char version extracts SCHEME
 template<class SCHEME>
-struct get_scheme<SCHEME,char> {
+class get_scheme<SCHEME,char> {
+public:
    using scheme = SCHEME;
 };
 
@@ -201,6 +221,7 @@ struct get_scheme<SCHEME,char> {
 namespace internal {
 
 // scheme
+/// Print debugging info for one of our apply() functions
 template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
 inline void debug_apply(
    const char *const scheme
@@ -221,6 +242,7 @@ inline void debug_apply(
 }
 
 // scheme; memory order sync
+/// Print debugging info for one of our apply() functions
 template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
 inline void debug_apply(
    const char *const scheme,
@@ -233,7 +255,7 @@ inline void debug_apply(
       std::cout << "   scheme   : " << scheme << "\n";
       std::cout << "   function : ";  print_type<OPERATION>();
       std::cout << "\n";
-      std::cout << "   sync     : ";  print_mord(sync);
+      std::cout << "   sync     : ";  print_memord(sync);
       std::cout << "   T/return : ";  print_type<T>();
       std::cout << "\n";
    #else
@@ -244,6 +266,7 @@ inline void debug_apply(
 }
 
 // scheme; memory order success, failure
+/// Print debugging info for one of our apply() functions
 template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
 inline void debug_apply(
    const char *const scheme,
@@ -257,8 +280,8 @@ inline void debug_apply(
       std::cout << "   scheme   : " << scheme << "\n";
       std::cout << "   function : ";  print_type<OPERATION>();
       std::cout << "\n";
-      std::cout << "   success  : ";  print_mord(success);
-      std::cout << "   failure  : ";  print_mord(failure);
+      std::cout << "   success  : ";  print_memord(success);
+      std::cout << "   failure  : ";  print_memord(failure);
       std::cout << "   T/return : ";  print_type<T>();
       std::cout << "\n";
    #else
@@ -269,6 +292,7 @@ inline void debug_apply(
 }
 
 // scheme; pun
+/// Print debugging info for one of our apply() functions
 template<class T, class SCHEME, std::size_t NMUX, class OPERATION, class P>
 inline void debug_apply(
    const char *const scheme
@@ -282,6 +306,7 @@ inline void debug_apply(
 }
 
 // scheme; memory_order sync; pun
+/// Print debugging info for one of our apply() functions
 template<class T, class SCHEME, std::size_t NMUX, class OPERATION, class P>
 inline void debug_apply(
    const char *const scheme,
@@ -296,6 +321,7 @@ inline void debug_apply(
 }
 
 // scheme; memory_order success, failure; pun
+/// Print debugging info for one of our apply() functions
 template<class T, class SCHEME, std::size_t NMUX, class OPERATION, class P>
 inline void debug_apply(
    const char *const scheme,
@@ -345,9 +371,16 @@ namespace internal {
          compexch(old, neu, success, failure); \
    }
 
+/// Helper for strong compare/exchange; forwards reinterpreted data
 atomics_make_compexch_punned(punxstrong,         , compare_exchange_strong)
+
+/// Helper for strong compare/exchange; forwards reinterpreted data
 atomics_make_compexch_punned(punxstrong, volatile, compare_exchange_strong)
+
+/// Helper for weak compare/exchange; forwards reinterpreted data
 atomics_make_compexch_punned(punxweak,           , compare_exchange_weak)
+
+/// Helper for weak compare/exchange; forwards reinterpreted data
 atomics_make_compexch_punned(punxweak,   volatile, compare_exchange_weak)
 
 #undef atomics_make_compexch_punned
@@ -364,7 +397,7 @@ atomics_make_compexch_punned(punxweak,   volatile, compare_exchange_weak)
 
 namespace internal {
 
-// no "memory order"
+/// Apply operation, using the cpp scheme (underlying std::atomic capability)
 template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
 inline T apply(
    atomic<T,SCHEME,NMUX> &atom,
@@ -375,7 +408,7 @@ inline T apply(
    return operation(atom.base(),cpp{});
 }
 
-// memory order sync
+/// Apply operation, using the cpp scheme, w/memory_order sync
 template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
 inline T apply(
    atomic<T,SCHEME,NMUX> &atom,
@@ -400,6 +433,7 @@ inline T apply(
 namespace internal {
 #if defined(ATOMICS_KOKKOS)
 
+/// Apply operation, using a Kokkos atomic function
 template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
 inline T apply(
    atomic<T,SCHEME,NMUX> &atom,
@@ -426,7 +460,7 @@ inline T apply(
 
 namespace internal {
 
-// memory order sync
+/// Apply operation via strong CAS embedding; optional memory_order sync
 template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
 inline T apply(
    atomic<T,SCHEME,NMUX> &atom,
@@ -447,7 +481,7 @@ inline T apply(
    return ret;
 }
 
-// memory order success, failure
+/// Apply operation via strong CAS embedding; memory_order success, failure
 template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
 inline T apply(
    atomic<T,SCHEME,NMUX> &atom,
@@ -485,6 +519,7 @@ namespace internal {
 // Helper functions
 // ------------------------
 
+/// Helper for punned strong CAS apply(); memory_order sync
 template<class P, class T, class SCHEME, std::size_t NMUX, class OPERATION>
 inline T apply_pun(
    atomic<T,SCHEME,NMUX> &atom,
@@ -515,6 +550,7 @@ inline T apply_pun(
    return ret;
 }
 
+/// Helper for punned strong CAS apply(); memory_order success, failure
 template<class P, class T, class SCHEME, std::size_t NMUX, class OPERATION>
 inline T apply_pun(
    atomic<T,SCHEME,NMUX> &atom,
@@ -580,31 +616,31 @@ inline T apply_pun(
 // != requirements are sufficient,
 // because sizeof(signed char) <= sizeof(short) <= sizeof(int) <= ...
 
-// to long long
+/// Punned strong CAS; long long
 atomics_make_apply(
    sizeof(T) == sizeof(long long) &&
    sizeof(T) != sizeof(long),
    strong, long long)
 
-// to long
+/// Punned strong CAS; long
 atomics_make_apply(
    sizeof(T) == sizeof(long) &&
    sizeof(T) != sizeof(int),
    strong, long)
 
-// to int
+/// Punned strong CAS; int
 atomics_make_apply(
    sizeof(T) == sizeof(int) &&
    sizeof(T) != sizeof(short),
    strong, int)
 
-// to short
+/// Punned strong CAS; short
 atomics_make_apply(
    sizeof(T) == sizeof(short) &&
    sizeof(T) != sizeof(signed char),
    strong, short)
 
-// to signed char
+/// Punned strong CAS; signed char
 atomics_make_apply(
    sizeof(T) == sizeof(signed char),
    strong, signed char)
@@ -621,7 +657,7 @@ atomics_make_apply(
 
 namespace internal {
 
-// memory order sync
+/// Apply operation via weak CAS embedding; optional memory_order sync
 template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
 inline T apply(
    atomic<T,SCHEME,NMUX> &atom,
@@ -642,7 +678,7 @@ inline T apply(
    return ret;
 }
 
-// memory order success, failure
+/// Apply operation via weak CAS embedding; memory_order success, failure
 template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
 inline T apply(
    atomic<T,SCHEME,NMUX> &atom,
@@ -680,6 +716,7 @@ namespace internal {
 // Helper functions
 // ------------------------
 
+/// Helper for punned weak CAS apply(); memory_order sync
 template<class P, class T, class SCHEME, std::size_t NMUX, class OPERATION>
 inline T apply_pun(
    atomic<T,SCHEME,NMUX> &atom,
@@ -708,6 +745,7 @@ inline T apply_pun(
    return ret;
 }
 
+/// Helper for punned weak CAS apply(); memory_order success, failure
 template<class P, class T, class SCHEME, std::size_t NMUX, class OPERATION>
 inline T apply_pun(
    atomic<T,SCHEME,NMUX> &atom,
@@ -745,31 +783,31 @@ inline T apply_pun(
 
 // Re-use the macro from the strong::pun section...
 
-// to long long
+/// Punned strong CAS; long long
 atomics_make_apply(
    sizeof(T) == sizeof(long long) &&
    sizeof(T) != sizeof(long),
    weak, long long)
 
-// to long
+/// Punned strong CAS; long
 atomics_make_apply(
    sizeof(T) == sizeof(long) &&
    sizeof(T) != sizeof(int),
    weak, long)
 
-// to int
+/// Punned strong CAS; int
 atomics_make_apply(
    sizeof(T) == sizeof(int) &&
    sizeof(T) != sizeof(short),
    weak, int)
 
-// to short
+/// Punned strong CAS; short
 atomics_make_apply(
    sizeof(T) == sizeof(short) &&
    sizeof(T) != sizeof(signed char),
    weak, short)
 
-// to signed char
+/// Punned strong CAS; signed char
 atomics_make_apply(
    sizeof(T) == sizeof(signed char),
    weak, signed char)
@@ -782,13 +820,14 @@ atomics_make_apply(
 
 
 // -----------------------------------------------------------------------------
-// apply: lock/mutex
+// apply: lock
 // OPERATION's operator() is embedded into a lock_guard(mutex),
 // giving effective, albeit simplistic and possibly slow, atomicity.
 // -----------------------------------------------------------------------------
 
 namespace internal {
 
+/// Apply operation within lock_guard(mutex)
 template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
 inline T apply(
    atomic<T,SCHEME,NMUX> &atom,
@@ -796,7 +835,8 @@ inline T apply(
    const OPERATION &operation
 ) {
    debug_apply<T,SCHEME,NMUX,OPERATION>("lock");
-   std::lock_guard<std::mutex> lock(atomic<T,SCHEME,NMUX>::mutex::instance());
+   std::lock_guard<std::mutex>
+      lock(atomic<T,SCHEME,NMUX>::singleton_mutex::instance());
    return operation(atom.ref());
 }
 
@@ -813,6 +853,7 @@ inline T apply(
 namespace internal {
 
 // NO! unless single-threaded
+/// Apply operation plainly, with no atomicity meshanism
 template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
 inline T apply(
    atomic<T,SCHEME,NMUX> &atom,
@@ -839,6 +880,7 @@ inline T apply(
 // -----------------------------------------------------------------------------
 
 // mineq
+/// General "a = min(a,b)"; used by atomic min() functions
 template<class A, class B>
 inline A &mineq(A &a, const B &b)
 {
@@ -847,6 +889,7 @@ inline A &mineq(A &a, const B &b)
 }
 
 // maxeq
+/// General "a = max(a,b)"; used by atomic max() functions
 template<class A, class B>
 inline A &maxeq(A &a, const B &b)
 {
@@ -867,6 +910,7 @@ inline A &maxeq(A &a, const B &b)
 namespace internal {
 #ifdef ATOMICS_PRINT
 
+/// Print debugging info, re: cpp scheme
 template<class T, class X>
 inline void debug_binary_cpp(
    const char *const name,
@@ -880,10 +924,11 @@ inline void debug_binary_cpp(
    std::cout << "(" << T(atom) << ")." << name << "(";
    print_type<X>();
    std::cout << "(" << val << "),";
-   print_mord(sync);
+   print_memord(sync);
    std::cout << ")" << std::endl;
 }
 
+/// Print debugging info, re: kokkos scheme
 template<class T, class X, class SCHEME, std::size_t NMUX>
 inline void debug_binary_kokkos(
    const char *const name,
@@ -899,6 +944,7 @@ inline void debug_binary_kokkos(
    std::cout << "(" << val << "))" << std::endl;
 }
 
+/// Print debugging info, re: general scheme, binary operation
 template<class T, class X>
 inline void debug_binary_op(
    const char *const name,
@@ -913,6 +959,7 @@ inline void debug_binary_op(
    std::cout << "(" << val << ")" << std::endl;
 }
 
+/// Print debugging info, re: general scheme, binary function
 template<class T, class X>
 inline void debug_binary_fun(
    const char *const name,
@@ -928,6 +975,7 @@ inline void debug_binary_fun(
    std::cout << "(" << val << "))" << std::endl;
 }
 
+/// Print debugging info, re: cpp scheme, unary preincrement/predecrement
 template<class T>
 inline void debug_unary_cpp_pre(
    const char *const name,
@@ -941,6 +989,7 @@ inline void debug_unary_cpp_pre(
    std::cout << std::endl;
 }
 
+/// Print debugging info, re: cpp scheme, unary postincrement/postdecrement
 template<class T>
 inline void debug_unary_cpp_post(
    const char *const name,
@@ -954,6 +1003,7 @@ inline void debug_unary_cpp_post(
    std::cout << std::endl;
 }
 
+/// Print debugging info, re: kokkos scheme
 template<class T, class SCHEME, std::size_t NMUX>
 inline void debug_unary_kokkos(
    const char *const name,
@@ -966,6 +1016,7 @@ inline void debug_unary_kokkos(
    std::cout << "(" << T(atom) << ")))" << std::endl;
 }
 
+/// Print debugging info, re: general scheme, unary preincrement/predecrement
 template<class T>
 inline void debug_unary_op_pre(
    const char *const name,
@@ -979,6 +1030,7 @@ inline void debug_unary_op_pre(
    std::cout << std::endl;
 }
 
+/// Print debugging info, re: general scheme, unary postincrement/postdecrement
 template<class T>
 inline void debug_unary_op_post(
    const char *const name,
@@ -1019,7 +1071,7 @@ namespace internal {
 // to indicate that the right-hand side should be converted explicitly to T.
 // Where that token *isn't* defined, the right-hand side will be left as-is.
 
-// +=
+/// Function object for += implementation
 #define   atomics_class  addequal
 #define   atomics_op     +=
 #define   atomics_cpp    fetch_add
@@ -1027,7 +1079,7 @@ namespace internal {
 #define   atomics_kokkos_to_t
 #include "atomics-macro-class.h"
 
-// -=
+/// Function object for -= implementation
 #define   atomics_class  subequal
 #define   atomics_op     -=
 #define   atomics_cpp    fetch_sub
@@ -1035,40 +1087,40 @@ namespace internal {
 #define   atomics_kokkos_to_t
 #include "atomics-macro-class.h"
 
-// *=
+/// Function object for *= implementation
 #define   atomics_class  mulequal
 #define   atomics_op     *=
 #define   atomics_kokkos atomic_fetch_mul
 #define   atomics_kokkos_to_t
 #include "atomics-macro-class.h"
 
-// /=
+/// Function object for /= implementation
 #define   atomics_class  divequal
 #define   atomics_op     /=
 #define   atomics_kokkos atomic_fetch_div
 #define   atomics_kokkos_to_t
 #include "atomics-macro-class.h"
 
-// %=
+/// Function object for %= implementation
 #define   atomics_class  modequal
 #define   atomics_op     %=
 #define   atomics_kokkos atomic_fetch_mod
 #define   atomics_kokkos_to_t
 #include "atomics-macro-class.h"
 
-// <<=
+/// Function object for <<= implementation
 #define   atomics_class  lshiftequal
 #define   atomics_op     <<=
 #define   atomics_kokkos atomic_fetch_lshift
 #include "atomics-macro-class.h"
 
-// >>=
+/// Function object for >>= implementation
 #define   atomics_class  rshiftequal
 #define   atomics_op     >>=
 #define   atomics_kokkos atomic_fetch_rshift
 #include "atomics-macro-class.h"
 
-// &=
+/// Function object for &= implementation
 #define   atomics_class  andequal
 #define   atomics_op     &=
 #define   atomics_cpp    fetch_and
@@ -1076,7 +1128,7 @@ namespace internal {
 #define   atomics_kokkos_to_t
 #include "atomics-macro-class.h"
 
-// |=
+/// Function object for |= implementation
 #define   atomics_class  orequal
 #define   atomics_op     |=
 #define   atomics_cpp    fetch_or
@@ -1084,7 +1136,7 @@ namespace internal {
 #define   atomics_kokkos_to_t
 #include "atomics-macro-class.h"
 
-// ^=
+/// Function object for ^= implementation
 #define   atomics_class  xorequal
 #define   atomics_op     ^=
 #define   atomics_cpp    fetch_xor
@@ -1092,14 +1144,14 @@ namespace internal {
 #define   atomics_kokkos_to_t
 #include "atomics-macro-class.h"
 
-// "min="
+/// Function object for "min=" implementation
 #define   atomics_class  minequal
 #define   atomics_fun    mineq
 #define   atomics_kokkos atomic_fetch_min
 #define   atomics_kokkos_to_t
 #include "atomics-macro-class.h"
 
-// "max="
+/// Function object for "max=" implementation
 #define   atomics_class  maxequal
 #define   atomics_fun    maxeq
 #define   atomics_kokkos atomic_fetch_max
@@ -1111,25 +1163,25 @@ namespace internal {
 // Unary
 // ------------------------
 
-// ++value
+/// Function object for ++value implementation
 #define   atomics_class  preincclass
 #define   atomics_pre    ++
 #define   atomics_kokkos atomic_increment
 #include "atomics-macro-class-prepost.h"
 
-// value++
+/// Function object for value++ implementation
 #define   atomics_class  postincclass
 #define   atomics_post   ++
 #define   atomics_kokkos atomic_increment
 #include "atomics-macro-class-prepost.h"
 
-// --value
+/// Function object for --value implementation
 #define   atomics_class  predecclass
 #define   atomics_pre    --
 #define   atomics_kokkos atomic_decrement
 #include "atomics-macro-class-prepost.h"
 
-// value--
+/// Function object for value-- implementation
 #define   atomics_class  postdecclass
 #define   atomics_post   --
 #define   atomics_kokkos atomic_decrement
@@ -1147,53 +1199,62 @@ namespace internal {
 // add() etc.
 // ------------------------
 
+/// Function version of atomic +=
 #define   atomics_fun   add
 #define   atomics_class addequal
 #include "atomics-macro-function.h"
 
+/// Function version of atomic -=
 #define   atomics_fun   sub
 #define   atomics_class subequal
 #include "atomics-macro-function.h"
 
+/// Function version of atomic *=
 #define   atomics_fun   mul
 #define   atomics_class mulequal
 #include "atomics-macro-function.h"
 
+/// Function version of atomic /=
 #define   atomics_fun   div
 #define   atomics_class divequal
 #include "atomics-macro-function.h"
 
+/// Function version of atomic %=
 #define   atomics_fun   mod
 #define   atomics_class modequal
 #include "atomics-macro-function.h"
 
+/// Function version of atomic <<=
 #define   atomics_fun   lshift
 #define   atomics_class lshiftequal
 #include "atomics-macro-function.h"
 
+/// Function version of atomic >>=
 #define   atomics_fun   rshift
 #define   atomics_class rshiftequal
 #include "atomics-macro-function.h"
 
-// can't call it and
+/// Function version of atomic &=
 #define   atomics_fun   andeq
 #define   atomics_class andequal
 #include "atomics-macro-function.h"
 
-// can't call it or
+/// Function version of atomic |=
 #define   atomics_fun   oreq
 #define   atomics_class orequal
 #include "atomics-macro-function.h"
 
-// can't call it xor
+/// Function version of atomic ^=
 #define   atomics_fun   xoreq
 #define   atomics_class xorequal
 #include "atomics-macro-function.h"
 
+/// Function version of atomic min
 #define   atomics_fun   min
 #define   atomics_class minequal
 #include "atomics-macro-function.h"
 
+/// Function version of atomic max
 #define   atomics_fun   max
 #define   atomics_class maxequal
 #include "atomics-macro-function.h"
@@ -1204,28 +1265,36 @@ namespace internal {
 // and decrement
 // ------------------------
 
+// Note:
 // inc == preinc
+// dec == predec
+
+/// Function version of atomic ++value
 #define   atomics_fun   inc
 #define   atomics_class preincclass
 #include "atomics-macro-function-prepost.h"
 
+/// Function version of atomic  ++value
 #define   atomics_fun   preinc
 #define   atomics_class preincclass
 #include "atomics-macro-function-prepost.h"
 
+/// Function version of atomic value++
 #define   atomics_fun   postinc
 #define   atomics_class postincclass
 #include "atomics-macro-function-prepost.h"
 
-// dec == predec
+/// Function version of atomic --value
 #define   atomics_fun   dec
 #define   atomics_class predecclass
 #include "atomics-macro-function-prepost.h"
 
+/// Function version of atomic --value
 #define   atomics_fun   predec
 #define   atomics_class predecclass
 #include "atomics-macro-function-prepost.h"
 
+/// Function version of atomic value--
 #define   atomics_fun   postdec
 #define   atomics_class postdecclass
 #include "atomics-macro-function-prepost.h"
@@ -1235,6 +1304,36 @@ namespace internal {
 // -----------------------------------------------------------------------------
 // atomic
 // -----------------------------------------------------------------------------
+
+/**
+This is the primary class in the Ristra Atomics library. For a value of type
+atomic<T,...>, the library provides a set of atomic operations that can be
+performed on the value. T must be a trivially-copyable type; informally, a
+type for which a shallow copy, as with memcpy(), has the correct semantics.
+
+\tparam T
+The underlying data type; for example, int, int *, or double. Trivially copyable
+user-defined types are allowed. T and SCHEME, together, determine what atomic
+operations are available. For example, only operations on integral T are
+supported by the atomics::cpp scheme, and the atomics::kokkos scheme has nothing
+for pointer T.
+
+\tparam SCHEME
+The "atomicity scheme," i.e. the methodology by which Ristra Atomics will cause
+an operation on a variable of this type to be performed atomically. SCHEME and
+T, together, determine what atomic operations can be performed. SCHEME defaults
+to strong compare-and-swap (atomics::strong), unless the user has #defined
+ATOMICS_DEFAULT_SCHEME to something else before #including atomics.h. The strong
+and weak compare-and-swap schemes offer the most flexibility (not necessarily
+the best speed) in terms of the availability of operations.
+
+\tparam NMUX
+This optimization feature, for advanced users, is relevant only in concert with
+the atomics::lock atomicity scheme. Via NMUX, two variables that would otherwise
+have the same atomic<T,SCHEME> type can instead be outfitted with different
+"singleton" mutexes, so that any atomic operations being performed on one won't
+unnecessarily stall any atomic operations being performed on the other.
+*/
 
 template<class T, class SCHEME, std::size_t NMUX>
 class atomic : public std::atomic<T> {
@@ -1257,11 +1356,15 @@ public:
    // for each atomic<> type.
    // ------------------------
 
-   class mutex {
+   /// Produce a singleton mutex for this specific atomic<> type instantiation
+   class singleton_mutex {
       // private!
-      inline mutex() noexcept { }
-      inline mutex(const mutex &) noexcept { }
-      inline mutex &operator=(const mutex &) noexcept { return *this; }
+      inline singleton_mutex() noexcept
+      { }
+      inline singleton_mutex(const singleton_mutex &) noexcept
+      { }
+      inline singleton_mutex &operator=(const singleton_mutex &) noexcept
+      { return *this; }
    public:
       static inline std::mutex &instance() noexcept
       {
@@ -1283,12 +1386,12 @@ public:
    // As for std::atomic
    inline atomic() noexcept
    {
-      (void)mutex::instance();
+      (void)singleton_mutex::instance();
    }
 
    inline constexpr atomic(const T &val) noexcept : BASE(val)
    {
-      (void)mutex::instance();
+      (void)singleton_mutex::instance();
    };
 
    inline atomic(const atomic &) = delete;
@@ -1319,6 +1422,8 @@ public:
          atomics_assert(sizeof(*this) == sizeof(type)); \
          return *reinterpret_cast<type *const>(this); \
       }
+
+   /// Return reference to contained data, via reinterpret_cast; use sparingly
    atomics_make_ref(               , T)
    atomics_make_ref(const          , T)
    atomics_make_ref(      volatile , T)
@@ -1331,6 +1436,7 @@ public:
    // ------------------------
 
    // base()
+   /// Return reference to underlying std::atomic
    inline                BASE &base()                noexcept { return *this; }
    inline const          BASE &base() const          noexcept { return *this; }
    inline       volatile BASE &base()       volatile noexcept { return *this; }
@@ -1351,39 +1457,51 @@ public:
    // add() etc.
    // ------------------------
 
+   /// Member function version of atomic +=
    #define   atomics_fun add
    #include "atomics-macro-member.h"
 
+   /// Member function version of atomic -=
    #define   atomics_fun sub
    #include "atomics-macro-member.h"
 
+   /// Member function version of atomic *=
    #define   atomics_fun mul
    #include "atomics-macro-member.h"
 
+   /// Member function version of atomic /=
    #define   atomics_fun div
    #include "atomics-macro-member.h"
 
+   /// Member function version of atomic %=
    #define   atomics_fun mod
    #include "atomics-macro-member.h"
 
+   /// Member function version of atomic <<=
    #define   atomics_fun lshift
    #include "atomics-macro-member.h"
 
+   /// Member function version of atomic >>=
    #define   atomics_fun rshift
    #include "atomics-macro-member.h"
 
+   /// Member function version of atomic &=
    #define   atomics_fun andeq
    #include "atomics-macro-member.h"
 
+   /// Member function version of atomic |=
    #define   atomics_fun oreq
    #include "atomics-macro-member.h"
 
+   /// Member function version of atomic ^=
    #define   atomics_fun xoreq
    #include "atomics-macro-member.h"
 
+   /// Member function version of atomic min
    #define   atomics_fun min
    #include "atomics-macro-member.h"
 
+   /// Member function version of atomic max
    #define   atomics_fun max
    #include "atomics-macro-member.h"
 
@@ -1394,23 +1512,31 @@ public:
    // and decrement
    // ------------------------
 
+   // Note:
    // inc == preinc
+   // dec == predec
+
+   /// Member function version of atomic ++value
    #define   atomics_fun inc
    #include "atomics-macro-member-prepost.h"
 
+   /// Member function version of atomic ++value
    #define   atomics_fun preinc
    #include "atomics-macro-member-prepost.h"
 
+   /// Member function version of atomic value++
    #define   atomics_fun postinc
    #include "atomics-macro-member-prepost.h"
 
-   // dec == predec
+   /// Member function version of atomic --value
    #define   atomics_fun dec
    #include "atomics-macro-member-prepost.h"
 
+   /// Member function version of atomic --value
    #define   atomics_fun predec
    #include "atomics-macro-member-prepost.h"
 
+   /// Member function version of atomic value--
    #define   atomics_fun postdec
    #include "atomics-macro-member-prepost.h"
 };
@@ -1426,52 +1552,52 @@ public:
 // Binary
 // ------------------------
 
-// +=
+/// Atomic +=
 #define   atomics_op  +=
 #define   atomics_fun add
 #include "atomics-macro-operator.h"
 
-// -=
+/// Atomic -=
 #define   atomics_op  -=
 #define   atomics_fun sub
 #include "atomics-macro-operator.h"
 
-// *=
+/// Atomic *=
 #define   atomics_op  *=
 #define   atomics_fun mul
 #include "atomics-macro-operator.h"
 
-// /=
+/// Atomic /=
 #define   atomics_op  /=
 #define   atomics_fun div
 #include "atomics-macro-operator.h"
 
-// %=
+/// Atomic %=
 #define   atomics_op  %=
 #define   atomics_fun mod
 #include "atomics-macro-operator.h"
 
-// <<=
+/// Atomic <<=
 #define   atomics_op  <<=
 #define   atomics_fun lshift
 #include "atomics-macro-operator.h"
 
-// >>=
+/// Atomic >>=
 #define   atomics_op  >>=
 #define   atomics_fun rshift
 #include "atomics-macro-operator.h"
 
-// &=
+/// Atomic &=
 #define   atomics_op  &=
 #define   atomics_fun andeq
 #include "atomics-macro-operator.h"
 
-// |=
+/// Atomic |=
 #define   atomics_op  |=
 #define   atomics_fun oreq
 #include "atomics-macro-operator.h"
 
-// ^=
+/// Atomic ^=
 #define   atomics_op  ^=
 #define   atomics_fun xoreq
 #include "atomics-macro-operator.h"
@@ -1481,25 +1607,25 @@ public:
 // Unary
 // ------------------------
 
-// ++value
+/// Atomic ++value
 #define   atomics_op   ++
 #define   atomics_pre
 #define   atomics_fun  preinc
 #include "atomics-macro-operator-prepost.h"
 
-// value++
+/// Atomic value++
 #define   atomics_op   ++
 #define   atomics_post
 #define   atomics_fun  postinc
 #include "atomics-macro-operator-prepost.h"
 
-// --value
+/// Atomic --value
 #define   atomics_op   --
 #define   atomics_pre
 #define   atomics_fun  predec
 #include "atomics-macro-operator-prepost.h"
 
-// value--
+/// Atomic value--
 #define   atomics_op   --
 #define   atomics_post
 #define   atomics_fun  postdec

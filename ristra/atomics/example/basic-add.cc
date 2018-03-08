@@ -34,8 +34,8 @@ be 10*1000000, i.e. 10000000.
 using namespace ristra::atomics;
 
 // command-line parameters
-std::size_t nthreads = 0;  // number of threads
-std::size_t niters = 0;  // number of iterations
+std::size_t nthreads = 0; // number of threads
+std::size_t niters = 0; // number of iterations
 
 // atomic value
 // Feel free to try other data types, e.g. double. Bear in mind that if you

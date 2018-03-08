@@ -17,7 +17,8 @@
 // ------------------------
 
 // foo
-struct foo {
+class foo {
+public:
    unsigned char a;
    unsigned char b;
    unsigned char c;
@@ -26,7 +27,8 @@ struct foo {
 };
 
 // bar
-struct bar {
+class bar {
+public:
    int i;
    bar(const int val = 0) : i(val) { }
 

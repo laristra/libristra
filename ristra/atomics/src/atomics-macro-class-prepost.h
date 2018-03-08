@@ -44,7 +44,7 @@ public:
    template<class T, class SCHEME, std::size_t NMUX>
    inline T operator()(
       atomic<T,SCHEME,NMUX> &atom,
-      const kokkos  // for overload resolution vs. other operator()s
+      const kokkos // for overload resolution vs. other operator()s
    ) const {
       #ifdef ATOMICS_PRINT
          debug_unary_kokkos(atomics_stringify(atomics_kokkos),atom);
