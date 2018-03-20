@@ -2,21 +2,11 @@
 // Make operator for an atomic operation: ++, --, etc.
 // The atomics_* tokens are #defined before coming here.
 
-template<class T, class SCHEME, std::size_t NMUX>
-inline T operator atomics_op (
-   atomic<T,SCHEME,NMUX> &atom
+template<class ATOMIC>
+inline typename internal::is_atomic<ATOMIC>::value_type operator atomics_op (
+   ATOMIC &atom
    #if defined(atomics_post)
-     , const int
-   #endif
-) noexcept {
-   return atom.atomics_fun();
-}
-
-template<class T, class SCHEME, std::size_t NMUX>
-inline T operator atomics_op (
-   volatile atomic<T,SCHEME,NMUX> &atom
-   #if defined(atomics_post)
-     , const int
+     , const int  // to indicate postincrement/postdecrement
    #endif
 ) noexcept {
    return atom.atomics_fun();

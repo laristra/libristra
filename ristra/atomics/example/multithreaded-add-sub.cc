@@ -25,7 +25,7 @@ with the cpp scheme.
 
 
 
-//#define ATOMICS_KOKKOS
+#define ATOMICS_KOKKOS
 //#define ATOMICS_DEBUG
 //#define ATOMICS_PRINT
 
@@ -42,7 +42,7 @@ std::size_t niters = 0; // number of iterations
 
 // atomic value
 // See comment in add.cc; the same applies here.
-atomic<long,strong> atom(0);
+volatile atomic<long,strong> atom(0);
 
 
 // ------------------------
@@ -102,7 +102,7 @@ int main(const int argc, const char *const *const argv)
       exit(1);
    }
 
-   npairs = atol(argv[1]);  if (npairs < 1) npairs = 1;
+   npairs = atol(argv[1]); if (npairs < 1) npairs = 1;
    niters = atol(argv[2]);
    const std::string scheme = argv[3];
 

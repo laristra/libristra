@@ -21,7 +21,7 @@ be 10*1000000, i.e. 10000000.
 
 
 
-//#define ATOMICS_KOKKOS
+#define ATOMICS_KOKKOS
 //#define ATOMICS_DEBUG
 //#define ATOMICS_PRINT
 
@@ -104,8 +104,8 @@ int main(const int argc, const char *const *const argv)
       exit(1);
    }
 
-   nthreads = atol(argv[1]);  if (nthreads < 1) nthreads = 1;
-   niters = atol(argv[2]);
+   nthreads = atol(argv[1]); if (nthreads < 1) nthreads = 1;
+   niters   = atol(argv[2]);
    const std::string scheme = argv[3];
 
    if (scheme == "cpp")

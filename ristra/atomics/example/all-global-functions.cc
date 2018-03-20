@@ -98,7 +98,7 @@ to improve this, perhaps by using SFINAE constructs in higher-level functions
 that call the lower-level functions. At the moment, we don't do this.
 */
 
-//#define ATOMICS_KOKKOS
+#define ATOMICS_KOKKOS
 #define ATOMICS_DEBUG
 #include "atomics.h"
 
@@ -125,6 +125,10 @@ int main()
    const std::memory_order failure = std::memory_order_seq_cst;
 
 
+
+   // --------------------------------------------------------------------------
+   // non-volatile
+   // --------------------------------------------------------------------------
 
    // ------------------------
    // int
@@ -2811,4 +2815,2728 @@ int main()
 // { atomic<foo,serial> a(0);  dec    (a,  success,failure); }
 // { atomic<foo,serial> a(0);  predec (a,  success,failure); }
 // { atomic<foo,serial> a(0);  postdec(a,  success,failure); }
+
+
+
+   // --------------------------------------------------------------------------
+   // volatile
+   // --------------------------------------------------------------------------
+
+   // ------------------------
+   // int
+   // ------------------------
+
+   { volatile atomic<int,cpp> a(0);  add    (a,2); }
+   { volatile atomic<int,cpp> a(0);  sub    (a,2); }
+// { volatile atomic<int,cpp> a(0);  mul    (a,2); }
+// { volatile atomic<int,cpp> a(0);  div    (a,2); }
+// { volatile atomic<int,cpp> a(0);  mod    (a,2); }
+// { volatile atomic<int,cpp> a(0);  lshift (a,2); }
+// { volatile atomic<int,cpp> a(0);  rshift (a,2); }
+   { volatile atomic<int,cpp> a(0);  andeq  (a,2); }
+   { volatile atomic<int,cpp> a(0);  oreq   (a,2); }
+   { volatile atomic<int,cpp> a(0);  xoreq  (a,2); }
+// { volatile atomic<int,cpp> a(0);  min    (a,2); }
+// { volatile atomic<int,cpp> a(0);  max    (a,2); }
+   { volatile atomic<int,cpp> a(0);  inc    (a); }
+   { volatile atomic<int,cpp> a(0);  preinc (a); }
+   { volatile atomic<int,cpp> a(0);  postinc(a); }
+   { volatile atomic<int,cpp> a(0);  dec    (a); }
+   { volatile atomic<int,cpp> a(0);  predec (a); }
+   { volatile atomic<int,cpp> a(0);  postdec(a); }
+   { volatile atomic<int,cpp> a(0);  add    (a,2,sync); }
+   { volatile atomic<int,cpp> a(0);  sub    (a,2,sync); }
+// { volatile atomic<int,cpp> a(0);  mul    (a,2,sync); }
+// { volatile atomic<int,cpp> a(0);  div    (a,2,sync); }
+// { volatile atomic<int,cpp> a(0);  mod    (a,2,sync); }
+// { volatile atomic<int,cpp> a(0);  lshift (a,2,sync); }
+// { volatile atomic<int,cpp> a(0);  rshift (a,2,sync); }
+   { volatile atomic<int,cpp> a(0);  andeq  (a,2,sync); }
+   { volatile atomic<int,cpp> a(0);  oreq   (a,2,sync); }
+   { volatile atomic<int,cpp> a(0);  xoreq  (a,2,sync); }
+// { volatile atomic<int,cpp> a(0);  min    (a,2,sync); }
+// { volatile atomic<int,cpp> a(0);  max    (a,2,sync); }
+// { volatile atomic<int,cpp> a(0);  inc    (a,  sync); }
+// { volatile atomic<int,cpp> a(0);  preinc (a,  sync); }
+// { volatile atomic<int,cpp> a(0);  postinc(a,  sync); }
+// { volatile atomic<int,cpp> a(0);  dec    (a,  sync); }
+// { volatile atomic<int,cpp> a(0);  predec (a,  sync); }
+// { volatile atomic<int,cpp> a(0);  postdec(a,  sync); }
+// { volatile atomic<int,cpp> a(0);  add    (a,2,success,failure); }
+// { volatile atomic<int,cpp> a(0);  sub    (a,2,success,failure); }
+// { volatile atomic<int,cpp> a(0);  mul    (a,2,success,failure); }
+// { volatile atomic<int,cpp> a(0);  div    (a,2,success,failure); }
+// { volatile atomic<int,cpp> a(0);  mod    (a,2,success,failure); }
+// { volatile atomic<int,cpp> a(0);  lshift (a,2,success,failure); }
+// { volatile atomic<int,cpp> a(0);  rshift (a,2,success,failure); }
+// { volatile atomic<int,cpp> a(0);  andeq  (a,2,success,failure); }
+// { volatile atomic<int,cpp> a(0);  oreq   (a,2,success,failure); }
+// { volatile atomic<int,cpp> a(0);  xoreq  (a,2,success,failure); }
+// { volatile atomic<int,cpp> a(0);  min    (a,2,success,failure); }
+// { volatile atomic<int,cpp> a(0);  max    (a,2,success,failure); }
+// { volatile atomic<int,cpp> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<int,cpp> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<int,cpp> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<int,cpp> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<int,cpp> a(0);  predec (a,  success,failure); }
+// { volatile atomic<int,cpp> a(0);  postdec(a,  success,failure); }
+
+   #if defined(ATOMICS_KOKKOS)
+   { volatile atomic<int,kokkos> a(0);  add    (a,2); }
+   { volatile atomic<int,kokkos> a(0);  sub    (a,2); }
+   { volatile atomic<int,kokkos> a(0);  mul    (a,2); }
+   { volatile atomic<int,kokkos> a(0);  div    (a,2); }
+   { volatile atomic<int,kokkos> a(0);  mod    (a,2); }
+   { volatile atomic<int,kokkos> a(0);  lshift (a,2); }
+   { volatile atomic<int,kokkos> a(0);  rshift (a,2); }
+   { volatile atomic<int,kokkos> a(0);  andeq  (a,2); }
+   { volatile atomic<int,kokkos> a(0);  oreq   (a,2); }
+   { volatile atomic<int,kokkos> a(0);  xoreq  (a,2); }
+   { volatile atomic<int,kokkos> a(0);  min    (a,2); }
+   { volatile atomic<int,kokkos> a(0);  max    (a,2); }
+   { volatile atomic<int,kokkos> a(0);  inc    (a); }
+   { volatile atomic<int,kokkos> a(0);  preinc (a); }
+   { volatile atomic<int,kokkos> a(0);  postinc(a); }
+   { volatile atomic<int,kokkos> a(0);  dec    (a); }
+   { volatile atomic<int,kokkos> a(0);  predec (a); }
+   { volatile atomic<int,kokkos> a(0);  postdec(a); }
+// { volatile atomic<int,kokkos> a(0);  add    (a,2,sync); }
+// { volatile atomic<int,kokkos> a(0);  sub    (a,2,sync); }
+// { volatile atomic<int,kokkos> a(0);  mul    (a,2,sync); }
+// { volatile atomic<int,kokkos> a(0);  div    (a,2,sync); }
+// { volatile atomic<int,kokkos> a(0);  mod    (a,2,sync); }
+// { volatile atomic<int,kokkos> a(0);  lshift (a,2,sync); }
+// { volatile atomic<int,kokkos> a(0);  rshift (a,2,sync); }
+// { volatile atomic<int,kokkos> a(0);  andeq  (a,2,sync); }
+// { volatile atomic<int,kokkos> a(0);  oreq   (a,2,sync); }
+// { volatile atomic<int,kokkos> a(0);  xoreq  (a,2,sync); }
+// { volatile atomic<int,kokkos> a(0);  min    (a,2,sync); }
+// { volatile atomic<int,kokkos> a(0);  max    (a,2,sync); }
+// { volatile atomic<int,kokkos> a(0);  inc    (a,  sync); }
+// { volatile atomic<int,kokkos> a(0);  preinc (a,  sync); }
+// { volatile atomic<int,kokkos> a(0);  postinc(a,  sync); }
+// { volatile atomic<int,kokkos> a(0);  dec    (a,  sync); }
+// { volatile atomic<int,kokkos> a(0);  predec (a,  sync); }
+// { volatile atomic<int,kokkos> a(0);  postdec(a,  sync); }
+// { volatile atomic<int,kokkos> a(0);  add    (a,2,success,failure); }
+// { volatile atomic<int,kokkos> a(0);  sub    (a,2,success,failure); }
+// { volatile atomic<int,kokkos> a(0);  mul    (a,2,success,failure); }
+// { volatile atomic<int,kokkos> a(0);  div    (a,2,success,failure); }
+// { volatile atomic<int,kokkos> a(0);  mod    (a,2,success,failure); }
+// { volatile atomic<int,kokkos> a(0);  lshift (a,2,success,failure); }
+// { volatile atomic<int,kokkos> a(0);  rshift (a,2,success,failure); }
+// { volatile atomic<int,kokkos> a(0);  andeq  (a,2,success,failure); }
+// { volatile atomic<int,kokkos> a(0);  oreq   (a,2,success,failure); }
+// { volatile atomic<int,kokkos> a(0);  xoreq  (a,2,success,failure); }
+// { volatile atomic<int,kokkos> a(0);  min    (a,2,success,failure); }
+// { volatile atomic<int,kokkos> a(0);  max    (a,2,success,failure); }
+// { volatile atomic<int,kokkos> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<int,kokkos> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<int,kokkos> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<int,kokkos> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<int,kokkos> a(0);  predec (a,  success,failure); }
+// { volatile atomic<int,kokkos> a(0);  postdec(a,  success,failure); }
+   #endif
+
+   { volatile atomic<int,strong> a(0);  add    (a,2); }
+   { volatile atomic<int,strong> a(0);  sub    (a,2); }
+   { volatile atomic<int,strong> a(0);  mul    (a,2); }
+   { volatile atomic<int,strong> a(0);  div    (a,2); }
+   { volatile atomic<int,strong> a(0);  mod    (a,2); }
+   { volatile atomic<int,strong> a(0);  lshift (a,2); }
+   { volatile atomic<int,strong> a(0);  rshift (a,2); }
+   { volatile atomic<int,strong> a(0);  andeq  (a,2); }
+   { volatile atomic<int,strong> a(0);  oreq   (a,2); }
+   { volatile atomic<int,strong> a(0);  xoreq  (a,2); }
+   { volatile atomic<int,strong> a(0);  min    (a,2); }
+   { volatile atomic<int,strong> a(0);  max    (a,2); }
+   { volatile atomic<int,strong> a(0);  inc    (a); }
+   { volatile atomic<int,strong> a(0);  preinc (a); }
+   { volatile atomic<int,strong> a(0);  postinc(a); }
+   { volatile atomic<int,strong> a(0);  dec    (a); }
+   { volatile atomic<int,strong> a(0);  predec (a); }
+   { volatile atomic<int,strong> a(0);  postdec(a); }
+   { volatile atomic<int,strong> a(0);  add    (a,2,sync); }
+   { volatile atomic<int,strong> a(0);  sub    (a,2,sync); }
+   { volatile atomic<int,strong> a(0);  mul    (a,2,sync); }
+   { volatile atomic<int,strong> a(0);  div    (a,2,sync); }
+   { volatile atomic<int,strong> a(0);  mod    (a,2,sync); }
+   { volatile atomic<int,strong> a(0);  lshift (a,2,sync); }
+   { volatile atomic<int,strong> a(0);  rshift (a,2,sync); }
+   { volatile atomic<int,strong> a(0);  andeq  (a,2,sync); }
+   { volatile atomic<int,strong> a(0);  oreq   (a,2,sync); }
+   { volatile atomic<int,strong> a(0);  xoreq  (a,2,sync); }
+   { volatile atomic<int,strong> a(0);  min    (a,2,sync); }
+   { volatile atomic<int,strong> a(0);  max    (a,2,sync); }
+   { volatile atomic<int,strong> a(0);  inc    (a,  sync); }
+   { volatile atomic<int,strong> a(0);  preinc (a,  sync); }
+   { volatile atomic<int,strong> a(0);  postinc(a,  sync); }
+   { volatile atomic<int,strong> a(0);  dec    (a,  sync); }
+   { volatile atomic<int,strong> a(0);  predec (a,  sync); }
+   { volatile atomic<int,strong> a(0);  postdec(a,  sync); }
+   { volatile atomic<int,strong> a(0);  add    (a,2,success,failure); }
+   { volatile atomic<int,strong> a(0);  sub    (a,2,success,failure); }
+   { volatile atomic<int,strong> a(0);  mul    (a,2,success,failure); }
+   { volatile atomic<int,strong> a(0);  div    (a,2,success,failure); }
+   { volatile atomic<int,strong> a(0);  mod    (a,2,success,failure); }
+   { volatile atomic<int,strong> a(0);  lshift (a,2,success,failure); }
+   { volatile atomic<int,strong> a(0);  rshift (a,2,success,failure); }
+   { volatile atomic<int,strong> a(0);  andeq  (a,2,success,failure); }
+   { volatile atomic<int,strong> a(0);  oreq   (a,2,success,failure); }
+   { volatile atomic<int,strong> a(0);  xoreq  (a,2,success,failure); }
+   { volatile atomic<int,strong> a(0);  min    (a,2,success,failure); }
+   { volatile atomic<int,strong> a(0);  max    (a,2,success,failure); }
+   { volatile atomic<int,strong> a(0);  inc    (a,  success,failure); }
+   { volatile atomic<int,strong> a(0);  preinc (a,  success,failure); }
+   { volatile atomic<int,strong> a(0);  postinc(a,  success,failure); }
+   { volatile atomic<int,strong> a(0);  dec    (a,  success,failure); }
+   { volatile atomic<int,strong> a(0);  predec (a,  success,failure); }
+   { volatile atomic<int,strong> a(0);  postdec(a,  success,failure); }
+
+   { volatile atomic<int,strong::pun> a(0);  add    (a,2); }
+   { volatile atomic<int,strong::pun> a(0);  sub    (a,2); }
+   { volatile atomic<int,strong::pun> a(0);  mul    (a,2); }
+   { volatile atomic<int,strong::pun> a(0);  div    (a,2); }
+   { volatile atomic<int,strong::pun> a(0);  mod    (a,2); }
+   { volatile atomic<int,strong::pun> a(0);  lshift (a,2); }
+   { volatile atomic<int,strong::pun> a(0);  rshift (a,2); }
+   { volatile atomic<int,strong::pun> a(0);  andeq  (a,2); }
+   { volatile atomic<int,strong::pun> a(0);  oreq   (a,2); }
+   { volatile atomic<int,strong::pun> a(0);  xoreq  (a,2); }
+   { volatile atomic<int,strong::pun> a(0);  min    (a,2); }
+   { volatile atomic<int,strong::pun> a(0);  max    (a,2); }
+   { volatile atomic<int,strong::pun> a(0);  inc    (a); }
+   { volatile atomic<int,strong::pun> a(0);  preinc (a); }
+   { volatile atomic<int,strong::pun> a(0);  postinc(a); }
+   { volatile atomic<int,strong::pun> a(0);  dec    (a); }
+   { volatile atomic<int,strong::pun> a(0);  predec (a); }
+   { volatile atomic<int,strong::pun> a(0);  postdec(a); }
+   { volatile atomic<int,strong::pun> a(0);  add    (a,2,sync); }
+   { volatile atomic<int,strong::pun> a(0);  sub    (a,2,sync); }
+   { volatile atomic<int,strong::pun> a(0);  mul    (a,2,sync); }
+   { volatile atomic<int,strong::pun> a(0);  div    (a,2,sync); }
+   { volatile atomic<int,strong::pun> a(0);  mod    (a,2,sync); }
+   { volatile atomic<int,strong::pun> a(0);  lshift (a,2,sync); }
+   { volatile atomic<int,strong::pun> a(0);  rshift (a,2,sync); }
+   { volatile atomic<int,strong::pun> a(0);  andeq  (a,2,sync); }
+   { volatile atomic<int,strong::pun> a(0);  oreq   (a,2,sync); }
+   { volatile atomic<int,strong::pun> a(0);  xoreq  (a,2,sync); }
+   { volatile atomic<int,strong::pun> a(0);  min    (a,2,sync); }
+   { volatile atomic<int,strong::pun> a(0);  max    (a,2,sync); }
+   { volatile atomic<int,strong::pun> a(0);  inc    (a,  sync); }
+   { volatile atomic<int,strong::pun> a(0);  preinc (a,  sync); }
+   { volatile atomic<int,strong::pun> a(0);  postinc(a,  sync); }
+   { volatile atomic<int,strong::pun> a(0);  dec    (a,  sync); }
+   { volatile atomic<int,strong::pun> a(0);  predec (a,  sync); }
+   { volatile atomic<int,strong::pun> a(0);  postdec(a,  sync); }
+   { volatile atomic<int,strong::pun> a(0);  add    (a,2,success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  sub    (a,2,success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  mul    (a,2,success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  div    (a,2,success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  mod    (a,2,success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  lshift (a,2,success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  rshift (a,2,success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  andeq  (a,2,success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  oreq   (a,2,success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  xoreq  (a,2,success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  min    (a,2,success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  max    (a,2,success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  inc    (a,  success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  preinc (a,  success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  postinc(a,  success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  dec    (a,  success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  predec (a,  success,failure); }
+   { volatile atomic<int,strong::pun> a(0);  postdec(a,  success,failure); }
+
+   { volatile atomic<int,weak> a(0);  add    (a,2); }
+   { volatile atomic<int,weak> a(0);  sub    (a,2); }
+   { volatile atomic<int,weak> a(0);  mul    (a,2); }
+   { volatile atomic<int,weak> a(0);  div    (a,2); }
+   { volatile atomic<int,weak> a(0);  mod    (a,2); }
+   { volatile atomic<int,weak> a(0);  lshift (a,2); }
+   { volatile atomic<int,weak> a(0);  rshift (a,2); }
+   { volatile atomic<int,weak> a(0);  andeq  (a,2); }
+   { volatile atomic<int,weak> a(0);  oreq   (a,2); }
+   { volatile atomic<int,weak> a(0);  xoreq  (a,2); }
+   { volatile atomic<int,weak> a(0);  min    (a,2); }
+   { volatile atomic<int,weak> a(0);  max    (a,2); }
+   { volatile atomic<int,weak> a(0);  inc    (a); }
+   { volatile atomic<int,weak> a(0);  preinc (a); }
+   { volatile atomic<int,weak> a(0);  postinc(a); }
+   { volatile atomic<int,weak> a(0);  dec    (a); }
+   { volatile atomic<int,weak> a(0);  predec (a); }
+   { volatile atomic<int,weak> a(0);  postdec(a); }
+   { volatile atomic<int,weak> a(0);  add    (a,2,sync); }
+   { volatile atomic<int,weak> a(0);  sub    (a,2,sync); }
+   { volatile atomic<int,weak> a(0);  mul    (a,2,sync); }
+   { volatile atomic<int,weak> a(0);  div    (a,2,sync); }
+   { volatile atomic<int,weak> a(0);  mod    (a,2,sync); }
+   { volatile atomic<int,weak> a(0);  lshift (a,2,sync); }
+   { volatile atomic<int,weak> a(0);  rshift (a,2,sync); }
+   { volatile atomic<int,weak> a(0);  andeq  (a,2,sync); }
+   { volatile atomic<int,weak> a(0);  oreq   (a,2,sync); }
+   { volatile atomic<int,weak> a(0);  xoreq  (a,2,sync); }
+   { volatile atomic<int,weak> a(0);  min    (a,2,sync); }
+   { volatile atomic<int,weak> a(0);  max    (a,2,sync); }
+   { volatile atomic<int,weak> a(0);  inc    (a,  sync); }
+   { volatile atomic<int,weak> a(0);  preinc (a,  sync); }
+   { volatile atomic<int,weak> a(0);  postinc(a,  sync); }
+   { volatile atomic<int,weak> a(0);  dec    (a,  sync); }
+   { volatile atomic<int,weak> a(0);  predec (a,  sync); }
+   { volatile atomic<int,weak> a(0);  postdec(a,  sync); }
+   { volatile atomic<int,weak> a(0);  add    (a,2,success,failure); }
+   { volatile atomic<int,weak> a(0);  sub    (a,2,success,failure); }
+   { volatile atomic<int,weak> a(0);  mul    (a,2,success,failure); }
+   { volatile atomic<int,weak> a(0);  div    (a,2,success,failure); }
+   { volatile atomic<int,weak> a(0);  mod    (a,2,success,failure); }
+   { volatile atomic<int,weak> a(0);  lshift (a,2,success,failure); }
+   { volatile atomic<int,weak> a(0);  rshift (a,2,success,failure); }
+   { volatile atomic<int,weak> a(0);  andeq  (a,2,success,failure); }
+   { volatile atomic<int,weak> a(0);  oreq   (a,2,success,failure); }
+   { volatile atomic<int,weak> a(0);  xoreq  (a,2,success,failure); }
+   { volatile atomic<int,weak> a(0);  min    (a,2,success,failure); }
+   { volatile atomic<int,weak> a(0);  max    (a,2,success,failure); }
+   { volatile atomic<int,weak> a(0);  inc    (a,  success,failure); }
+   { volatile atomic<int,weak> a(0);  preinc (a,  success,failure); }
+   { volatile atomic<int,weak> a(0);  postinc(a,  success,failure); }
+   { volatile atomic<int,weak> a(0);  dec    (a,  success,failure); }
+   { volatile atomic<int,weak> a(0);  predec (a,  success,failure); }
+   { volatile atomic<int,weak> a(0);  postdec(a,  success,failure); }
+
+   { volatile atomic<int,weak::pun> a(0);  add    (a,2); }
+   { volatile atomic<int,weak::pun> a(0);  sub    (a,2); }
+   { volatile atomic<int,weak::pun> a(0);  mul    (a,2); }
+   { volatile atomic<int,weak::pun> a(0);  div    (a,2); }
+   { volatile atomic<int,weak::pun> a(0);  mod    (a,2); }
+   { volatile atomic<int,weak::pun> a(0);  lshift (a,2); }
+   { volatile atomic<int,weak::pun> a(0);  rshift (a,2); }
+   { volatile atomic<int,weak::pun> a(0);  andeq  (a,2); }
+   { volatile atomic<int,weak::pun> a(0);  oreq   (a,2); }
+   { volatile atomic<int,weak::pun> a(0);  xoreq  (a,2); }
+   { volatile atomic<int,weak::pun> a(0);  min    (a,2); }
+   { volatile atomic<int,weak::pun> a(0);  max    (a,2); }
+   { volatile atomic<int,weak::pun> a(0);  inc    (a); }
+   { volatile atomic<int,weak::pun> a(0);  preinc (a); }
+   { volatile atomic<int,weak::pun> a(0);  postinc(a); }
+   { volatile atomic<int,weak::pun> a(0);  dec    (a); }
+   { volatile atomic<int,weak::pun> a(0);  predec (a); }
+   { volatile atomic<int,weak::pun> a(0);  postdec(a); }
+   { volatile atomic<int,weak::pun> a(0);  add    (a,2,sync); }
+   { volatile atomic<int,weak::pun> a(0);  sub    (a,2,sync); }
+   { volatile atomic<int,weak::pun> a(0);  mul    (a,2,sync); }
+   { volatile atomic<int,weak::pun> a(0);  div    (a,2,sync); }
+   { volatile atomic<int,weak::pun> a(0);  mod    (a,2,sync); }
+   { volatile atomic<int,weak::pun> a(0);  lshift (a,2,sync); }
+   { volatile atomic<int,weak::pun> a(0);  rshift (a,2,sync); }
+   { volatile atomic<int,weak::pun> a(0);  andeq  (a,2,sync); }
+   { volatile atomic<int,weak::pun> a(0);  oreq   (a,2,sync); }
+   { volatile atomic<int,weak::pun> a(0);  xoreq  (a,2,sync); }
+   { volatile atomic<int,weak::pun> a(0);  min    (a,2,sync); }
+   { volatile atomic<int,weak::pun> a(0);  max    (a,2,sync); }
+   { volatile atomic<int,weak::pun> a(0);  inc    (a,  sync); }
+   { volatile atomic<int,weak::pun> a(0);  preinc (a,  sync); }
+   { volatile atomic<int,weak::pun> a(0);  postinc(a,  sync); }
+   { volatile atomic<int,weak::pun> a(0);  dec    (a,  sync); }
+   { volatile atomic<int,weak::pun> a(0);  predec (a,  sync); }
+   { volatile atomic<int,weak::pun> a(0);  postdec(a,  sync); }
+   { volatile atomic<int,weak::pun> a(0);  add    (a,2,success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  sub    (a,2,success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  mul    (a,2,success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  div    (a,2,success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  mod    (a,2,success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  lshift (a,2,success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  rshift (a,2,success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  andeq  (a,2,success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  oreq   (a,2,success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  xoreq  (a,2,success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  min    (a,2,success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  max    (a,2,success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  inc    (a,  success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  preinc (a,  success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  postinc(a,  success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  dec    (a,  success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  predec (a,  success,failure); }
+   { volatile atomic<int,weak::pun> a(0);  postdec(a,  success,failure); }
+
+   { volatile atomic<int,lock> a(0);  add    (a,2); }
+   { volatile atomic<int,lock> a(0);  sub    (a,2); }
+   { volatile atomic<int,lock> a(0);  mul    (a,2); }
+   { volatile atomic<int,lock> a(0);  div    (a,2); }
+   { volatile atomic<int,lock> a(0);  mod    (a,2); }
+   { volatile atomic<int,lock> a(0);  lshift (a,2); }
+   { volatile atomic<int,lock> a(0);  rshift (a,2); }
+   { volatile atomic<int,lock> a(0);  andeq  (a,2); }
+   { volatile atomic<int,lock> a(0);  oreq   (a,2); }
+   { volatile atomic<int,lock> a(0);  xoreq  (a,2); }
+   { volatile atomic<int,lock> a(0);  min    (a,2); }
+   { volatile atomic<int,lock> a(0);  max    (a,2); }
+   { volatile atomic<int,lock> a(0);  inc    (a); }
+   { volatile atomic<int,lock> a(0);  preinc (a); }
+   { volatile atomic<int,lock> a(0);  postinc(a); }
+   { volatile atomic<int,lock> a(0);  dec    (a); }
+   { volatile atomic<int,lock> a(0);  predec (a); }
+   { volatile atomic<int,lock> a(0);  postdec(a); }
+// { volatile atomic<int,lock> a(0);  add    (a,2,sync); }
+// { volatile atomic<int,lock> a(0);  sub    (a,2,sync); }
+// { volatile atomic<int,lock> a(0);  mul    (a,2,sync); }
+// { volatile atomic<int,lock> a(0);  div    (a,2,sync); }
+// { volatile atomic<int,lock> a(0);  mod    (a,2,sync); }
+// { volatile atomic<int,lock> a(0);  lshift (a,2,sync); }
+// { volatile atomic<int,lock> a(0);  rshift (a,2,sync); }
+// { volatile atomic<int,lock> a(0);  andeq  (a,2,sync); }
+// { volatile atomic<int,lock> a(0);  oreq   (a,2,sync); }
+// { volatile atomic<int,lock> a(0);  xoreq  (a,2,sync); }
+// { volatile atomic<int,lock> a(0);  min    (a,2,sync); }
+// { volatile atomic<int,lock> a(0);  max    (a,2,sync); }
+// { volatile atomic<int,lock> a(0);  inc    (a,  sync); }
+// { volatile atomic<int,lock> a(0);  preinc (a,  sync); }
+// { volatile atomic<int,lock> a(0);  postinc(a,  sync); }
+// { volatile atomic<int,lock> a(0);  dec    (a,  sync); }
+// { volatile atomic<int,lock> a(0);  predec (a,  sync); }
+// { volatile atomic<int,lock> a(0);  postdec(a,  sync); }
+// { volatile atomic<int,lock> a(0);  add    (a,2,success,failure); }
+// { volatile atomic<int,lock> a(0);  sub    (a,2,success,failure); }
+// { volatile atomic<int,lock> a(0);  mul    (a,2,success,failure); }
+// { volatile atomic<int,lock> a(0);  div    (a,2,success,failure); }
+// { volatile atomic<int,lock> a(0);  mod    (a,2,success,failure); }
+// { volatile atomic<int,lock> a(0);  lshift (a,2,success,failure); }
+// { volatile atomic<int,lock> a(0);  rshift (a,2,success,failure); }
+// { volatile atomic<int,lock> a(0);  andeq  (a,2,success,failure); }
+// { volatile atomic<int,lock> a(0);  oreq   (a,2,success,failure); }
+// { volatile atomic<int,lock> a(0);  xoreq  (a,2,success,failure); }
+// { volatile atomic<int,lock> a(0);  min    (a,2,success,failure); }
+// { volatile atomic<int,lock> a(0);  max    (a,2,success,failure); }
+// { volatile atomic<int,lock> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<int,lock> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<int,lock> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<int,lock> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<int,lock> a(0);  predec (a,  success,failure); }
+// { volatile atomic<int,lock> a(0);  postdec(a,  success,failure); }
+
+   { volatile atomic<int,serial> a(0);  add    (a,2); }
+   { volatile atomic<int,serial> a(0);  sub    (a,2); }
+   { volatile atomic<int,serial> a(0);  mul    (a,2); }
+   { volatile atomic<int,serial> a(0);  div    (a,2); }
+   { volatile atomic<int,serial> a(0);  mod    (a,2); }
+   { volatile atomic<int,serial> a(0);  lshift (a,2); }
+   { volatile atomic<int,serial> a(0);  rshift (a,2); }
+   { volatile atomic<int,serial> a(0);  andeq  (a,2); }
+   { volatile atomic<int,serial> a(0);  oreq   (a,2); }
+   { volatile atomic<int,serial> a(0);  xoreq  (a,2); }
+   { volatile atomic<int,serial> a(0);  min    (a,2); }
+   { volatile atomic<int,serial> a(0);  max    (a,2); }
+   { volatile atomic<int,serial> a(0);  inc    (a); }
+   { volatile atomic<int,serial> a(0);  preinc (a); }
+   { volatile atomic<int,serial> a(0);  postinc(a); }
+   { volatile atomic<int,serial> a(0);  dec    (a); }
+   { volatile atomic<int,serial> a(0);  predec (a); }
+   { volatile atomic<int,serial> a(0);  postdec(a); }
+// { volatile atomic<int,serial> a(0);  add    (a,2,sync); }
+// { volatile atomic<int,serial> a(0);  sub    (a,2,sync); }
+// { volatile atomic<int,serial> a(0);  mul    (a,2,sync); }
+// { volatile atomic<int,serial> a(0);  div    (a,2,sync); }
+// { volatile atomic<int,serial> a(0);  mod    (a,2,sync); }
+// { volatile atomic<int,serial> a(0);  lshift (a,2,sync); }
+// { volatile atomic<int,serial> a(0);  rshift (a,2,sync); }
+// { volatile atomic<int,serial> a(0);  andeq  (a,2,sync); }
+// { volatile atomic<int,serial> a(0);  oreq   (a,2,sync); }
+// { volatile atomic<int,serial> a(0);  xoreq  (a,2,sync); }
+// { volatile atomic<int,serial> a(0);  min    (a,2,sync); }
+// { volatile atomic<int,serial> a(0);  max    (a,2,sync); }
+// { volatile atomic<int,serial> a(0);  inc    (a,  sync); }
+// { volatile atomic<int,serial> a(0);  preinc (a,  sync); }
+// { volatile atomic<int,serial> a(0);  postinc(a,  sync); }
+// { volatile atomic<int,serial> a(0);  dec    (a,  sync); }
+// { volatile atomic<int,serial> a(0);  predec (a,  sync); }
+// { volatile atomic<int,serial> a(0);  postdec(a,  sync); }
+// { volatile atomic<int,serial> a(0);  add    (a,2,success,failure); }
+// { volatile atomic<int,serial> a(0);  sub    (a,2,success,failure); }
+// { volatile atomic<int,serial> a(0);  mul    (a,2,success,failure); }
+// { volatile atomic<int,serial> a(0);  div    (a,2,success,failure); }
+// { volatile atomic<int,serial> a(0);  mod    (a,2,success,failure); }
+// { volatile atomic<int,serial> a(0);  lshift (a,2,success,failure); }
+// { volatile atomic<int,serial> a(0);  rshift (a,2,success,failure); }
+// { volatile atomic<int,serial> a(0);  andeq  (a,2,success,failure); }
+// { volatile atomic<int,serial> a(0);  oreq   (a,2,success,failure); }
+// { volatile atomic<int,serial> a(0);  xoreq  (a,2,success,failure); }
+// { volatile atomic<int,serial> a(0);  min    (a,2,success,failure); }
+// { volatile atomic<int,serial> a(0);  max    (a,2,success,failure); }
+// { volatile atomic<int,serial> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<int,serial> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<int,serial> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<int,serial> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<int,serial> a(0);  predec (a,  success,failure); }
+// { volatile atomic<int,serial> a(0);  postdec(a,  success,failure); }
+
+
+
+   // ------------------------
+   // ulong
+   // ------------------------
+
+   { volatile atomic<ulong,cpp> a(0);  add    (a,2); }
+   { volatile atomic<ulong,cpp> a(0);  sub    (a,2); }
+// { volatile atomic<ulong,cpp> a(0);  mul    (a,2); }
+// { volatile atomic<ulong,cpp> a(0);  div    (a,2); }
+// { volatile atomic<ulong,cpp> a(0);  mod    (a,2); }
+// { volatile atomic<ulong,cpp> a(0);  lshift (a,2); }
+// { volatile atomic<ulong,cpp> a(0);  rshift (a,2); }
+   { volatile atomic<ulong,cpp> a(0);  andeq  (a,2); }
+   { volatile atomic<ulong,cpp> a(0);  oreq   (a,2); }
+   { volatile atomic<ulong,cpp> a(0);  xoreq  (a,2); }
+// { volatile atomic<ulong,cpp> a(0);  min    (a,2); }
+// { volatile atomic<ulong,cpp> a(0);  max    (a,2); }
+   { volatile atomic<ulong,cpp> a(0);  inc    (a); }
+   { volatile atomic<ulong,cpp> a(0);  preinc (a); }
+   { volatile atomic<ulong,cpp> a(0);  postinc(a); }
+   { volatile atomic<ulong,cpp> a(0);  dec    (a); }
+   { volatile atomic<ulong,cpp> a(0);  predec (a); }
+   { volatile atomic<ulong,cpp> a(0);  postdec(a); }
+   { volatile atomic<ulong,cpp> a(0);  add    (a,2,sync); }
+   { volatile atomic<ulong,cpp> a(0);  sub    (a,2,sync); }
+// { volatile atomic<ulong,cpp> a(0);  mul    (a,2,sync); }
+// { volatile atomic<ulong,cpp> a(0);  div    (a,2,sync); }
+// { volatile atomic<ulong,cpp> a(0);  mod    (a,2,sync); }
+// { volatile atomic<ulong,cpp> a(0);  lshift (a,2,sync); }
+// { volatile atomic<ulong,cpp> a(0);  rshift (a,2,sync); }
+   { volatile atomic<ulong,cpp> a(0);  andeq  (a,2,sync); }
+   { volatile atomic<ulong,cpp> a(0);  oreq   (a,2,sync); }
+   { volatile atomic<ulong,cpp> a(0);  xoreq  (a,2,sync); }
+// { volatile atomic<ulong,cpp> a(0);  min    (a,2,sync); }
+// { volatile atomic<ulong,cpp> a(0);  max    (a,2,sync); }
+// { volatile atomic<ulong,cpp> a(0);  inc    (a,  sync); }
+// { volatile atomic<ulong,cpp> a(0);  preinc (a,  sync); }
+// { volatile atomic<ulong,cpp> a(0);  postinc(a,  sync); }
+// { volatile atomic<ulong,cpp> a(0);  dec    (a,  sync); }
+// { volatile atomic<ulong,cpp> a(0);  predec (a,  sync); }
+// { volatile atomic<ulong,cpp> a(0);  postdec(a,  sync); }
+// { volatile atomic<ulong,cpp> a(0);  add    (a,2,success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  sub    (a,2,success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  mul    (a,2,success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  div    (a,2,success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  mod    (a,2,success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  lshift (a,2,success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  rshift (a,2,success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  andeq  (a,2,success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  oreq   (a,2,success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  xoreq  (a,2,success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  min    (a,2,success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  max    (a,2,success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  predec (a,  success,failure); }
+// { volatile atomic<ulong,cpp> a(0);  postdec(a,  success,failure); }
+
+   #if defined(ATOMICS_KOKKOS)
+   { volatile atomic<ulong,kokkos> a(0);  add    (a,2); }
+   { volatile atomic<ulong,kokkos> a(0);  sub    (a,2); }
+   { volatile atomic<ulong,kokkos> a(0);  mul    (a,2); }
+   { volatile atomic<ulong,kokkos> a(0);  div    (a,2); }
+   { volatile atomic<ulong,kokkos> a(0);  mod    (a,2); }
+   { volatile atomic<ulong,kokkos> a(0);  lshift (a,2); }
+   { volatile atomic<ulong,kokkos> a(0);  rshift (a,2); }
+   { volatile atomic<ulong,kokkos> a(0);  andeq  (a,2); }
+   { volatile atomic<ulong,kokkos> a(0);  oreq   (a,2); }
+   { volatile atomic<ulong,kokkos> a(0);  xoreq  (a,2); }
+   { volatile atomic<ulong,kokkos> a(0);  min    (a,2); }
+   { volatile atomic<ulong,kokkos> a(0);  max    (a,2); }
+   { volatile atomic<ulong,kokkos> a(0);  inc    (a); }
+   { volatile atomic<ulong,kokkos> a(0);  preinc (a); }
+   { volatile atomic<ulong,kokkos> a(0);  postinc(a); }
+   { volatile atomic<ulong,kokkos> a(0);  dec    (a); }
+   { volatile atomic<ulong,kokkos> a(0);  predec (a); }
+   { volatile atomic<ulong,kokkos> a(0);  postdec(a); }
+// { volatile atomic<ulong,kokkos> a(0);  add    (a,2,sync); }
+// { volatile atomic<ulong,kokkos> a(0);  sub    (a,2,sync); }
+// { volatile atomic<ulong,kokkos> a(0);  mul    (a,2,sync); }
+// { volatile atomic<ulong,kokkos> a(0);  div    (a,2,sync); }
+// { volatile atomic<ulong,kokkos> a(0);  mod    (a,2,sync); }
+// { volatile atomic<ulong,kokkos> a(0);  lshift (a,2,sync); }
+// { volatile atomic<ulong,kokkos> a(0);  rshift (a,2,sync); }
+// { volatile atomic<ulong,kokkos> a(0);  andeq  (a,2,sync); }
+// { volatile atomic<ulong,kokkos> a(0);  oreq   (a,2,sync); }
+// { volatile atomic<ulong,kokkos> a(0);  xoreq  (a,2,sync); }
+// { volatile atomic<ulong,kokkos> a(0);  min    (a,2,sync); }
+// { volatile atomic<ulong,kokkos> a(0);  max    (a,2,sync); }
+// { volatile atomic<ulong,kokkos> a(0);  inc    (a,  sync); }
+// { volatile atomic<ulong,kokkos> a(0);  preinc (a,  sync); }
+// { volatile atomic<ulong,kokkos> a(0);  postinc(a,  sync); }
+// { volatile atomic<ulong,kokkos> a(0);  dec    (a,  sync); }
+// { volatile atomic<ulong,kokkos> a(0);  predec (a,  sync); }
+// { volatile atomic<ulong,kokkos> a(0);  postdec(a,  sync); }
+// { volatile atomic<ulong,kokkos> a(0);  add    (a,2,success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  sub    (a,2,success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  mul    (a,2,success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  div    (a,2,success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  mod    (a,2,success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  lshift (a,2,success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  rshift (a,2,success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  andeq  (a,2,success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  oreq   (a,2,success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  xoreq  (a,2,success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  min    (a,2,success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  max    (a,2,success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  predec (a,  success,failure); }
+// { volatile atomic<ulong,kokkos> a(0);  postdec(a,  success,failure); }
+   #endif
+
+   { volatile atomic<ulong,strong> a(0);  add    (a,2); }
+   { volatile atomic<ulong,strong> a(0);  sub    (a,2); }
+   { volatile atomic<ulong,strong> a(0);  mul    (a,2); }
+   { volatile atomic<ulong,strong> a(0);  div    (a,2); }
+   { volatile atomic<ulong,strong> a(0);  mod    (a,2); }
+   { volatile atomic<ulong,strong> a(0);  lshift (a,2); }
+   { volatile atomic<ulong,strong> a(0);  rshift (a,2); }
+   { volatile atomic<ulong,strong> a(0);  andeq  (a,2); }
+   { volatile atomic<ulong,strong> a(0);  oreq   (a,2); }
+   { volatile atomic<ulong,strong> a(0);  xoreq  (a,2); }
+   { volatile atomic<ulong,strong> a(0);  min    (a,2); }
+   { volatile atomic<ulong,strong> a(0);  max    (a,2); }
+   { volatile atomic<ulong,strong> a(0);  inc    (a); }
+   { volatile atomic<ulong,strong> a(0);  preinc (a); }
+   { volatile atomic<ulong,strong> a(0);  postinc(a); }
+   { volatile atomic<ulong,strong> a(0);  dec    (a); }
+   { volatile atomic<ulong,strong> a(0);  predec (a); }
+   { volatile atomic<ulong,strong> a(0);  postdec(a); }
+   { volatile atomic<ulong,strong> a(0);  add    (a,2,sync); }
+   { volatile atomic<ulong,strong> a(0);  sub    (a,2,sync); }
+   { volatile atomic<ulong,strong> a(0);  mul    (a,2,sync); }
+   { volatile atomic<ulong,strong> a(0);  div    (a,2,sync); }
+   { volatile atomic<ulong,strong> a(0);  mod    (a,2,sync); }
+   { volatile atomic<ulong,strong> a(0);  lshift (a,2,sync); }
+   { volatile atomic<ulong,strong> a(0);  rshift (a,2,sync); }
+   { volatile atomic<ulong,strong> a(0);  andeq  (a,2,sync); }
+   { volatile atomic<ulong,strong> a(0);  oreq   (a,2,sync); }
+   { volatile atomic<ulong,strong> a(0);  xoreq  (a,2,sync); }
+   { volatile atomic<ulong,strong> a(0);  min    (a,2,sync); }
+   { volatile atomic<ulong,strong> a(0);  max    (a,2,sync); }
+   { volatile atomic<ulong,strong> a(0);  inc    (a,  sync); }
+   { volatile atomic<ulong,strong> a(0);  preinc (a,  sync); }
+   { volatile atomic<ulong,strong> a(0);  postinc(a,  sync); }
+   { volatile atomic<ulong,strong> a(0);  dec    (a,  sync); }
+   { volatile atomic<ulong,strong> a(0);  predec (a,  sync); }
+   { volatile atomic<ulong,strong> a(0);  postdec(a,  sync); }
+   { volatile atomic<ulong,strong> a(0);  add    (a,2,success,failure); }
+   { volatile atomic<ulong,strong> a(0);  sub    (a,2,success,failure); }
+   { volatile atomic<ulong,strong> a(0);  mul    (a,2,success,failure); }
+   { volatile atomic<ulong,strong> a(0);  div    (a,2,success,failure); }
+   { volatile atomic<ulong,strong> a(0);  mod    (a,2,success,failure); }
+   { volatile atomic<ulong,strong> a(0);  lshift (a,2,success,failure); }
+   { volatile atomic<ulong,strong> a(0);  rshift (a,2,success,failure); }
+   { volatile atomic<ulong,strong> a(0);  andeq  (a,2,success,failure); }
+   { volatile atomic<ulong,strong> a(0);  oreq   (a,2,success,failure); }
+   { volatile atomic<ulong,strong> a(0);  xoreq  (a,2,success,failure); }
+   { volatile atomic<ulong,strong> a(0);  min    (a,2,success,failure); }
+   { volatile atomic<ulong,strong> a(0);  max    (a,2,success,failure); }
+   { volatile atomic<ulong,strong> a(0);  inc    (a,  success,failure); }
+   { volatile atomic<ulong,strong> a(0);  preinc (a,  success,failure); }
+   { volatile atomic<ulong,strong> a(0);  postinc(a,  success,failure); }
+   { volatile atomic<ulong,strong> a(0);  dec    (a,  success,failure); }
+   { volatile atomic<ulong,strong> a(0);  predec (a,  success,failure); }
+   { volatile atomic<ulong,strong> a(0);  postdec(a,  success,failure); }
+
+   { volatile atomic<ulong,strong::pun> a(0);  add    (a,2); }
+   { volatile atomic<ulong,strong::pun> a(0);  sub    (a,2); }
+   { volatile atomic<ulong,strong::pun> a(0);  mul    (a,2); }
+   { volatile atomic<ulong,strong::pun> a(0);  div    (a,2); }
+   { volatile atomic<ulong,strong::pun> a(0);  mod    (a,2); }
+   { volatile atomic<ulong,strong::pun> a(0);  lshift (a,2); }
+   { volatile atomic<ulong,strong::pun> a(0);  rshift (a,2); }
+   { volatile atomic<ulong,strong::pun> a(0);  andeq  (a,2); }
+   { volatile atomic<ulong,strong::pun> a(0);  oreq   (a,2); }
+   { volatile atomic<ulong,strong::pun> a(0);  xoreq  (a,2); }
+   { volatile atomic<ulong,strong::pun> a(0);  min    (a,2); }
+   { volatile atomic<ulong,strong::pun> a(0);  max    (a,2); }
+   { volatile atomic<ulong,strong::pun> a(0);  inc    (a); }
+   { volatile atomic<ulong,strong::pun> a(0);  preinc (a); }
+   { volatile atomic<ulong,strong::pun> a(0);  postinc(a); }
+   { volatile atomic<ulong,strong::pun> a(0);  dec    (a); }
+   { volatile atomic<ulong,strong::pun> a(0);  predec (a); }
+   { volatile atomic<ulong,strong::pun> a(0);  postdec(a); }
+   { volatile atomic<ulong,strong::pun> a(0);  add    (a,2,sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  sub    (a,2,sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  mul    (a,2,sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  div    (a,2,sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  mod    (a,2,sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  lshift (a,2,sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  rshift (a,2,sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  andeq  (a,2,sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  oreq   (a,2,sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  xoreq  (a,2,sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  min    (a,2,sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  max    (a,2,sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  inc    (a,  sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  preinc (a,  sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  postinc(a,  sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  dec    (a,  sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  predec (a,  sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  postdec(a,  sync); }
+   { volatile atomic<ulong,strong::pun> a(0);  add    (a,2,success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  sub    (a,2,success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  mul    (a,2,success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  div    (a,2,success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  mod    (a,2,success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  lshift (a,2,success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  rshift (a,2,success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  andeq  (a,2,success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  oreq   (a,2,success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  xoreq  (a,2,success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  min    (a,2,success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  max    (a,2,success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  inc    (a,  success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  preinc (a,  success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  postinc(a,  success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  dec    (a,  success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  predec (a,  success,failure); }
+   { volatile atomic<ulong,strong::pun> a(0);  postdec(a,  success,failure); }
+
+   { volatile atomic<ulong,weak> a(0);  add    (a,2); }
+   { volatile atomic<ulong,weak> a(0);  sub    (a,2); }
+   { volatile atomic<ulong,weak> a(0);  mul    (a,2); }
+   { volatile atomic<ulong,weak> a(0);  div    (a,2); }
+   { volatile atomic<ulong,weak> a(0);  mod    (a,2); }
+   { volatile atomic<ulong,weak> a(0);  lshift (a,2); }
+   { volatile atomic<ulong,weak> a(0);  rshift (a,2); }
+   { volatile atomic<ulong,weak> a(0);  andeq  (a,2); }
+   { volatile atomic<ulong,weak> a(0);  oreq   (a,2); }
+   { volatile atomic<ulong,weak> a(0);  xoreq  (a,2); }
+   { volatile atomic<ulong,weak> a(0);  min    (a,2); }
+   { volatile atomic<ulong,weak> a(0);  max    (a,2); }
+   { volatile atomic<ulong,weak> a(0);  inc    (a); }
+   { volatile atomic<ulong,weak> a(0);  preinc (a); }
+   { volatile atomic<ulong,weak> a(0);  postinc(a); }
+   { volatile atomic<ulong,weak> a(0);  dec    (a); }
+   { volatile atomic<ulong,weak> a(0);  predec (a); }
+   { volatile atomic<ulong,weak> a(0);  postdec(a); }
+   { volatile atomic<ulong,weak> a(0);  add    (a,2,sync); }
+   { volatile atomic<ulong,weak> a(0);  sub    (a,2,sync); }
+   { volatile atomic<ulong,weak> a(0);  mul    (a,2,sync); }
+   { volatile atomic<ulong,weak> a(0);  div    (a,2,sync); }
+   { volatile atomic<ulong,weak> a(0);  mod    (a,2,sync); }
+   { volatile atomic<ulong,weak> a(0);  lshift (a,2,sync); }
+   { volatile atomic<ulong,weak> a(0);  rshift (a,2,sync); }
+   { volatile atomic<ulong,weak> a(0);  andeq  (a,2,sync); }
+   { volatile atomic<ulong,weak> a(0);  oreq   (a,2,sync); }
+   { volatile atomic<ulong,weak> a(0);  xoreq  (a,2,sync); }
+   { volatile atomic<ulong,weak> a(0);  min    (a,2,sync); }
+   { volatile atomic<ulong,weak> a(0);  max    (a,2,sync); }
+   { volatile atomic<ulong,weak> a(0);  inc    (a,  sync); }
+   { volatile atomic<ulong,weak> a(0);  preinc (a,  sync); }
+   { volatile atomic<ulong,weak> a(0);  postinc(a,  sync); }
+   { volatile atomic<ulong,weak> a(0);  dec    (a,  sync); }
+   { volatile atomic<ulong,weak> a(0);  predec (a,  sync); }
+   { volatile atomic<ulong,weak> a(0);  postdec(a,  sync); }
+   { volatile atomic<ulong,weak> a(0);  add    (a,2,success,failure); }
+   { volatile atomic<ulong,weak> a(0);  sub    (a,2,success,failure); }
+   { volatile atomic<ulong,weak> a(0);  mul    (a,2,success,failure); }
+   { volatile atomic<ulong,weak> a(0);  div    (a,2,success,failure); }
+   { volatile atomic<ulong,weak> a(0);  mod    (a,2,success,failure); }
+   { volatile atomic<ulong,weak> a(0);  lshift (a,2,success,failure); }
+   { volatile atomic<ulong,weak> a(0);  rshift (a,2,success,failure); }
+   { volatile atomic<ulong,weak> a(0);  andeq  (a,2,success,failure); }
+   { volatile atomic<ulong,weak> a(0);  oreq   (a,2,success,failure); }
+   { volatile atomic<ulong,weak> a(0);  xoreq  (a,2,success,failure); }
+   { volatile atomic<ulong,weak> a(0);  min    (a,2,success,failure); }
+   { volatile atomic<ulong,weak> a(0);  max    (a,2,success,failure); }
+   { volatile atomic<ulong,weak> a(0);  inc    (a,  success,failure); }
+   { volatile atomic<ulong,weak> a(0);  preinc (a,  success,failure); }
+   { volatile atomic<ulong,weak> a(0);  postinc(a,  success,failure); }
+   { volatile atomic<ulong,weak> a(0);  dec    (a,  success,failure); }
+   { volatile atomic<ulong,weak> a(0);  predec (a,  success,failure); }
+   { volatile atomic<ulong,weak> a(0);  postdec(a,  success,failure); }
+
+   { volatile atomic<ulong,weak::pun> a(0);  add    (a,2); }
+   { volatile atomic<ulong,weak::pun> a(0);  sub    (a,2); }
+   { volatile atomic<ulong,weak::pun> a(0);  mul    (a,2); }
+   { volatile atomic<ulong,weak::pun> a(0);  div    (a,2); }
+   { volatile atomic<ulong,weak::pun> a(0);  mod    (a,2); }
+   { volatile atomic<ulong,weak::pun> a(0);  lshift (a,2); }
+   { volatile atomic<ulong,weak::pun> a(0);  rshift (a,2); }
+   { volatile atomic<ulong,weak::pun> a(0);  andeq  (a,2); }
+   { volatile atomic<ulong,weak::pun> a(0);  oreq   (a,2); }
+   { volatile atomic<ulong,weak::pun> a(0);  xoreq  (a,2); }
+   { volatile atomic<ulong,weak::pun> a(0);  min    (a,2); }
+   { volatile atomic<ulong,weak::pun> a(0);  max    (a,2); }
+   { volatile atomic<ulong,weak::pun> a(0);  inc    (a); }
+   { volatile atomic<ulong,weak::pun> a(0);  preinc (a); }
+   { volatile atomic<ulong,weak::pun> a(0);  postinc(a); }
+   { volatile atomic<ulong,weak::pun> a(0);  dec    (a); }
+   { volatile atomic<ulong,weak::pun> a(0);  predec (a); }
+   { volatile atomic<ulong,weak::pun> a(0);  postdec(a); }
+   { volatile atomic<ulong,weak::pun> a(0);  add    (a,2,sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  sub    (a,2,sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  mul    (a,2,sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  div    (a,2,sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  mod    (a,2,sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  lshift (a,2,sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  rshift (a,2,sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  andeq  (a,2,sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  oreq   (a,2,sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  xoreq  (a,2,sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  min    (a,2,sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  max    (a,2,sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  inc    (a,  sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  preinc (a,  sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  postinc(a,  sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  dec    (a,  sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  predec (a,  sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  postdec(a,  sync); }
+   { volatile atomic<ulong,weak::pun> a(0);  add    (a,2,success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  sub    (a,2,success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  mul    (a,2,success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  div    (a,2,success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  mod    (a,2,success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  lshift (a,2,success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  rshift (a,2,success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  andeq  (a,2,success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  oreq   (a,2,success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  xoreq  (a,2,success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  min    (a,2,success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  max    (a,2,success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  inc    (a,  success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  preinc (a,  success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  postinc(a,  success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  dec    (a,  success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  predec (a,  success,failure); }
+   { volatile atomic<ulong,weak::pun> a(0);  postdec(a,  success,failure); }
+
+   { volatile atomic<ulong,lock> a(0);  add    (a,2); }
+   { volatile atomic<ulong,lock> a(0);  sub    (a,2); }
+   { volatile atomic<ulong,lock> a(0);  mul    (a,2); }
+   { volatile atomic<ulong,lock> a(0);  div    (a,2); }
+   { volatile atomic<ulong,lock> a(0);  mod    (a,2); }
+   { volatile atomic<ulong,lock> a(0);  lshift (a,2); }
+   { volatile atomic<ulong,lock> a(0);  rshift (a,2); }
+   { volatile atomic<ulong,lock> a(0);  andeq  (a,2); }
+   { volatile atomic<ulong,lock> a(0);  oreq   (a,2); }
+   { volatile atomic<ulong,lock> a(0);  xoreq  (a,2); }
+   { volatile atomic<ulong,lock> a(0);  min    (a,2); }
+   { volatile atomic<ulong,lock> a(0);  max    (a,2); }
+   { volatile atomic<ulong,lock> a(0);  inc    (a); }
+   { volatile atomic<ulong,lock> a(0);  preinc (a); }
+   { volatile atomic<ulong,lock> a(0);  postinc(a); }
+   { volatile atomic<ulong,lock> a(0);  dec    (a); }
+   { volatile atomic<ulong,lock> a(0);  predec (a); }
+   { volatile atomic<ulong,lock> a(0);  postdec(a); }
+// { volatile atomic<ulong,lock> a(0);  add    (a,2,sync); }
+// { volatile atomic<ulong,lock> a(0);  sub    (a,2,sync); }
+// { volatile atomic<ulong,lock> a(0);  mul    (a,2,sync); }
+// { volatile atomic<ulong,lock> a(0);  div    (a,2,sync); }
+// { volatile atomic<ulong,lock> a(0);  mod    (a,2,sync); }
+// { volatile atomic<ulong,lock> a(0);  lshift (a,2,sync); }
+// { volatile atomic<ulong,lock> a(0);  rshift (a,2,sync); }
+// { volatile atomic<ulong,lock> a(0);  andeq  (a,2,sync); }
+// { volatile atomic<ulong,lock> a(0);  oreq   (a,2,sync); }
+// { volatile atomic<ulong,lock> a(0);  xoreq  (a,2,sync); }
+// { volatile atomic<ulong,lock> a(0);  min    (a,2,sync); }
+// { volatile atomic<ulong,lock> a(0);  max    (a,2,sync); }
+// { volatile atomic<ulong,lock> a(0);  inc    (a,  sync); }
+// { volatile atomic<ulong,lock> a(0);  preinc (a,  sync); }
+// { volatile atomic<ulong,lock> a(0);  postinc(a,  sync); }
+// { volatile atomic<ulong,lock> a(0);  dec    (a,  sync); }
+// { volatile atomic<ulong,lock> a(0);  predec (a,  sync); }
+// { volatile atomic<ulong,lock> a(0);  postdec(a,  sync); }
+// { volatile atomic<ulong,lock> a(0);  add    (a,2,success,failure); }
+// { volatile atomic<ulong,lock> a(0);  sub    (a,2,success,failure); }
+// { volatile atomic<ulong,lock> a(0);  mul    (a,2,success,failure); }
+// { volatile atomic<ulong,lock> a(0);  div    (a,2,success,failure); }
+// { volatile atomic<ulong,lock> a(0);  mod    (a,2,success,failure); }
+// { volatile atomic<ulong,lock> a(0);  lshift (a,2,success,failure); }
+// { volatile atomic<ulong,lock> a(0);  rshift (a,2,success,failure); }
+// { volatile atomic<ulong,lock> a(0);  andeq  (a,2,success,failure); }
+// { volatile atomic<ulong,lock> a(0);  oreq   (a,2,success,failure); }
+// { volatile atomic<ulong,lock> a(0);  xoreq  (a,2,success,failure); }
+// { volatile atomic<ulong,lock> a(0);  min    (a,2,success,failure); }
+// { volatile atomic<ulong,lock> a(0);  max    (a,2,success,failure); }
+// { volatile atomic<ulong,lock> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<ulong,lock> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<ulong,lock> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<ulong,lock> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<ulong,lock> a(0);  predec (a,  success,failure); }
+// { volatile atomic<ulong,lock> a(0);  postdec(a,  success,failure); }
+
+   { volatile atomic<ulong,serial> a(0);  add    (a,2); }
+   { volatile atomic<ulong,serial> a(0);  sub    (a,2); }
+   { volatile atomic<ulong,serial> a(0);  mul    (a,2); }
+   { volatile atomic<ulong,serial> a(0);  div    (a,2); }
+   { volatile atomic<ulong,serial> a(0);  mod    (a,2); }
+   { volatile atomic<ulong,serial> a(0);  lshift (a,2); }
+   { volatile atomic<ulong,serial> a(0);  rshift (a,2); }
+   { volatile atomic<ulong,serial> a(0);  andeq  (a,2); }
+   { volatile atomic<ulong,serial> a(0);  oreq   (a,2); }
+   { volatile atomic<ulong,serial> a(0);  xoreq  (a,2); }
+   { volatile atomic<ulong,serial> a(0);  min    (a,2); }
+   { volatile atomic<ulong,serial> a(0);  max    (a,2); }
+   { volatile atomic<ulong,serial> a(0);  inc    (a); }
+   { volatile atomic<ulong,serial> a(0);  preinc (a); }
+   { volatile atomic<ulong,serial> a(0);  postinc(a); }
+   { volatile atomic<ulong,serial> a(0);  dec    (a); }
+   { volatile atomic<ulong,serial> a(0);  predec (a); }
+   { volatile atomic<ulong,serial> a(0);  postdec(a); }
+// { volatile atomic<ulong,serial> a(0);  add    (a,2,sync); }
+// { volatile atomic<ulong,serial> a(0);  sub    (a,2,sync); }
+// { volatile atomic<ulong,serial> a(0);  mul    (a,2,sync); }
+// { volatile atomic<ulong,serial> a(0);  div    (a,2,sync); }
+// { volatile atomic<ulong,serial> a(0);  mod    (a,2,sync); }
+// { volatile atomic<ulong,serial> a(0);  lshift (a,2,sync); }
+// { volatile atomic<ulong,serial> a(0);  rshift (a,2,sync); }
+// { volatile atomic<ulong,serial> a(0);  andeq  (a,2,sync); }
+// { volatile atomic<ulong,serial> a(0);  oreq   (a,2,sync); }
+// { volatile atomic<ulong,serial> a(0);  xoreq  (a,2,sync); }
+// { volatile atomic<ulong,serial> a(0);  min    (a,2,sync); }
+// { volatile atomic<ulong,serial> a(0);  max    (a,2,sync); }
+// { volatile atomic<ulong,serial> a(0);  inc    (a,  sync); }
+// { volatile atomic<ulong,serial> a(0);  preinc (a,  sync); }
+// { volatile atomic<ulong,serial> a(0);  postinc(a,  sync); }
+// { volatile atomic<ulong,serial> a(0);  dec    (a,  sync); }
+// { volatile atomic<ulong,serial> a(0);  predec (a,  sync); }
+// { volatile atomic<ulong,serial> a(0);  postdec(a,  sync); }
+// { volatile atomic<ulong,serial> a(0);  add    (a,2,success,failure); }
+// { volatile atomic<ulong,serial> a(0);  sub    (a,2,success,failure); }
+// { volatile atomic<ulong,serial> a(0);  mul    (a,2,success,failure); }
+// { volatile atomic<ulong,serial> a(0);  div    (a,2,success,failure); }
+// { volatile atomic<ulong,serial> a(0);  mod    (a,2,success,failure); }
+// { volatile atomic<ulong,serial> a(0);  lshift (a,2,success,failure); }
+// { volatile atomic<ulong,serial> a(0);  rshift (a,2,success,failure); }
+// { volatile atomic<ulong,serial> a(0);  andeq  (a,2,success,failure); }
+// { volatile atomic<ulong,serial> a(0);  oreq   (a,2,success,failure); }
+// { volatile atomic<ulong,serial> a(0);  xoreq  (a,2,success,failure); }
+// { volatile atomic<ulong,serial> a(0);  min    (a,2,success,failure); }
+// { volatile atomic<ulong,serial> a(0);  max    (a,2,success,failure); }
+// { volatile atomic<ulong,serial> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<ulong,serial> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<ulong,serial> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<ulong,serial> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<ulong,serial> a(0);  predec (a,  success,failure); }
+// { volatile atomic<ulong,serial> a(0);  postdec(a,  success,failure); }
+
+
+
+   // ------------------------
+   // double
+   // ------------------------
+
+// { volatile atomic<double,cpp> a(0);  add    (a,2); }
+// { volatile atomic<double,cpp> a(0);  sub    (a,2); }
+// { volatile atomic<double,cpp> a(0);  mul    (a,2); }
+// { volatile atomic<double,cpp> a(0);  div    (a,2); }
+// { volatile atomic<double,cpp> a(0);  mod    (a,2); }
+// { volatile atomic<double,cpp> a(0);  lshift (a,2); }
+// { volatile atomic<double,cpp> a(0);  rshift (a,2); }
+// { volatile atomic<double,cpp> a(0);  andeq  (a,2); }
+// { volatile atomic<double,cpp> a(0);  oreq   (a,2); }
+// { volatile atomic<double,cpp> a(0);  xoreq  (a,2); }
+// { volatile atomic<double,cpp> a(0);  min    (a,2); }
+// { volatile atomic<double,cpp> a(0);  max    (a,2); }
+// { volatile atomic<double,cpp> a(0);  inc    (a); }
+// { volatile atomic<double,cpp> a(0);  preinc (a); }
+// { volatile atomic<double,cpp> a(0);  postinc(a); }
+// { volatile atomic<double,cpp> a(0);  dec    (a); }
+// { volatile atomic<double,cpp> a(0);  predec (a); }
+// { volatile atomic<double,cpp> a(0);  postdec(a); }
+// { volatile atomic<double,cpp> a(0);  add    (a,2,sync); }
+// { volatile atomic<double,cpp> a(0);  sub    (a,2,sync); }
+// { volatile atomic<double,cpp> a(0);  mul    (a,2,sync); }
+// { volatile atomic<double,cpp> a(0);  div    (a,2,sync); }
+// { volatile atomic<double,cpp> a(0);  mod    (a,2,sync); }
+// { volatile atomic<double,cpp> a(0);  lshift (a,2,sync); }
+// { volatile atomic<double,cpp> a(0);  rshift (a,2,sync); }
+// { volatile atomic<double,cpp> a(0);  andeq  (a,2,sync); }
+// { volatile atomic<double,cpp> a(0);  oreq   (a,2,sync); }
+// { volatile atomic<double,cpp> a(0);  xoreq  (a,2,sync); }
+// { volatile atomic<double,cpp> a(0);  min    (a,2,sync); }
+// { volatile atomic<double,cpp> a(0);  max    (a,2,sync); }
+// { volatile atomic<double,cpp> a(0);  inc    (a,  sync); }
+// { volatile atomic<double,cpp> a(0);  preinc (a,  sync); }
+// { volatile atomic<double,cpp> a(0);  postinc(a,  sync); }
+// { volatile atomic<double,cpp> a(0);  dec    (a,  sync); }
+// { volatile atomic<double,cpp> a(0);  predec (a,  sync); }
+// { volatile atomic<double,cpp> a(0);  postdec(a,  sync); }
+// { volatile atomic<double,cpp> a(0);  add    (a,2,success,failure); }
+// { volatile atomic<double,cpp> a(0);  sub    (a,2,success,failure); }
+// { volatile atomic<double,cpp> a(0);  mul    (a,2,success,failure); }
+// { volatile atomic<double,cpp> a(0);  div    (a,2,success,failure); }
+// { volatile atomic<double,cpp> a(0);  mod    (a,2,success,failure); }
+// { volatile atomic<double,cpp> a(0);  lshift (a,2,success,failure); }
+// { volatile atomic<double,cpp> a(0);  rshift (a,2,success,failure); }
+// { volatile atomic<double,cpp> a(0);  andeq  (a,2,success,failure); }
+// { volatile atomic<double,cpp> a(0);  oreq   (a,2,success,failure); }
+// { volatile atomic<double,cpp> a(0);  xoreq  (a,2,success,failure); }
+// { volatile atomic<double,cpp> a(0);  min    (a,2,success,failure); }
+// { volatile atomic<double,cpp> a(0);  max    (a,2,success,failure); }
+// { volatile atomic<double,cpp> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<double,cpp> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<double,cpp> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<double,cpp> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<double,cpp> a(0);  predec (a,  success,failure); }
+// { volatile atomic<double,cpp> a(0);  postdec(a,  success,failure); }
+
+   #if defined(ATOMICS_KOKKOS)
+   { volatile atomic<double,kokkos> a(0);  add    (a,2); }
+   { volatile atomic<double,kokkos> a(0);  sub    (a,2); }
+   { volatile atomic<double,kokkos> a(0);  mul    (a,2); }
+   { volatile atomic<double,kokkos> a(0);  div    (a,2); }
+// { volatile atomic<double,kokkos> a(0);  mod    (a,2); }
+// { volatile atomic<double,kokkos> a(0);  lshift (a,2); }
+// { volatile atomic<double,kokkos> a(0);  rshift (a,2); }
+// { volatile atomic<double,kokkos> a(0);  andeq  (a,2); }
+// { volatile atomic<double,kokkos> a(0);  oreq   (a,2); }
+// { volatile atomic<double,kokkos> a(0);  xoreq  (a,2); }
+   { volatile atomic<double,kokkos> a(0);  min    (a,2); }
+   { volatile atomic<double,kokkos> a(0);  max    (a,2); }
+   { volatile atomic<double,kokkos> a(0);  inc    (a); }
+   { volatile atomic<double,kokkos> a(0);  preinc (a); }
+   { volatile atomic<double,kokkos> a(0);  postinc(a); }
+   { volatile atomic<double,kokkos> a(0);  dec    (a); }
+   { volatile atomic<double,kokkos> a(0);  predec (a); }
+   { volatile atomic<double,kokkos> a(0);  postdec(a); }
+// { volatile atomic<double,kokkos> a(0);  add    (a,2,sync); }
+// { volatile atomic<double,kokkos> a(0);  sub    (a,2,sync); }
+// { volatile atomic<double,kokkos> a(0);  mul    (a,2,sync); }
+// { volatile atomic<double,kokkos> a(0);  div    (a,2,sync); }
+// { volatile atomic<double,kokkos> a(0);  mod    (a,2,sync); }
+// { volatile atomic<double,kokkos> a(0);  lshift (a,2,sync); }
+// { volatile atomic<double,kokkos> a(0);  rshift (a,2,sync); }
+// { volatile atomic<double,kokkos> a(0);  andeq  (a,2,sync); }
+// { volatile atomic<double,kokkos> a(0);  oreq   (a,2,sync); }
+// { volatile atomic<double,kokkos> a(0);  xoreq  (a,2,sync); }
+// { volatile atomic<double,kokkos> a(0);  min    (a,2,sync); }
+// { volatile atomic<double,kokkos> a(0);  max    (a,2,sync); }
+// { volatile atomic<double,kokkos> a(0);  inc    (a,  sync); }
+// { volatile atomic<double,kokkos> a(0);  preinc (a,  sync); }
+// { volatile atomic<double,kokkos> a(0);  postinc(a,  sync); }
+// { volatile atomic<double,kokkos> a(0);  dec    (a,  sync); }
+// { volatile atomic<double,kokkos> a(0);  predec (a,  sync); }
+// { volatile atomic<double,kokkos> a(0);  postdec(a,  sync); }
+// { volatile atomic<double,kokkos> a(0);  add    (a,2,success,failure); }
+// { volatile atomic<double,kokkos> a(0);  sub    (a,2,success,failure); }
+// { volatile atomic<double,kokkos> a(0);  mul    (a,2,success,failure); }
+// { volatile atomic<double,kokkos> a(0);  div    (a,2,success,failure); }
+// { volatile atomic<double,kokkos> a(0);  mod    (a,2,success,failure); }
+// { volatile atomic<double,kokkos> a(0);  lshift (a,2,success,failure); }
+// { volatile atomic<double,kokkos> a(0);  rshift (a,2,success,failure); }
+// { volatile atomic<double,kokkos> a(0);  andeq  (a,2,success,failure); }
+// { volatile atomic<double,kokkos> a(0);  oreq   (a,2,success,failure); }
+// { volatile atomic<double,kokkos> a(0);  xoreq  (a,2,success,failure); }
+// { volatile atomic<double,kokkos> a(0);  min    (a,2,success,failure); }
+// { volatile atomic<double,kokkos> a(0);  max    (a,2,success,failure); }
+// { volatile atomic<double,kokkos> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<double,kokkos> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<double,kokkos> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<double,kokkos> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<double,kokkos> a(0);  predec (a,  success,failure); }
+// { volatile atomic<double,kokkos> a(0);  postdec(a,  success,failure); }
+   #endif
+
+   { volatile atomic<double,strong> a(0);  add    (a,2); }
+   { volatile atomic<double,strong> a(0);  sub    (a,2); }
+   { volatile atomic<double,strong> a(0);  mul    (a,2); }
+   { volatile atomic<double,strong> a(0);  div    (a,2); }
+// { volatile atomic<double,strong> a(0);  mod    (a,2); }
+// { volatile atomic<double,strong> a(0);  lshift (a,2); }
+// { volatile atomic<double,strong> a(0);  rshift (a,2); }
+// { volatile atomic<double,strong> a(0);  andeq  (a,2); }
+// { volatile atomic<double,strong> a(0);  oreq   (a,2); }
+// { volatile atomic<double,strong> a(0);  xoreq  (a,2); }
+   { volatile atomic<double,strong> a(0);  min    (a,2); }
+   { volatile atomic<double,strong> a(0);  max    (a,2); }
+   { volatile atomic<double,strong> a(0);  inc    (a); }
+   { volatile atomic<double,strong> a(0);  preinc (a); }
+   { volatile atomic<double,strong> a(0);  postinc(a); }
+   { volatile atomic<double,strong> a(0);  dec    (a); }
+   { volatile atomic<double,strong> a(0);  predec (a); }
+   { volatile atomic<double,strong> a(0);  postdec(a); }
+   { volatile atomic<double,strong> a(0);  add    (a,2,sync); }
+   { volatile atomic<double,strong> a(0);  sub    (a,2,sync); }
+   { volatile atomic<double,strong> a(0);  mul    (a,2,sync); }
+   { volatile atomic<double,strong> a(0);  div    (a,2,sync); }
+// { volatile atomic<double,strong> a(0);  mod    (a,2,sync); }
+// { volatile atomic<double,strong> a(0);  lshift (a,2,sync); }
+// { volatile atomic<double,strong> a(0);  rshift (a,2,sync); }
+// { volatile atomic<double,strong> a(0);  andeq  (a,2,sync); }
+// { volatile atomic<double,strong> a(0);  oreq   (a,2,sync); }
+// { volatile atomic<double,strong> a(0);  xoreq  (a,2,sync); }
+   { volatile atomic<double,strong> a(0);  min    (a,2,sync); }
+   { volatile atomic<double,strong> a(0);  max    (a,2,sync); }
+   { volatile atomic<double,strong> a(0);  inc    (a,  sync); }
+   { volatile atomic<double,strong> a(0);  preinc (a,  sync); }
+   { volatile atomic<double,strong> a(0);  postinc(a,  sync); }
+   { volatile atomic<double,strong> a(0);  dec    (a,  sync); }
+   { volatile atomic<double,strong> a(0);  predec (a,  sync); }
+   { volatile atomic<double,strong> a(0);  postdec(a,  sync); }
+   { volatile atomic<double,strong> a(0);  add    (a,2,success,failure); }
+   { volatile atomic<double,strong> a(0);  sub    (a,2,success,failure); }
+   { volatile atomic<double,strong> a(0);  mul    (a,2,success,failure); }
+   { volatile atomic<double,strong> a(0);  div    (a,2,success,failure); }
+// { volatile atomic<double,strong> a(0);  mod    (a,2,success,failure); }
+// { volatile atomic<double,strong> a(0);  lshift (a,2,success,failure); }
+// { volatile atomic<double,strong> a(0);  rshift (a,2,success,failure); }
+// { volatile atomic<double,strong> a(0);  andeq  (a,2,success,failure); }
+// { volatile atomic<double,strong> a(0);  oreq   (a,2,success,failure); }
+// { volatile atomic<double,strong> a(0);  xoreq  (a,2,success,failure); }
+   { volatile atomic<double,strong> a(0);  min    (a,2,success,failure); }
+   { volatile atomic<double,strong> a(0);  max    (a,2,success,failure); }
+   { volatile atomic<double,strong> a(0);  inc    (a,  success,failure); }
+   { volatile atomic<double,strong> a(0);  preinc (a,  success,failure); }
+   { volatile atomic<double,strong> a(0);  postinc(a,  success,failure); }
+   { volatile atomic<double,strong> a(0);  dec    (a,  success,failure); }
+   { volatile atomic<double,strong> a(0);  predec (a,  success,failure); }
+   { volatile atomic<double,strong> a(0);  postdec(a,  success,failure); }
+
+   { volatile atomic<double,strong::pun> a(0);  add    (a,2); }
+   { volatile atomic<double,strong::pun> a(0);  sub    (a,2); }
+   { volatile atomic<double,strong::pun> a(0);  mul    (a,2); }
+   { volatile atomic<double,strong::pun> a(0);  div    (a,2); }
+// { volatile atomic<double,strong::pun> a(0);  mod    (a,2); }
+// { volatile atomic<double,strong::pun> a(0);  lshift (a,2); }
+// { volatile atomic<double,strong::pun> a(0);  rshift (a,2); }
+// { volatile atomic<double,strong::pun> a(0);  andeq  (a,2); }
+// { volatile atomic<double,strong::pun> a(0);  oreq   (a,2); }
+// { volatile atomic<double,strong::pun> a(0);  xoreq  (a,2); }
+   { volatile atomic<double,strong::pun> a(0);  min    (a,2); }
+   { volatile atomic<double,strong::pun> a(0);  max    (a,2); }
+   { volatile atomic<double,strong::pun> a(0);  inc    (a); }
+   { volatile atomic<double,strong::pun> a(0);  preinc (a); }
+   { volatile atomic<double,strong::pun> a(0);  postinc(a); }
+   { volatile atomic<double,strong::pun> a(0);  dec    (a); }
+   { volatile atomic<double,strong::pun> a(0);  predec (a); }
+   { volatile atomic<double,strong::pun> a(0);  postdec(a); }
+   { volatile atomic<double,strong::pun> a(0);  add    (a,2,sync); }
+   { volatile atomic<double,strong::pun> a(0);  sub    (a,2,sync); }
+   { volatile atomic<double,strong::pun> a(0);  mul    (a,2,sync); }
+   { volatile atomic<double,strong::pun> a(0);  div    (a,2,sync); }
+// { volatile atomic<double,strong::pun> a(0);  mod    (a,2,sync); }
+// { volatile atomic<double,strong::pun> a(0);  lshift (a,2,sync); }
+// { volatile atomic<double,strong::pun> a(0);  rshift (a,2,sync); }
+// { volatile atomic<double,strong::pun> a(0);  andeq  (a,2,sync); }
+// { volatile atomic<double,strong::pun> a(0);  oreq   (a,2,sync); }
+// { volatile atomic<double,strong::pun> a(0);  xoreq  (a,2,sync); }
+   { volatile atomic<double,strong::pun> a(0);  min    (a,2,sync); }
+   { volatile atomic<double,strong::pun> a(0);  max    (a,2,sync); }
+   { volatile atomic<double,strong::pun> a(0);  inc    (a,  sync); }
+   { volatile atomic<double,strong::pun> a(0);  preinc (a,  sync); }
+   { volatile atomic<double,strong::pun> a(0);  postinc(a,  sync); }
+   { volatile atomic<double,strong::pun> a(0);  dec    (a,  sync); }
+   { volatile atomic<double,strong::pun> a(0);  predec (a,  sync); }
+   { volatile atomic<double,strong::pun> a(0);  postdec(a,  sync); }
+   { volatile atomic<double,strong::pun> a(0);  add    (a,2,success,failure); }
+   { volatile atomic<double,strong::pun> a(0);  sub    (a,2,success,failure); }
+   { volatile atomic<double,strong::pun> a(0);  mul    (a,2,success,failure); }
+   { volatile atomic<double,strong::pun> a(0);  div    (a,2,success,failure); }
+// { volatile atomic<double,strong::pun> a(0);  mod    (a,2,success,failure); }
+// { volatile atomic<double,strong::pun> a(0);  lshift (a,2,success,failure); }
+// { volatile atomic<double,strong::pun> a(0);  rshift (a,2,success,failure); }
+// { volatile atomic<double,strong::pun> a(0);  andeq  (a,2,success,failure); }
+// { volatile atomic<double,strong::pun> a(0);  oreq   (a,2,success,failure); }
+// { volatile atomic<double,strong::pun> a(0);  xoreq  (a,2,success,failure); }
+   { volatile atomic<double,strong::pun> a(0);  min    (a,2,success,failure); }
+   { volatile atomic<double,strong::pun> a(0);  max    (a,2,success,failure); }
+   { volatile atomic<double,strong::pun> a(0);  inc    (a,  success,failure); }
+   { volatile atomic<double,strong::pun> a(0);  preinc (a,  success,failure); }
+   { volatile atomic<double,strong::pun> a(0);  postinc(a,  success,failure); }
+   { volatile atomic<double,strong::pun> a(0);  dec    (a,  success,failure); }
+   { volatile atomic<double,strong::pun> a(0);  predec (a,  success,failure); }
+   { volatile atomic<double,strong::pun> a(0);  postdec(a,  success,failure); }
+
+   { volatile atomic<double,weak> a(0);  add    (a,2); }
+   { volatile atomic<double,weak> a(0);  sub    (a,2); }
+   { volatile atomic<double,weak> a(0);  mul    (a,2); }
+   { volatile atomic<double,weak> a(0);  div    (a,2); }
+// { volatile atomic<double,weak> a(0);  mod    (a,2); }
+// { volatile atomic<double,weak> a(0);  lshift (a,2); }
+// { volatile atomic<double,weak> a(0);  rshift (a,2); }
+// { volatile atomic<double,weak> a(0);  andeq  (a,2); }
+// { volatile atomic<double,weak> a(0);  oreq   (a,2); }
+// { volatile atomic<double,weak> a(0);  xoreq  (a,2); }
+   { volatile atomic<double,weak> a(0);  min    (a,2); }
+   { volatile atomic<double,weak> a(0);  max    (a,2); }
+   { volatile atomic<double,weak> a(0);  inc    (a); }
+   { volatile atomic<double,weak> a(0);  preinc (a); }
+   { volatile atomic<double,weak> a(0);  postinc(a); }
+   { volatile atomic<double,weak> a(0);  dec    (a); }
+   { volatile atomic<double,weak> a(0);  predec (a); }
+   { volatile atomic<double,weak> a(0);  postdec(a); }
+   { volatile atomic<double,weak> a(0);  add    (a,2,sync); }
+   { volatile atomic<double,weak> a(0);  sub    (a,2,sync); }
+   { volatile atomic<double,weak> a(0);  mul    (a,2,sync); }
+   { volatile atomic<double,weak> a(0);  div    (a,2,sync); }
+// { volatile atomic<double,weak> a(0);  mod    (a,2,sync); }
+// { volatile atomic<double,weak> a(0);  lshift (a,2,sync); }
+// { volatile atomic<double,weak> a(0);  rshift (a,2,sync); }
+// { volatile atomic<double,weak> a(0);  andeq  (a,2,sync); }
+// { volatile atomic<double,weak> a(0);  oreq   (a,2,sync); }
+// { volatile atomic<double,weak> a(0);  xoreq  (a,2,sync); }
+   { volatile atomic<double,weak> a(0);  min    (a,2,sync); }
+   { volatile atomic<double,weak> a(0);  max    (a,2,sync); }
+   { volatile atomic<double,weak> a(0);  inc    (a,  sync); }
+   { volatile atomic<double,weak> a(0);  preinc (a,  sync); }
+   { volatile atomic<double,weak> a(0);  postinc(a,  sync); }
+   { volatile atomic<double,weak> a(0);  dec    (a,  sync); }
+   { volatile atomic<double,weak> a(0);  predec (a,  sync); }
+   { volatile atomic<double,weak> a(0);  postdec(a,  sync); }
+   { volatile atomic<double,weak> a(0);  add    (a,2,success,failure); }
+   { volatile atomic<double,weak> a(0);  sub    (a,2,success,failure); }
+   { volatile atomic<double,weak> a(0);  mul    (a,2,success,failure); }
+   { volatile atomic<double,weak> a(0);  div    (a,2,success,failure); }
+// { volatile atomic<double,weak> a(0);  mod    (a,2,success,failure); }
+// { volatile atomic<double,weak> a(0);  lshift (a,2,success,failure); }
+// { volatile atomic<double,weak> a(0);  rshift (a,2,success,failure); }
+// { volatile atomic<double,weak> a(0);  andeq  (a,2,success,failure); }
+// { volatile atomic<double,weak> a(0);  oreq   (a,2,success,failure); }
+// { volatile atomic<double,weak> a(0);  xoreq  (a,2,success,failure); }
+   { volatile atomic<double,weak> a(0);  min    (a,2,success,failure); }
+   { volatile atomic<double,weak> a(0);  max    (a,2,success,failure); }
+   { volatile atomic<double,weak> a(0);  inc    (a,  success,failure); }
+   { volatile atomic<double,weak> a(0);  preinc (a,  success,failure); }
+   { volatile atomic<double,weak> a(0);  postinc(a,  success,failure); }
+   { volatile atomic<double,weak> a(0);  dec    (a,  success,failure); }
+   { volatile atomic<double,weak> a(0);  predec (a,  success,failure); }
+   { volatile atomic<double,weak> a(0);  postdec(a,  success,failure); }
+
+   { volatile atomic<double,weak::pun> a(0);  add    (a,2); }
+   { volatile atomic<double,weak::pun> a(0);  sub    (a,2); }
+   { volatile atomic<double,weak::pun> a(0);  mul    (a,2); }
+   { volatile atomic<double,weak::pun> a(0);  div    (a,2); }
+// { volatile atomic<double,weak::pun> a(0);  mod    (a,2); }
+// { volatile atomic<double,weak::pun> a(0);  lshift (a,2); }
+// { volatile atomic<double,weak::pun> a(0);  rshift (a,2); }
+// { volatile atomic<double,weak::pun> a(0);  andeq  (a,2); }
+// { volatile atomic<double,weak::pun> a(0);  oreq   (a,2); }
+// { volatile atomic<double,weak::pun> a(0);  xoreq  (a,2); }
+   { volatile atomic<double,weak::pun> a(0);  min    (a,2); }
+   { volatile atomic<double,weak::pun> a(0);  max    (a,2); }
+   { volatile atomic<double,weak::pun> a(0);  inc    (a); }
+   { volatile atomic<double,weak::pun> a(0);  preinc (a); }
+   { volatile atomic<double,weak::pun> a(0);  postinc(a); }
+   { volatile atomic<double,weak::pun> a(0);  dec    (a); }
+   { volatile atomic<double,weak::pun> a(0);  predec (a); }
+   { volatile atomic<double,weak::pun> a(0);  postdec(a); }
+   { volatile atomic<double,weak::pun> a(0);  add    (a,2,sync); }
+   { volatile atomic<double,weak::pun> a(0);  sub    (a,2,sync); }
+   { volatile atomic<double,weak::pun> a(0);  mul    (a,2,sync); }
+   { volatile atomic<double,weak::pun> a(0);  div    (a,2,sync); }
+// { volatile atomic<double,weak::pun> a(0);  mod    (a,2,sync); }
+// { volatile atomic<double,weak::pun> a(0);  lshift (a,2,sync); }
+// { volatile atomic<double,weak::pun> a(0);  rshift (a,2,sync); }
+// { volatile atomic<double,weak::pun> a(0);  andeq  (a,2,sync); }
+// { volatile atomic<double,weak::pun> a(0);  oreq   (a,2,sync); }
+// { volatile atomic<double,weak::pun> a(0);  xoreq  (a,2,sync); }
+   { volatile atomic<double,weak::pun> a(0);  min    (a,2,sync); }
+   { volatile atomic<double,weak::pun> a(0);  max    (a,2,sync); }
+   { volatile atomic<double,weak::pun> a(0);  inc    (a,  sync); }
+   { volatile atomic<double,weak::pun> a(0);  preinc (a,  sync); }
+   { volatile atomic<double,weak::pun> a(0);  postinc(a,  sync); }
+   { volatile atomic<double,weak::pun> a(0);  dec    (a,  sync); }
+   { volatile atomic<double,weak::pun> a(0);  predec (a,  sync); }
+   { volatile atomic<double,weak::pun> a(0);  postdec(a,  sync); }
+   { volatile atomic<double,weak::pun> a(0);  add    (a,2,success,failure); }
+   { volatile atomic<double,weak::pun> a(0);  sub    (a,2,success,failure); }
+   { volatile atomic<double,weak::pun> a(0);  mul    (a,2,success,failure); }
+   { volatile atomic<double,weak::pun> a(0);  div    (a,2,success,failure); }
+// { volatile atomic<double,weak::pun> a(0);  mod    (a,2,success,failure); }
+// { volatile atomic<double,weak::pun> a(0);  lshift (a,2,success,failure); }
+// { volatile atomic<double,weak::pun> a(0);  rshift (a,2,success,failure); }
+// { volatile atomic<double,weak::pun> a(0);  andeq  (a,2,success,failure); }
+// { volatile atomic<double,weak::pun> a(0);  oreq   (a,2,success,failure); }
+// { volatile atomic<double,weak::pun> a(0);  xoreq  (a,2,success,failure); }
+   { volatile atomic<double,weak::pun> a(0);  min    (a,2,success,failure); }
+   { volatile atomic<double,weak::pun> a(0);  max    (a,2,success,failure); }
+   { volatile atomic<double,weak::pun> a(0);  inc    (a,  success,failure); }
+   { volatile atomic<double,weak::pun> a(0);  preinc (a,  success,failure); }
+   { volatile atomic<double,weak::pun> a(0);  postinc(a,  success,failure); }
+   { volatile atomic<double,weak::pun> a(0);  dec    (a,  success,failure); }
+   { volatile atomic<double,weak::pun> a(0);  predec (a,  success,failure); }
+   { volatile atomic<double,weak::pun> a(0);  postdec(a,  success,failure); }
+
+   { volatile atomic<double,lock> a(0);  add    (a,2); }
+   { volatile atomic<double,lock> a(0);  sub    (a,2); }
+   { volatile atomic<double,lock> a(0);  mul    (a,2); }
+   { volatile atomic<double,lock> a(0);  div    (a,2); }
+// { volatile atomic<double,lock> a(0);  mod    (a,2); }
+// { volatile atomic<double,lock> a(0);  lshift (a,2); }
+// { volatile atomic<double,lock> a(0);  rshift (a,2); }
+// { volatile atomic<double,lock> a(0);  andeq  (a,2); }
+// { volatile atomic<double,lock> a(0);  oreq   (a,2); }
+// { volatile atomic<double,lock> a(0);  xoreq  (a,2); }
+   { volatile atomic<double,lock> a(0);  min    (a,2); }
+   { volatile atomic<double,lock> a(0);  max    (a,2); }
+   { volatile atomic<double,lock> a(0);  inc    (a); }
+   { volatile atomic<double,lock> a(0);  preinc (a); }
+   { volatile atomic<double,lock> a(0);  postinc(a); }
+   { volatile atomic<double,lock> a(0);  dec    (a); }
+   { volatile atomic<double,lock> a(0);  predec (a); }
+   { volatile atomic<double,lock> a(0);  postdec(a); }
+// { volatile atomic<double,lock> a(0);  add    (a,2,sync); }
+// { volatile atomic<double,lock> a(0);  sub    (a,2,sync); }
+// { volatile atomic<double,lock> a(0);  mul    (a,2,sync); }
+// { volatile atomic<double,lock> a(0);  div    (a,2,sync); }
+// { volatile atomic<double,lock> a(0);  mod    (a,2,sync); }
+// { volatile atomic<double,lock> a(0);  lshift (a,2,sync); }
+// { volatile atomic<double,lock> a(0);  rshift (a,2,sync); }
+// { volatile atomic<double,lock> a(0);  andeq  (a,2,sync); }
+// { volatile atomic<double,lock> a(0);  oreq   (a,2,sync); }
+// { volatile atomic<double,lock> a(0);  xoreq  (a,2,sync); }
+// { volatile atomic<double,lock> a(0);  min    (a,2,sync); }
+// { volatile atomic<double,lock> a(0);  max    (a,2,sync); }
+// { volatile atomic<double,lock> a(0);  inc    (a,  sync); }
+// { volatile atomic<double,lock> a(0);  preinc (a,  sync); }
+// { volatile atomic<double,lock> a(0);  postinc(a,  sync); }
+// { volatile atomic<double,lock> a(0);  dec    (a,  sync); }
+// { volatile atomic<double,lock> a(0);  predec (a,  sync); }
+// { volatile atomic<double,lock> a(0);  postdec(a,  sync); }
+// { volatile atomic<double,lock> a(0);  add    (a,2,success,failure); }
+// { volatile atomic<double,lock> a(0);  sub    (a,2,success,failure); }
+// { volatile atomic<double,lock> a(0);  mul    (a,2,success,failure); }
+// { volatile atomic<double,lock> a(0);  div    (a,2,success,failure); }
+// { volatile atomic<double,lock> a(0);  mod    (a,2,success,failure); }
+// { volatile atomic<double,lock> a(0);  lshift (a,2,success,failure); }
+// { volatile atomic<double,lock> a(0);  rshift (a,2,success,failure); }
+// { volatile atomic<double,lock> a(0);  andeq  (a,2,success,failure); }
+// { volatile atomic<double,lock> a(0);  oreq   (a,2,success,failure); }
+// { volatile atomic<double,lock> a(0);  xoreq  (a,2,success,failure); }
+// { volatile atomic<double,lock> a(0);  min    (a,2,success,failure); }
+// { volatile atomic<double,lock> a(0);  max    (a,2,success,failure); }
+// { volatile atomic<double,lock> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<double,lock> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<double,lock> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<double,lock> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<double,lock> a(0);  predec (a,  success,failure); }
+// { volatile atomic<double,lock> a(0);  postdec(a,  success,failure); }
+
+   { volatile atomic<double,serial> a(0);  add    (a,2); }
+   { volatile atomic<double,serial> a(0);  sub    (a,2); }
+   { volatile atomic<double,serial> a(0);  mul    (a,2); }
+   { volatile atomic<double,serial> a(0);  div    (a,2); }
+// { volatile atomic<double,serial> a(0);  mod    (a,2); }
+// { volatile atomic<double,serial> a(0);  lshift (a,2); }
+// { volatile atomic<double,serial> a(0);  rshift (a,2); }
+// { volatile atomic<double,serial> a(0);  andeq  (a,2); }
+// { volatile atomic<double,serial> a(0);  oreq   (a,2); }
+// { volatile atomic<double,serial> a(0);  xoreq  (a,2); }
+   { volatile atomic<double,serial> a(0);  min    (a,2); }
+   { volatile atomic<double,serial> a(0);  max    (a,2); }
+   { volatile atomic<double,serial> a(0);  inc    (a); }
+   { volatile atomic<double,serial> a(0);  preinc (a); }
+   { volatile atomic<double,serial> a(0);  postinc(a); }
+   { volatile atomic<double,serial> a(0);  dec    (a); }
+   { volatile atomic<double,serial> a(0);  predec (a); }
+   { volatile atomic<double,serial> a(0);  postdec(a); }
+// { volatile atomic<double,serial> a(0);  add    (a,2,sync); }
+// { volatile atomic<double,serial> a(0);  sub    (a,2,sync); }
+// { volatile atomic<double,serial> a(0);  mul    (a,2,sync); }
+// { volatile atomic<double,serial> a(0);  div    (a,2,sync); }
+// { volatile atomic<double,serial> a(0);  mod    (a,2,sync); }
+// { volatile atomic<double,serial> a(0);  lshift (a,2,sync); }
+// { volatile atomic<double,serial> a(0);  rshift (a,2,sync); }
+// { volatile atomic<double,serial> a(0);  andeq  (a,2,sync); }
+// { volatile atomic<double,serial> a(0);  oreq   (a,2,sync); }
+// { volatile atomic<double,serial> a(0);  xoreq  (a,2,sync); }
+// { volatile atomic<double,serial> a(0);  min    (a,2,sync); }
+// { volatile atomic<double,serial> a(0);  max    (a,2,sync); }
+// { volatile atomic<double,serial> a(0);  inc    (a,  sync); }
+// { volatile atomic<double,serial> a(0);  preinc (a,  sync); }
+// { volatile atomic<double,serial> a(0);  postinc(a,  sync); }
+// { volatile atomic<double,serial> a(0);  dec    (a,  sync); }
+// { volatile atomic<double,serial> a(0);  predec (a,  sync); }
+// { volatile atomic<double,serial> a(0);  postdec(a,  sync); }
+// { volatile atomic<double,serial> a(0);  add    (a,2,success,failure); }
+// { volatile atomic<double,serial> a(0);  sub    (a,2,success,failure); }
+// { volatile atomic<double,serial> a(0);  mul    (a,2,success,failure); }
+// { volatile atomic<double,serial> a(0);  div    (a,2,success,failure); }
+// { volatile atomic<double,serial> a(0);  mod    (a,2,success,failure); }
+// { volatile atomic<double,serial> a(0);  lshift (a,2,success,failure); }
+// { volatile atomic<double,serial> a(0);  rshift (a,2,success,failure); }
+// { volatile atomic<double,serial> a(0);  andeq  (a,2,success,failure); }
+// { volatile atomic<double,serial> a(0);  oreq   (a,2,success,failure); }
+// { volatile atomic<double,serial> a(0);  xoreq  (a,2,success,failure); }
+// { volatile atomic<double,serial> a(0);  min    (a,2,success,failure); }
+// { volatile atomic<double,serial> a(0);  max    (a,2,success,failure); }
+// { volatile atomic<double,serial> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<double,serial> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<double,serial> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<double,serial> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<double,serial> a(0);  predec (a,  success,failure); }
+// { volatile atomic<double,serial> a(0);  postdec(a,  success,failure); }
+
+
+
+   // ------------------------
+   // int *
+   // ------------------------
+
+   { volatile atomic<int*,cpp> a(&i);  add    (a,2); }
+   { volatile atomic<int*,cpp> a(&i);  sub    (a,2); }
+// { volatile atomic<int*,cpp> a(&i);  mul    (a,2); }
+// { volatile atomic<int*,cpp> a(&i);  div    (a,2); }
+// { volatile atomic<int*,cpp> a(&i);  mod    (a,2); }
+// { volatile atomic<int*,cpp> a(&i);  lshift (a,2); }
+// { volatile atomic<int*,cpp> a(&i);  rshift (a,2); }
+// { volatile atomic<int*,cpp> a(&i);  andeq  (a,2); }
+// { volatile atomic<int*,cpp> a(&i);  oreq   (a,2); }
+// { volatile atomic<int*,cpp> a(&i);  xoreq  (a,2); }
+// { volatile atomic<int*,cpp> a(&i);  min    (a,&j); }
+// { volatile atomic<int*,cpp> a(&i);  max    (a,&j); }
+   { volatile atomic<int*,cpp> a(&i);  inc    (a); }
+   { volatile atomic<int*,cpp> a(&i);  preinc (a); }
+   { volatile atomic<int*,cpp> a(&i);  postinc(a); }
+   { volatile atomic<int*,cpp> a(&i);  dec    (a); }
+   { volatile atomic<int*,cpp> a(&i);  predec (a); }
+   { volatile atomic<int*,cpp> a(&i);  postdec(a); }
+   { volatile atomic<int*,cpp> a(&i);  add    (a,2,sync); }
+   { volatile atomic<int*,cpp> a(&i);  sub    (a,2,sync); }
+// { volatile atomic<int*,cpp> a(&i);  mul    (a,2,sync); }
+// { volatile atomic<int*,cpp> a(&i);  div    (a,2,sync); }
+// { volatile atomic<int*,cpp> a(&i);  mod    (a,2,sync); }
+// { volatile atomic<int*,cpp> a(&i);  lshift (a,2,sync); }
+// { volatile atomic<int*,cpp> a(&i);  rshift (a,2,sync); }
+// { volatile atomic<int*,cpp> a(&i);  andeq  (a,2,sync); }
+// { volatile atomic<int*,cpp> a(&i);  oreq   (a,2,sync); }
+// { volatile atomic<int*,cpp> a(&i);  xoreq  (a,2,sync); }
+// { volatile atomic<int*,cpp> a(&i);  min    (a,&j,sync); }
+// { volatile atomic<int*,cpp> a(&i);  max    (a,&j,sync); }
+// { volatile atomic<int*,cpp> a(&i);  inc    (a,  sync); }
+// { volatile atomic<int*,cpp> a(&i);  preinc (a,  sync); }
+// { volatile atomic<int*,cpp> a(&i);  postinc(a,  sync); }
+// { volatile atomic<int*,cpp> a(&i);  dec    (a,  sync); }
+// { volatile atomic<int*,cpp> a(&i);  predec (a,  sync); }
+// { volatile atomic<int*,cpp> a(&i);  postdec(a,  sync); }
+// { volatile atomic<int*,cpp> a(&i);  add    (a,2,success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  sub    (a,2,success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  mul    (a,2,success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  div    (a,2,success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  mod    (a,2,success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  lshift (a,2,success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  rshift (a,2,success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  andeq  (a,2,success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  oreq   (a,2,success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  xoreq  (a,2,success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  min    (a,&j,success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  max    (a,&j,success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  inc    (a,  success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  preinc (a,  success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  postinc(a,  success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  dec    (a,  success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  predec (a,  success,failure); }
+// { volatile atomic<int*,cpp> a(&i);  postdec(a,  success,failure); }
+
+   #if defined(ATOMICS_KOKKOS)
+// { volatile atomic<int*,kokkos> a(&i);  add    (a,2); }
+// { volatile atomic<int*,kokkos> a(&i);  sub    (a,2); }
+// { volatile atomic<int*,kokkos> a(&i);  mul    (a,2); }
+// { volatile atomic<int*,kokkos> a(&i);  div    (a,2); }
+// { volatile atomic<int*,kokkos> a(&i);  mod    (a,2); }
+// { volatile atomic<int*,kokkos> a(&i);  lshift (a,2); }
+// { volatile atomic<int*,kokkos> a(&i);  rshift (a,2); }
+// { volatile atomic<int*,kokkos> a(&i);  andeq  (a,2); }
+// { volatile atomic<int*,kokkos> a(&i);  oreq   (a,2); }
+// { volatile atomic<int*,kokkos> a(&i);  xoreq  (a,2); }
+// { volatile atomic<int*,kokkos> a(&i);  min    (a,&j); }
+// { volatile atomic<int*,kokkos> a(&i);  max    (a,&j); }
+// { volatile atomic<int*,kokkos> a(&i);  inc    (a); }
+// { volatile atomic<int*,kokkos> a(&i);  preinc (a); }
+// { volatile atomic<int*,kokkos> a(&i);  postinc(a); }
+// { volatile atomic<int*,kokkos> a(&i);  dec    (a); }
+// { volatile atomic<int*,kokkos> a(&i);  predec (a); }
+// { volatile atomic<int*,kokkos> a(&i);  postdec(a); }
+// { volatile atomic<int*,kokkos> a(&i);  add    (a,2,sync); }
+// { volatile atomic<int*,kokkos> a(&i);  sub    (a,2,sync); }
+// { volatile atomic<int*,kokkos> a(&i);  mul    (a,2,sync); }
+// { volatile atomic<int*,kokkos> a(&i);  div    (a,2,sync); }
+// { volatile atomic<int*,kokkos> a(&i);  mod    (a,2,sync); }
+// { volatile atomic<int*,kokkos> a(&i);  lshift (a,2,sync); }
+// { volatile atomic<int*,kokkos> a(&i);  rshift (a,2,sync); }
+// { volatile atomic<int*,kokkos> a(&i);  andeq  (a,2,sync); }
+// { volatile atomic<int*,kokkos> a(&i);  oreq   (a,2,sync); }
+// { volatile atomic<int*,kokkos> a(&i);  xoreq  (a,2,sync); }
+// { volatile atomic<int*,kokkos> a(&i);  min    (a,&j,sync); }
+// { volatile atomic<int*,kokkos> a(&i);  max    (a,&j,sync); }
+// { volatile atomic<int*,kokkos> a(&i);  inc    (a,  sync); }
+// { volatile atomic<int*,kokkos> a(&i);  preinc (a,  sync); }
+// { volatile atomic<int*,kokkos> a(&i);  postinc(a,  sync); }
+// { volatile atomic<int*,kokkos> a(&i);  dec    (a,  sync); }
+// { volatile atomic<int*,kokkos> a(&i);  predec (a,  sync); }
+// { volatile atomic<int*,kokkos> a(&i);  postdec(a,  sync); }
+// { volatile atomic<int*,kokkos> a(&i);  add    (a,2,success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  sub    (a,2,success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  mul    (a,2,success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  div    (a,2,success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  mod    (a,2,success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  lshift (a,2,success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  rshift (a,2,success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  andeq  (a,2,success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  oreq   (a,2,success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  xoreq  (a,2,success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  min    (a,&j,success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  max    (a,&j,success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  inc    (a,  success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  preinc (a,  success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  postinc(a,  success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  dec    (a,  success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  predec (a,  success,failure); }
+// { volatile atomic<int*,kokkos> a(&i);  postdec(a,  success,failure); }
+   #endif
+
+   { volatile atomic<int*,strong> a(&i);  add    (a,2); }
+   { volatile atomic<int*,strong> a(&i);  sub    (a,2); }
+// { volatile atomic<int*,strong> a(&i);  mul    (a,2); }
+// { volatile atomic<int*,strong> a(&i);  div    (a,2); }
+// { volatile atomic<int*,strong> a(&i);  mod    (a,2); }
+// { volatile atomic<int*,strong> a(&i);  lshift (a,2); }
+// { volatile atomic<int*,strong> a(&i);  rshift (a,2); }
+// { volatile atomic<int*,strong> a(&i);  andeq  (a,2); }
+// { volatile atomic<int*,strong> a(&i);  oreq   (a,2); }
+// { volatile atomic<int*,strong> a(&i);  xoreq  (a,2); }
+   { volatile atomic<int*,strong> a(&i);  min    (a,&j); }
+   { volatile atomic<int*,strong> a(&i);  max    (a,&j); }
+   { volatile atomic<int*,strong> a(&i);  inc    (a); }
+   { volatile atomic<int*,strong> a(&i);  preinc (a); }
+   { volatile atomic<int*,strong> a(&i);  postinc(a); }
+   { volatile atomic<int*,strong> a(&i);  dec    (a); }
+   { volatile atomic<int*,strong> a(&i);  predec (a); }
+   { volatile atomic<int*,strong> a(&i);  postdec(a); }
+   { volatile atomic<int*,strong> a(&i);  add    (a,2,sync); }
+   { volatile atomic<int*,strong> a(&i);  sub    (a,2,sync); }
+// { volatile atomic<int*,strong> a(&i);  mul    (a,2,sync); }
+// { volatile atomic<int*,strong> a(&i);  div    (a,2,sync); }
+// { volatile atomic<int*,strong> a(&i);  mod    (a,2,sync); }
+// { volatile atomic<int*,strong> a(&i);  lshift (a,2,sync); }
+// { volatile atomic<int*,strong> a(&i);  rshift (a,2,sync); }
+// { volatile atomic<int*,strong> a(&i);  andeq  (a,2,sync); }
+// { volatile atomic<int*,strong> a(&i);  oreq   (a,2,sync); }
+// { volatile atomic<int*,strong> a(&i);  xoreq  (a,2,sync); }
+   { volatile atomic<int*,strong> a(&i);  min    (a,&j,sync); }
+   { volatile atomic<int*,strong> a(&i);  max    (a,&j,sync); }
+   { volatile atomic<int*,strong> a(&i);  inc    (a,  sync); }
+   { volatile atomic<int*,strong> a(&i);  preinc (a,  sync); }
+   { volatile atomic<int*,strong> a(&i);  postinc(a,  sync); }
+   { volatile atomic<int*,strong> a(&i);  dec    (a,  sync); }
+   { volatile atomic<int*,strong> a(&i);  predec (a,  sync); }
+   { volatile atomic<int*,strong> a(&i);  postdec(a,  sync); }
+   { volatile atomic<int*,strong> a(&i);  add    (a,2,success,failure); }
+   { volatile atomic<int*,strong> a(&i);  sub    (a,2,success,failure); }
+// { volatile atomic<int*,strong> a(&i);  mul    (a,2,success,failure); }
+// { volatile atomic<int*,strong> a(&i);  div    (a,2,success,failure); }
+// { volatile atomic<int*,strong> a(&i);  mod    (a,2,success,failure); }
+// { volatile atomic<int*,strong> a(&i);  lshift (a,2,success,failure); }
+// { volatile atomic<int*,strong> a(&i);  rshift (a,2,success,failure); }
+// { volatile atomic<int*,strong> a(&i);  andeq  (a,2,success,failure); }
+// { volatile atomic<int*,strong> a(&i);  oreq   (a,2,success,failure); }
+// { volatile atomic<int*,strong> a(&i);  xoreq  (a,2,success,failure); }
+   { volatile atomic<int*,strong> a(&i);  min    (a,&j,success,failure); }
+   { volatile atomic<int*,strong> a(&i);  max    (a,&j,success,failure); }
+   { volatile atomic<int*,strong> a(&i);  inc    (a,  success,failure); }
+   { volatile atomic<int*,strong> a(&i);  preinc (a,  success,failure); }
+   { volatile atomic<int*,strong> a(&i);  postinc(a,  success,failure); }
+   { volatile atomic<int*,strong> a(&i);  dec    (a,  success,failure); }
+   { volatile atomic<int*,strong> a(&i);  predec (a,  success,failure); }
+   { volatile atomic<int*,strong> a(&i);  postdec(a,  success,failure); }
+
+   { volatile atomic<int*,strong::pun> a(&i);  add    (a,2); }
+   { volatile atomic<int*,strong::pun> a(&i);  sub    (a,2); }
+// { volatile atomic<int*,strong::pun> a(&i);  mul    (a,2); }
+// { volatile atomic<int*,strong::pun> a(&i);  div    (a,2); }
+// { volatile atomic<int*,strong::pun> a(&i);  mod    (a,2); }
+// { volatile atomic<int*,strong::pun> a(&i);  lshift (a,2); }
+// { volatile atomic<int*,strong::pun> a(&i);  rshift (a,2); }
+// { volatile atomic<int*,strong::pun> a(&i);  andeq  (a,2); }
+// { volatile atomic<int*,strong::pun> a(&i);  oreq   (a,2); }
+// { volatile atomic<int*,strong::pun> a(&i);  xoreq  (a,2); }
+   { volatile atomic<int*,strong::pun> a(&i);  min    (a,&j); }
+   { volatile atomic<int*,strong::pun> a(&i);  max    (a,&j); }
+   { volatile atomic<int*,strong::pun> a(&i);  inc    (a); }
+   { volatile atomic<int*,strong::pun> a(&i);  preinc (a); }
+   { volatile atomic<int*,strong::pun> a(&i);  postinc(a); }
+   { volatile atomic<int*,strong::pun> a(&i);  dec    (a); }
+   { volatile atomic<int*,strong::pun> a(&i);  predec (a); }
+   { volatile atomic<int*,strong::pun> a(&i);  postdec(a); }
+   { volatile atomic<int*,strong::pun> a(&i);  add    (a,2,sync); }
+   { volatile atomic<int*,strong::pun> a(&i);  sub    (a,2,sync); }
+// { volatile atomic<int*,strong::pun> a(&i);  mul    (a,2,sync); }
+// { volatile atomic<int*,strong::pun> a(&i);  div    (a,2,sync); }
+// { volatile atomic<int*,strong::pun> a(&i);  mod    (a,2,sync); }
+// { volatile atomic<int*,strong::pun> a(&i);  lshift (a,2,sync); }
+// { volatile atomic<int*,strong::pun> a(&i);  rshift (a,2,sync); }
+// { volatile atomic<int*,strong::pun> a(&i);  andeq  (a,2,sync); }
+// { volatile atomic<int*,strong::pun> a(&i);  oreq   (a,2,sync); }
+// { volatile atomic<int*,strong::pun> a(&i);  xoreq  (a,2,sync); }
+   { volatile atomic<int*,strong::pun> a(&i);  min    (a,&j,sync); }
+   { volatile atomic<int*,strong::pun> a(&i);  max    (a,&j,sync); }
+   { volatile atomic<int*,strong::pun> a(&i);  inc    (a,  sync); }
+   { volatile atomic<int*,strong::pun> a(&i);  preinc (a,  sync); }
+   { volatile atomic<int*,strong::pun> a(&i);  postinc(a,  sync); }
+   { volatile atomic<int*,strong::pun> a(&i);  dec    (a,  sync); }
+   { volatile atomic<int*,strong::pun> a(&i);  predec (a,  sync); }
+   { volatile atomic<int*,strong::pun> a(&i);  postdec(a,  sync); }
+   { volatile atomic<int*,strong::pun> a(&i);  add    (a,2,success,failure); }
+   { volatile atomic<int*,strong::pun> a(&i);  sub    (a,2,success,failure); }
+// { volatile atomic<int*,strong::pun> a(&i);  mul    (a,2,success,failure); }
+// { volatile atomic<int*,strong::pun> a(&i);  div    (a,2,success,failure); }
+// { volatile atomic<int*,strong::pun> a(&i);  mod    (a,2,success,failure); }
+// { volatile atomic<int*,strong::pun> a(&i);  lshift (a,2,success,failure); }
+// { volatile atomic<int*,strong::pun> a(&i);  rshift (a,2,success,failure); }
+// { volatile atomic<int*,strong::pun> a(&i);  andeq  (a,2,success,failure); }
+// { volatile atomic<int*,strong::pun> a(&i);  oreq   (a,2,success,failure); }
+// { volatile atomic<int*,strong::pun> a(&i);  xoreq  (a,2,success,failure); }
+   { volatile atomic<int*,strong::pun> a(&i);  min    (a,&j,success,failure); }
+   { volatile atomic<int*,strong::pun> a(&i);  max    (a,&j,success,failure); }
+   { volatile atomic<int*,strong::pun> a(&i);  inc    (a,  success,failure); }
+   { volatile atomic<int*,strong::pun> a(&i);  preinc (a,  success,failure); }
+   { volatile atomic<int*,strong::pun> a(&i);  postinc(a,  success,failure); }
+   { volatile atomic<int*,strong::pun> a(&i);  dec    (a,  success,failure); }
+   { volatile atomic<int*,strong::pun> a(&i);  predec (a,  success,failure); }
+   { volatile atomic<int*,strong::pun> a(&i);  postdec(a,  success,failure); }
+
+   { volatile atomic<int*,weak> a(&i);  add    (a,2); }
+   { volatile atomic<int*,weak> a(&i);  sub    (a,2); }
+// { volatile atomic<int*,weak> a(&i);  mul    (a,2); }
+// { volatile atomic<int*,weak> a(&i);  div    (a,2); }
+// { volatile atomic<int*,weak> a(&i);  mod    (a,2); }
+// { volatile atomic<int*,weak> a(&i);  lshift (a,2); }
+// { volatile atomic<int*,weak> a(&i);  rshift (a,2); }
+// { volatile atomic<int*,weak> a(&i);  andeq  (a,2); }
+// { volatile atomic<int*,weak> a(&i);  oreq   (a,2); }
+// { volatile atomic<int*,weak> a(&i);  xoreq  (a,2); }
+   { volatile atomic<int*,weak> a(&i);  min    (a,&j); }
+   { volatile atomic<int*,weak> a(&i);  max    (a,&j); }
+   { volatile atomic<int*,weak> a(&i);  inc    (a); }
+   { volatile atomic<int*,weak> a(&i);  preinc (a); }
+   { volatile atomic<int*,weak> a(&i);  postinc(a); }
+   { volatile atomic<int*,weak> a(&i);  dec    (a); }
+   { volatile atomic<int*,weak> a(&i);  predec (a); }
+   { volatile atomic<int*,weak> a(&i);  postdec(a); }
+   { volatile atomic<int*,weak> a(&i);  add    (a,2,sync); }
+   { volatile atomic<int*,weak> a(&i);  sub    (a,2,sync); }
+// { volatile atomic<int*,weak> a(&i);  mul    (a,2,sync); }
+// { volatile atomic<int*,weak> a(&i);  div    (a,2,sync); }
+// { volatile atomic<int*,weak> a(&i);  mod    (a,2,sync); }
+// { volatile atomic<int*,weak> a(&i);  lshift (a,2,sync); }
+// { volatile atomic<int*,weak> a(&i);  rshift (a,2,sync); }
+// { volatile atomic<int*,weak> a(&i);  andeq  (a,2,sync); }
+// { volatile atomic<int*,weak> a(&i);  oreq   (a,2,sync); }
+// { volatile atomic<int*,weak> a(&i);  xoreq  (a,2,sync); }
+   { volatile atomic<int*,weak> a(&i);  min    (a,&j,sync); }
+   { volatile atomic<int*,weak> a(&i);  max    (a,&j,sync); }
+   { volatile atomic<int*,weak> a(&i);  inc    (a,  sync); }
+   { volatile atomic<int*,weak> a(&i);  preinc (a,  sync); }
+   { volatile atomic<int*,weak> a(&i);  postinc(a,  sync); }
+   { volatile atomic<int*,weak> a(&i);  dec    (a,  sync); }
+   { volatile atomic<int*,weak> a(&i);  predec (a,  sync); }
+   { volatile atomic<int*,weak> a(&i);  postdec(a,  sync); }
+   { volatile atomic<int*,weak> a(&i);  add    (a,2,success,failure); }
+   { volatile atomic<int*,weak> a(&i);  sub    (a,2,success,failure); }
+// { volatile atomic<int*,weak> a(&i);  mul    (a,2,success,failure); }
+// { volatile atomic<int*,weak> a(&i);  div    (a,2,success,failure); }
+// { volatile atomic<int*,weak> a(&i);  mod    (a,2,success,failure); }
+// { volatile atomic<int*,weak> a(&i);  lshift (a,2,success,failure); }
+// { volatile atomic<int*,weak> a(&i);  rshift (a,2,success,failure); }
+// { volatile atomic<int*,weak> a(&i);  andeq  (a,2,success,failure); }
+// { volatile atomic<int*,weak> a(&i);  oreq   (a,2,success,failure); }
+// { volatile atomic<int*,weak> a(&i);  xoreq  (a,2,success,failure); }
+   { volatile atomic<int*,weak> a(&i);  min    (a,&j,success,failure); }
+   { volatile atomic<int*,weak> a(&i);  max    (a,&j,success,failure); }
+   { volatile atomic<int*,weak> a(&i);  inc    (a,  success,failure); }
+   { volatile atomic<int*,weak> a(&i);  preinc (a,  success,failure); }
+   { volatile atomic<int*,weak> a(&i);  postinc(a,  success,failure); }
+   { volatile atomic<int*,weak> a(&i);  dec    (a,  success,failure); }
+   { volatile atomic<int*,weak> a(&i);  predec (a,  success,failure); }
+   { volatile atomic<int*,weak> a(&i);  postdec(a,  success,failure); }
+
+   { volatile atomic<int*,weak::pun> a(&i);  add    (a,2); }
+   { volatile atomic<int*,weak::pun> a(&i);  sub    (a,2); }
+// { volatile atomic<int*,weak::pun> a(&i);  mul    (a,2); }
+// { volatile atomic<int*,weak::pun> a(&i);  div    (a,2); }
+// { volatile atomic<int*,weak::pun> a(&i);  mod    (a,2); }
+// { volatile atomic<int*,weak::pun> a(&i);  lshift (a,2); }
+// { volatile atomic<int*,weak::pun> a(&i);  rshift (a,2); }
+// { volatile atomic<int*,weak::pun> a(&i);  andeq  (a,2); }
+// { volatile atomic<int*,weak::pun> a(&i);  oreq   (a,2); }
+// { volatile atomic<int*,weak::pun> a(&i);  xoreq  (a,2); }
+   { volatile atomic<int*,weak::pun> a(&i);  min    (a,&j); }
+   { volatile atomic<int*,weak::pun> a(&i);  max    (a,&j); }
+   { volatile atomic<int*,weak::pun> a(&i);  inc    (a); }
+   { volatile atomic<int*,weak::pun> a(&i);  preinc (a); }
+   { volatile atomic<int*,weak::pun> a(&i);  postinc(a); }
+   { volatile atomic<int*,weak::pun> a(&i);  dec    (a); }
+   { volatile atomic<int*,weak::pun> a(&i);  predec (a); }
+   { volatile atomic<int*,weak::pun> a(&i);  postdec(a); }
+   { volatile atomic<int*,weak::pun> a(&i);  add    (a,2,sync); }
+   { volatile atomic<int*,weak::pun> a(&i);  sub    (a,2,sync); }
+// { volatile atomic<int*,weak::pun> a(&i);  mul    (a,2,sync); }
+// { volatile atomic<int*,weak::pun> a(&i);  div    (a,2,sync); }
+// { volatile atomic<int*,weak::pun> a(&i);  mod    (a,2,sync); }
+// { volatile atomic<int*,weak::pun> a(&i);  lshift (a,2,sync); }
+// { volatile atomic<int*,weak::pun> a(&i);  rshift (a,2,sync); }
+// { volatile atomic<int*,weak::pun> a(&i);  andeq  (a,2,sync); }
+// { volatile atomic<int*,weak::pun> a(&i);  oreq   (a,2,sync); }
+// { volatile atomic<int*,weak::pun> a(&i);  xoreq  (a,2,sync); }
+   { volatile atomic<int*,weak::pun> a(&i);  min    (a,&j,sync); }
+   { volatile atomic<int*,weak::pun> a(&i);  max    (a,&j,sync); }
+   { volatile atomic<int*,weak::pun> a(&i);  inc    (a,  sync); }
+   { volatile atomic<int*,weak::pun> a(&i);  preinc (a,  sync); }
+   { volatile atomic<int*,weak::pun> a(&i);  postinc(a,  sync); }
+   { volatile atomic<int*,weak::pun> a(&i);  dec    (a,  sync); }
+   { volatile atomic<int*,weak::pun> a(&i);  predec (a,  sync); }
+   { volatile atomic<int*,weak::pun> a(&i);  postdec(a,  sync); }
+   { volatile atomic<int*,weak::pun> a(&i);  add    (a,2,success,failure); }
+   { volatile atomic<int*,weak::pun> a(&i);  sub    (a,2,success,failure); }
+// { volatile atomic<int*,weak::pun> a(&i);  mul    (a,2,success,failure); }
+// { volatile atomic<int*,weak::pun> a(&i);  div    (a,2,success,failure); }
+// { volatile atomic<int*,weak::pun> a(&i);  mod    (a,2,success,failure); }
+// { volatile atomic<int*,weak::pun> a(&i);  lshift (a,2,success,failure); }
+// { volatile atomic<int*,weak::pun> a(&i);  rshift (a,2,success,failure); }
+// { volatile atomic<int*,weak::pun> a(&i);  andeq  (a,2,success,failure); }
+// { volatile atomic<int*,weak::pun> a(&i);  oreq   (a,2,success,failure); }
+// { volatile atomic<int*,weak::pun> a(&i);  xoreq  (a,2,success,failure); }
+   { volatile atomic<int*,weak::pun> a(&i);  min    (a,&j,success,failure); }
+   { volatile atomic<int*,weak::pun> a(&i);  max    (a,&j,success,failure); }
+   { volatile atomic<int*,weak::pun> a(&i);  inc    (a,  success,failure); }
+   { volatile atomic<int*,weak::pun> a(&i);  preinc (a,  success,failure); }
+   { volatile atomic<int*,weak::pun> a(&i);  postinc(a,  success,failure); }
+   { volatile atomic<int*,weak::pun> a(&i);  dec    (a,  success,failure); }
+   { volatile atomic<int*,weak::pun> a(&i);  predec (a,  success,failure); }
+   { volatile atomic<int*,weak::pun> a(&i);  postdec(a,  success,failure); }
+
+   { volatile atomic<int*,lock> a(&i);  add    (a,2); }
+   { volatile atomic<int*,lock> a(&i);  sub    (a,2); }
+// { volatile atomic<int*,lock> a(&i);  mul    (a,2); }
+// { volatile atomic<int*,lock> a(&i);  div    (a,2); }
+// { volatile atomic<int*,lock> a(&i);  mod    (a,2); }
+// { volatile atomic<int*,lock> a(&i);  lshift (a,2); }
+// { volatile atomic<int*,lock> a(&i);  rshift (a,2); }
+// { volatile atomic<int*,lock> a(&i);  andeq  (a,2); }
+// { volatile atomic<int*,lock> a(&i);  oreq   (a,2); }
+// { volatile atomic<int*,lock> a(&i);  xoreq  (a,2); }
+   { volatile atomic<int*,lock> a(&i);  min    (a,&j); }
+   { volatile atomic<int*,lock> a(&i);  max    (a,&j); }
+   { volatile atomic<int*,lock> a(&i);  inc    (a); }
+   { volatile atomic<int*,lock> a(&i);  preinc (a); }
+   { volatile atomic<int*,lock> a(&i);  postinc(a); }
+   { volatile atomic<int*,lock> a(&i);  dec    (a); }
+   { volatile atomic<int*,lock> a(&i);  predec (a); }
+   { volatile atomic<int*,lock> a(&i);  postdec(a); }
+// { volatile atomic<int*,lock> a(&i);  add    (a,2,sync); }
+// { volatile atomic<int*,lock> a(&i);  sub    (a,2,sync); }
+// { volatile atomic<int*,lock> a(&i);  mul    (a,2,sync); }
+// { volatile atomic<int*,lock> a(&i);  div    (a,2,sync); }
+// { volatile atomic<int*,lock> a(&i);  mod    (a,2,sync); }
+// { volatile atomic<int*,lock> a(&i);  lshift (a,2,sync); }
+// { volatile atomic<int*,lock> a(&i);  rshift (a,2,sync); }
+// { volatile atomic<int*,lock> a(&i);  andeq  (a,2,sync); }
+// { volatile atomic<int*,lock> a(&i);  oreq   (a,2,sync); }
+// { volatile atomic<int*,lock> a(&i);  xoreq  (a,2,sync); }
+// { volatile atomic<int*,lock> a(&i);  min    (a,&j,sync); }
+// { volatile atomic<int*,lock> a(&i);  max    (a,&j,sync); }
+// { volatile atomic<int*,lock> a(&i);  inc    (a,  sync); }
+// { volatile atomic<int*,lock> a(&i);  preinc (a,  sync); }
+// { volatile atomic<int*,lock> a(&i);  postinc(a,  sync); }
+// { volatile atomic<int*,lock> a(&i);  dec    (a,  sync); }
+// { volatile atomic<int*,lock> a(&i);  predec (a,  sync); }
+// { volatile atomic<int*,lock> a(&i);  postdec(a,  sync); }
+// { volatile atomic<int*,lock> a(&i);  add    (a,2,success,failure); }
+// { volatile atomic<int*,lock> a(&i);  sub    (a,2,success,failure); }
+// { volatile atomic<int*,lock> a(&i);  mul    (a,2,success,failure); }
+// { volatile atomic<int*,lock> a(&i);  div    (a,2,success,failure); }
+// { volatile atomic<int*,lock> a(&i);  mod    (a,2,success,failure); }
+// { volatile atomic<int*,lock> a(&i);  lshift (a,2,success,failure); }
+// { volatile atomic<int*,lock> a(&i);  rshift (a,2,success,failure); }
+// { volatile atomic<int*,lock> a(&i);  andeq  (a,2,success,failure); }
+// { volatile atomic<int*,lock> a(&i);  oreq   (a,2,success,failure); }
+// { volatile atomic<int*,lock> a(&i);  xoreq  (a,2,success,failure); }
+// { volatile atomic<int*,lock> a(&i);  min    (a,&j,success,failure); }
+// { volatile atomic<int*,lock> a(&i);  max    (a,&j,success,failure); }
+// { volatile atomic<int*,lock> a(&i);  inc    (a,  success,failure); }
+// { volatile atomic<int*,lock> a(&i);  preinc (a,  success,failure); }
+// { volatile atomic<int*,lock> a(&i);  postinc(a,  success,failure); }
+// { volatile atomic<int*,lock> a(&i);  dec    (a,  success,failure); }
+// { volatile atomic<int*,lock> a(&i);  predec (a,  success,failure); }
+// { volatile atomic<int*,lock> a(&i);  postdec(a,  success,failure); }
+
+   { volatile atomic<int*,serial> a(&i);  add    (a,2); }
+   { volatile atomic<int*,serial> a(&i);  sub    (a,2); }
+// { volatile atomic<int*,serial> a(&i);  mul    (a,2); }
+// { volatile atomic<int*,serial> a(&i);  div    (a,2); }
+// { volatile atomic<int*,serial> a(&i);  mod    (a,2); }
+// { volatile atomic<int*,serial> a(&i);  lshift (a,2); }
+// { volatile atomic<int*,serial> a(&i);  rshift (a,2); }
+// { volatile atomic<int*,serial> a(&i);  andeq  (a,2); }
+// { volatile atomic<int*,serial> a(&i);  oreq   (a,2); }
+// { volatile atomic<int*,serial> a(&i);  xoreq  (a,2); }
+   { volatile atomic<int*,serial> a(&i);  min    (a,&j); }
+   { volatile atomic<int*,serial> a(&i);  max    (a,&j); }
+   { volatile atomic<int*,serial> a(&i);  inc    (a); }
+   { volatile atomic<int*,serial> a(&i);  preinc (a); }
+   { volatile atomic<int*,serial> a(&i);  postinc(a); }
+   { volatile atomic<int*,serial> a(&i);  dec    (a); }
+   { volatile atomic<int*,serial> a(&i);  predec (a); }
+   { volatile atomic<int*,serial> a(&i);  postdec(a); }
+// { volatile atomic<int*,serial> a(&i);  add    (a,2,sync); }
+// { volatile atomic<int*,serial> a(&i);  sub    (a,2,sync); }
+// { volatile atomic<int*,serial> a(&i);  mul    (a,2,sync); }
+// { volatile atomic<int*,serial> a(&i);  div    (a,2,sync); }
+// { volatile atomic<int*,serial> a(&i);  mod    (a,2,sync); }
+// { volatile atomic<int*,serial> a(&i);  lshift (a,2,sync); }
+// { volatile atomic<int*,serial> a(&i);  rshift (a,2,sync); }
+// { volatile atomic<int*,serial> a(&i);  andeq  (a,2,sync); }
+// { volatile atomic<int*,serial> a(&i);  oreq   (a,2,sync); }
+// { volatile atomic<int*,serial> a(&i);  xoreq  (a,2,sync); }
+// { volatile atomic<int*,serial> a(&i);  min    (a,&j,sync); }
+// { volatile atomic<int*,serial> a(&i);  max    (a,&j,sync); }
+// { volatile atomic<int*,serial> a(&i);  inc    (a,  sync); }
+// { volatile atomic<int*,serial> a(&i);  preinc (a,  sync); }
+// { volatile atomic<int*,serial> a(&i);  postinc(a,  sync); }
+// { volatile atomic<int*,serial> a(&i);  dec    (a,  sync); }
+// { volatile atomic<int*,serial> a(&i);  predec (a,  sync); }
+// { volatile atomic<int*,serial> a(&i);  postdec(a,  sync); }
+// { volatile atomic<int*,serial> a(&i);  add    (a,2,success,failure); }
+// { volatile atomic<int*,serial> a(&i);  sub    (a,2,success,failure); }
+// { volatile atomic<int*,serial> a(&i);  mul    (a,2,success,failure); }
+// { volatile atomic<int*,serial> a(&i);  div    (a,2,success,failure); }
+// { volatile atomic<int*,serial> a(&i);  mod    (a,2,success,failure); }
+// { volatile atomic<int*,serial> a(&i);  lshift (a,2,success,failure); }
+// { volatile atomic<int*,serial> a(&i);  rshift (a,2,success,failure); }
+// { volatile atomic<int*,serial> a(&i);  andeq  (a,2,success,failure); }
+// { volatile atomic<int*,serial> a(&i);  oreq   (a,2,success,failure); }
+// { volatile atomic<int*,serial> a(&i);  xoreq  (a,2,success,failure); }
+// { volatile atomic<int*,serial> a(&i);  min    (a,&j,success,failure); }
+// { volatile atomic<int*,serial> a(&i);  max    (a,&j,success,failure); }
+// { volatile atomic<int*,serial> a(&i);  inc    (a,  success,failure); }
+// { volatile atomic<int*,serial> a(&i);  preinc (a,  success,failure); }
+// { volatile atomic<int*,serial> a(&i);  postinc(a,  success,failure); }
+// { volatile atomic<int*,serial> a(&i);  dec    (a,  success,failure); }
+// { volatile atomic<int*,serial> a(&i);  predec (a,  success,failure); }
+// { volatile atomic<int*,serial> a(&i);  postdec(a,  success,failure); }
+
+
+
+   // ------------------------
+   // std::complex
+   // ------------------------
+
+// { volatile atomic<cmplx,cpp> a(0);  add    (a,c); }
+// { volatile atomic<cmplx,cpp> a(0);  sub    (a,c); }
+// { volatile atomic<cmplx,cpp> a(0);  mul    (a,c); }
+// { volatile atomic<cmplx,cpp> a(0);  div    (a,c); }
+// { volatile atomic<cmplx,cpp> a(0);  mod    (a,c); }
+// { volatile atomic<cmplx,cpp> a(0);  lshift (a,c); }
+// { volatile atomic<cmplx,cpp> a(0);  rshift (a,c); }
+// { volatile atomic<cmplx,cpp> a(0);  andeq  (a,c); }
+// { volatile atomic<cmplx,cpp> a(0);  oreq   (a,c); }
+// { volatile atomic<cmplx,cpp> a(0);  xoreq  (a,c); }
+// { volatile atomic<cmplx,cpp> a(0);  min    (a,c); }
+// { volatile atomic<cmplx,cpp> a(0);  max    (a,c); }
+// { volatile atomic<cmplx,cpp> a(0);  inc    (a); }
+// { volatile atomic<cmplx,cpp> a(0);  preinc (a); }
+// { volatile atomic<cmplx,cpp> a(0);  postinc(a); }
+// { volatile atomic<cmplx,cpp> a(0);  dec    (a); }
+// { volatile atomic<cmplx,cpp> a(0);  predec (a); }
+// { volatile atomic<cmplx,cpp> a(0);  postdec(a); }
+// { volatile atomic<cmplx,cpp> a(0);  add    (a,c,sync); }
+// { volatile atomic<cmplx,cpp> a(0);  sub    (a,c,sync); }
+// { volatile atomic<cmplx,cpp> a(0);  mul    (a,c,sync); }
+// { volatile atomic<cmplx,cpp> a(0);  div    (a,c,sync); }
+// { volatile atomic<cmplx,cpp> a(0);  mod    (a,c,sync); }
+// { volatile atomic<cmplx,cpp> a(0);  lshift (a,c,sync); }
+// { volatile atomic<cmplx,cpp> a(0);  rshift (a,c,sync); }
+// { volatile atomic<cmplx,cpp> a(0);  andeq  (a,c,sync); }
+// { volatile atomic<cmplx,cpp> a(0);  oreq   (a,c,sync); }
+// { volatile atomic<cmplx,cpp> a(0);  xoreq  (a,c,sync); }
+// { volatile atomic<cmplx,cpp> a(0);  min    (a,c,sync); }
+// { volatile atomic<cmplx,cpp> a(0);  max    (a,c,sync); }
+// { volatile atomic<cmplx,cpp> a(0);  inc    (a,  sync); }
+// { volatile atomic<cmplx,cpp> a(0);  preinc (a,  sync); }
+// { volatile atomic<cmplx,cpp> a(0);  postinc(a,  sync); }
+// { volatile atomic<cmplx,cpp> a(0);  dec    (a,  sync); }
+// { volatile atomic<cmplx,cpp> a(0);  predec (a,  sync); }
+// { volatile atomic<cmplx,cpp> a(0);  postdec(a,  sync); }
+// { volatile atomic<cmplx,cpp> a(0);  add    (a,c,success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  sub    (a,c,success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  mul    (a,c,success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  div    (a,c,success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  mod    (a,c,success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  lshift (a,c,success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  rshift (a,c,success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  andeq  (a,c,success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  oreq   (a,c,success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  xoreq  (a,c,success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  min    (a,c,success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  max    (a,c,success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  predec (a,  success,failure); }
+// { volatile atomic<cmplx,cpp> a(0);  postdec(a,  success,failure); }
+
+   #if defined(ATOMICS_KOKKOS)
+// { volatile atomic<cmplx,kokkos> a(0);  add    (a,c); }
+// { volatile atomic<cmplx,kokkos> a(0);  sub    (a,c); }
+// { volatile atomic<cmplx,kokkos> a(0);  mul    (a,c); }
+// { volatile atomic<cmplx,kokkos> a(0);  div    (a,c); }
+// { volatile atomic<cmplx,kokkos> a(0);  mod    (a,c); }
+// { volatile atomic<cmplx,kokkos> a(0);  lshift (a,c); }
+// { volatile atomic<cmplx,kokkos> a(0);  rshift (a,c); }
+// { volatile atomic<cmplx,kokkos> a(0);  andeq  (a,c); }
+// { volatile atomic<cmplx,kokkos> a(0);  oreq   (a,c); }
+// { volatile atomic<cmplx,kokkos> a(0);  xoreq  (a,c); }
+// { volatile atomic<cmplx,kokkos> a(0);  min    (a,c); }
+// { volatile atomic<cmplx,kokkos> a(0);  max    (a,c); }
+// { volatile atomic<cmplx,kokkos> a(0);  inc    (a); }
+// { volatile atomic<cmplx,kokkos> a(0);  preinc (a); }
+// { volatile atomic<cmplx,kokkos> a(0);  postinc(a); }
+// { volatile atomic<cmplx,kokkos> a(0);  dec    (a); }
+// { volatile atomic<cmplx,kokkos> a(0);  predec (a); }
+// { volatile atomic<cmplx,kokkos> a(0);  postdec(a); }
+// { volatile atomic<cmplx,kokkos> a(0);  add    (a,c,sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  sub    (a,c,sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  mul    (a,c,sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  div    (a,c,sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  mod    (a,c,sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  lshift (a,c,sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  rshift (a,c,sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  andeq  (a,c,sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  oreq   (a,c,sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  xoreq  (a,c,sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  min    (a,c,sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  max    (a,c,sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  inc    (a,  sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  preinc (a,  sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  postinc(a,  sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  dec    (a,  sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  predec (a,  sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  postdec(a,  sync); }
+// { volatile atomic<cmplx,kokkos> a(0);  add    (a,c,success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  sub    (a,c,success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  mul    (a,c,success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  div    (a,c,success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  mod    (a,c,success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  lshift (a,c,success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  rshift (a,c,success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  andeq  (a,c,success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  oreq   (a,c,success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  xoreq  (a,c,success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  min    (a,c,success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  max    (a,c,success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  predec (a,  success,failure); }
+// { volatile atomic<cmplx,kokkos> a(0);  postdec(a,  success,failure); }
+   #endif
+
+#if !defined(__clang__)
+   { volatile atomic<cmplx,strong> a(0);  add    (a,c); }
+   { volatile atomic<cmplx,strong> a(0);  sub    (a,c); }
+   { volatile atomic<cmplx,strong> a(0);  mul    (a,c); }
+   { volatile atomic<cmplx,strong> a(0);  div    (a,c); }
+#endif
+// { volatile atomic<cmplx,strong> a(0);  mod    (a,c); }
+// { volatile atomic<cmplx,strong> a(0);  lshift (a,c); }
+// { volatile atomic<cmplx,strong> a(0);  rshift (a,c); }
+// { volatile atomic<cmplx,strong> a(0);  andeq  (a,c); }
+// { volatile atomic<cmplx,strong> a(0);  oreq   (a,c); }
+// { volatile atomic<cmplx,strong> a(0);  xoreq  (a,c); }
+// { volatile atomic<cmplx,strong> a(0);  min    (a,c); }
+// { volatile atomic<cmplx,strong> a(0);  max    (a,c); }
+// { volatile atomic<cmplx,strong> a(0);  inc    (a); }
+// { volatile atomic<cmplx,strong> a(0);  preinc (a); }
+// { volatile atomic<cmplx,strong> a(0);  postinc(a); }
+// { volatile atomic<cmplx,strong> a(0);  dec    (a); }
+// { volatile atomic<cmplx,strong> a(0);  predec (a); }
+// { volatile atomic<cmplx,strong> a(0);  postdec(a); }
+#if !defined(__clang__)
+   { volatile atomic<cmplx,strong> a(0);  add    (a,c,sync); }
+   { volatile atomic<cmplx,strong> a(0);  sub    (a,c,sync); }
+   { volatile atomic<cmplx,strong> a(0);  mul    (a,c,sync); }
+   { volatile atomic<cmplx,strong> a(0);  div    (a,c,sync); }
+#endif
+// { volatile atomic<cmplx,strong> a(0);  mod    (a,c,sync); }
+// { volatile atomic<cmplx,strong> a(0);  lshift (a,c,sync); }
+// { volatile atomic<cmplx,strong> a(0);  rshift (a,c,sync); }
+// { volatile atomic<cmplx,strong> a(0);  andeq  (a,c,sync); }
+// { volatile atomic<cmplx,strong> a(0);  oreq   (a,c,sync); }
+// { volatile atomic<cmplx,strong> a(0);  xoreq  (a,c,sync); }
+// { volatile atomic<cmplx,strong> a(0);  min    (a,c,sync); }
+// { volatile atomic<cmplx,strong> a(0);  max    (a,c,sync); }
+// { volatile atomic<cmplx,strong> a(0);  inc    (a,  sync); }
+// { volatile atomic<cmplx,strong> a(0);  preinc (a,  sync); }
+// { volatile atomic<cmplx,strong> a(0);  postinc(a,  sync); }
+// { volatile atomic<cmplx,strong> a(0);  dec    (a,  sync); }
+// { volatile atomic<cmplx,strong> a(0);  predec (a,  sync); }
+// { volatile atomic<cmplx,strong> a(0);  postdec(a,  sync); }
+#if !defined(__clang__)
+   { volatile atomic<cmplx,strong> a(0);  add    (a,c,success,failure); }
+   { volatile atomic<cmplx,strong> a(0);  sub    (a,c,success,failure); }
+   { volatile atomic<cmplx,strong> a(0);  mul    (a,c,success,failure); }
+   { volatile atomic<cmplx,strong> a(0);  div    (a,c,success,failure); }
+#endif
+// { volatile atomic<cmplx,strong> a(0);  mod    (a,c,success,failure); }
+// { volatile atomic<cmplx,strong> a(0);  lshift (a,c,success,failure); }
+// { volatile atomic<cmplx,strong> a(0);  rshift (a,c,success,failure); }
+// { volatile atomic<cmplx,strong> a(0);  andeq  (a,c,success,failure); }
+// { volatile atomic<cmplx,strong> a(0);  oreq   (a,c,success,failure); }
+// { volatile atomic<cmplx,strong> a(0);  xoreq  (a,c,success,failure); }
+// { volatile atomic<cmplx,strong> a(0);  min    (a,c,success,failure); }
+// { volatile atomic<cmplx,strong> a(0);  max    (a,c,success,failure); }
+// { volatile atomic<cmplx,strong> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<cmplx,strong> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<cmplx,strong> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<cmplx,strong> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<cmplx,strong> a(0);  predec (a,  success,failure); }
+// { volatile atomic<cmplx,strong> a(0);  postdec(a,  success,failure); }
+
+#if !defined(__clang__)
+   { volatile atomic<cmplx,strong::pun> a(0);  add    (a,c); }
+   { volatile atomic<cmplx,strong::pun> a(0);  sub    (a,c); }
+   { volatile atomic<cmplx,strong::pun> a(0);  mul    (a,c); }
+   { volatile atomic<cmplx,strong::pun> a(0);  div    (a,c); }
+#endif
+// { volatile atomic<cmplx,strong::pun> a(0);  mod    (a,c); }
+// { volatile atomic<cmplx,strong::pun> a(0);  lshift (a,c); }
+// { volatile atomic<cmplx,strong::pun> a(0);  rshift (a,c); }
+// { volatile atomic<cmplx,strong::pun> a(0);  andeq  (a,c); }
+// { volatile atomic<cmplx,strong::pun> a(0);  oreq   (a,c); }
+// { volatile atomic<cmplx,strong::pun> a(0);  xoreq  (a,c); }
+// { volatile atomic<cmplx,strong::pun> a(0);  min    (a,c); }
+// { volatile atomic<cmplx,strong::pun> a(0);  max    (a,c); }
+// { volatile atomic<cmplx,strong::pun> a(0);  inc    (a); }
+// { volatile atomic<cmplx,strong::pun> a(0);  preinc (a); }
+// { volatile atomic<cmplx,strong::pun> a(0);  postinc(a); }
+// { volatile atomic<cmplx,strong::pun> a(0);  dec    (a); }
+// { volatile atomic<cmplx,strong::pun> a(0);  predec (a); }
+// { volatile atomic<cmplx,strong::pun> a(0);  postdec(a); }
+#if !defined(__clang__)
+   { volatile atomic<cmplx,strong::pun> a(0);  add    (a,c,sync); }
+   { volatile atomic<cmplx,strong::pun> a(0);  sub    (a,c,sync); }
+   { volatile atomic<cmplx,strong::pun> a(0);  mul    (a,c,sync); }
+   { volatile atomic<cmplx,strong::pun> a(0);  div    (a,c,sync); }
+#endif
+// { volatile atomic<cmplx,strong::pun> a(0);  mod    (a,c,sync); }
+// { volatile atomic<cmplx,strong::pun> a(0);  lshift (a,c,sync); }
+// { volatile atomic<cmplx,strong::pun> a(0);  rshift (a,c,sync); }
+// { volatile atomic<cmplx,strong::pun> a(0);  andeq  (a,c,sync); }
+// { volatile atomic<cmplx,strong::pun> a(0);  oreq   (a,c,sync); }
+// { volatile atomic<cmplx,strong::pun> a(0);  xoreq  (a,c,sync); }
+// { volatile atomic<cmplx,strong::pun> a(0);  min    (a,c,sync); }
+// { volatile atomic<cmplx,strong::pun> a(0);  max    (a,c,sync); }
+// { volatile atomic<cmplx,strong::pun> a(0);  inc    (a,  sync); }
+// { volatile atomic<cmplx,strong::pun> a(0);  preinc (a,  sync); }
+// { volatile atomic<cmplx,strong::pun> a(0);  postinc(a,  sync); }
+// { volatile atomic<cmplx,strong::pun> a(0);  dec    (a,  sync); }
+// { volatile atomic<cmplx,strong::pun> a(0);  predec (a,  sync); }
+// { volatile atomic<cmplx,strong::pun> a(0);  postdec(a,  sync); }
+#if !defined(__clang__)
+   { volatile atomic<cmplx,strong::pun> a(0);  add    (a,c,success,failure); }
+   { volatile atomic<cmplx,strong::pun> a(0);  sub    (a,c,success,failure); }
+   { volatile atomic<cmplx,strong::pun> a(0);  mul    (a,c,success,failure); }
+   { volatile atomic<cmplx,strong::pun> a(0);  div    (a,c,success,failure); }
+#endif
+// { volatile atomic<cmplx,strong::pun> a(0);  mod    (a,c,success,failure); }
+// { volatile atomic<cmplx,strong::pun> a(0);  lshift (a,c,success,failure); }
+// { volatile atomic<cmplx,strong::pun> a(0);  rshift (a,c,success,failure); }
+// { volatile atomic<cmplx,strong::pun> a(0);  andeq  (a,c,success,failure); }
+// { volatile atomic<cmplx,strong::pun> a(0);  oreq   (a,c,success,failure); }
+// { volatile atomic<cmplx,strong::pun> a(0);  xoreq  (a,c,success,failure); }
+// { volatile atomic<cmplx,strong::pun> a(0);  min    (a,c,success,failure); }
+// { volatile atomic<cmplx,strong::pun> a(0);  max    (a,c,success,failure); }
+// { volatile atomic<cmplx,strong::pun> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<cmplx,strong::pun> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<cmplx,strong::pun> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<cmplx,strong::pun> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<cmplx,strong::pun> a(0);  predec (a,  success,failure); }
+// { volatile atomic<cmplx,strong::pun> a(0);  postdec(a,  success,failure); }
+
+#if !defined(__clang__)
+   { volatile atomic<cmplx,weak> a(0);  add    (a,c); }
+   { volatile atomic<cmplx,weak> a(0);  sub    (a,c); }
+   { volatile atomic<cmplx,weak> a(0);  mul    (a,c); }
+   { volatile atomic<cmplx,weak> a(0);  div    (a,c); }
+#endif
+// { volatile atomic<cmplx,weak> a(0);  mod    (a,c); }
+// { volatile atomic<cmplx,weak> a(0);  lshift (a,c); }
+// { volatile atomic<cmplx,weak> a(0);  rshift (a,c); }
+// { volatile atomic<cmplx,weak> a(0);  andeq  (a,c); }
+// { volatile atomic<cmplx,weak> a(0);  oreq   (a,c); }
+// { volatile atomic<cmplx,weak> a(0);  xoreq  (a,c); }
+// { volatile atomic<cmplx,weak> a(0);  min    (a,c); }
+// { volatile atomic<cmplx,weak> a(0);  max    (a,c); }
+// { volatile atomic<cmplx,weak> a(0);  inc    (a); }
+// { volatile atomic<cmplx,weak> a(0);  preinc (a); }
+// { volatile atomic<cmplx,weak> a(0);  postinc(a); }
+// { volatile atomic<cmplx,weak> a(0);  dec    (a); }
+// { volatile atomic<cmplx,weak> a(0);  predec (a); }
+// { volatile atomic<cmplx,weak> a(0);  postdec(a); }
+#if !defined(__clang__)
+   { volatile atomic<cmplx,weak> a(0);  add    (a,c,sync); }
+   { volatile atomic<cmplx,weak> a(0);  sub    (a,c,sync); }
+   { volatile atomic<cmplx,weak> a(0);  mul    (a,c,sync); }
+   { volatile atomic<cmplx,weak> a(0);  div    (a,c,sync); }
+#endif
+// { volatile atomic<cmplx,weak> a(0);  mod    (a,c,sync); }
+// { volatile atomic<cmplx,weak> a(0);  lshift (a,c,sync); }
+// { volatile atomic<cmplx,weak> a(0);  rshift (a,c,sync); }
+// { volatile atomic<cmplx,weak> a(0);  andeq  (a,c,sync); }
+// { volatile atomic<cmplx,weak> a(0);  oreq   (a,c,sync); }
+// { volatile atomic<cmplx,weak> a(0);  xoreq  (a,c,sync); }
+// { volatile atomic<cmplx,weak> a(0);  min    (a,c,sync); }
+// { volatile atomic<cmplx,weak> a(0);  max    (a,c,sync); }
+// { volatile atomic<cmplx,weak> a(0);  inc    (a,  sync); }
+// { volatile atomic<cmplx,weak> a(0);  preinc (a,  sync); }
+// { volatile atomic<cmplx,weak> a(0);  postinc(a,  sync); }
+// { volatile atomic<cmplx,weak> a(0);  dec    (a,  sync); }
+// { volatile atomic<cmplx,weak> a(0);  predec (a,  sync); }
+// { volatile atomic<cmplx,weak> a(0);  postdec(a,  sync); }
+#if !defined(__clang__)
+   { volatile atomic<cmplx,weak> a(0);  add    (a,c,success,failure); }
+   { volatile atomic<cmplx,weak> a(0);  sub    (a,c,success,failure); }
+   { volatile atomic<cmplx,weak> a(0);  mul    (a,c,success,failure); }
+   { volatile atomic<cmplx,weak> a(0);  div    (a,c,success,failure); }
+#endif
+// { volatile atomic<cmplx,weak> a(0);  mod    (a,c,success,failure); }
+// { volatile atomic<cmplx,weak> a(0);  lshift (a,c,success,failure); }
+// { volatile atomic<cmplx,weak> a(0);  rshift (a,c,success,failure); }
+// { volatile atomic<cmplx,weak> a(0);  andeq  (a,c,success,failure); }
+// { volatile atomic<cmplx,weak> a(0);  oreq   (a,c,success,failure); }
+// { volatile atomic<cmplx,weak> a(0);  xoreq  (a,c,success,failure); }
+// { volatile atomic<cmplx,weak> a(0);  min    (a,c,success,failure); }
+// { volatile atomic<cmplx,weak> a(0);  max    (a,c,success,failure); }
+// { volatile atomic<cmplx,weak> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<cmplx,weak> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<cmplx,weak> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<cmplx,weak> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<cmplx,weak> a(0);  predec (a,  success,failure); }
+// { volatile atomic<cmplx,weak> a(0);  postdec(a,  success,failure); }
+
+#if !defined(__clang__)
+   { volatile atomic<cmplx,weak::pun> a(0);  add    (a,c); }
+   { volatile atomic<cmplx,weak::pun> a(0);  sub    (a,c); }
+   { volatile atomic<cmplx,weak::pun> a(0);  mul    (a,c); }
+   { volatile atomic<cmplx,weak::pun> a(0);  div    (a,c); }
+#endif
+// { volatile atomic<cmplx,weak::pun> a(0);  mod    (a,c); }
+// { volatile atomic<cmplx,weak::pun> a(0);  lshift (a,c); }
+// { volatile atomic<cmplx,weak::pun> a(0);  rshift (a,c); }
+// { volatile atomic<cmplx,weak::pun> a(0);  andeq  (a,c); }
+// { volatile atomic<cmplx,weak::pun> a(0);  oreq   (a,c); }
+// { volatile atomic<cmplx,weak::pun> a(0);  xoreq  (a,c); }
+// { volatile atomic<cmplx,weak::pun> a(0);  min    (a,c); }
+// { volatile atomic<cmplx,weak::pun> a(0);  max    (a,c); }
+// { volatile atomic<cmplx,weak::pun> a(0);  inc    (a); }
+// { volatile atomic<cmplx,weak::pun> a(0);  preinc (a); }
+// { volatile atomic<cmplx,weak::pun> a(0);  postinc(a); }
+// { volatile atomic<cmplx,weak::pun> a(0);  dec    (a); }
+// { volatile atomic<cmplx,weak::pun> a(0);  predec (a); }
+// { volatile atomic<cmplx,weak::pun> a(0);  postdec(a); }
+#if !defined(__clang__)
+   { volatile atomic<cmplx,weak::pun> a(0);  add    (a,c,sync); }
+   { volatile atomic<cmplx,weak::pun> a(0);  sub    (a,c,sync); }
+   { volatile atomic<cmplx,weak::pun> a(0);  mul    (a,c,sync); }
+   { volatile atomic<cmplx,weak::pun> a(0);  div    (a,c,sync); }
+#endif
+// { volatile atomic<cmplx,weak::pun> a(0);  mod    (a,c,sync); }
+// { volatile atomic<cmplx,weak::pun> a(0);  lshift (a,c,sync); }
+// { volatile atomic<cmplx,weak::pun> a(0);  rshift (a,c,sync); }
+// { volatile atomic<cmplx,weak::pun> a(0);  andeq  (a,c,sync); }
+// { volatile atomic<cmplx,weak::pun> a(0);  oreq   (a,c,sync); }
+// { volatile atomic<cmplx,weak::pun> a(0);  xoreq  (a,c,sync); }
+// { volatile atomic<cmplx,weak::pun> a(0);  min    (a,c,sync); }
+// { volatile atomic<cmplx,weak::pun> a(0);  max    (a,c,sync); }
+// { volatile atomic<cmplx,weak::pun> a(0);  inc    (a,  sync); }
+// { volatile atomic<cmplx,weak::pun> a(0);  preinc (a,  sync); }
+// { volatile atomic<cmplx,weak::pun> a(0);  postinc(a,  sync); }
+// { volatile atomic<cmplx,weak::pun> a(0);  dec    (a,  sync); }
+// { volatile atomic<cmplx,weak::pun> a(0);  predec (a,  sync); }
+// { volatile atomic<cmplx,weak::pun> a(0);  postdec(a,  sync); }
+#if !defined(__clang__)
+   { volatile atomic<cmplx,weak::pun> a(0);  add    (a,c,success,failure); }
+   { volatile atomic<cmplx,weak::pun> a(0);  sub    (a,c,success,failure); }
+   { volatile atomic<cmplx,weak::pun> a(0);  mul    (a,c,success,failure); }
+   { volatile atomic<cmplx,weak::pun> a(0);  div    (a,c,success,failure); }
+#endif
+// { volatile atomic<cmplx,weak::pun> a(0);  mod    (a,c,success,failure); }
+// { volatile atomic<cmplx,weak::pun> a(0);  lshift (a,c,success,failure); }
+// { volatile atomic<cmplx,weak::pun> a(0);  rshift (a,c,success,failure); }
+// { volatile atomic<cmplx,weak::pun> a(0);  andeq  (a,c,success,failure); }
+// { volatile atomic<cmplx,weak::pun> a(0);  oreq   (a,c,success,failure); }
+// { volatile atomic<cmplx,weak::pun> a(0);  xoreq  (a,c,success,failure); }
+// { volatile atomic<cmplx,weak::pun> a(0);  min    (a,c,success,failure); }
+// { volatile atomic<cmplx,weak::pun> a(0);  max    (a,c,success,failure); }
+// { volatile atomic<cmplx,weak::pun> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<cmplx,weak::pun> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<cmplx,weak::pun> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<cmplx,weak::pun> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<cmplx,weak::pun> a(0);  predec (a,  success,failure); }
+// { volatile atomic<cmplx,weak::pun> a(0);  postdec(a,  success,failure); }
+
+//v{ volatile atomic<cmplx,lock> a(0);  add    (a,c); }
+//v{ volatile atomic<cmplx,lock> a(0);  sub    (a,c); }
+//v{ volatile atomic<cmplx,lock> a(0);  mul    (a,c); }
+//v{ volatile atomic<cmplx,lock> a(0);  div    (a,c); }
+// { volatile atomic<cmplx,lock> a(0);  mod    (a,c); }
+// { volatile atomic<cmplx,lock> a(0);  lshift (a,c); }
+// { volatile atomic<cmplx,lock> a(0);  rshift (a,c); }
+// { volatile atomic<cmplx,lock> a(0);  andeq  (a,c); }
+// { volatile atomic<cmplx,lock> a(0);  oreq   (a,c); }
+// { volatile atomic<cmplx,lock> a(0);  xoreq  (a,c); }
+// { volatile atomic<cmplx,lock> a(0);  min    (a,c); }
+// { volatile atomic<cmplx,lock> a(0);  max    (a,c); }
+// { volatile atomic<cmplx,lock> a(0);  inc    (a); }
+// { volatile atomic<cmplx,lock> a(0);  preinc (a); }
+// { volatile atomic<cmplx,lock> a(0);  postinc(a); }
+// { volatile atomic<cmplx,lock> a(0);  dec    (a); }
+// { volatile atomic<cmplx,lock> a(0);  predec (a); }
+// { volatile atomic<cmplx,lock> a(0);  postdec(a); }
+// { volatile atomic<cmplx,lock> a(0);  add    (a,c,sync); }
+// { volatile atomic<cmplx,lock> a(0);  sub    (a,c,sync); }
+// { volatile atomic<cmplx,lock> a(0);  mul    (a,c,sync); }
+// { volatile atomic<cmplx,lock> a(0);  div    (a,c,sync); }
+// { volatile atomic<cmplx,lock> a(0);  mod    (a,c,sync); }
+// { volatile atomic<cmplx,lock> a(0);  lshift (a,c,sync); }
+// { volatile atomic<cmplx,lock> a(0);  rshift (a,c,sync); }
+// { volatile atomic<cmplx,lock> a(0);  andeq  (a,c,sync); }
+// { volatile atomic<cmplx,lock> a(0);  oreq   (a,c,sync); }
+// { volatile atomic<cmplx,lock> a(0);  xoreq  (a,c,sync); }
+// { volatile atomic<cmplx,lock> a(0);  min    (a,c,sync); }
+// { volatile atomic<cmplx,lock> a(0);  max    (a,c,sync); }
+// { volatile atomic<cmplx,lock> a(0);  inc    (a,  sync); }
+// { volatile atomic<cmplx,lock> a(0);  preinc (a,  sync); }
+// { volatile atomic<cmplx,lock> a(0);  postinc(a,  sync); }
+// { volatile atomic<cmplx,lock> a(0);  dec    (a,  sync); }
+// { volatile atomic<cmplx,lock> a(0);  predec (a,  sync); }
+// { volatile atomic<cmplx,lock> a(0);  postdec(a,  sync); }
+// { volatile atomic<cmplx,lock> a(0);  add    (a,c,success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  sub    (a,c,success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  mul    (a,c,success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  div    (a,c,success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  mod    (a,c,success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  lshift (a,c,success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  rshift (a,c,success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  andeq  (a,c,success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  oreq   (a,c,success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  xoreq  (a,c,success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  min    (a,c,success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  max    (a,c,success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  predec (a,  success,failure); }
+// { volatile atomic<cmplx,lock> a(0);  postdec(a,  success,failure); }
+
+//v{ volatile atomic<cmplx,serial> a(0);  add    (a,c); }
+//v{ volatile atomic<cmplx,serial> a(0);  sub    (a,c); }
+//v{ volatile atomic<cmplx,serial> a(0);  mul    (a,c); }
+//v{ volatile atomic<cmplx,serial> a(0);  div    (a,c); }
+// { volatile atomic<cmplx,serial> a(0);  mod    (a,c); }
+// { volatile atomic<cmplx,serial> a(0);  lshift (a,c); }
+// { volatile atomic<cmplx,serial> a(0);  rshift (a,c); }
+// { volatile atomic<cmplx,serial> a(0);  andeq  (a,c); }
+// { volatile atomic<cmplx,serial> a(0);  oreq   (a,c); }
+// { volatile atomic<cmplx,serial> a(0);  xoreq  (a,c); }
+// { volatile atomic<cmplx,serial> a(0);  min    (a,c); }
+// { volatile atomic<cmplx,serial> a(0);  max    (a,c); }
+// { volatile atomic<cmplx,serial> a(0);  inc    (a); }
+// { volatile atomic<cmplx,serial> a(0);  preinc (a); }
+// { volatile atomic<cmplx,serial> a(0);  postinc(a); }
+// { volatile atomic<cmplx,serial> a(0);  dec    (a); }
+// { volatile atomic<cmplx,serial> a(0);  predec (a); }
+// { volatile atomic<cmplx,serial> a(0);  postdec(a); }
+// { volatile atomic<cmplx,serial> a(0);  add    (a,c,sync); }
+// { volatile atomic<cmplx,serial> a(0);  sub    (a,c,sync); }
+// { volatile atomic<cmplx,serial> a(0);  mul    (a,c,sync); }
+// { volatile atomic<cmplx,serial> a(0);  div    (a,c,sync); }
+// { volatile atomic<cmplx,serial> a(0);  mod    (a,c,sync); }
+// { volatile atomic<cmplx,serial> a(0);  lshift (a,c,sync); }
+// { volatile atomic<cmplx,serial> a(0);  rshift (a,c,sync); }
+// { volatile atomic<cmplx,serial> a(0);  andeq  (a,c,sync); }
+// { volatile atomic<cmplx,serial> a(0);  oreq   (a,c,sync); }
+// { volatile atomic<cmplx,serial> a(0);  xoreq  (a,c,sync); }
+// { volatile atomic<cmplx,serial> a(0);  min    (a,c,sync); }
+// { volatile atomic<cmplx,serial> a(0);  max    (a,c,sync); }
+// { volatile atomic<cmplx,serial> a(0);  inc    (a,  sync); }
+// { volatile atomic<cmplx,serial> a(0);  preinc (a,  sync); }
+// { volatile atomic<cmplx,serial> a(0);  postinc(a,  sync); }
+// { volatile atomic<cmplx,serial> a(0);  dec    (a,  sync); }
+// { volatile atomic<cmplx,serial> a(0);  predec (a,  sync); }
+// { volatile atomic<cmplx,serial> a(0);  postdec(a,  sync); }
+// { volatile atomic<cmplx,serial> a(0);  add    (a,c,success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  sub    (a,c,success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  mul    (a,c,success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  div    (a,c,success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  mod    (a,c,success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  lshift (a,c,success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  rshift (a,c,success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  andeq  (a,c,success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  oreq   (a,c,success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  xoreq  (a,c,success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  min    (a,c,success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  max    (a,c,success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  predec (a,  success,failure); }
+// { volatile atomic<cmplx,serial> a(0);  postdec(a,  success,failure); }
+
+
+
+   // ------------------------
+   // foo
+   // ------------------------
+
+// { volatile atomic<foo,cpp> a(0);  add    (a,b); }
+// { volatile atomic<foo,cpp> a(0);  sub    (a,b); }
+// { volatile atomic<foo,cpp> a(0);  mul    (a,b); }
+// { volatile atomic<foo,cpp> a(0);  div    (a,b); }
+// { volatile atomic<foo,cpp> a(0);  mod    (a,b); }
+// { volatile atomic<foo,cpp> a(0);  lshift (a,b); }
+// { volatile atomic<foo,cpp> a(0);  rshift (a,b); }
+// { volatile atomic<foo,cpp> a(0);  andeq  (a,b); }
+// { volatile atomic<foo,cpp> a(0);  oreq   (a,b); }
+// { volatile atomic<foo,cpp> a(0);  xoreq  (a,b); }
+// { volatile atomic<foo,cpp> a(0);  min    (a,b); }
+// { volatile atomic<foo,cpp> a(0);  max    (a,b); }
+// { volatile atomic<foo,cpp> a(0);  inc    (a); }
+// { volatile atomic<foo,cpp> a(0);  preinc (a); }
+// { volatile atomic<foo,cpp> a(0);  postinc(a); }
+// { volatile atomic<foo,cpp> a(0);  dec    (a); }
+// { volatile atomic<foo,cpp> a(0);  predec (a); }
+// { volatile atomic<foo,cpp> a(0);  postdec(a); }
+// { volatile atomic<foo,cpp> a(0);  add    (a,b,sync); }
+// { volatile atomic<foo,cpp> a(0);  sub    (a,b,sync); }
+// { volatile atomic<foo,cpp> a(0);  mul    (a,b,sync); }
+// { volatile atomic<foo,cpp> a(0);  div    (a,b,sync); }
+// { volatile atomic<foo,cpp> a(0);  mod    (a,b,sync); }
+// { volatile atomic<foo,cpp> a(0);  lshift (a,b,sync); }
+// { volatile atomic<foo,cpp> a(0);  rshift (a,b,sync); }
+// { volatile atomic<foo,cpp> a(0);  andeq  (a,b,sync); }
+// { volatile atomic<foo,cpp> a(0);  oreq   (a,b,sync); }
+// { volatile atomic<foo,cpp> a(0);  xoreq  (a,b,sync); }
+// { volatile atomic<foo,cpp> a(0);  min    (a,b,sync); }
+// { volatile atomic<foo,cpp> a(0);  max    (a,b,sync); }
+// { volatile atomic<foo,cpp> a(0);  inc    (a,  sync); }
+// { volatile atomic<foo,cpp> a(0);  preinc (a,  sync); }
+// { volatile atomic<foo,cpp> a(0);  postinc(a,  sync); }
+// { volatile atomic<foo,cpp> a(0);  dec    (a,  sync); }
+// { volatile atomic<foo,cpp> a(0);  predec (a,  sync); }
+// { volatile atomic<foo,cpp> a(0);  postdec(a,  sync); }
+// { volatile atomic<foo,cpp> a(0);  add    (a,b,success,failure); }
+// { volatile atomic<foo,cpp> a(0);  sub    (a,b,success,failure); }
+// { volatile atomic<foo,cpp> a(0);  mul    (a,b,success,failure); }
+// { volatile atomic<foo,cpp> a(0);  div    (a,b,success,failure); }
+// { volatile atomic<foo,cpp> a(0);  mod    (a,b,success,failure); }
+// { volatile atomic<foo,cpp> a(0);  lshift (a,b,success,failure); }
+// { volatile atomic<foo,cpp> a(0);  rshift (a,b,success,failure); }
+// { volatile atomic<foo,cpp> a(0);  andeq  (a,b,success,failure); }
+// { volatile atomic<foo,cpp> a(0);  oreq   (a,b,success,failure); }
+// { volatile atomic<foo,cpp> a(0);  xoreq  (a,b,success,failure); }
+// { volatile atomic<foo,cpp> a(0);  min    (a,b,success,failure); }
+// { volatile atomic<foo,cpp> a(0);  max    (a,b,success,failure); }
+// { volatile atomic<foo,cpp> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<foo,cpp> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<foo,cpp> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<foo,cpp> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<foo,cpp> a(0);  predec (a,  success,failure); }
+// { volatile atomic<foo,cpp> a(0);  postdec(a,  success,failure); }
+
+   #if defined(ATOMICS_KOKKOS)
+// { volatile atomic<foo,kokkos> a(0);  add    (a,b); }
+// { volatile atomic<foo,kokkos> a(0);  sub    (a,b); }
+// { volatile atomic<foo,kokkos> a(0);  mul    (a,b); }
+// { volatile atomic<foo,kokkos> a(0);  div    (a,b); }
+// { volatile atomic<foo,kokkos> a(0);  mod    (a,b); }
+// { volatile atomic<foo,kokkos> a(0);  lshift (a,b); }
+// { volatile atomic<foo,kokkos> a(0);  rshift (a,b); }
+// { volatile atomic<foo,kokkos> a(0);  andeq  (a,b); }
+// { volatile atomic<foo,kokkos> a(0);  oreq   (a,b); }
+// { volatile atomic<foo,kokkos> a(0);  xoreq  (a,b); }
+// { volatile atomic<foo,kokkos> a(0);  min    (a,b); }
+// { volatile atomic<foo,kokkos> a(0);  max    (a,b); }
+// { volatile atomic<foo,kokkos> a(0);  inc    (a); }
+// { volatile atomic<foo,kokkos> a(0);  preinc (a); }
+// { volatile atomic<foo,kokkos> a(0);  postinc(a); }
+// { volatile atomic<foo,kokkos> a(0);  dec    (a); }
+// { volatile atomic<foo,kokkos> a(0);  predec (a); }
+// { volatile atomic<foo,kokkos> a(0);  postdec(a); }
+// { volatile atomic<foo,kokkos> a(0);  add    (a,b,sync); }
+// { volatile atomic<foo,kokkos> a(0);  sub    (a,b,sync); }
+// { volatile atomic<foo,kokkos> a(0);  mul    (a,b,sync); }
+// { volatile atomic<foo,kokkos> a(0);  div    (a,b,sync); }
+// { volatile atomic<foo,kokkos> a(0);  mod    (a,b,sync); }
+// { volatile atomic<foo,kokkos> a(0);  lshift (a,b,sync); }
+// { volatile atomic<foo,kokkos> a(0);  rshift (a,b,sync); }
+// { volatile atomic<foo,kokkos> a(0);  andeq  (a,b,sync); }
+// { volatile atomic<foo,kokkos> a(0);  oreq   (a,b,sync); }
+// { volatile atomic<foo,kokkos> a(0);  xoreq  (a,b,sync); }
+// { volatile atomic<foo,kokkos> a(0);  min    (a,b,sync); }
+// { volatile atomic<foo,kokkos> a(0);  max    (a,b,sync); }
+// { volatile atomic<foo,kokkos> a(0);  inc    (a,  sync); }
+// { volatile atomic<foo,kokkos> a(0);  preinc (a,  sync); }
+// { volatile atomic<foo,kokkos> a(0);  postinc(a,  sync); }
+// { volatile atomic<foo,kokkos> a(0);  dec    (a,  sync); }
+// { volatile atomic<foo,kokkos> a(0);  predec (a,  sync); }
+// { volatile atomic<foo,kokkos> a(0);  postdec(a,  sync); }
+// { volatile atomic<foo,kokkos> a(0);  add    (a,b,success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  sub    (a,b,success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  mul    (a,b,success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  div    (a,b,success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  mod    (a,b,success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  lshift (a,b,success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  rshift (a,b,success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  andeq  (a,b,success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  oreq   (a,b,success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  xoreq  (a,b,success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  min    (a,b,success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  max    (a,b,success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  predec (a,  success,failure); }
+// { volatile atomic<foo,kokkos> a(0);  postdec(a,  success,failure); }
+   #endif
+
+#if !defined(__clang__)
+   { volatile atomic<foo,strong> a(0);  add    (a,b); }
+   { volatile atomic<foo,strong> a(0);  sub    (a,b); }
+   { volatile atomic<foo,strong> a(0);  mul    (a,b); }
+   { volatile atomic<foo,strong> a(0);  div    (a,b); }
+   { volatile atomic<foo,strong> a(0);  mod    (a,b); }
+   { volatile atomic<foo,strong> a(0);  lshift (a,b); }
+   { volatile atomic<foo,strong> a(0);  rshift (a,b); }
+   { volatile atomic<foo,strong> a(0);  andeq  (a,b); }
+   { volatile atomic<foo,strong> a(0);  oreq   (a,b); }
+   { volatile atomic<foo,strong> a(0);  xoreq  (a,b); }
+   { volatile atomic<foo,strong> a(0);  min    (a,b); }
+   { volatile atomic<foo,strong> a(0);  max    (a,b); }
+   { volatile atomic<foo,strong> a(0);  inc    (a); }
+   { volatile atomic<foo,strong> a(0);  preinc (a); }
+   { volatile atomic<foo,strong> a(0);  postinc(a); }
+   { volatile atomic<foo,strong> a(0);  dec    (a); }
+   { volatile atomic<foo,strong> a(0);  predec (a); }
+   { volatile atomic<foo,strong> a(0);  postdec(a); }
+   { volatile atomic<foo,strong> a(0);  add    (a,b,sync); }
+   { volatile atomic<foo,strong> a(0);  sub    (a,b,sync); }
+   { volatile atomic<foo,strong> a(0);  mul    (a,b,sync); }
+   { volatile atomic<foo,strong> a(0);  div    (a,b,sync); }
+   { volatile atomic<foo,strong> a(0);  mod    (a,b,sync); }
+   { volatile atomic<foo,strong> a(0);  lshift (a,b,sync); }
+   { volatile atomic<foo,strong> a(0);  rshift (a,b,sync); }
+   { volatile atomic<foo,strong> a(0);  andeq  (a,b,sync); }
+   { volatile atomic<foo,strong> a(0);  oreq   (a,b,sync); }
+   { volatile atomic<foo,strong> a(0);  xoreq  (a,b,sync); }
+   { volatile atomic<foo,strong> a(0);  min    (a,b,sync); }
+   { volatile atomic<foo,strong> a(0);  max    (a,b,sync); }
+   { volatile atomic<foo,strong> a(0);  inc    (a,  sync); }
+   { volatile atomic<foo,strong> a(0);  preinc (a,  sync); }
+   { volatile atomic<foo,strong> a(0);  postinc(a,  sync); }
+   { volatile atomic<foo,strong> a(0);  dec    (a,  sync); }
+   { volatile atomic<foo,strong> a(0);  predec (a,  sync); }
+   { volatile atomic<foo,strong> a(0);  postdec(a,  sync); }
+   { volatile atomic<foo,strong> a(0);  add    (a,b,success,failure); }
+   { volatile atomic<foo,strong> a(0);  sub    (a,b,success,failure); }
+   { volatile atomic<foo,strong> a(0);  mul    (a,b,success,failure); }
+   { volatile atomic<foo,strong> a(0);  div    (a,b,success,failure); }
+   { volatile atomic<foo,strong> a(0);  mod    (a,b,success,failure); }
+   { volatile atomic<foo,strong> a(0);  lshift (a,b,success,failure); }
+   { volatile atomic<foo,strong> a(0);  rshift (a,b,success,failure); }
+   { volatile atomic<foo,strong> a(0);  andeq  (a,b,success,failure); }
+   { volatile atomic<foo,strong> a(0);  oreq   (a,b,success,failure); }
+   { volatile atomic<foo,strong> a(0);  xoreq  (a,b,success,failure); }
+   { volatile atomic<foo,strong> a(0);  min    (a,b,success,failure); }
+   { volatile atomic<foo,strong> a(0);  max    (a,b,success,failure); }
+   { volatile atomic<foo,strong> a(0);  inc    (a,  success,failure); }
+   { volatile atomic<foo,strong> a(0);  preinc (a,  success,failure); }
+   { volatile atomic<foo,strong> a(0);  postinc(a,  success,failure); }
+   { volatile atomic<foo,strong> a(0);  dec    (a,  success,failure); }
+   { volatile atomic<foo,strong> a(0);  predec (a,  success,failure); }
+   { volatile atomic<foo,strong> a(0);  postdec(a,  success,failure); }
+#endif
+
+#if !defined(__clang__)
+   { volatile atomic<foo,strong::pun> a(0);  add    (a,b); }
+   { volatile atomic<foo,strong::pun> a(0);  sub    (a,b); }
+   { volatile atomic<foo,strong::pun> a(0);  mul    (a,b); }
+   { volatile atomic<foo,strong::pun> a(0);  div    (a,b); }
+   { volatile atomic<foo,strong::pun> a(0);  mod    (a,b); }
+   { volatile atomic<foo,strong::pun> a(0);  lshift (a,b); }
+   { volatile atomic<foo,strong::pun> a(0);  rshift (a,b); }
+   { volatile atomic<foo,strong::pun> a(0);  andeq  (a,b); }
+   { volatile atomic<foo,strong::pun> a(0);  oreq   (a,b); }
+   { volatile atomic<foo,strong::pun> a(0);  xoreq  (a,b); }
+   { volatile atomic<foo,strong::pun> a(0);  min    (a,b); }
+   { volatile atomic<foo,strong::pun> a(0);  max    (a,b); }
+   { volatile atomic<foo,strong::pun> a(0);  inc    (a); }
+   { volatile atomic<foo,strong::pun> a(0);  preinc (a); }
+   { volatile atomic<foo,strong::pun> a(0);  postinc(a); }
+   { volatile atomic<foo,strong::pun> a(0);  dec    (a); }
+   { volatile atomic<foo,strong::pun> a(0);  predec (a); }
+   { volatile atomic<foo,strong::pun> a(0);  postdec(a); }
+   { volatile atomic<foo,strong::pun> a(0);  add    (a,b,sync); }
+   { volatile atomic<foo,strong::pun> a(0);  sub    (a,b,sync); }
+   { volatile atomic<foo,strong::pun> a(0);  mul    (a,b,sync); }
+   { volatile atomic<foo,strong::pun> a(0);  div    (a,b,sync); }
+   { volatile atomic<foo,strong::pun> a(0);  mod    (a,b,sync); }
+   { volatile atomic<foo,strong::pun> a(0);  lshift (a,b,sync); }
+   { volatile atomic<foo,strong::pun> a(0);  rshift (a,b,sync); }
+   { volatile atomic<foo,strong::pun> a(0);  andeq  (a,b,sync); }
+   { volatile atomic<foo,strong::pun> a(0);  oreq   (a,b,sync); }
+   { volatile atomic<foo,strong::pun> a(0);  xoreq  (a,b,sync); }
+   { volatile atomic<foo,strong::pun> a(0);  min    (a,b,sync); }
+   { volatile atomic<foo,strong::pun> a(0);  max    (a,b,sync); }
+   { volatile atomic<foo,strong::pun> a(0);  inc    (a,  sync); }
+   { volatile atomic<foo,strong::pun> a(0);  preinc (a,  sync); }
+   { volatile atomic<foo,strong::pun> a(0);  postinc(a,  sync); }
+   { volatile atomic<foo,strong::pun> a(0);  dec    (a,  sync); }
+   { volatile atomic<foo,strong::pun> a(0);  predec (a,  sync); }
+   { volatile atomic<foo,strong::pun> a(0);  postdec(a,  sync); }
+   { volatile atomic<foo,strong::pun> a(0);  add    (a,b,success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  sub    (a,b,success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  mul    (a,b,success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  div    (a,b,success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  mod    (a,b,success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  lshift (a,b,success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  rshift (a,b,success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  andeq  (a,b,success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  oreq   (a,b,success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  xoreq  (a,b,success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  min    (a,b,success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  max    (a,b,success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  inc    (a,  success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  preinc (a,  success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  postinc(a,  success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  dec    (a,  success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  predec (a,  success,failure); }
+   { volatile atomic<foo,strong::pun> a(0);  postdec(a,  success,failure); }
+#endif
+
+#if !defined(__clang__)
+   { volatile atomic<foo,weak> a(0);  add    (a,b); }
+   { volatile atomic<foo,weak> a(0);  sub    (a,b); }
+   { volatile atomic<foo,weak> a(0);  mul    (a,b); }
+   { volatile atomic<foo,weak> a(0);  div    (a,b); }
+   { volatile atomic<foo,weak> a(0);  mod    (a,b); }
+   { volatile atomic<foo,weak> a(0);  lshift (a,b); }
+   { volatile atomic<foo,weak> a(0);  rshift (a,b); }
+   { volatile atomic<foo,weak> a(0);  andeq  (a,b); }
+   { volatile atomic<foo,weak> a(0);  oreq   (a,b); }
+   { volatile atomic<foo,weak> a(0);  xoreq  (a,b); }
+   { volatile atomic<foo,weak> a(0);  min    (a,b); }
+   { volatile atomic<foo,weak> a(0);  max    (a,b); }
+   { volatile atomic<foo,weak> a(0);  inc    (a); }
+   { volatile atomic<foo,weak> a(0);  preinc (a); }
+   { volatile atomic<foo,weak> a(0);  postinc(a); }
+   { volatile atomic<foo,weak> a(0);  dec    (a); }
+   { volatile atomic<foo,weak> a(0);  predec (a); }
+   { volatile atomic<foo,weak> a(0);  postdec(a); }
+   { volatile atomic<foo,weak> a(0);  add    (a,b,sync); }
+   { volatile atomic<foo,weak> a(0);  sub    (a,b,sync); }
+   { volatile atomic<foo,weak> a(0);  mul    (a,b,sync); }
+   { volatile atomic<foo,weak> a(0);  div    (a,b,sync); }
+   { volatile atomic<foo,weak> a(0);  mod    (a,b,sync); }
+   { volatile atomic<foo,weak> a(0);  lshift (a,b,sync); }
+   { volatile atomic<foo,weak> a(0);  rshift (a,b,sync); }
+   { volatile atomic<foo,weak> a(0);  andeq  (a,b,sync); }
+   { volatile atomic<foo,weak> a(0);  oreq   (a,b,sync); }
+   { volatile atomic<foo,weak> a(0);  xoreq  (a,b,sync); }
+   { volatile atomic<foo,weak> a(0);  min    (a,b,sync); }
+   { volatile atomic<foo,weak> a(0);  max    (a,b,sync); }
+   { volatile atomic<foo,weak> a(0);  inc    (a,  sync); }
+   { volatile atomic<foo,weak> a(0);  preinc (a,  sync); }
+   { volatile atomic<foo,weak> a(0);  postinc(a,  sync); }
+   { volatile atomic<foo,weak> a(0);  dec    (a,  sync); }
+   { volatile atomic<foo,weak> a(0);  predec (a,  sync); }
+   { volatile atomic<foo,weak> a(0);  postdec(a,  sync); }
+   { volatile atomic<foo,weak> a(0);  add    (a,b,success,failure); }
+   { volatile atomic<foo,weak> a(0);  sub    (a,b,success,failure); }
+   { volatile atomic<foo,weak> a(0);  mul    (a,b,success,failure); }
+   { volatile atomic<foo,weak> a(0);  div    (a,b,success,failure); }
+   { volatile atomic<foo,weak> a(0);  mod    (a,b,success,failure); }
+   { volatile atomic<foo,weak> a(0);  lshift (a,b,success,failure); }
+   { volatile atomic<foo,weak> a(0);  rshift (a,b,success,failure); }
+   { volatile atomic<foo,weak> a(0);  andeq  (a,b,success,failure); }
+   { volatile atomic<foo,weak> a(0);  oreq   (a,b,success,failure); }
+   { volatile atomic<foo,weak> a(0);  xoreq  (a,b,success,failure); }
+   { volatile atomic<foo,weak> a(0);  min    (a,b,success,failure); }
+   { volatile atomic<foo,weak> a(0);  max    (a,b,success,failure); }
+   { volatile atomic<foo,weak> a(0);  inc    (a,  success,failure); }
+   { volatile atomic<foo,weak> a(0);  preinc (a,  success,failure); }
+   { volatile atomic<foo,weak> a(0);  postinc(a,  success,failure); }
+   { volatile atomic<foo,weak> a(0);  dec    (a,  success,failure); }
+   { volatile atomic<foo,weak> a(0);  predec (a,  success,failure); }
+   { volatile atomic<foo,weak> a(0);  postdec(a,  success,failure); }
+#endif
+
+#if !defined(__clang__)
+   { volatile atomic<foo,weak::pun> a(0);  add    (a,b); }
+   { volatile atomic<foo,weak::pun> a(0);  sub    (a,b); }
+   { volatile atomic<foo,weak::pun> a(0);  mul    (a,b); }
+   { volatile atomic<foo,weak::pun> a(0);  div    (a,b); }
+   { volatile atomic<foo,weak::pun> a(0);  mod    (a,b); }
+   { volatile atomic<foo,weak::pun> a(0);  lshift (a,b); }
+   { volatile atomic<foo,weak::pun> a(0);  rshift (a,b); }
+   { volatile atomic<foo,weak::pun> a(0);  andeq  (a,b); }
+   { volatile atomic<foo,weak::pun> a(0);  oreq   (a,b); }
+   { volatile atomic<foo,weak::pun> a(0);  xoreq  (a,b); }
+   { volatile atomic<foo,weak::pun> a(0);  min    (a,b); }
+   { volatile atomic<foo,weak::pun> a(0);  max    (a,b); }
+   { volatile atomic<foo,weak::pun> a(0);  inc    (a); }
+   { volatile atomic<foo,weak::pun> a(0);  preinc (a); }
+   { volatile atomic<foo,weak::pun> a(0);  postinc(a); }
+   { volatile atomic<foo,weak::pun> a(0);  dec    (a); }
+   { volatile atomic<foo,weak::pun> a(0);  predec (a); }
+   { volatile atomic<foo,weak::pun> a(0);  postdec(a); }
+   { volatile atomic<foo,weak::pun> a(0);  add    (a,b,sync); }
+   { volatile atomic<foo,weak::pun> a(0);  sub    (a,b,sync); }
+   { volatile atomic<foo,weak::pun> a(0);  mul    (a,b,sync); }
+   { volatile atomic<foo,weak::pun> a(0);  div    (a,b,sync); }
+   { volatile atomic<foo,weak::pun> a(0);  mod    (a,b,sync); }
+   { volatile atomic<foo,weak::pun> a(0);  lshift (a,b,sync); }
+   { volatile atomic<foo,weak::pun> a(0);  rshift (a,b,sync); }
+   { volatile atomic<foo,weak::pun> a(0);  andeq  (a,b,sync); }
+   { volatile atomic<foo,weak::pun> a(0);  oreq   (a,b,sync); }
+   { volatile atomic<foo,weak::pun> a(0);  xoreq  (a,b,sync); }
+   { volatile atomic<foo,weak::pun> a(0);  min    (a,b,sync); }
+   { volatile atomic<foo,weak::pun> a(0);  max    (a,b,sync); }
+   { volatile atomic<foo,weak::pun> a(0);  inc    (a,  sync); }
+   { volatile atomic<foo,weak::pun> a(0);  preinc (a,  sync); }
+   { volatile atomic<foo,weak::pun> a(0);  postinc(a,  sync); }
+   { volatile atomic<foo,weak::pun> a(0);  dec    (a,  sync); }
+   { volatile atomic<foo,weak::pun> a(0);  predec (a,  sync); }
+   { volatile atomic<foo,weak::pun> a(0);  postdec(a,  sync); }
+   { volatile atomic<foo,weak::pun> a(0);  add    (a,b,success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  sub    (a,b,success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  mul    (a,b,success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  div    (a,b,success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  mod    (a,b,success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  lshift (a,b,success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  rshift (a,b,success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  andeq  (a,b,success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  oreq   (a,b,success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  xoreq  (a,b,success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  min    (a,b,success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  max    (a,b,success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  inc    (a,  success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  preinc (a,  success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  postinc(a,  success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  dec    (a,  success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  predec (a,  success,failure); }
+   { volatile atomic<foo,weak::pun> a(0);  postdec(a,  success,failure); }
+#endif
+
+//v{ volatile atomic<foo,lock> a(0);  add    (a,b); }
+//v{ volatile atomic<foo,lock> a(0);  sub    (a,b); }
+//v{ volatile atomic<foo,lock> a(0);  mul    (a,b); }
+//v{ volatile atomic<foo,lock> a(0);  div    (a,b); }
+//v{ volatile atomic<foo,lock> a(0);  mod    (a,b); }
+//v{ volatile atomic<foo,lock> a(0);  lshift (a,b); }
+//v{ volatile atomic<foo,lock> a(0);  rshift (a,b); }
+//v{ volatile atomic<foo,lock> a(0);  andeq  (a,b); }
+//v{ volatile atomic<foo,lock> a(0);  oreq   (a,b); }
+//v{ volatile atomic<foo,lock> a(0);  xoreq  (a,b); }
+//v{ volatile atomic<foo,lock> a(0);  min    (a,b); }
+//v{ volatile atomic<foo,lock> a(0);  max    (a,b); }
+//v{ volatile atomic<foo,lock> a(0);  inc    (a); }
+//v{ volatile atomic<foo,lock> a(0);  preinc (a); }
+//v{ volatile atomic<foo,lock> a(0);  postinc(a); }
+//v{ volatile atomic<foo,lock> a(0);  dec    (a); }
+//v{ volatile atomic<foo,lock> a(0);  predec (a); }
+//v{ volatile atomic<foo,lock> a(0);  postdec(a); }
+// { volatile atomic<foo,lock> a(0);  add    (a,b,sync); }
+// { volatile atomic<foo,lock> a(0);  sub    (a,b,sync); }
+// { volatile atomic<foo,lock> a(0);  mul    (a,b,sync); }
+// { volatile atomic<foo,lock> a(0);  div    (a,b,sync); }
+// { volatile atomic<foo,lock> a(0);  mod    (a,b,sync); }
+// { volatile atomic<foo,lock> a(0);  lshift (a,b,sync); }
+// { volatile atomic<foo,lock> a(0);  rshift (a,b,sync); }
+// { volatile atomic<foo,lock> a(0);  andeq  (a,b,sync); }
+// { volatile atomic<foo,lock> a(0);  oreq   (a,b,sync); }
+// { volatile atomic<foo,lock> a(0);  xoreq  (a,b,sync); }
+// { volatile atomic<foo,lock> a(0);  min    (a,b,sync); }
+// { volatile atomic<foo,lock> a(0);  max    (a,b,sync); }
+// { volatile atomic<foo,lock> a(0);  inc    (a,  sync); }
+// { volatile atomic<foo,lock> a(0);  preinc (a,  sync); }
+// { volatile atomic<foo,lock> a(0);  postinc(a,  sync); }
+// { volatile atomic<foo,lock> a(0);  dec    (a,  sync); }
+// { volatile atomic<foo,lock> a(0);  predec (a,  sync); }
+// { volatile atomic<foo,lock> a(0);  postdec(a,  sync); }
+// { volatile atomic<foo,lock> a(0);  add    (a,b,success,failure); }
+// { volatile atomic<foo,lock> a(0);  sub    (a,b,success,failure); }
+// { volatile atomic<foo,lock> a(0);  mul    (a,b,success,failure); }
+// { volatile atomic<foo,lock> a(0);  div    (a,b,success,failure); }
+// { volatile atomic<foo,lock> a(0);  mod    (a,b,success,failure); }
+// { volatile atomic<foo,lock> a(0);  lshift (a,b,success,failure); }
+// { volatile atomic<foo,lock> a(0);  rshift (a,b,success,failure); }
+// { volatile atomic<foo,lock> a(0);  andeq  (a,b,success,failure); }
+// { volatile atomic<foo,lock> a(0);  oreq   (a,b,success,failure); }
+// { volatile atomic<foo,lock> a(0);  xoreq  (a,b,success,failure); }
+// { volatile atomic<foo,lock> a(0);  min    (a,b,success,failure); }
+// { volatile atomic<foo,lock> a(0);  max    (a,b,success,failure); }
+// { volatile atomic<foo,lock> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<foo,lock> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<foo,lock> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<foo,lock> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<foo,lock> a(0);  predec (a,  success,failure); }
+// { volatile atomic<foo,lock> a(0);  postdec(a,  success,failure); }
+
+//v{ volatile atomic<foo,serial> a(0);  add    (a,b); }
+//v{ volatile atomic<foo,serial> a(0);  sub    (a,b); }
+//v{ volatile atomic<foo,serial> a(0);  mul    (a,b); }
+//v{ volatile atomic<foo,serial> a(0);  div    (a,b); }
+//v{ volatile atomic<foo,serial> a(0);  mod    (a,b); }
+//v{ volatile atomic<foo,serial> a(0);  lshift (a,b); }
+//v{ volatile atomic<foo,serial> a(0);  rshift (a,b); }
+//v{ volatile atomic<foo,serial> a(0);  andeq  (a,b); }
+//v{ volatile atomic<foo,serial> a(0);  oreq   (a,b); }
+//v{ volatile atomic<foo,serial> a(0);  xoreq  (a,b); }
+//v{ volatile atomic<foo,serial> a(0);  min    (a,b); }
+//v{ volatile atomic<foo,serial> a(0);  max    (a,b); }
+//v{ volatile atomic<foo,serial> a(0);  inc    (a); }
+//v{ volatile atomic<foo,serial> a(0);  preinc (a); }
+//v{ volatile atomic<foo,serial> a(0);  postinc(a); }
+//v{ volatile atomic<foo,serial> a(0);  dec    (a); }
+//v{ volatile atomic<foo,serial> a(0);  predec (a); }
+//v{ volatile atomic<foo,serial> a(0);  postdec(a); }
+// { volatile atomic<foo,serial> a(0);  add    (a,b,sync); }
+// { volatile atomic<foo,serial> a(0);  sub    (a,b,sync); }
+// { volatile atomic<foo,serial> a(0);  mul    (a,b,sync); }
+// { volatile atomic<foo,serial> a(0);  div    (a,b,sync); }
+// { volatile atomic<foo,serial> a(0);  mod    (a,b,sync); }
+// { volatile atomic<foo,serial> a(0);  lshift (a,b,sync); }
+// { volatile atomic<foo,serial> a(0);  rshift (a,b,sync); }
+// { volatile atomic<foo,serial> a(0);  andeq  (a,b,sync); }
+// { volatile atomic<foo,serial> a(0);  oreq   (a,b,sync); }
+// { volatile atomic<foo,serial> a(0);  xoreq  (a,b,sync); }
+// { volatile atomic<foo,serial> a(0);  min    (a,b,sync); }
+// { volatile atomic<foo,serial> a(0);  max    (a,b,sync); }
+// { volatile atomic<foo,serial> a(0);  inc    (a,  sync); }
+// { volatile atomic<foo,serial> a(0);  preinc (a,  sync); }
+// { volatile atomic<foo,serial> a(0);  postinc(a,  sync); }
+// { volatile atomic<foo,serial> a(0);  dec    (a,  sync); }
+// { volatile atomic<foo,serial> a(0);  predec (a,  sync); }
+// { volatile atomic<foo,serial> a(0);  postdec(a,  sync); }
+// { volatile atomic<foo,serial> a(0);  add    (a,b,success,failure); }
+// { volatile atomic<foo,serial> a(0);  sub    (a,b,success,failure); }
+// { volatile atomic<foo,serial> a(0);  mul    (a,b,success,failure); }
+// { volatile atomic<foo,serial> a(0);  div    (a,b,success,failure); }
+// { volatile atomic<foo,serial> a(0);  mod    (a,b,success,failure); }
+// { volatile atomic<foo,serial> a(0);  lshift (a,b,success,failure); }
+// { volatile atomic<foo,serial> a(0);  rshift (a,b,success,failure); }
+// { volatile atomic<foo,serial> a(0);  andeq  (a,b,success,failure); }
+// { volatile atomic<foo,serial> a(0);  oreq   (a,b,success,failure); }
+// { volatile atomic<foo,serial> a(0);  xoreq  (a,b,success,failure); }
+// { volatile atomic<foo,serial> a(0);  min    (a,b,success,failure); }
+// { volatile atomic<foo,serial> a(0);  max    (a,b,success,failure); }
+// { volatile atomic<foo,serial> a(0);  inc    (a,  success,failure); }
+// { volatile atomic<foo,serial> a(0);  preinc (a,  success,failure); }
+// { volatile atomic<foo,serial> a(0);  postinc(a,  success,failure); }
+// { volatile atomic<foo,serial> a(0);  dec    (a,  success,failure); }
+// { volatile atomic<foo,serial> a(0);  predec (a,  success,failure); }
+// { volatile atomic<foo,serial> a(0);  postdec(a,  success,failure); }
 }

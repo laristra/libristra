@@ -2,7 +2,10 @@
 // Make atomic<> member functions for an atomic operation: add, sub, etc.
 // The atomics_* tokens are #defined before coming here.
 
-// no "memory order"
+// ------------------------
+// no memory order
+// ------------------------
+
 template<class S = SCHEME, class X>
 inline T atomics_fun(
    const X &val
@@ -10,7 +13,6 @@ inline T atomics_fun(
    return atomics::atomics_fun<S>(*this, val);
 }
 
-// no "memory order"; volatile
 template<class S = SCHEME, class X>
 inline T atomics_fun(
    const X &val
@@ -18,7 +20,11 @@ inline T atomics_fun(
    return atomics::atomics_fun<S>(*this, val);
 }
 
+
+// ------------------------
 // memory order sync
+// ------------------------
+
 template<class S = SCHEME, class X>
 inline T atomics_fun(
    const X &val,
@@ -27,7 +33,6 @@ inline T atomics_fun(
    return atomics::atomics_fun<S>(*this, val, sync);
 }
 
-// memory order sync; volatile
 template<class S = SCHEME, class X>
 inline T atomics_fun(
    const X &val,
@@ -36,7 +41,11 @@ inline T atomics_fun(
    return atomics::atomics_fun<S>(*this, val, sync);
 }
 
+
+// ------------------------
 // memory order success, failure
+// ------------------------
+
 template<class S = SCHEME, class X>
 inline T atomics_fun(
    const X &val,
@@ -46,7 +55,6 @@ inline T atomics_fun(
    return atomics::atomics_fun<S>(*this, val, success, failure);
 }
 
-// memory order success, failure; volatile
 template<class S = SCHEME, class X>
 inline T atomics_fun(
    const X &val,

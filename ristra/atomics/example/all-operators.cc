@@ -7,10 +7,10 @@ int *, std::complex<float>, and our user-defined class foo.
 
 Note: we're writing things in operator form (e.g. +=), not function form (e.g.
 member or namespace-scope add()). Also, for now, we're just illustrating all
-these operators. Nothing here is multithreaded; that will be in another example.
+these operators.
 */
 
-//#define ATOMICS_KOKKOS
+#define ATOMICS_KOKKOS
 #define ATOMICS_DEBUG
 #include "atomics.h"
 
@@ -33,6 +33,10 @@ int main()
    const bar b(2); // for the foo cases
 
 
+
+   // --------------------------------------------------------------------------
+   // non-volatile
+   // --------------------------------------------------------------------------
 
    // ------------------------
    // int
@@ -858,4 +862,851 @@ int main()
    { atomic<foo,serial> a(0);  a++; }
    { atomic<foo,serial> a(0);  --a; }
    { atomic<foo,serial> a(0);  a--; }
+
+
+
+   // --------------------------------------------------------------------------
+   // volatile
+   // --------------------------------------------------------------------------
+
+   // ------------------------
+   // int
+   // ------------------------
+
+   // cpp
+   { volatile atomic<int,cpp> a(0);  a +=  2; }
+   { volatile atomic<int,cpp> a(0);  a -=  2; }
+// { volatile atomic<int,cpp> a(0);  a *=  2; }  // std::atomic<int> has no *=
+// { volatile atomic<int,cpp> a(0);  a /=  2; }  // ...
+// { volatile atomic<int,cpp> a(0);  a %=  2; }  // ...
+// { volatile atomic<int,cpp> a(0);  a <<= 2; }  // ...
+// { volatile atomic<int,cpp> a(0);  a >>= 2; }  // ...
+   { volatile atomic<int,cpp> a(0);  a &=  2; }
+   { volatile atomic<int,cpp> a(0);  a |=  2; }
+   { volatile atomic<int,cpp> a(0);  a ^=  2; }
+   { volatile atomic<int,cpp> a(0);  ++a; }
+   { volatile atomic<int,cpp> a(0);  a++; }
+   { volatile atomic<int,cpp> a(0);  --a; }
+   { volatile atomic<int,cpp> a(0);  a--; }
+
+   // kokkos
+   #if defined(ATOMICS_KOKKOS)
+   { volatile atomic<int,kokkos> a(0);  a +=  2; }
+   { volatile atomic<int,kokkos> a(0);  a -=  2; }
+   { volatile atomic<int,kokkos> a(0);  a *=  2; }
+   { volatile atomic<int,kokkos> a(0);  a /=  2; }
+   { volatile atomic<int,kokkos> a(0);  a %=  2; }
+   { volatile atomic<int,kokkos> a(0);  a <<= 2; }
+   { volatile atomic<int,kokkos> a(0);  a >>= 2; }
+   { volatile atomic<int,kokkos> a(0);  a &=  2; }
+   { volatile atomic<int,kokkos> a(0);  a |=  2; }
+   { volatile atomic<int,kokkos> a(0);  a ^=  2; }
+   { volatile atomic<int,kokkos> a(0);  ++a; }
+   { volatile atomic<int,kokkos> a(0);  a++; }
+   { volatile atomic<int,kokkos> a(0);  --a; }
+   { volatile atomic<int,kokkos> a(0);  a--; }
+   #endif
+
+   // strong
+   { volatile atomic<int,strong> a(0);  a +=  2; }
+   { volatile atomic<int,strong> a(0);  a -=  2; }
+   { volatile atomic<int,strong> a(0);  a *=  2; }
+   { volatile atomic<int,strong> a(0);  a /=  2; }
+   { volatile atomic<int,strong> a(0);  a %=  2; }
+   { volatile atomic<int,strong> a(0);  a <<= 2; }
+   { volatile atomic<int,strong> a(0);  a >>= 2; }
+   { volatile atomic<int,strong> a(0);  a &=  2; }
+   { volatile atomic<int,strong> a(0);  a |=  2; }
+   { volatile atomic<int,strong> a(0);  a ^=  2; }
+   { volatile atomic<int,strong> a(0);  ++a; }
+   { volatile atomic<int,strong> a(0);  a++; }
+   { volatile atomic<int,strong> a(0);  --a; }
+   { volatile atomic<int,strong> a(0);  a--; }
+
+   // strong::pun
+   { volatile atomic<int,strong::pun> a(0);  a +=  2; }
+   { volatile atomic<int,strong::pun> a(0);  a -=  2; }
+   { volatile atomic<int,strong::pun> a(0);  a *=  2; }
+   { volatile atomic<int,strong::pun> a(0);  a /=  2; }
+   { volatile atomic<int,strong::pun> a(0);  a %=  2; }
+   { volatile atomic<int,strong::pun> a(0);  a <<= 2; }
+   { volatile atomic<int,strong::pun> a(0);  a >>= 2; }
+   { volatile atomic<int,strong::pun> a(0);  a &=  2; }
+   { volatile atomic<int,strong::pun> a(0);  a |=  2; }
+   { volatile atomic<int,strong::pun> a(0);  a ^=  2; }
+   { volatile atomic<int,strong::pun> a(0);  ++a; }
+   { volatile atomic<int,strong::pun> a(0);  a++; }
+   { volatile atomic<int,strong::pun> a(0);  --a; }
+   { volatile atomic<int,strong::pun> a(0);  a--; }
+
+   // weak
+   { volatile atomic<int,weak> a(0);  a +=  2; }
+   { volatile atomic<int,weak> a(0);  a -=  2; }
+   { volatile atomic<int,weak> a(0);  a *=  2; }
+   { volatile atomic<int,weak> a(0);  a /=  2; }
+   { volatile atomic<int,weak> a(0);  a %=  2; }
+   { volatile atomic<int,weak> a(0);  a <<= 2; }
+   { volatile atomic<int,weak> a(0);  a >>= 2; }
+   { volatile atomic<int,weak> a(0);  a &=  2; }
+   { volatile atomic<int,weak> a(0);  a |=  2; }
+   { volatile atomic<int,weak> a(0);  a ^=  2; }
+   { volatile atomic<int,weak> a(0);  ++a; }
+   { volatile atomic<int,weak> a(0);  a++; }
+   { volatile atomic<int,weak> a(0);  --a; }
+   { volatile atomic<int,weak> a(0);  a--; }
+
+   // weak::pun
+   { volatile atomic<int,weak::pun> a(0);  a +=  2; }
+   { volatile atomic<int,weak::pun> a(0);  a -=  2; }
+   { volatile atomic<int,weak::pun> a(0);  a *=  2; }
+   { volatile atomic<int,weak::pun> a(0);  a /=  2; }
+   { volatile atomic<int,weak::pun> a(0);  a %=  2; }
+   { volatile atomic<int,weak::pun> a(0);  a <<= 2; }
+   { volatile atomic<int,weak::pun> a(0);  a >>= 2; }
+   { volatile atomic<int,weak::pun> a(0);  a &=  2; }
+   { volatile atomic<int,weak::pun> a(0);  a |=  2; }
+   { volatile atomic<int,weak::pun> a(0);  a ^=  2; }
+   { volatile atomic<int,weak::pun> a(0);  ++a; }
+   { volatile atomic<int,weak::pun> a(0);  a++; }
+   { volatile atomic<int,weak::pun> a(0);  --a; }
+   { volatile atomic<int,weak::pun> a(0);  a--; }
+
+   // lock
+   { volatile atomic<int,lock> a(0);  a +=  2; }
+   { volatile atomic<int,lock> a(0);  a -=  2; }
+   { volatile atomic<int,lock> a(0);  a *=  2; }
+   { volatile atomic<int,lock> a(0);  a /=  2; }
+   { volatile atomic<int,lock> a(0);  a %=  2; }
+   { volatile atomic<int,lock> a(0);  a <<= 2; }
+   { volatile atomic<int,lock> a(0);  a >>= 2; }
+   { volatile atomic<int,lock> a(0);  a &=  2; }
+   { volatile atomic<int,lock> a(0);  a |=  2; }
+   { volatile atomic<int,lock> a(0);  a ^=  2; }
+   { volatile atomic<int,lock> a(0);  ++a; }
+   { volatile atomic<int,lock> a(0);  a++; }
+   { volatile atomic<int,lock> a(0);  --a; }
+   { volatile atomic<int,lock> a(0);  a--; }
+
+   // serial
+   { volatile atomic<int,serial> a(0);  a +=  2; }
+   { volatile atomic<int,serial> a(0);  a -=  2; }
+   { volatile atomic<int,serial> a(0);  a *=  2; }
+   { volatile atomic<int,serial> a(0);  a /=  2; }
+   { volatile atomic<int,serial> a(0);  a %=  2; }
+   { volatile atomic<int,serial> a(0);  a <<= 2; }
+   { volatile atomic<int,serial> a(0);  a >>= 2; }
+   { volatile atomic<int,serial> a(0);  a &=  2; }
+   { volatile atomic<int,serial> a(0);  a |=  2; }
+   { volatile atomic<int,serial> a(0);  a ^=  2; }
+   { volatile atomic<int,serial> a(0);  ++a; }
+   { volatile atomic<int,serial> a(0);  a++; }
+   { volatile atomic<int,serial> a(0);  --a; }
+   { volatile atomic<int,serial> a(0);  a--; }
+
+
+
+   // ------------------------
+   // unsigned long
+   // ------------------------
+
+   // cpp
+   { volatile atomic<ulong,cpp> a(0);  a +=  2; }
+   { volatile atomic<ulong,cpp> a(0);  a -=  2; }
+// { volatile atomic<ulong,cpp> a(0);  a *=  2; }  // std::atomic<ulong> has no *=
+// { volatile atomic<ulong,cpp> a(0);  a /=  2; }  // ...
+// { volatile atomic<ulong,cpp> a(0);  a %=  2; }  // ...
+// { volatile atomic<ulong,cpp> a(0);  a <<= 2; }  // ...
+// { volatile atomic<ulong,cpp> a(0);  a >>= 2; }  // ...
+   { volatile atomic<ulong,cpp> a(0);  a &=  2; }
+   { volatile atomic<ulong,cpp> a(0);  a |=  2; }
+   { volatile atomic<ulong,cpp> a(0);  a ^=  2; }
+   { volatile atomic<ulong,cpp> a(0);  ++a; }
+   { volatile atomic<ulong,cpp> a(0);  a++; }
+   { volatile atomic<ulong,cpp> a(0);  --a; }
+   { volatile atomic<ulong,cpp> a(0);  a--; }
+
+   // kokkos
+   #if defined(ATOMICS_KOKKOS)
+   { volatile atomic<ulong,kokkos> a(0);  a +=  2; }
+   { volatile atomic<ulong,kokkos> a(0);  a -=  2; }
+   { volatile atomic<ulong,kokkos> a(0);  a *=  2; }
+   { volatile atomic<ulong,kokkos> a(0);  a /=  2; }
+   { volatile atomic<ulong,kokkos> a(0);  a %=  2; }
+   { volatile atomic<ulong,kokkos> a(0);  a <<= 2; }
+   { volatile atomic<ulong,kokkos> a(0);  a >>= 2; }
+   { volatile atomic<ulong,kokkos> a(0);  a &=  2; }
+   { volatile atomic<ulong,kokkos> a(0);  a |=  2; }
+   { volatile atomic<ulong,kokkos> a(0);  a ^=  2; }
+   { volatile atomic<ulong,kokkos> a(0);  ++a; }
+   { volatile atomic<ulong,kokkos> a(0);  a++; }
+   { volatile atomic<ulong,kokkos> a(0);  --a; }
+   { volatile atomic<ulong,kokkos> a(0);  a--; }
+   #endif
+
+   // strong
+   { volatile atomic<ulong,strong> a(0);  a +=  2; }
+   { volatile atomic<ulong,strong> a(0);  a -=  2; }
+   { volatile atomic<ulong,strong> a(0);  a *=  2; }
+   { volatile atomic<ulong,strong> a(0);  a /=  2; }
+   { volatile atomic<ulong,strong> a(0);  a %=  2; }
+   { volatile atomic<ulong,strong> a(0);  a <<= 2; }
+   { volatile atomic<ulong,strong> a(0);  a >>= 2; }
+   { volatile atomic<ulong,strong> a(0);  a &=  2; }
+   { volatile atomic<ulong,strong> a(0);  a |=  2; }
+   { volatile atomic<ulong,strong> a(0);  a ^=  2; }
+   { volatile atomic<ulong,strong> a(0);  ++a; }
+   { volatile atomic<ulong,strong> a(0);  a++; }
+   { volatile atomic<ulong,strong> a(0);  --a; }
+   { volatile atomic<ulong,strong> a(0);  a--; }
+
+   // strong::pun
+   { volatile atomic<ulong,strong::pun> a(0);  a +=  2; }
+   { volatile atomic<ulong,strong::pun> a(0);  a -=  2; }
+   { volatile atomic<ulong,strong::pun> a(0);  a *=  2; }
+   { volatile atomic<ulong,strong::pun> a(0);  a /=  2; }
+   { volatile atomic<ulong,strong::pun> a(0);  a %=  2; }
+   { volatile atomic<ulong,strong::pun> a(0);  a <<= 2; }
+   { volatile atomic<ulong,strong::pun> a(0);  a >>= 2; }
+   { volatile atomic<ulong,strong::pun> a(0);  a &=  2; }
+   { volatile atomic<ulong,strong::pun> a(0);  a |=  2; }
+   { volatile atomic<ulong,strong::pun> a(0);  a ^=  2; }
+   { volatile atomic<ulong,strong::pun> a(0);  ++a; }
+   { volatile atomic<ulong,strong::pun> a(0);  a++; }
+   { volatile atomic<ulong,strong::pun> a(0);  --a; }
+   { volatile atomic<ulong,strong::pun> a(0);  a--; }
+
+   // weak
+   { volatile atomic<ulong,weak> a(0);  a +=  2; }
+   { volatile atomic<ulong,weak> a(0);  a -=  2; }
+   { volatile atomic<ulong,weak> a(0);  a *=  2; }
+   { volatile atomic<ulong,weak> a(0);  a /=  2; }
+   { volatile atomic<ulong,weak> a(0);  a %=  2; }
+   { volatile atomic<ulong,weak> a(0);  a <<= 2; }
+   { volatile atomic<ulong,weak> a(0);  a >>= 2; }
+   { volatile atomic<ulong,weak> a(0);  a &=  2; }
+   { volatile atomic<ulong,weak> a(0);  a |=  2; }
+   { volatile atomic<ulong,weak> a(0);  a ^=  2; }
+   { volatile atomic<ulong,weak> a(0);  ++a; }
+   { volatile atomic<ulong,weak> a(0);  a++; }
+   { volatile atomic<ulong,weak> a(0);  --a; }
+   { volatile atomic<ulong,weak> a(0);  a--; }
+
+   // weak::pun
+   { volatile atomic<ulong,weak::pun> a(0);  a +=  2; }
+   { volatile atomic<ulong,weak::pun> a(0);  a -=  2; }
+   { volatile atomic<ulong,weak::pun> a(0);  a *=  2; }
+   { volatile atomic<ulong,weak::pun> a(0);  a /=  2; }
+   { volatile atomic<ulong,weak::pun> a(0);  a %=  2; }
+   { volatile atomic<ulong,weak::pun> a(0);  a <<= 2; }
+   { volatile atomic<ulong,weak::pun> a(0);  a >>= 2; }
+   { volatile atomic<ulong,weak::pun> a(0);  a &=  2; }
+   { volatile atomic<ulong,weak::pun> a(0);  a |=  2; }
+   { volatile atomic<ulong,weak::pun> a(0);  a ^=  2; }
+   { volatile atomic<ulong,weak::pun> a(0);  ++a; }
+   { volatile atomic<ulong,weak::pun> a(0);  a++; }
+   { volatile atomic<ulong,weak::pun> a(0);  --a; }
+   { volatile atomic<ulong,weak::pun> a(0);  a--; }
+
+   // lock
+   { volatile atomic<ulong,lock> a(0);  a +=  2; }
+   { volatile atomic<ulong,lock> a(0);  a -=  2; }
+   { volatile atomic<ulong,lock> a(0);  a *=  2; }
+   { volatile atomic<ulong,lock> a(0);  a /=  2; }
+   { volatile atomic<ulong,lock> a(0);  a %=  2; }
+   { volatile atomic<ulong,lock> a(0);  a <<= 2; }
+   { volatile atomic<ulong,lock> a(0);  a >>= 2; }
+   { volatile atomic<ulong,lock> a(0);  a &=  2; }
+   { volatile atomic<ulong,lock> a(0);  a |=  2; }
+   { volatile atomic<ulong,lock> a(0);  a ^=  2; }
+   { volatile atomic<ulong,lock> a(0);  ++a; }
+   { volatile atomic<ulong,lock> a(0);  a++; }
+   { volatile atomic<ulong,lock> a(0);  --a; }
+   { volatile atomic<ulong,lock> a(0);  a--; }
+
+   // serial
+   { volatile atomic<ulong,serial> a(0);  a +=  2; }
+   { volatile atomic<ulong,serial> a(0);  a -=  2; }
+   { volatile atomic<ulong,serial> a(0);  a *=  2; }
+   { volatile atomic<ulong,serial> a(0);  a /=  2; }
+   { volatile atomic<ulong,serial> a(0);  a %=  2; }
+   { volatile atomic<ulong,serial> a(0);  a <<= 2; }
+   { volatile atomic<ulong,serial> a(0);  a >>= 2; }
+   { volatile atomic<ulong,serial> a(0);  a &=  2; }
+   { volatile atomic<ulong,serial> a(0);  a |=  2; }
+   { volatile atomic<ulong,serial> a(0);  a ^=  2; }
+   { volatile atomic<ulong,serial> a(0);  ++a; }
+   { volatile atomic<ulong,serial> a(0);  a++; }
+   { volatile atomic<ulong,serial> a(0);  --a; }
+   { volatile atomic<ulong,serial> a(0);  a--; }
+
+
+
+   // ------------------------
+   // double
+   // ------------------------
+
+   // cpp <== meaning C++ std::atomic<T> must have these
+// { volatile atomic<double,cpp> a(0);  a +=  2; }  // std::atomic<double> has no +=
+// { volatile atomic<double,cpp> a(0);  a -=  2; }  // ...
+// { volatile atomic<double,cpp> a(0);  a *=  2; }  // ...
+// { volatile atomic<double,cpp> a(0);  a /=  2; }  // ...
+// { volatile atomic<double,cpp> a(0);  a %=  2; }  // ...also no %= for plain double
+// { volatile atomic<double,cpp> a(0);  a <<= 2; }  // ...
+// { volatile atomic<double,cpp> a(0);  a >>= 2; }  // ...
+// { volatile atomic<double,cpp> a(0);  a &=  2; }  // ...
+// { volatile atomic<double,cpp> a(0);  a |=  2; }  // ...
+// { volatile atomic<double,cpp> a(0);  a ^=  2; }  // ...
+// { volatile atomic<double,cpp> a(0);  ++a; }  // ...Remember, the issue here again
+// { volatile atomic<double,cpp> a(0);  a++; }  // ...is that std::atomic for double
+// { volatile atomic<double,cpp> a(0);  --a; }  // ...doesn't support ++ and --, even
+// { volatile atomic<double,cpp> a(0);  a--; }  // ...though plain double has those.
+
+   // kokkos
+   #if defined(ATOMICS_KOKKOS)
+   { volatile atomic<double,kokkos> a(0);  a +=  2; }
+   { volatile atomic<double,kokkos> a(0);  a -=  2; }
+   { volatile atomic<double,kokkos> a(0);  a *=  2; }
+   { volatile atomic<double,kokkos> a(0);  a /=  2; }
+// { volatile atomic<double,kokkos> a(0);  a %=  2; }  // C++ has no %= for double
+// { volatile atomic<double,kokkos> a(0);  a <<= 2; }  // ...
+// { volatile atomic<double,kokkos> a(0);  a >>= 2; }  // ...
+// { volatile atomic<double,kokkos> a(0);  a &=  2; }  // ...
+// { volatile atomic<double,kokkos> a(0);  a |=  2; }  // ...
+// { volatile atomic<double,kokkos> a(0);  a ^=  2; }  // ...
+   { volatile atomic<double,kokkos> a(0);  ++a; }
+   { volatile atomic<double,kokkos> a(0);  a++; }
+   { volatile atomic<double,kokkos> a(0);  --a; }
+   { volatile atomic<double,kokkos> a(0);  a--; }
+   #endif
+
+   // strong
+   { volatile atomic<double,strong> a(0);  a +=  2; }
+   { volatile atomic<double,strong> a(0);  a -=  2; }
+   { volatile atomic<double,strong> a(0);  a *=  2; }
+   { volatile atomic<double,strong> a(0);  a /=  2; }
+// { volatile atomic<double,strong> a(0);  a %=  2; }  // C++ has no %= for double
+// { volatile atomic<double,strong> a(0);  a <<= 2; }  // ...
+// { volatile atomic<double,strong> a(0);  a >>= 2; }  // ...
+// { volatile atomic<double,strong> a(0);  a &=  2; }  // ...
+// { volatile atomic<double,strong> a(0);  a |=  2; }  // ...
+// { volatile atomic<double,strong> a(0);  a ^=  2; }  // ...
+   { volatile atomic<double,strong> a(0);  ++a; }
+   { volatile atomic<double,strong> a(0);  a++; }
+   { volatile atomic<double,strong> a(0);  --a; }
+   { volatile atomic<double,strong> a(0);  a--; }
+
+   // strong::pun
+   { volatile atomic<double,strong::pun> a(0);  a +=  2; }
+   { volatile atomic<double,strong::pun> a(0);  a -=  2; }
+   { volatile atomic<double,strong::pun> a(0);  a *=  2; }
+   { volatile atomic<double,strong::pun> a(0);  a /=  2; }
+// { volatile atomic<double,strong::pun> a(0);  a %=  2; }  // C++ has no %= for double
+// { volatile atomic<double,strong::pun> a(0);  a <<= 2; }  // ...
+// { volatile atomic<double,strong::pun> a(0);  a >>= 2; }  // ...
+// { volatile atomic<double,strong::pun> a(0);  a &=  2; }  // ...
+// { volatile atomic<double,strong::pun> a(0);  a |=  2; }  // ...
+// { volatile atomic<double,strong::pun> a(0);  a ^=  2; }  // ...
+   { volatile atomic<double,strong::pun> a(0);  ++a; }
+   { volatile atomic<double,strong::pun> a(0);  a++; }
+   { volatile atomic<double,strong::pun> a(0);  --a; }
+   { volatile atomic<double,strong::pun> a(0);  a--; }
+
+   // weak
+   { volatile atomic<double,weak> a(0);  a +=  2; }
+   { volatile atomic<double,weak> a(0);  a -=  2; }
+   { volatile atomic<double,weak> a(0);  a *=  2; }
+   { volatile atomic<double,weak> a(0);  a /=  2; }
+// { volatile atomic<double,weak> a(0);  a %=  2; }  // C++ has no %= for double
+// { volatile atomic<double,weak> a(0);  a <<= 2; }  // ...
+// { volatile atomic<double,weak> a(0);  a >>= 2; }  // ...
+// { volatile atomic<double,weak> a(0);  a &=  2; }  // ...
+// { volatile atomic<double,weak> a(0);  a |=  2; }  // ...
+// { volatile atomic<double,weak> a(0);  a ^=  2; }  // ...
+   { volatile atomic<double,weak> a(0);  ++a; }
+   { volatile atomic<double,weak> a(0);  a++; }
+   { volatile atomic<double,weak> a(0);  --a; }
+   { volatile atomic<double,weak> a(0);  a--; }
+
+   // weak::pun
+   { volatile atomic<double,weak::pun> a(0);  a +=  2; }
+   { volatile atomic<double,weak::pun> a(0);  a -=  2; }
+   { volatile atomic<double,weak::pun> a(0);  a *=  2; }
+   { volatile atomic<double,weak::pun> a(0);  a /=  2; }
+// { volatile atomic<double,weak::pun> a(0);  a %=  2; }  // C++ has no %= for double
+// { volatile atomic<double,weak::pun> a(0);  a <<= 2; }  // ...
+// { volatile atomic<double,weak::pun> a(0);  a >>= 2; }  // ...
+// { volatile atomic<double,weak::pun> a(0);  a &=  2; }  // ...
+// { volatile atomic<double,weak::pun> a(0);  a |=  2; }  // ...
+// { volatile atomic<double,weak::pun> a(0);  a ^=  2; }  // ...
+   { volatile atomic<double,weak::pun> a(0);  ++a; }
+   { volatile atomic<double,weak::pun> a(0);  a++; }
+   { volatile atomic<double,weak::pun> a(0);  --a; }
+   { volatile atomic<double,weak::pun> a(0);  a--; }
+
+   // lock
+   { volatile atomic<double,lock> a(0);  a +=  2; }
+   { volatile atomic<double,lock> a(0);  a -=  2; }
+   { volatile atomic<double,lock> a(0);  a *=  2; }
+   { volatile atomic<double,lock> a(0);  a /=  2; }
+// { volatile atomic<double,lock> a(0);  a %=  2; }  // C++ has no %= for double
+// { volatile atomic<double,lock> a(0);  a <<= 2; }  // ...
+// { volatile atomic<double,lock> a(0);  a >>= 2; }  // ...
+// { volatile atomic<double,lock> a(0);  a &=  2; }  // ...
+// { volatile atomic<double,lock> a(0);  a |=  2; }  // ...
+// { volatile atomic<double,lock> a(0);  a ^=  2; }  // ...
+   { volatile atomic<double,lock> a(0);  ++a; }
+   { volatile atomic<double,lock> a(0);  a++; }
+   { volatile atomic<double,lock> a(0);  --a; }
+   { volatile atomic<double,lock> a(0);  a--; }
+
+   // serial
+   { volatile atomic<double,serial> a(0);  a +=  2; }
+   { volatile atomic<double,serial> a(0);  a -=  2; }
+   { volatile atomic<double,serial> a(0);  a *=  2; }
+   { volatile atomic<double,serial> a(0);  a /=  2; }
+// { volatile atomic<double,serial> a(0);  a %=  2; }  // C++ has no %= for double
+// { volatile atomic<double,serial> a(0);  a <<= 2; }  // ...
+// { volatile atomic<double,serial> a(0);  a >>= 2; }  // ...
+// { volatile atomic<double,serial> a(0);  a &=  2; }  // ...
+// { volatile atomic<double,serial> a(0);  a |=  2; }  // ...
+// { volatile atomic<double,serial> a(0);  a ^=  2; }  // ...
+   { volatile atomic<double,serial> a(0);  ++a; }
+   { volatile atomic<double,serial> a(0);  a++; }
+   { volatile atomic<double,serial> a(0);  --a; }
+   { volatile atomic<double,serial> a(0);  a--; }
+
+
+
+   // ------------------------
+   // int *
+   // So: pointer arithmetic
+   // ------------------------
+
+   // cpp
+   { volatile atomic<int*,cpp> a(&i);  a +=  2; }
+   { volatile atomic<int*,cpp> a(&i);  a -=  2; }
+// { volatile atomic<int*,cpp> a(&i);  a *=  2; }  // C++ has no *= for pointer
+// { volatile atomic<int*,cpp> a(&i);  a /=  2; }  // ...
+// { volatile atomic<int*,cpp> a(&i);  a %=  2; }  // ...
+// { volatile atomic<int*,cpp> a(&i);  a <<= 2; }  // ...
+// { volatile atomic<int*,cpp> a(&i);  a >>= 2; }  // ...
+// { volatile atomic<int*,cpp> a(&i);  a &=  2; }  // ...
+// { volatile atomic<int*,cpp> a(&i);  a |=  2; }  // ...
+// { volatile atomic<int*,cpp> a(&i);  a ^=  2; }  // ...
+   { volatile atomic<int*,cpp> a(&i);  ++a; }
+   { volatile atomic<int*,cpp> a(&i);  a++; }
+   { volatile atomic<int*,cpp> a(&i);  --a; }
+   { volatile atomic<int*,cpp> a(&i);  a--; }
+
+   // kokkos
+   #if defined(ATOMICS_KOKKOS)
+// { volatile atomic<int*,kokkos> a(&i);  a +=  2; }  // Kokkos has nothing for pointers
+// { volatile atomic<int*,kokkos> a(&i);  a -=  2; }  // ...
+// { volatile atomic<int*,kokkos> a(&i);  a *=  2; }  // ...
+// { volatile atomic<int*,kokkos> a(&i);  a /=  2; }  // ...
+// { volatile atomic<int*,kokkos> a(&i);  a %=  2; }  // ...
+// { volatile atomic<int*,kokkos> a(&i);  a <<= 2; }  // ...
+// { volatile atomic<int*,kokkos> a(&i);  a >>= 2; }  // ...
+// { volatile atomic<int*,kokkos> a(&i);  a &=  2; }  // ...
+// { volatile atomic<int*,kokkos> a(&i);  a |=  2; }  // ...
+// { volatile atomic<int*,kokkos> a(&i);  a ^=  2; }  // ...
+// { volatile atomic<int*,kokkos> a(&i);  ++a; }  // ...
+// { volatile atomic<int*,kokkos> a(&i);  a++; }  // ...
+// { volatile atomic<int*,kokkos> a(&i);  --a; }  // ...
+// { volatile atomic<int*,kokkos> a(&i);  a--; }  // ...
+   #endif
+
+   // strong
+   { volatile atomic<int*,strong> a(&i);  a +=  2; }
+   { volatile atomic<int*,strong> a(&i);  a -=  2; }
+// { volatile atomic<int*,strong> a(&i);  a *=  2; }  // C++ has no *= for pointer
+// { volatile atomic<int*,strong> a(&i);  a /=  2; }  // ...
+// { volatile atomic<int*,strong> a(&i);  a %=  2; }  // ...
+// { volatile atomic<int*,strong> a(&i);  a <<= 2; }  // ...
+// { volatile atomic<int*,strong> a(&i);  a >>= 2; }  // ...
+// { volatile atomic<int*,strong> a(&i);  a &=  2; }  // ...
+// { volatile atomic<int*,strong> a(&i);  a |=  2; }  // ...
+// { volatile atomic<int*,strong> a(&i);  a ^=  2; }  // ...
+   { volatile atomic<int*,strong> a(&i);  ++a; }
+   { volatile atomic<int*,strong> a(&i);  a++; }
+   { volatile atomic<int*,strong> a(&i);  --a; }
+   { volatile atomic<int*,strong> a(&i);  a--; }
+
+   // strong::pun
+   { volatile atomic<int*,strong::pun> a(&i);  a +=  2; }
+   { volatile atomic<int*,strong::pun> a(&i);  a -=  2; }
+// { volatile atomic<int*,strong::pun> a(&i);  a *=  2; }  // C++ has no *= for pointer
+// { volatile atomic<int*,strong::pun> a(&i);  a /=  2; }  // ...
+// { volatile atomic<int*,strong::pun> a(&i);  a %=  2; }  // ...
+// { volatile atomic<int*,strong::pun> a(&i);  a <<= 2; }  // ...
+// { volatile atomic<int*,strong::pun> a(&i);  a >>= 2; }  // ...
+// { volatile atomic<int*,strong::pun> a(&i);  a &=  2; }  // ...
+// { volatile atomic<int*,strong::pun> a(&i);  a |=  2; }  // ...
+// { volatile atomic<int*,strong::pun> a(&i);  a ^=  2; }  // ...
+   { volatile atomic<int*,strong::pun> a(&i);  ++a; }
+   { volatile atomic<int*,strong::pun> a(&i);  a++; }
+   { volatile atomic<int*,strong::pun> a(&i);  --a; }
+   { volatile atomic<int*,strong::pun> a(&i);  a--; }
+
+   // weak
+   { volatile atomic<int*,weak> a(&i);  a +=  2; }
+   { volatile atomic<int*,weak> a(&i);  a -=  2; }
+// { volatile atomic<int*,weak> a(&i);  a *=  2; }  // C++ has no *= for pointer
+// { volatile atomic<int*,weak> a(&i);  a /=  2; }  // ...
+// { volatile atomic<int*,weak> a(&i);  a %=  2; }  // ...
+// { volatile atomic<int*,weak> a(&i);  a <<= 2; }  // ...
+// { volatile atomic<int*,weak> a(&i);  a >>= 2; }  // ...
+// { volatile atomic<int*,weak> a(&i);  a &=  2; }  // ...
+// { volatile atomic<int*,weak> a(&i);  a |=  2; }  // ...
+// { volatile atomic<int*,weak> a(&i);  a ^=  2; }  // ...
+   { volatile atomic<int*,weak> a(&i);  ++a; }
+   { volatile atomic<int*,weak> a(&i);  a++; }
+   { volatile atomic<int*,weak> a(&i);  --a; }
+   { volatile atomic<int*,weak> a(&i);  a--; }
+
+   // weak::pun
+   { volatile atomic<int*,weak::pun> a(&i);  a +=  2; }
+   { volatile atomic<int*,weak::pun> a(&i);  a -=  2; }
+// { volatile atomic<int*,weak::pun> a(&i);  a *=  2; }  // C++ has no *= for pointer
+// { volatile atomic<int*,weak::pun> a(&i);  a /=  2; }  // ...
+// { volatile atomic<int*,weak::pun> a(&i);  a %=  2; }  // ...
+// { volatile atomic<int*,weak::pun> a(&i);  a <<= 2; }  // ...
+// { volatile atomic<int*,weak::pun> a(&i);  a >>= 2; }  // ...
+// { volatile atomic<int*,weak::pun> a(&i);  a &=  2; }  // ...
+// { volatile atomic<int*,weak::pun> a(&i);  a |=  2; }  // ...
+// { volatile atomic<int*,weak::pun> a(&i);  a ^=  2; }  // ...
+   { volatile atomic<int*,weak::pun> a(&i);  ++a; }
+   { volatile atomic<int*,weak::pun> a(&i);  a++; }
+   { volatile atomic<int*,weak::pun> a(&i);  --a; }
+   { volatile atomic<int*,weak::pun> a(&i);  a--; }
+
+   // lock
+   { volatile atomic<int*,lock> a(&i);  a +=  2; }
+   { volatile atomic<int*,lock> a(&i);  a -=  2; }
+// { volatile atomic<int*,lock> a(&i);  a *=  2; }  // C++ has no *= for pointer
+// { volatile atomic<int*,lock> a(&i);  a /=  2; }  // ...
+// { volatile atomic<int*,lock> a(&i);  a %=  2; }  // ...
+// { volatile atomic<int*,lock> a(&i);  a <<= 2; }  // ...
+// { volatile atomic<int*,lock> a(&i);  a >>= 2; }  // ...
+// { volatile atomic<int*,lock> a(&i);  a &=  2; }  // ...
+// { volatile atomic<int*,lock> a(&i);  a |=  2; }  // ...
+// { volatile atomic<int*,lock> a(&i);  a ^=  2; }  // ...
+   { volatile atomic<int*,lock> a(&i);  ++a; }
+   { volatile atomic<int*,lock> a(&i);  a++; }
+   { volatile atomic<int*,lock> a(&i);  --a; }
+   { volatile atomic<int*,lock> a(&i);  a--; }
+
+   // serial
+   { volatile atomic<int*,serial> a(&i);  a +=  2; }
+   { volatile atomic<int*,serial> a(&i);  a -=  2; }
+// { volatile atomic<int*,serial> a(&i);  a *=  2; }  // C++ has no *= for pointer
+// { volatile atomic<int*,serial> a(&i);  a /=  2; }  // ...
+// { volatile atomic<int*,serial> a(&i);  a %=  2; }  // ...
+// { volatile atomic<int*,serial> a(&i);  a <<= 2; }  // ...
+// { volatile atomic<int*,serial> a(&i);  a >>= 2; }  // ...
+// { volatile atomic<int*,serial> a(&i);  a &=  2; }  // ...
+// { volatile atomic<int*,serial> a(&i);  a |=  2; }  // ...
+// { volatile atomic<int*,serial> a(&i);  a ^=  2; }  // ...
+   { volatile atomic<int*,serial> a(&i);  ++a; }
+   { volatile atomic<int*,serial> a(&i);  a++; }
+   { volatile atomic<int*,serial> a(&i);  --a; }
+   { volatile atomic<int*,serial> a(&i);  a--; }
+
+
+
+   // ------------------------
+   // std::complex
+   // ------------------------
+
+   // cpp
+// { volatile atomic<cmplx,cpp> a(0);  a +=  c; } // C++ atomics don't support complex
+// { volatile atomic<cmplx,cpp> a(0);  a -=  c; } // ...
+// { volatile atomic<cmplx,cpp> a(0);  a *=  c; } // ...
+// { volatile atomic<cmplx,cpp> a(0);  a /=  c; } // ...
+// { volatile atomic<cmplx,cpp> a(0);  a %=  c; } // ...
+// { volatile atomic<cmplx,cpp> a(0);  a <<= c; } // ...
+// { volatile atomic<cmplx,cpp> a(0);  a >>= c; } // ...
+// { volatile atomic<cmplx,cpp> a(0);  a &=  c; } // ...
+// { volatile atomic<cmplx,cpp> a(0);  a |=  c; } // ...
+// { volatile atomic<cmplx,cpp> a(0);  a ^=  c; } // ...
+// { volatile atomic<cmplx,cpp> a(0);  ++a; } // ...
+// { volatile atomic<cmplx,cpp> a(0);  a++; } // ...
+// { volatile atomic<cmplx,cpp> a(0);  --a; } // ...
+// { volatile atomic<cmplx,cpp> a(0);  a--; } // ...
+
+   // kokkos
+   #if defined(ATOMICS_KOKKOS)
+// { volatile atomic<cmplx,kokkos> a(0);  a +=  c; } // Kokkos atomics don't either
+// { volatile atomic<cmplx,kokkos> a(0);  a -=  c; } // ...
+// { volatile atomic<cmplx,kokkos> a(0);  a *=  c; } // ...
+// { volatile atomic<cmplx,kokkos> a(0);  a /=  c; } // ...
+// { volatile atomic<cmplx,kokkos> a(0);  a %=  c; } // ...
+// { volatile atomic<cmplx,kokkos> a(0);  a <<= c; } // ...
+// { volatile atomic<cmplx,kokkos> a(0);  a >>= c; } // ...
+// { volatile atomic<cmplx,kokkos> a(0);  a &=  c; } // ...
+// { volatile atomic<cmplx,kokkos> a(0);  a |=  c; } // ...
+// { volatile atomic<cmplx,kokkos> a(0);  a ^=  c; } // ...
+// { volatile atomic<cmplx,kokkos> a(0);  ++a; } // ...
+// { volatile atomic<cmplx,kokkos> a(0);  a++; } // ...
+// { volatile atomic<cmplx,kokkos> a(0);  --a; } // ...
+// { volatile atomic<cmplx,kokkos> a(0);  a--; } // ...
+   #endif
+
+   // strong
+#if !defined(__clang__)
+   { volatile atomic<cmplx,strong> a(0);  a +=  c; }
+   { volatile atomic<cmplx,strong> a(0);  a -=  c; }
+   { volatile atomic<cmplx,strong> a(0);  a *=  c; }
+   { volatile atomic<cmplx,strong> a(0);  a /=  c; }
+#endif
+// { volatile atomic<cmplx,strong> a(0);  a %=  c; }  // no modulo for complex
+// { volatile atomic<cmplx,strong> a(0);  a <<= c; }  // no bitwise ops for complex
+// { volatile atomic<cmplx,strong> a(0);  a >>= c; } // ...
+// { volatile atomic<cmplx,strong> a(0);  a &=  c; } // ...
+// { volatile atomic<cmplx,strong> a(0);  a |=  c; } // ...
+// { volatile atomic<cmplx,strong> a(0);  a ^=  c; } // ...
+// { volatile atomic<cmplx,strong> a(0);  ++a; }  // no ++ or -- for complex
+// { volatile atomic<cmplx,strong> a(0);  a++; } // ...
+// { volatile atomic<cmplx,strong> a(0);  --a; } // ...
+// { volatile atomic<cmplx,strong> a(0);  a--; } // ...
+
+   // strong::pun
+#if !defined(__clang__)
+   { volatile atomic<cmplx,strong::pun> a(0);  a +=  c; }
+   { volatile atomic<cmplx,strong::pun> a(0);  a -=  c; }
+   { volatile atomic<cmplx,strong::pun> a(0);  a *=  c; }
+   { volatile atomic<cmplx,strong::pun> a(0);  a /=  c; }
+#endif
+// { volatile atomic<cmplx,strong::pun> a(0);  a %=  c; } // as for strong
+// { volatile atomic<cmplx,strong::pun> a(0);  a <<= c; } // ...
+// { volatile atomic<cmplx,strong::pun> a(0);  a >>= c; } // ...
+// { volatile atomic<cmplx,strong::pun> a(0);  a &=  c; } // ...
+// { volatile atomic<cmplx,strong::pun> a(0);  a |=  c; } // ...
+// { volatile atomic<cmplx,strong::pun> a(0);  a ^=  c; } // ...
+// { volatile atomic<cmplx,strong::pun> a(0);  ++a; } // ...
+// { volatile atomic<cmplx,strong::pun> a(0);  a++; } // ...
+// { volatile atomic<cmplx,strong::pun> a(0);  --a; } // ...
+// { volatile atomic<cmplx,strong::pun> a(0);  a--; } // ...
+
+   // weak
+#if !defined(__clang__)
+   { volatile atomic<cmplx,weak> a(0);  a +=  c; }
+   { volatile atomic<cmplx,weak> a(0);  a -=  c; }
+   { volatile atomic<cmplx,weak> a(0);  a *=  c; }
+   { volatile atomic<cmplx,weak> a(0);  a /=  c; }
+#endif
+// { volatile atomic<cmplx,weak> a(0);  a %=  c; } // as for strong
+// { volatile atomic<cmplx,weak> a(0);  a <<= c; } // ...
+// { volatile atomic<cmplx,weak> a(0);  a >>= c; } // ...
+// { volatile atomic<cmplx,weak> a(0);  a &=  c; } // ...
+// { volatile atomic<cmplx,weak> a(0);  a |=  c; } // ...
+// { volatile atomic<cmplx,weak> a(0);  a ^=  c; } // ...
+// { volatile atomic<cmplx,weak> a(0);  ++a; } // ...
+// { volatile atomic<cmplx,weak> a(0);  a++; } // ...
+// { volatile atomic<cmplx,weak> a(0);  --a; } // ...
+// { volatile atomic<cmplx,weak> a(0);  a--; } // ...
+
+   // weak::pun
+#if !defined(__clang__)
+   { volatile atomic<cmplx,weak::pun> a(0);  a +=  c; }
+   { volatile atomic<cmplx,weak::pun> a(0);  a -=  c; }
+   { volatile atomic<cmplx,weak::pun> a(0);  a *=  c; }
+   { volatile atomic<cmplx,weak::pun> a(0);  a /=  c; }
+#endif
+// { volatile atomic<cmplx,weak::pun> a(0);  a %=  c; } // as for strong
+// { volatile atomic<cmplx,weak::pun> a(0);  a <<= c; } // ...
+// { volatile atomic<cmplx,weak::pun> a(0);  a >>= c; } // ...
+// { volatile atomic<cmplx,weak::pun> a(0);  a &=  c; } // ...
+// { volatile atomic<cmplx,weak::pun> a(0);  a |=  c; } // ...
+// { volatile atomic<cmplx,weak::pun> a(0);  a ^=  c; } // ...
+// { volatile atomic<cmplx,weak::pun> a(0);  ++a; } // ...
+// { volatile atomic<cmplx,weak::pun> a(0);  a++; } // ...
+// { volatile atomic<cmplx,weak::pun> a(0);  --a; } // ...
+// { volatile atomic<cmplx,weak::pun> a(0);  a--; } // ...
+
+   // lock
+//v{ volatile atomic<cmplx,lock> a(0);  a +=  c; }
+//v{ volatile atomic<cmplx,lock> a(0);  a -=  c; }
+//v{ volatile atomic<cmplx,lock> a(0);  a *=  c; }
+//v{ volatile atomic<cmplx,lock> a(0);  a /=  c; }
+// { volatile atomic<cmplx,lock> a(0);  a %=  c; } // as for strong
+// { volatile atomic<cmplx,lock> a(0);  a <<= c; } // ...
+// { volatile atomic<cmplx,lock> a(0);  a >>= c; } // ...
+// { volatile atomic<cmplx,lock> a(0);  a &=  c; } // ...
+// { volatile atomic<cmplx,lock> a(0);  a |=  c; } // ...
+// { volatile atomic<cmplx,lock> a(0);  a ^=  c; } // ...
+// { volatile atomic<cmplx,lock> a(0);  ++a; } // ...
+// { volatile atomic<cmplx,lock> a(0);  a++; } // ...
+// { volatile atomic<cmplx,lock> a(0);  --a; } // ...
+// { volatile atomic<cmplx,lock> a(0);  a--; } // ...
+
+   // serial
+//v{ volatile atomic<cmplx,serial> a(0);  a +=  c; }
+//v{ volatile atomic<cmplx,serial> a(0);  a -=  c; }
+//v{ volatile atomic<cmplx,serial> a(0);  a *=  c; }
+//v{ volatile atomic<cmplx,serial> a(0);  a /=  c; }
+// { volatile atomic<cmplx,serial> a(0);  a %=  c; } // as for strong
+// { volatile atomic<cmplx,serial> a(0);  a <<= c; } // ...
+// { volatile atomic<cmplx,serial> a(0);  a >>= c; } // ...
+// { volatile atomic<cmplx,serial> a(0);  a &=  c; } // ...
+// { volatile atomic<cmplx,serial> a(0);  a |=  c; } // ...
+// { volatile atomic<cmplx,serial> a(0);  a ^=  c; } // ...
+// { volatile atomic<cmplx,serial> a(0);  ++a; } // ...
+// { volatile atomic<cmplx,serial> a(0);  a++; } // ...
+// { volatile atomic<cmplx,serial> a(0);  --a; } // ...
+// { volatile atomic<cmplx,serial> a(0);  a--; } // ...
+
+
+
+   // ------------------------
+   // foo (our own class)
+   // See definition earlier
+   // ------------------------
+
+   // cpp <== again, means "must be supported directly by std::atomic<T>"
+// { volatile atomic<foo,cpp> a(0);  a +=  b; }  // Nope, not with cpp
+// { volatile atomic<foo,cpp> a(0);  a -=  b; }
+// { volatile atomic<foo,cpp> a(0);  a *=  b; }
+// { volatile atomic<foo,cpp> a(0);  a /=  b; }
+// { volatile atomic<foo,cpp> a(0);  a %=  b; }
+// { volatile atomic<foo,cpp> a(0);  a <<= b; }
+// { volatile atomic<foo,cpp> a(0);  a >>= b; }
+// { volatile atomic<foo,cpp> a(0);  a &=  b; }
+// { volatile atomic<foo,cpp> a(0);  a |=  b; }
+// { volatile atomic<foo,cpp> a(0);  a ^=  b; }
+// { volatile atomic<foo,cpp> a(0);  ++a; }
+// { volatile atomic<foo,cpp> a(0);  a++; }
+// { volatile atomic<foo,cpp> a(0);  --a; }
+// { volatile atomic<foo,cpp> a(0);  a--; }
+
+   // kokkos
+   #if defined(ATOMICS_KOKKOS)
+   // Note: there's really more than one Kokkos issue here. Kokkos atomic
+   // functions can take a general T, but the functions assume that the
+   // right-hand side is also a T. That is, X += Y may work if Y is of the
+   // same type as X, or is convertible thereto. Here, however, for this
+   // test code, I defined foo += bar, etc. Not foo += foo, etc.; and bars
+   // aren't convertible to foos. Moreover, it seems like Kokkos sometimes
+   // tries to accomplish X += Y by assuming X = X+Y will do the trick;
+   // similarly for some other operations. So, then, we'd need a foo+bar
+   // function, which we don't have.
+// { volatile atomic<foo,kokkos> a(0);  a +=  b; }
+// { volatile atomic<foo,kokkos> a(0);  a -=  b; }
+// { volatile atomic<foo,kokkos> a(0);  a *=  b; }
+// { volatile atomic<foo,kokkos> a(0);  a /=  b; }
+// { volatile atomic<foo,kokkos> a(0);  a %=  b; }
+// { volatile atomic<foo,kokkos> a(0);  a <<= b; }
+// { volatile atomic<foo,kokkos> a(0);  a >>= b; }
+// { volatile atomic<foo,kokkos> a(0);  a &=  b; }
+// { volatile atomic<foo,kokkos> a(0);  a |=  b; }
+// { volatile atomic<foo,kokkos> a(0);  a ^=  b; }
+// { volatile atomic<foo,kokkos> a(0);  ++a; }
+// { volatile atomic<foo,kokkos> a(0);  a++; }
+// { volatile atomic<foo,kokkos> a(0);  --a; }
+// { volatile atomic<foo,kokkos> a(0);  a--; }
+   #endif
+
+   // strong
+#if !defined(__clang__)
+   { volatile atomic<foo,strong> a(0);  a +=  b; }
+   { volatile atomic<foo,strong> a(0);  a -=  b; }
+   { volatile atomic<foo,strong> a(0);  a *=  b; }
+   { volatile atomic<foo,strong> a(0);  a /=  b; }
+   { volatile atomic<foo,strong> a(0);  a %=  b; }
+   { volatile atomic<foo,strong> a(0);  a <<= b; }
+   { volatile atomic<foo,strong> a(0);  a >>= b; }
+   { volatile atomic<foo,strong> a(0);  a &=  b; }
+   { volatile atomic<foo,strong> a(0);  a |=  b; }
+   { volatile atomic<foo,strong> a(0);  a ^=  b; }
+   { volatile atomic<foo,strong> a(0);  ++a; }
+   { volatile atomic<foo,strong> a(0);  a++; }
+   { volatile atomic<foo,strong> a(0);  --a; }
+   { volatile atomic<foo,strong> a(0);  a--; }
+#endif
+
+   // strong::pun
+#if !defined(__clang__)
+   { volatile atomic<foo,strong::pun> a(0);  a +=  b; }
+   { volatile atomic<foo,strong::pun> a(0);  a -=  b; }
+   { volatile atomic<foo,strong::pun> a(0);  a *=  b; }
+   { volatile atomic<foo,strong::pun> a(0);  a /=  b; }
+   { volatile atomic<foo,strong::pun> a(0);  a %=  b; }
+   { volatile atomic<foo,strong::pun> a(0);  a <<= b; }
+   { volatile atomic<foo,strong::pun> a(0);  a >>= b; }
+   { volatile atomic<foo,strong::pun> a(0);  a &=  b; }
+   { volatile atomic<foo,strong::pun> a(0);  a |=  b; }
+   { volatile atomic<foo,strong::pun> a(0);  a ^=  b; }
+   { volatile atomic<foo,strong::pun> a(0);  ++a; }
+   { volatile atomic<foo,strong::pun> a(0);  a++; }
+   { volatile atomic<foo,strong::pun> a(0);  --a; }
+   { volatile atomic<foo,strong::pun> a(0);  a--; }
+#endif
+
+   // weak
+#if !defined(__clang__)
+   { volatile atomic<foo,weak> a(0);  a +=  b; }
+   { volatile atomic<foo,weak> a(0);  a -=  b; }
+   { volatile atomic<foo,weak> a(0);  a *=  b; }
+   { volatile atomic<foo,weak> a(0);  a /=  b; }
+   { volatile atomic<foo,weak> a(0);  a %=  b; }
+   { volatile atomic<foo,weak> a(0);  a <<= b; }
+   { volatile atomic<foo,weak> a(0);  a >>= b; }
+   { volatile atomic<foo,weak> a(0);  a &=  b; }
+   { volatile atomic<foo,weak> a(0);  a |=  b; }
+   { volatile atomic<foo,weak> a(0);  a ^=  b; }
+   { volatile atomic<foo,weak> a(0);  ++a; }
+   { volatile atomic<foo,weak> a(0);  a++; }
+   { volatile atomic<foo,weak> a(0);  --a; }
+   { volatile atomic<foo,weak> a(0);  a--; }
+#endif
+
+   // weak::pun
+#if !defined(__clang__)
+   { volatile atomic<foo,weak::pun> a(0);  a +=  b; }
+   { volatile atomic<foo,weak::pun> a(0);  a -=  b; }
+   { volatile atomic<foo,weak::pun> a(0);  a *=  b; }
+   { volatile atomic<foo,weak::pun> a(0);  a /=  b; }
+   { volatile atomic<foo,weak::pun> a(0);  a %=  b; }
+   { volatile atomic<foo,weak::pun> a(0);  a <<= b; }
+   { volatile atomic<foo,weak::pun> a(0);  a >>= b; }
+   { volatile atomic<foo,weak::pun> a(0);  a &=  b; }
+   { volatile atomic<foo,weak::pun> a(0);  a |=  b; }
+   { volatile atomic<foo,weak::pun> a(0);  a ^=  b; }
+   { volatile atomic<foo,weak::pun> a(0);  ++a; }
+   { volatile atomic<foo,weak::pun> a(0);  a++; }
+   { volatile atomic<foo,weak::pun> a(0);  --a; }
+   { volatile atomic<foo,weak::pun> a(0);  a--; }
+#endif
+
+   // lock
+//v{ volatile atomic<foo,lock> a(0);  a +=  b; }
+//v{ volatile atomic<foo,lock> a(0);  a -=  b; }
+//v{ volatile atomic<foo,lock> a(0);  a *=  b; }
+//v{ volatile atomic<foo,lock> a(0);  a /=  b; }
+//v{ volatile atomic<foo,lock> a(0);  a %=  b; }
+//v{ volatile atomic<foo,lock> a(0);  a <<= b; }
+//v{ volatile atomic<foo,lock> a(0);  a >>= b; }
+//v{ volatile atomic<foo,lock> a(0);  a &=  b; }
+//v{ volatile atomic<foo,lock> a(0);  a |=  b; }
+//v{ volatile atomic<foo,lock> a(0);  a ^=  b; }
+//v{ volatile atomic<foo,lock> a(0);  ++a; }
+//v{ volatile atomic<foo,lock> a(0);  a++; }
+//v{ volatile atomic<foo,lock> a(0);  --a; }
+//v{ volatile atomic<foo,lock> a(0);  a--; }
+
+   // serial
+//v{ volatile atomic<foo,serial> a(0);  a +=  b; }
+//v{ volatile atomic<foo,serial> a(0);  a -=  b; }
+//v{ volatile atomic<foo,serial> a(0);  a *=  b; }
+//v{ volatile atomic<foo,serial> a(0);  a /=  b; }
+//v{ volatile atomic<foo,serial> a(0);  a %=  b; }
+//v{ volatile atomic<foo,serial> a(0);  a <<= b; }
+//v{ volatile atomic<foo,serial> a(0);  a >>= b; }
+//v{ volatile atomic<foo,serial> a(0);  a &=  b; }
+//v{ volatile atomic<foo,serial> a(0);  a |=  b; }
+//v{ volatile atomic<foo,serial> a(0);  a ^=  b; }
+//v{ volatile atomic<foo,serial> a(0);  ++a; }
+//v{ volatile atomic<foo,serial> a(0);  a++; }
+//v{ volatile atomic<foo,serial> a(0);  --a; }
+//v{ volatile atomic<foo,serial> a(0);  a--; }
 }

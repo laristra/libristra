@@ -211,24 +211,76 @@ public:
 
 
 // -----------------------------------------------------------------------------
+// Traits
+// -----------------------------------------------------------------------------
+
+namespace internal {
+
+// ------------------------
+// is_atomic
+// ------------------------
+
+template<class T>
+class is_atomic {
+};
+
+template<class T, class SCHEME, std::size_t NMUX>
+class is_atomic<atomic<T,SCHEME,NMUX>> {
+public:
+   using value_type = T;
+};
+
+template<class T, class SCHEME, std::size_t NMUX>
+class is_atomic<volatile atomic<T,SCHEME,NMUX>> {
+public:
+   using value_type = T;
+};
+
+
+// ------------------------
+// is_std_atomic
+// ------------------------
+
+template<class T>
+class is_std_atomic {
+};
+
+template<class T>
+class is_std_atomic<std::atomic<T>> {
+public:
+   using value_type = T;
+};
+
+template<class T>
+class is_std_atomic<volatile std::atomic<T>> {
+public:
+   using value_type = T;
+};
+
+} // namespace internal
+
+
+
+// -----------------------------------------------------------------------------
 // debug_apply
 // Called from the various apply() functions, to print debugging information.
-// No-ops, unless ATOMICS_PRINT is #defined. There are enough calls to these
+// No-ops, unless ATOMICS_PRINT is #defined. (There are enough calls to these
 // functions that making them no-ops like this was shorter than preprocessing
-// out the calls themselves.
+// out the calls themselves.)
 // -----------------------------------------------------------------------------
 
 namespace internal {
 
 // scheme
 /// Print debugging info for one of our apply() functions
-template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
+template<class ATOMIC, class OPERATION>
 inline void debug_apply(
    const char *const scheme
 ) noexcept {
    #if defined(ATOMICS_PRINT)
+      using T = typename is_atomic<ATOMIC>::value_type;
       std::cout << "apply\n";
-      std::cout << "   left side: ";  print_type<atomic<T,SCHEME,NMUX>>();
+      std::cout << "   left side: ";  print_type<ATOMIC>();
       std::cout << "\n";
       std::cout << "   scheme   : " << scheme << "\n";
       std::cout << "   function : ";  print_type<OPERATION>();
@@ -243,14 +295,15 @@ inline void debug_apply(
 
 // scheme; memory order sync
 /// Print debugging info for one of our apply() functions
-template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
+template<class ATOMIC, class OPERATION>
 inline void debug_apply(
    const char *const scheme,
    const std::memory_order sync
 ) noexcept {
    #if defined(ATOMICS_PRINT)
+      using T = typename is_atomic<ATOMIC>::value_type;
       std::cout << "apply\n";
-      std::cout << "   left side: ";  print_type<atomic<T,SCHEME,NMUX>>();
+      std::cout << "   left side: ";  print_type<ATOMIC>();
       std::cout << "\n";
       std::cout << "   scheme   : " << scheme << "\n";
       std::cout << "   function : ";  print_type<OPERATION>();
@@ -267,15 +320,16 @@ inline void debug_apply(
 
 // scheme; memory order success, failure
 /// Print debugging info for one of our apply() functions
-template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
+template<class ATOMIC, class OPERATION>
 inline void debug_apply(
    const char *const scheme,
    const std::memory_order success,
    const std::memory_order failure
 ) noexcept {
    #if defined(ATOMICS_PRINT)
+      using T = typename is_atomic<ATOMIC>::value_type;
       std::cout << "apply\n";
-      std::cout << "   left side: ";  print_type<atomic<T,SCHEME,NMUX>>();
+      std::cout << "   left side: ";  print_type<ATOMIC>();
       std::cout << "\n";
       std::cout << "   scheme   : " << scheme << "\n";
       std::cout << "   function : ";  print_type<OPERATION>();
@@ -293,11 +347,11 @@ inline void debug_apply(
 
 // scheme; pun
 /// Print debugging info for one of our apply() functions
-template<class T, class SCHEME, std::size_t NMUX, class OPERATION, class P>
+template<class ATOMIC, class OPERATION, class P>
 inline void debug_apply(
    const char *const scheme
 ) noexcept {
-   debug_apply<T,SCHEME,NMUX,OPERATION>(scheme);
+   debug_apply<ATOMIC,OPERATION>(scheme);
    #if defined(ATOMICS_PRINT)
       std::cout << "   P/pun    : ";
       print_type<P>();
@@ -307,12 +361,12 @@ inline void debug_apply(
 
 // scheme; memory_order sync; pun
 /// Print debugging info for one of our apply() functions
-template<class T, class SCHEME, std::size_t NMUX, class OPERATION, class P>
+template<class ATOMIC, class OPERATION, class P>
 inline void debug_apply(
    const char *const scheme,
    const std::memory_order sync
 ) noexcept {
-   debug_apply<T,SCHEME,NMUX,OPERATION>(scheme,sync);
+   debug_apply<ATOMIC,OPERATION>(scheme,sync);
    #if defined(ATOMICS_PRINT)
       std::cout << "   P/pun    : ";
       print_type<P>();
@@ -322,13 +376,13 @@ inline void debug_apply(
 
 // scheme; memory_order success, failure; pun
 /// Print debugging info for one of our apply() functions
-template<class T, class SCHEME, std::size_t NMUX, class OPERATION, class P>
+template<class ATOMIC, class OPERATION, class P>
 inline void debug_apply(
    const char *const scheme,
    const std::memory_order success,
    const std::memory_order failure
 ) noexcept {
-   debug_apply<T,SCHEME,NMUX,OPERATION>(scheme,success,failure);
+   debug_apply<ATOMIC,OPERATION>(scheme,success,failure);
    #if defined(ATOMICS_PRINT)
       std::cout << "   P/pun    : ";
       print_type<P>();
@@ -398,25 +452,25 @@ atomics_make_compexch_punned(punxweak,   volatile, compare_exchange_weak)
 namespace internal {
 
 /// Apply operation, using the cpp scheme (underlying std::atomic capability)
-template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
-inline T apply(
-   atomic<T,SCHEME,NMUX> &atom,
+template<class ATOMIC, class OPERATION>
+inline typename is_atomic<ATOMIC>::value_type apply(
+   ATOMIC &atom,
    const cpp,
    const OPERATION &operation
 ) noexcept {
-   debug_apply<T,SCHEME,NMUX,OPERATION>("cpp");
+   debug_apply<ATOMIC,OPERATION>("cpp");
    return operation(atom.base(),cpp{});
 }
 
 /// Apply operation, using the cpp scheme, w/memory_order sync
-template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
-inline T apply(
-   atomic<T,SCHEME,NMUX> &atom,
+template<class ATOMIC, class OPERATION>
+inline typename is_atomic<ATOMIC>::value_type apply(
+   ATOMIC &atom,
    const cpp,
    const OPERATION &operation,
    const std::memory_order sync
 ) noexcept {
-   debug_apply<T,SCHEME,NMUX,OPERATION>("cpp",sync);
+   debug_apply<ATOMIC,OPERATION>("cpp",sync);
    return operation(atom.base(),cpp{},sync);
 }
 
@@ -430,22 +484,22 @@ inline T apply(
 // to an available underlying Kokkos:: function.
 // -----------------------------------------------------------------------------
 
-namespace internal {
 #if defined(ATOMICS_KOKKOS)
+namespace internal {
 
 /// Apply operation, using a Kokkos atomic function
-template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
-inline T apply(
-   atomic<T,SCHEME,NMUX> &atom,
+template<class ATOMIC, class OPERATION>
+inline typename is_atomic<ATOMIC>::value_type apply(
+   ATOMIC &atom,
    const kokkos,
    const OPERATION &operation
 ) noexcept {
-   debug_apply<T,SCHEME,NMUX,OPERATION>("kokkos");
+   debug_apply<ATOMIC,OPERATION>("kokkos");
    return operation(atom,kokkos{});
 }
 
-#endif // #if defined(ATOMICS_KOKKOS)
 } // namespace internal
+#endif // #if defined(ATOMICS_KOKKOS)
 
 
 
@@ -461,14 +515,15 @@ inline T apply(
 namespace internal {
 
 /// Apply operation via strong CAS embedding; optional memory_order sync
-template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
-inline T apply(
-   atomic<T,SCHEME,NMUX> &atom,
+template<class ATOMIC, class OPERATION>
+inline typename is_atomic<ATOMIC>::value_type apply(
+   ATOMIC &atom,
    const strong,
    const OPERATION &operation,
    const std::memory_order sync = std::memory_order_seq_cst
 ) noexcept {
-   debug_apply<T,SCHEME,NMUX,OPERATION>("strong",sync);
+   using T = typename is_atomic<ATOMIC>::value_type;
+   debug_apply<ATOMIC,OPERATION>("strong",sync);
 
    T old = T(atom);
    T neu, ret;
@@ -476,21 +531,37 @@ inline T apply(
    do {
       neu = old;
       ret = operation(neu);
+      // Remark: here's how the following compare_exchange_strong() works.
+      //    If atom == old
+      //       atom <-- neu
+      //       return true
+      //    Else
+      //       old <-- atom
+      //       return false
+      // That's all done atomically (so, we can't just write it directly).
+      // Notice that if iteration continues, old will have been updated
+      // to atom, which presumably was changed by another thread. That's
+      // why *we* don't need to reassign old = T(atom) in our do-loop.
    } while (!atom.compare_exchange_strong(old, neu, sync));
 
+   // Remark: operation(neu), above, modifies neu (think +=, -=, etc.)
+   // For most operations, then, ret == neu. However, that wouldn't be
+   // the case with postincrement and postdecrement, which is why we
+   // have (and return) ret, not neu.
    return ret;
 }
 
 /// Apply operation via strong CAS embedding; memory_order success, failure
-template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
-inline T apply(
-   atomic<T,SCHEME,NMUX> &atom,
+template<class ATOMIC, class OPERATION>
+inline typename is_atomic<ATOMIC>::value_type apply(
+   ATOMIC &atom,
    const strong,
    const OPERATION &operation,
    const std::memory_order success,
    const std::memory_order failure
 ) noexcept {
-   debug_apply<T,SCHEME,NMUX,OPERATION>("strong", success, failure);
+   using T = typename is_atomic<ATOMIC>::value_type;
+   debug_apply<ATOMIC,OPERATION>("strong", success, failure);
 
    T old = T(atom);
    T neu, ret;
@@ -520,14 +591,15 @@ namespace internal {
 // ------------------------
 
 /// Helper for punned strong CAS apply(); memory_order sync
-template<class P, class T, class SCHEME, std::size_t NMUX, class OPERATION>
-inline T apply_pun(
-   atomic<T,SCHEME,NMUX> &atom,
+template<class P, class ATOMIC, class OPERATION>
+inline typename is_atomic<ATOMIC>::value_type apply_pun(
+   ATOMIC &atom,
    const strong::pun,
    const OPERATION &operation,
    const std::memory_order sync
 ) {
-   debug_apply<T,SCHEME,NMUX,OPERATION,P>("strong::pun",sync);
+   using T = typename is_atomic<ATOMIC>::value_type;
+   debug_apply<ATOMIC,OPERATION,P>("strong::pun",sync);
 
    union u {
       T tee;
@@ -551,15 +623,16 @@ inline T apply_pun(
 }
 
 /// Helper for punned strong CAS apply(); memory_order success, failure
-template<class P, class T, class SCHEME, std::size_t NMUX, class OPERATION>
-inline T apply_pun(
-   atomic<T,SCHEME,NMUX> &atom,
+template<class P, class ATOMIC, class OPERATION>
+inline typename is_atomic<ATOMIC>::value_type apply_pun(
+   ATOMIC &atom,
    const strong::pun,
    const OPERATION &operation,
    const std::memory_order success,
    const std::memory_order failure
 ) {
-   debug_apply<T,SCHEME,NMUX,OPERATION,P>("strong::pun", success, failure);
+   using T = typename is_atomic<ATOMIC>::value_type;
+   debug_apply<ATOMIC,OPERATION,P>("strong::pun", success, failure);
 
    union u {
       T tee;
@@ -586,9 +659,11 @@ inline T apply_pun(
 // ------------------------
 
 #define atomics_make_apply(condition,cas,P) \
-   template<class T, class SCHEME, std::size_t NMUX, class OPERATION> \
-   inline typename std::enable_if<condition,T>::type apply( \
-      atomic<T,SCHEME,NMUX> &atom, \
+   template<class ATOMIC, class OPERATION> \
+   inline typename \
+   std::enable_if<condition,typename is_atomic<ATOMIC>::value_type>::type \
+   apply( \
+      ATOMIC &atom, \
       const cas::pun, \
       const OPERATION &operation, \
       const std::memory_order sync = std::memory_order_seq_cst \
@@ -596,9 +671,11 @@ inline T apply_pun(
       return apply_pun<P>(atom, cas::pun{}, operation, sync); \
    } \
    \
-   template<class T, class SCHEME, std::size_t NMUX, class OPERATION> \
-   inline typename std::enable_if<condition,T>::type apply( \
-      atomic<T,SCHEME,NMUX> &atom, \
+   template<class ATOMIC, class OPERATION> \
+   inline typename \
+   std::enable_if<condition,typename is_atomic<ATOMIC>::value_type>::type \
+   apply( \
+      ATOMIC &atom, \
       const cas::pun, \
       const OPERATION &operation, \
       const std::memory_order success, \
@@ -618,31 +695,31 @@ inline T apply_pun(
 
 /// Punned strong CAS; long long
 atomics_make_apply(
-   sizeof(T) == sizeof(long long) &&
-   sizeof(T) != sizeof(long),
+   sizeof(typename is_atomic<ATOMIC>::value_type) == sizeof(long long) &&
+   sizeof(typename is_atomic<ATOMIC>::value_type) != sizeof(long),
    strong, long long)
 
 /// Punned strong CAS; long
 atomics_make_apply(
-   sizeof(T) == sizeof(long) &&
-   sizeof(T) != sizeof(int),
+   sizeof(typename is_atomic<ATOMIC>::value_type) == sizeof(long) &&
+   sizeof(typename is_atomic<ATOMIC>::value_type) != sizeof(int),
    strong, long)
 
 /// Punned strong CAS; int
 atomics_make_apply(
-   sizeof(T) == sizeof(int) &&
-   sizeof(T) != sizeof(short),
+   sizeof(typename is_atomic<ATOMIC>::value_type) == sizeof(int) &&
+   sizeof(typename is_atomic<ATOMIC>::value_type) != sizeof(short),
    strong, int)
 
 /// Punned strong CAS; short
 atomics_make_apply(
-   sizeof(T) == sizeof(short) &&
-   sizeof(T) != sizeof(signed char),
+   sizeof(typename is_atomic<ATOMIC>::value_type) == sizeof(short) &&
+   sizeof(typename is_atomic<ATOMIC>::value_type) != sizeof(signed char),
    strong, short)
 
 /// Punned strong CAS; signed char
 atomics_make_apply(
-   sizeof(T) == sizeof(signed char),
+   sizeof(typename is_atomic<ATOMIC>::value_type) == sizeof(signed char),
    strong, signed char)
 
 } // namespace internal
@@ -658,14 +735,15 @@ atomics_make_apply(
 namespace internal {
 
 /// Apply operation via weak CAS embedding; optional memory_order sync
-template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
-inline T apply(
-   atomic<T,SCHEME,NMUX> &atom,
+template<class ATOMIC, class OPERATION>
+inline typename is_atomic<ATOMIC>::value_type apply(
+   ATOMIC &atom,
    const weak,
    const OPERATION &operation,
    const std::memory_order sync = std::memory_order_seq_cst
 ) noexcept {
-   debug_apply<T,SCHEME,NMUX,OPERATION>("weak",sync);
+   using T = typename is_atomic<ATOMIC>::value_type;
+   debug_apply<ATOMIC,OPERATION>("weak",sync);
 
    T old = T(atom);
    T neu, ret;
@@ -679,15 +757,16 @@ inline T apply(
 }
 
 /// Apply operation via weak CAS embedding; memory_order success, failure
-template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
-inline T apply(
-   atomic<T,SCHEME,NMUX> &atom,
+template<class ATOMIC, class OPERATION>
+inline typename is_atomic<ATOMIC>::value_type apply(
+   ATOMIC &atom,
    const weak,
    const OPERATION &operation,
    const std::memory_order success,
    const std::memory_order failure
 ) noexcept {
-   debug_apply<T,SCHEME,NMUX,OPERATION>("weak", success, failure);
+   using T = typename is_atomic<ATOMIC>::value_type;
+   debug_apply<ATOMIC,OPERATION>("weak", success, failure);
 
    T old = T(atom);
    T neu, ret;
@@ -717,14 +796,15 @@ namespace internal {
 // ------------------------
 
 /// Helper for punned weak CAS apply(); memory_order sync
-template<class P, class T, class SCHEME, std::size_t NMUX, class OPERATION>
-inline T apply_pun(
-   atomic<T,SCHEME,NMUX> &atom,
+template<class P, class ATOMIC, class OPERATION>
+inline typename is_atomic<ATOMIC>::value_type apply_pun(
+   ATOMIC &atom,
    const weak::pun,
    const OPERATION &operation,
    const std::memory_order sync
 ) {
-   debug_apply<T,SCHEME,NMUX,OPERATION,P>("weak::pun",sync);
+   using T = typename is_atomic<ATOMIC>::value_type;
+   debug_apply<ATOMIC,OPERATION,P>("weak::pun",sync);
 
    union u {
       T tee;
@@ -746,15 +826,16 @@ inline T apply_pun(
 }
 
 /// Helper for punned weak CAS apply(); memory_order success, failure
-template<class P, class T, class SCHEME, std::size_t NMUX, class OPERATION>
-inline T apply_pun(
-   atomic<T,SCHEME,NMUX> &atom,
+template<class P, class ATOMIC, class OPERATION>
+inline typename is_atomic<ATOMIC>::value_type apply_pun(
+   ATOMIC &atom,
    const weak::pun,
    const OPERATION &operation,
    const std::memory_order success,
    const std::memory_order failure
 ) {
-   debug_apply<T,SCHEME,NMUX,OPERATION,P>("weak::pun", success, failure);
+   using T = typename is_atomic<ATOMIC>::value_type;
+   debug_apply<ATOMIC,OPERATION,P>("weak::pun", success, failure);
 
    union u {
       T tee;
@@ -785,31 +866,31 @@ inline T apply_pun(
 
 /// Punned strong CAS; long long
 atomics_make_apply(
-   sizeof(T) == sizeof(long long) &&
-   sizeof(T) != sizeof(long),
+   sizeof(typename is_atomic<ATOMIC>::value_type) == sizeof(long long) &&
+   sizeof(typename is_atomic<ATOMIC>::value_type) != sizeof(long),
    weak, long long)
 
 /// Punned strong CAS; long
 atomics_make_apply(
-   sizeof(T) == sizeof(long) &&
-   sizeof(T) != sizeof(int),
+   sizeof(typename is_atomic<ATOMIC>::value_type) == sizeof(long) &&
+   sizeof(typename is_atomic<ATOMIC>::value_type) != sizeof(int),
    weak, long)
 
 /// Punned strong CAS; int
 atomics_make_apply(
-   sizeof(T) == sizeof(int) &&
-   sizeof(T) != sizeof(short),
+   sizeof(typename is_atomic<ATOMIC>::value_type) == sizeof(int) &&
+   sizeof(typename is_atomic<ATOMIC>::value_type) != sizeof(short),
    weak, int)
 
 /// Punned strong CAS; short
 atomics_make_apply(
-   sizeof(T) == sizeof(short) &&
-   sizeof(T) != sizeof(signed char),
+   sizeof(typename is_atomic<ATOMIC>::value_type) == sizeof(short) &&
+   sizeof(typename is_atomic<ATOMIC>::value_type) != sizeof(signed char),
    weak, short)
 
 /// Punned strong CAS; signed char
 atomics_make_apply(
-   sizeof(T) == sizeof(signed char),
+   sizeof(typename is_atomic<ATOMIC>::value_type) == sizeof(signed char),
    weak, signed char)
 
 // Done with the macro
@@ -821,22 +902,30 @@ atomics_make_apply(
 
 // -----------------------------------------------------------------------------
 // apply: lock
-// OPERATION's operator() is embedded into a lock_guard(mutex),
-// giving effective, albeit simplistic and possibly slow, atomicity.
+// OPERATION's operator() is embedded into a lock_guard(mutex), giving a limited
+// form of atomicity. Understand, however, that mutexes protect code, not data.
+// If we run two operations (say, x.add(1) and x.sub(2)) on an atomic variable
+// x, with BOTH operations using the lock scheme, then we're good. However, if
+// one operation uses lock while the other uses something else (say, one of our
+// compare-and-swap schemes), then the latter knows nothing of the mutex! The
+// lock scheme would then blindly forge ahead and perform its operation inside
+// of an effectively useless mutex (because the other operations isn't using the
+// mutex), with the probable result being race conditions. :-(  The take-away
+// message: for a given "atomic" variable that's being modified simultaneously
+// by multiple threads, use lock for either all, or none, of those threads.
 // -----------------------------------------------------------------------------
 
 namespace internal {
 
 /// Apply operation within lock_guard(mutex)
-template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
-inline T apply(
-   atomic<T,SCHEME,NMUX> &atom,
+template<class ATOMIC, class OPERATION>
+inline typename is_atomic<ATOMIC>::value_type apply(
+   ATOMIC &atom,
    const lock,
    const OPERATION &operation
 ) {
-   debug_apply<T,SCHEME,NMUX,OPERATION>("lock");
-   std::lock_guard<std::mutex>
-      lock(atomic<T,SCHEME,NMUX>::singleton_mutex::instance());
+   debug_apply<ATOMIC,OPERATION>("lock");
+   std::lock_guard<std::mutex> lock(ATOMIC::singleton_mutex::instance());
    return operation(atom.ref());
 }
 
@@ -853,14 +942,14 @@ inline T apply(
 namespace internal {
 
 // NO! unless single-threaded
-/// Apply operation plainly, with no atomicity meshanism
-template<class T, class SCHEME, std::size_t NMUX, class OPERATION>
-inline T apply(
-   atomic<T,SCHEME,NMUX> &atom,
+/// Apply operation plainly, with no atomicity mechanism
+template<class ATOMIC, class OPERATION>
+inline typename is_atomic<ATOMIC>::value_type apply(
+   ATOMIC &atom,
    const serial,
    const OPERATION &operation
 ) noexcept {
-   debug_apply<T,SCHEME,NMUX,OPERATION>("serial");
+   debug_apply<ATOMIC,OPERATION>("serial");
    return operation(atom.ref());
 }
 
@@ -907,8 +996,8 @@ inline A &maxeq(A &a, const B &b)
 // code in those files less cluttered.
 // -----------------------------------------------------------------------------
 
-namespace internal {
 #ifdef ATOMICS_PRINT
+namespace internal {
 
 /// Print debugging info, re: cpp scheme
 template<class T, class X>
@@ -1044,8 +1133,8 @@ inline void debug_unary_op_post(
    std::cout << std::endl;
 }
 
-#endif // #ifdef ATOMICS_PRINT
 } // namespace internal
+#endif // #ifdef ATOMICS_PRINT
 
 
 
@@ -1274,7 +1363,7 @@ namespace internal {
 #define   atomics_class preincclass
 #include "atomics-macro-function-prepost.h"
 
-/// Function version of atomic  ++value
+/// Function version of atomic ++value
 #define   atomics_fun   preinc
 #define   atomics_class preincclass
 #include "atomics-macro-function-prepost.h"
@@ -1314,9 +1403,9 @@ type for which a shallow copy, as with memcpy(), has the correct semantics.
 \tparam T
 The underlying data type; for example, int, int *, or double. Trivially copyable
 user-defined types are allowed. T and SCHEME, together, determine what atomic
-operations are available. For example, only operations on integral T are
-supported by the atomics::cpp scheme, and the atomics::kokkos scheme has nothing
-for pointer T.
+operations are available. For example, only operations on integral and pointer
+types T are supported by the atomics::cpp scheme, and the atomics::kokkos scheme
+has nothing for pointer T.
 
 \tparam SCHEME
 The "atomicity scheme," i.e. the methodology by which Ristra Atomics will cause
@@ -1381,6 +1470,7 @@ public:
    // For whomever might use them
    using value_type  = T;
    using scheme_type = SCHEME;
+   static constexpr std::size_t nmux = NMUX;
 
    // Constructors
    // As for std::atomic
@@ -1416,18 +1506,18 @@ public:
    // ref()
    // Get reference to underlying data, via reinterpret_cast.
    // Know what you're doing if you use any of these.
-   #define atomics_make_ref(cv,type) \
-      inline cv type &ref() cv noexcept \
+   #define atomics_make_ref(cv) \
+      inline cv T &ref() cv noexcept \
       { \
-         atomics_assert(sizeof(*this) == sizeof(type)); \
-         return *reinterpret_cast<type *const>(this); \
+         atomics_assert(sizeof(*this) == sizeof(T)); \
+         return *reinterpret_cast<cv T *const>(this); \
       }
 
-   /// Return reference to contained data, via reinterpret_cast; use sparingly
-   atomics_make_ref(               , T)
-   atomics_make_ref(const          , T)
-   atomics_make_ref(      volatile , T)
-   atomics_make_ref(const volatile , T)
+   /// Return reference to contained data, via reinterpret_cast
+   atomics_make_ref()
+   atomics_make_ref(const)
+   atomics_make_ref(volatile)
+   atomics_make_ref(const volatile)
    #undef atomics_make_ref
 
 
@@ -1638,15 +1728,15 @@ public:
 // -----------------------------------------------------------------------------
 
 // Shorthand
-using Float  = atomics::atomic<float,       ATOMICS_DEFAULT_SCHEME, 0>;
-using Double = atomics::atomic<double,      ATOMICS_DEFAULT_SCHEME, 0>;
-using Quad   = atomics::atomic<long double, ATOMICS_DEFAULT_SCHEME, 0>;
+using Float  = atomics::atomic< float,       ATOMICS_DEFAULT_SCHEME, 0 >;
+using Double = atomics::atomic< double,      ATOMICS_DEFAULT_SCHEME, 0 >;
+using Quad   = atomics::atomic< long double, ATOMICS_DEFAULT_SCHEME, 0 >;
 
 // operator<<
 template<class T, class SCHEME, std::size_t NMUX>
 inline std::ostream &operator<<(
    std::ostream &os,
-   const atomic<T,SCHEME,NMUX> &obj
+   const volatile atomic<T,SCHEME,NMUX> &obj
 ) {
    return os << T(obj);
 }

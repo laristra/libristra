@@ -19,9 +19,9 @@ public:
 
    // Apply std::atomic's member function atomics_cpp
    #if defined(atomics_cpp)
-   template<class T>
-   inline T operator()(
-      std::atomic<T> &atom,
+   template<class STDATOMIC>
+   inline typename is_std_atomic<STDATOMIC>::value_type operator()(
+      STDATOMIC &atom,
       const cpp,
       const std::memory_order sync = std::memory_order_seq_cst
    ) const noexcept {
@@ -40,11 +40,13 @@ public:
    // Apply Kokkos' function atomics_kokkos
    #if defined(ATOMICS_KOKKOS) // <== using Kokkos at all?
    #if defined(atomics_kokkos) // <== Kokkos supports this operation?
-   template<class T, class SCHEME, std::size_t NMUX>
-   inline T operator()(
-      atomic<T,SCHEME,NMUX> &atom,
+   template<class ATOMIC>
+   inline typename is_atomic<ATOMIC>::value_type operator()(
+      ATOMIC &atom,
       const kokkos // for overload resolution vs. other operator()s
    ) const {
+      using T = typename is_atomic<ATOMIC>::value_type;
+
       #ifdef ATOMICS_PRINT
          debug_binary_kokkos(atomics_stringify(atomics_kokkos),atom,val);
       #endif
