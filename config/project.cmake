@@ -90,7 +90,7 @@ endif()
 if(RISTRA_ENABLE_LUA)
    message (STATUS "Found Lua: ${LUA_INCLUDE_DIR}")
    include_directories(${LUA_INCLUDE_DIR})
-   list(APPEND RISTRA_LIBRARIES ${LUA_LIBRARIES})
+   list(APPEND RISTRA_LIBRARIES ${LUA_LIBRARIES} ${CMAKE_DL_LIBS})
 endif ()
 
 #------------------------------------------------------------------------------#
