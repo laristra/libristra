@@ -46,7 +46,7 @@
 #include <boost/core/demangle.hpp>
 #endif
 
-// Everything in the rest of this file is placed into the ristra::atomics.
+// Everything in the rest of this file is placed into ristra::atomics.
 // Helper constructs, scattered throughout the file, are additionally placed
 // into a namespace called "internal" wherever they appear. That's my way
 // of saying, "for internal use; call only if you know what you're doing."
