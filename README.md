@@ -30,17 +30,21 @@ Prerequisites
 Quick Start
 -----------
 
-    1. module load lua boost  # Or define LUA_INCLUDE_DIR and BOOST_DIR
-    1. mkdir build
-    2. cd build
-    3. cmake .. -DENABLE_UNIT_TESTS=1
-    4. make
-    5. cd test/ristra
-    6. ./ristra-test
-    ...
-        [----------] Global test environment tear-down
-        [==========] 34 tests from 8 test cases ran. (3 ms total)
-        [  PASSED  ] 34 tests.
+```sh
+mkdir build
+cd build
+cmake \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DENABLE_UNIT_TESTS=True \
+    -DENABLE_BOOST_PREPROCESSOR=True \
+    -DBOOST_INCLUDEDIR=/path/to/boost \
+    -DRISTRA_ENABLE_LUA=True \
+    -DLUA_INCLUDE_DIR=/path/to/lua/include \
+    -DLUA_LIBRARY=/path/to/lua/lib/liblua.a \
+    ..
+make
+make test
+```
 
 Known Issues
 ------------
