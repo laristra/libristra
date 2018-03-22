@@ -45,8 +45,6 @@ public:
       ATOMIC &atom,
       const kokkos // for overload resolution vs. other operator()s
    ) const {
-      using T = typename is_atomic<ATOMIC>::value_type;
-
       #ifdef ATOMICS_PRINT
          debug_binary_kokkos(atomics_stringify(atomics_kokkos),atom,val);
       #endif
@@ -55,6 +53,7 @@ public:
          // For most of the Kokkos functions, convert the right-hand side
          // to T; without this, different left- and right-hand sides would
          // make their Ts indeterminate.
+         using T = typename is_atomic<ATOMIC>::value_type;
          return Kokkos::atomics_kokkos(&atom.ref(), T(val));
       #else
          // For the atomic_fetch_lshift and atomic_fetch_rshift functions,

@@ -499,7 +499,7 @@ inline typename is_atomic<ATOMIC>::value_type apply(
 }
 
 } // namespace internal
-#endif // #if defined(ATOMICS_KOKKOS)
+#endif
 
 
 
