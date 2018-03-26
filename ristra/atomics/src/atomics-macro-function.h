@@ -6,7 +6,7 @@
 template<class S = char, class ATOMIC, class X>
 inline typename internal::is_atomic<ATOMIC>::value_type atomics_fun(
    ATOMIC &atom,
-   const X &val
+   const X val
 ) noexcept {
    return internal::apply(
       atom,
@@ -19,7 +19,7 @@ inline typename internal::is_atomic<ATOMIC>::value_type atomics_fun(
 template<class S = char, class ATOMIC, class X>
 inline typename internal::is_atomic<ATOMIC>::value_type atomics_fun(
    ATOMIC &atom,
-   const X &val,
+   const X val,
    const std::memory_order sync
 ) noexcept {
    return internal::apply(
@@ -34,7 +34,7 @@ inline typename internal::is_atomic<ATOMIC>::value_type atomics_fun(
 template<class S = char, class ATOMIC, class X>
 inline typename internal::is_atomic<ATOMIC>::value_type atomics_fun(
    ATOMIC &atom,
-   const X &val,
+   const X val,
    const std::memory_order success,
    const std::memory_order failure
 ) noexcept {

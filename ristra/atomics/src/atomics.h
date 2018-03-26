@@ -405,7 +405,7 @@ namespace internal {
    template<class T, class P> \
    inline bool fun( \
       vol std::atomic<T> &atom, \
-      P &old, const P &neu, \
+      P &old, const P neu, \
       const std::memory_order sync \
    ) { \
       atomics_assert(sizeof(std::atomic<P>) == sizeof(std::atomic<T>)); \
@@ -416,7 +416,7 @@ namespace internal {
    template<class T, class P> \
    inline bool fun( \
       vol std::atomic<T> &atom, \
-      P &old, const P &neu, \
+      P &old, const P neu, \
       const std::memory_order success, \
       const std::memory_order failure \
    ) { \
@@ -456,7 +456,7 @@ template<class ATOMIC, class OPERATION>
 inline typename is_atomic<ATOMIC>::value_type apply(
    ATOMIC &atom,
    const cpp,
-   const OPERATION &operation
+   const OPERATION operation
 ) noexcept {
    debug_apply<ATOMIC,OPERATION>("cpp");
    return operation(atom.base(),cpp{});
@@ -467,7 +467,7 @@ template<class ATOMIC, class OPERATION>
 inline typename is_atomic<ATOMIC>::value_type apply(
    ATOMIC &atom,
    const cpp,
-   const OPERATION &operation,
+   const OPERATION operation,
    const std::memory_order sync
 ) noexcept {
    debug_apply<ATOMIC,OPERATION>("cpp",sync);
@@ -492,7 +492,7 @@ template<class ATOMIC, class OPERATION>
 inline typename is_atomic<ATOMIC>::value_type apply(
    ATOMIC &atom,
    const kokkos,
-   const OPERATION &operation
+   const OPERATION operation
 ) noexcept {
    debug_apply<ATOMIC,OPERATION>("kokkos");
    return operation(atom,kokkos{});
@@ -519,7 +519,7 @@ template<class ATOMIC, class OPERATION>
 inline typename is_atomic<ATOMIC>::value_type apply(
    ATOMIC &atom,
    const strong,
-   const OPERATION &operation,
+   const OPERATION operation,
    const std::memory_order sync = std::memory_order_seq_cst
 ) noexcept {
    using T = typename is_atomic<ATOMIC>::value_type;
@@ -556,7 +556,7 @@ template<class ATOMIC, class OPERATION>
 inline typename is_atomic<ATOMIC>::value_type apply(
    ATOMIC &atom,
    const strong,
-   const OPERATION &operation,
+   const OPERATION operation,
    const std::memory_order success,
    const std::memory_order failure
 ) noexcept {
@@ -595,7 +595,7 @@ template<class P, class ATOMIC, class OPERATION>
 inline typename is_atomic<ATOMIC>::value_type apply_pun(
    ATOMIC &atom,
    const strong::pun,
-   const OPERATION &operation,
+   const OPERATION operation,
    const std::memory_order sync
 ) {
    using T = typename is_atomic<ATOMIC>::value_type;
@@ -627,7 +627,7 @@ template<class P, class ATOMIC, class OPERATION>
 inline typename is_atomic<ATOMIC>::value_type apply_pun(
    ATOMIC &atom,
    const strong::pun,
-   const OPERATION &operation,
+   const OPERATION operation,
    const std::memory_order success,
    const std::memory_order failure
 ) {
@@ -665,7 +665,7 @@ inline typename is_atomic<ATOMIC>::value_type apply_pun(
    apply( \
       ATOMIC &atom, \
       const cas::pun, \
-      const OPERATION &operation, \
+      const OPERATION operation, \
       const std::memory_order sync = std::memory_order_seq_cst \
    ) { \
       return apply_pun<P>(atom, cas::pun{}, operation, sync); \
@@ -677,7 +677,7 @@ inline typename is_atomic<ATOMIC>::value_type apply_pun(
    apply( \
       ATOMIC &atom, \
       const cas::pun, \
-      const OPERATION &operation, \
+      const OPERATION operation, \
       const std::memory_order success, \
       const std::memory_order failure \
    ) { \
@@ -739,7 +739,7 @@ template<class ATOMIC, class OPERATION>
 inline typename is_atomic<ATOMIC>::value_type apply(
    ATOMIC &atom,
    const weak,
-   const OPERATION &operation,
+   const OPERATION operation,
    const std::memory_order sync = std::memory_order_seq_cst
 ) noexcept {
    using T = typename is_atomic<ATOMIC>::value_type;
@@ -761,7 +761,7 @@ template<class ATOMIC, class OPERATION>
 inline typename is_atomic<ATOMIC>::value_type apply(
    ATOMIC &atom,
    const weak,
-   const OPERATION &operation,
+   const OPERATION operation,
    const std::memory_order success,
    const std::memory_order failure
 ) noexcept {
@@ -800,7 +800,7 @@ template<class P, class ATOMIC, class OPERATION>
 inline typename is_atomic<ATOMIC>::value_type apply_pun(
    ATOMIC &atom,
    const weak::pun,
-   const OPERATION &operation,
+   const OPERATION operation,
    const std::memory_order sync
 ) {
    using T = typename is_atomic<ATOMIC>::value_type;
@@ -830,7 +830,7 @@ template<class P, class ATOMIC, class OPERATION>
 inline typename is_atomic<ATOMIC>::value_type apply_pun(
    ATOMIC &atom,
    const weak::pun,
-   const OPERATION &operation,
+   const OPERATION operation,
    const std::memory_order success,
    const std::memory_order failure
 ) {
@@ -905,14 +905,14 @@ atomics_make_apply(
 // OPERATION's operator() is embedded into a lock_guard(mutex), giving a limited
 // form of atomicity. Understand, however, that mutexes protect code, not data.
 // If we run two operations (say, x.add(1) and x.sub(2)) on an atomic variable
-// x, with BOTH operations using the lock scheme, then we're good. However, if
+// x, with both operations using the lock scheme, then we're good. However, if
 // one operation uses lock while the other uses something else (say, one of our
-// compare-and-swap schemes), then the latter knows nothing of the mutex! The
-// lock scheme would then blindly forge ahead and perform its operation inside
-// of an effectively useless mutex (because the other operations isn't using the
-// mutex), with the probable result being race conditions. :-(  The take-away
-// message: for a given "atomic" variable that's being modified simultaneously
-// by multiple threads, use lock for either all, or none, of those threads.
+// compare-and-swap schemes), then the latter knows nothing of the mutex. The
+// lock scheme would then perform its operation inside of an effectively useless
+// mutex (because the other operations isn't using the mutex), with the probable
+// result being a race condition. :-(  The take-away message: for an atomic<>
+// that's being modified simultaneously by multiple threads, use lock in either
+// all, or none, of those threads.
 // -----------------------------------------------------------------------------
 
 namespace internal {
@@ -922,8 +922,8 @@ template<class ATOMIC, class OPERATION>
 inline typename is_atomic<ATOMIC>::value_type apply(
    ATOMIC &atom,
    const lock,
-   const OPERATION &operation
-) {
+   const OPERATION operation
+) noexcept {
    debug_apply<ATOMIC,OPERATION>("lock");
    std::lock_guard<std::mutex> lock(ATOMIC::singleton_mutex::instance());
    return operation(atom.ref());
@@ -936,18 +936,18 @@ inline typename is_atomic<ATOMIC>::value_type apply(
 // -----------------------------------------------------------------------------
 // apply: serial
 // OPERATION's operator() is called plainly, giving no atomicity at all. Use
-// for speed in single-threaded contexts. Multi-threaded behavior is UNDEFINED!
+// for speed in single-threaded contexts. Multi-threaded behavior is undefined!
 // -----------------------------------------------------------------------------
 
 namespace internal {
 
-// NO! unless single-threaded
+// NO! Unless single-threaded
 /// Apply operation plainly, with no atomicity mechanism
 template<class ATOMIC, class OPERATION>
 inline typename is_atomic<ATOMIC>::value_type apply(
    ATOMIC &atom,
    const serial,
-   const OPERATION &operation
+   const OPERATION operation
 ) noexcept {
    debug_apply<ATOMIC,OPERATION>("serial");
    return operation(atom.ref());
@@ -971,7 +971,7 @@ inline typename is_atomic<ATOMIC>::value_type apply(
 // mineq
 /// General "a = min(a,b)"; used by atomic min() functions
 template<class A, class B>
-inline A &mineq(A &a, const B &b)
+inline A &mineq(A &a, const B b)
 {
    if (b < a) a = A(b);
    return a;
@@ -980,7 +980,7 @@ inline A &mineq(A &a, const B &b)
 // maxeq
 /// General "a = max(a,b)"; used by atomic max() functions
 template<class A, class B>
-inline A &maxeq(A &a, const B &b)
+inline A &maxeq(A &a, const B b)
 {
    if (a < b) a = A(b);
    return a;
@@ -1003,8 +1003,8 @@ namespace internal {
 template<class T, class X>
 inline void debug_binary_cpp(
    const char *const name,
-   const std::atomic<T> &atom,
-   const X &val,
+   const volatile std::atomic<T> &atom,
+   const X val,
    const std::memory_order sync
 ) noexcept {
    // Example: operation: std::atomic<long>(10).add(int(1),memory_order_seq_cst)
@@ -1021,8 +1021,8 @@ inline void debug_binary_cpp(
 template<class T, class X, class SCHEME, std::size_t NMUX>
 inline void debug_binary_kokkos(
    const char *const name,
-   const atomics::atomic<T,SCHEME,NMUX> &atom,
-   const X &val
+   const volatile atomics::atomic<T,SCHEME,NMUX> &atom,
+   const X val
 ) noexcept {
    // Example: operation: Kokkos::atomic_fetch_add(&(long(10)),int(1))
    std::cout << "   operation: ";
@@ -1037,8 +1037,8 @@ inline void debug_binary_kokkos(
 template<class T, class X>
 inline void debug_binary_op(
    const char *const name,
-   const T &lhs,
-   const X &val
+   const T lhs,
+   const X val
 ) noexcept {
    // Example: operation: long(10) += int(1)
    std::cout << "   operation: ";
@@ -1052,8 +1052,8 @@ inline void debug_binary_op(
 template<class T, class X>
 inline void debug_binary_fun(
    const char *const name,
-   const T &lhs,
-   const X &val
+   const T lhs,
+   const X val
 ) noexcept {
    // Example: operation: mineq(long(10),int(1))
    std::cout << "   operation: ";
@@ -1068,7 +1068,7 @@ inline void debug_binary_fun(
 template<class T>
 inline void debug_unary_cpp_pre(
    const char *const name,
-   const std::atomic<T> &atom
+   const volatile std::atomic<T> &atom
 ) noexcept {
    // Example: operation: ++std::atomic<long>(10)
    std::cout << "   operation: ";
@@ -1082,7 +1082,7 @@ inline void debug_unary_cpp_pre(
 template<class T>
 inline void debug_unary_cpp_post(
    const char *const name,
-   const std::atomic<T> &atom
+   const volatile std::atomic<T> &atom
 ) noexcept {
    // Example: operation: std::atomic<long>(10)++
    std::cout << "   operation: ";
@@ -1096,7 +1096,7 @@ inline void debug_unary_cpp_post(
 template<class T, class SCHEME, std::size_t NMUX>
 inline void debug_unary_kokkos(
    const char *const name,
-   const atomics::atomic<T,SCHEME,NMUX> &atom
+   const volatile atomics::atomic<T,SCHEME,NMUX> &atom
 ) noexcept {
    // Example: operation: Kokkos::increment(&(long(10)))
    std::cout << "   operation: ";
@@ -1109,7 +1109,7 @@ inline void debug_unary_kokkos(
 template<class T>
 inline void debug_unary_op_pre(
    const char *const name,
-   const T &lhs
+   const T lhs
 ) noexcept {
    // Example: operation: ++long(10)
    std::cout << "   operation: ";
@@ -1123,7 +1123,7 @@ inline void debug_unary_op_pre(
 template<class T>
 inline void debug_unary_op_post(
    const char *const name,
-   const T &lhs
+   const T lhs
 ) noexcept {
    // Example: operation: long(10)++
    std::cout << "   operation: ";
@@ -1479,7 +1479,7 @@ public:
       (void)singleton_mutex::instance();
    }
 
-   inline constexpr atomic(const T &val) noexcept : BASE(val)
+   inline constexpr atomic(const T val) noexcept : BASE(val)
    {
       (void)singleton_mutex::instance();
    };

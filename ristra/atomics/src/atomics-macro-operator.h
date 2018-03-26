@@ -5,7 +5,7 @@
 template<class ATOMIC, class X>
 inline typename internal::is_atomic<ATOMIC>::value_type operator atomics_op(
    ATOMIC &atom,
-   const X &val
+   const X val
 ) noexcept {
    return atom.atomics_fun(val);
 }

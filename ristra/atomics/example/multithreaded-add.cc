@@ -19,8 +19,6 @@ that's initialized to 0), using the cpp scheme. In that case, the result should
 be 10*1000000, i.e. 10000000.
 */
 
-
-
 #define ATOMICS_KOKKOS
 //#define ATOMICS_DEBUG
 //#define ATOMICS_PRINT

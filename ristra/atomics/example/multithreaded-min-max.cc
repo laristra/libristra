@@ -4,7 +4,6 @@
 //#define ATOMICS_PRINT
 
 #include "atomics.h"
-#include <cassert>
 #include <iostream>
 #include <thread>
 #include <vector>

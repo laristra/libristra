@@ -10,7 +10,7 @@ class atomics_class {
 public:
 
    // constructor
-   inline explicit atomics_class(const X &_val) noexcept : val(_val) { }
+   inline explicit atomics_class(const X _val) noexcept : val(_val) { }
 
 
    // ------------------------

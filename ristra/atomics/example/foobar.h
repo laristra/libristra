@@ -46,7 +46,7 @@ public:
 // ------------------------
 
 #define make_binop(op) \
-   inline foo &operator op(foo &f, const bar &b) \
+   inline foo &operator op(foo &f, const bar b) \
    { \
       f.a op b.i; \
       f.b op b.i; \
@@ -88,13 +88,13 @@ inline foo &operator--(foo &f, int) { return f.a--, f.b--, f.c--, f.d--, f; }
 // if we define these.
 
 // foo < bar
-inline bool operator<(const foo &f, const bar &b)
+inline bool operator<(const foo f, const bar b)
 {
    return f.a + f.b + f.c + f.d < b.i;
 }
 
 // bar < foo
-inline bool operator<(const bar &b, const foo &f)
+inline bool operator<(const bar b, const foo f)
 {
    return b.i < f.a + f.b + f.c + f.d;
 }
@@ -105,7 +105,7 @@ inline bool operator<(const bar &b, const foo &f)
 // ------------------------
 
 // ostream << foo
-inline std::ostream &operator<<(std::ostream &os, const foo &f)
+inline std::ostream &operator<<(std::ostream &os, const foo f)
 {
    return os
       << int(f.a) << ',' << int(f.b) << ','
@@ -113,7 +113,7 @@ inline std::ostream &operator<<(std::ostream &os, const foo &f)
 }
 
 // ostream << bar
-inline std::ostream &operator<<(std::ostream &os, const bar &b)
+inline std::ostream &operator<<(std::ostream &os, const bar b)
 {
    return os << b.i;
 }

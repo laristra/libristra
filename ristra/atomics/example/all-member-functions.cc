@@ -6,8 +6,9 @@ See comments there.
 
 #define ATOMICS_KOKKOS
 #define ATOMICS_DEBUG
-#include "atomics.h"
+//#define ATOMICS_PRINT
 
+#include "atomics.h"
 #include <complex>
 #include <iostream>
 

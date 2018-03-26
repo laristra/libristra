@@ -8,14 +8,14 @@
 
 template<class S = SCHEME, class X>
 inline T atomics_fun(
-   const X &val
+   const X val
 ) noexcept {
    return atomics::atomics_fun<S>(*this, val);
 }
 
 template<class S = SCHEME, class X>
 inline T atomics_fun(
-   const X &val
+   const X val
 ) volatile noexcept {
    return atomics::atomics_fun<S>(*this, val);
 }
@@ -27,7 +27,7 @@ inline T atomics_fun(
 
 template<class S = SCHEME, class X>
 inline T atomics_fun(
-   const X &val,
+   const X val,
    const std::memory_order sync
 ) noexcept {
    return atomics::atomics_fun<S>(*this, val, sync);
@@ -35,7 +35,7 @@ inline T atomics_fun(
 
 template<class S = SCHEME, class X>
 inline T atomics_fun(
-   const X &val,
+   const X val,
    const std::memory_order sync
 ) volatile noexcept {
    return atomics::atomics_fun<S>(*this, val, sync);
@@ -48,7 +48,7 @@ inline T atomics_fun(
 
 template<class S = SCHEME, class X>
 inline T atomics_fun(
-   const X &val,
+   const X val,
    const std::memory_order success,
    const std::memory_order failure
 ) noexcept {
@@ -57,7 +57,7 @@ inline T atomics_fun(
 
 template<class S = SCHEME, class X>
 inline T atomics_fun(
-   const X &val,
+   const X val,
    const std::memory_order success,
    const std::memory_order failure
 ) volatile noexcept {

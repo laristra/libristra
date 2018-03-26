@@ -23,8 +23,6 @@ and the other half running:
 with the cpp scheme.
 */
 
-
-
 #define ATOMICS_KOKKOS
 //#define ATOMICS_DEBUG
 //#define ATOMICS_PRINT
@@ -42,7 +40,7 @@ std::size_t niters = 0; // number of iterations
 
 // atomic value
 // See comment in add.cc; the same applies here.
-volatile atomic<long,strong> atom(0);
+atomic<long,strong> atom(0);
 
 
 // ------------------------

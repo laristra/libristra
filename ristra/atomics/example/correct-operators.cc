@@ -1,6 +1,6 @@
 
 #define ATOMICS_KOKKOS
-//#define ATOMICS_DEBUG
+#define ATOMICS_DEBUG
 //#define ATOMICS_PRINT
 
 #include "atomics.h"
