@@ -26,6 +26,7 @@
 
 // C++
 #include <atomic>
+#include <cassert>
 #include <cstddef>
 #include <mutex>
 #include <type_traits>
@@ -152,18 +153,12 @@ inline void print_type() noexcept
 /// Print the name of a std::memory_order value
 inline void print_memord(const std::memory_order sync) noexcept
 {
-   if (sync == std::memory_order_relaxed)
-      std::cout << "memory_order_relaxed" << std::endl;
-   if (sync == std::memory_order_consume)
-      std::cout << "memory_order_consume" << std::endl;
-   if (sync == std::memory_order_acquire)
-      std::cout << "memory_order_acquire" << std::endl;
-   if (sync == std::memory_order_release)
-      std::cout << "memory_order_release" << std::endl;
-   if (sync == std::memory_order_acq_rel)
-      std::cout << "memory_order_acq_rel" << std::endl;
-   if (sync == std::memory_order_seq_cst)
-      std::cout << "memory_order_seq_cst" << std::endl;
+   if (sync == std::memory_order_relaxed) std::cout << "memory_order_relaxed";
+   if (sync == std::memory_order_consume) std::cout << "memory_order_consume";
+   if (sync == std::memory_order_acquire) std::cout << "memory_order_acquire";
+   if (sync == std::memory_order_release) std::cout << "memory_order_release";
+   if (sync == std::memory_order_acq_rel) std::cout << "memory_order_acq_rel";
+   if (sync == std::memory_order_seq_cst) std::cout << "memory_order_seq_cst";
 }
 
 #endif // #if defined(ATOMICS_PRINT)
@@ -309,6 +304,7 @@ inline void debug_apply(
       std::cout << "   function : ";  print_type<OPERATION>();
       std::cout << "\n";
       std::cout << "   sync     : ";  print_memord(sync);
+      std::cout << "\n";
       std::cout << "   T/return : ";  print_type<T>();
       std::cout << "\n";
    #else
@@ -335,7 +331,9 @@ inline void debug_apply(
       std::cout << "   function : ";  print_type<OPERATION>();
       std::cout << "\n";
       std::cout << "   success  : ";  print_memord(success);
+      std::cout << "\n";
       std::cout << "   failure  : ";  print_memord(failure);
+      std::cout << "\n";
       std::cout << "   T/return : ";  print_type<T>();
       std::cout << "\n";
    #else

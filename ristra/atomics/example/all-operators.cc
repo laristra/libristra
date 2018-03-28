@@ -3,7 +3,7 @@
 We illustrate each of our operators, for each of our atomicizing schemes cpp,
 kokkos (optional), strong, strong::pun, weak, weak::pun, lock, and serial, and
 for each of the following underlying data types: int, unsigned long, double,
-int *, std::complex<float>, and our user-defined class foo.
+int*, std::complex<float>, and our user-defined class foo.
 
 Note: we're writing things in operator form (e.g. +=), not function form (e.g.
 member or namespace-scope add()). Also, for now, we're just illustrating all
@@ -12,7 +12,6 @@ these operators.
 
 #define ATOMICS_KOKKOS
 #define ATOMICS_DEBUG
-//#define ATOMICS_PRINT
 
 #include "atomics.h"
 #include <complex>
@@ -29,7 +28,7 @@ int main()
    using ulong = unsigned long;
    using cmplx = std::complex<float>;
 
-   int i(0); // for the int * cases
+   int i(0); // for the int* cases
    const cmplx c(1.2,3.4);
    const bar b(2); // for the foo cases
 
@@ -60,7 +59,7 @@ int main()
    { atomic<int,cpp> a(0);  a--; }
 
    // kokkos
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
    { atomic<int,kokkos> a(0);  a +=  2; }
    { atomic<int,kokkos> a(0);  a -=  2; }
    { atomic<int,kokkos> a(0);  a *=  2; }
@@ -75,7 +74,7 @@ int main()
    { atomic<int,kokkos> a(0);  a++; }
    { atomic<int,kokkos> a(0);  --a; }
    { atomic<int,kokkos> a(0);  a--; }
-   #endif
+#endif
 
    // strong
    { atomic<int,strong> a(0);  a +=  2; }
@@ -196,7 +195,7 @@ int main()
    { atomic<ulong,cpp> a(0);  a--; }
 
    // kokkos
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
    { atomic<ulong,kokkos> a(0);  a +=  2; }
    { atomic<ulong,kokkos> a(0);  a -=  2; }
    { atomic<ulong,kokkos> a(0);  a *=  2; }
@@ -211,7 +210,7 @@ int main()
    { atomic<ulong,kokkos> a(0);  a++; }
    { atomic<ulong,kokkos> a(0);  --a; }
    { atomic<ulong,kokkos> a(0);  a--; }
-   #endif
+#endif
 
    // strong
    { atomic<ulong,strong> a(0);  a +=  2; }
@@ -332,7 +331,7 @@ int main()
 // { atomic<double,cpp> a(0);  a--; }  // ...though plain double has those.
 
    // kokkos
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
    { atomic<double,kokkos> a(0);  a +=  2; }
    { atomic<double,kokkos> a(0);  a -=  2; }
    { atomic<double,kokkos> a(0);  a *=  2; }
@@ -347,7 +346,7 @@ int main()
    { atomic<double,kokkos> a(0);  a++; }
    { atomic<double,kokkos> a(0);  --a; }
    { atomic<double,kokkos> a(0);  a--; }
-   #endif
+#endif
 
    // strong
    { atomic<double,strong> a(0);  a +=  2; }
@@ -448,10 +447,12 @@ int main()
 
 
    // ------------------------
-   // int *
+   // int*
    // So: pointer arithmetic
    // ------------------------
 
+   (void)i;
+#if !defined(ATOMICS_TEST)
    // cpp
    { atomic<int*,cpp> a(&i);  a +=  2; }
    { atomic<int*,cpp> a(&i);  a -=  2; }
@@ -469,7 +470,7 @@ int main()
    { atomic<int*,cpp> a(&i);  a--; }
 
    // kokkos
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
 // { atomic<int*,kokkos> a(&i);  a +=  2; }  // Kokkos has nothing for pointers
 // { atomic<int*,kokkos> a(&i);  a -=  2; }  // ...
 // { atomic<int*,kokkos> a(&i);  a *=  2; }  // ...
@@ -484,7 +485,7 @@ int main()
 // { atomic<int*,kokkos> a(&i);  a++; }  // ...
 // { atomic<int*,kokkos> a(&i);  --a; }  // ...
 // { atomic<int*,kokkos> a(&i);  a--; }  // ...
-   #endif
+#endif
 
    // strong
    { atomic<int*,strong> a(&i);  a +=  2; }
@@ -581,6 +582,7 @@ int main()
    { atomic<int*,serial> a(&i);  a++; }
    { atomic<int*,serial> a(&i);  --a; }
    { atomic<int*,serial> a(&i);  a--; }
+#endif
 
 
 
@@ -605,7 +607,7 @@ int main()
 // { atomic<cmplx,cpp> a(0);  a--; } // ...
 
    // kokkos
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
 // { atomic<cmplx,kokkos> a(0);  a +=  c; } // Kokkos atomics don't either
 // { atomic<cmplx,kokkos> a(0);  a -=  c; } // ...
 // { atomic<cmplx,kokkos> a(0);  a *=  c; } // ...
@@ -620,7 +622,7 @@ int main()
 // { atomic<cmplx,kokkos> a(0);  a++; } // ...
 // { atomic<cmplx,kokkos> a(0);  --a; } // ...
 // { atomic<cmplx,kokkos> a(0);  a--; } // ...
-   #endif
+#endif
 
    // strong
    { atomic<cmplx,strong> a(0);  a +=  c; }
@@ -742,7 +744,7 @@ int main()
 // { atomic<foo,cpp> a(0);  a--; }
 
    // kokkos
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
    // Note: there's really more than one Kokkos issue here. Kokkos atomic
    // functions can take a general T, but the functions assume that the
    // right-hand side is also a T. That is, X += Y may work if Y is of the
@@ -766,7 +768,7 @@ int main()
 // { atomic<foo,kokkos> a(0);  a++; }
 // { atomic<foo,kokkos> a(0);  --a; }
 // { atomic<foo,kokkos> a(0);  a--; }
-   #endif
+#endif
 
    // strong
    { atomic<foo,strong> a(0);  a +=  b; }
@@ -891,7 +893,7 @@ int main()
    { volatile atomic<int,cpp> a(0);  a--; }
 
    // kokkos
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
    { volatile atomic<int,kokkos> a(0);  a +=  2; }
    { volatile atomic<int,kokkos> a(0);  a -=  2; }
    { volatile atomic<int,kokkos> a(0);  a *=  2; }
@@ -906,7 +908,7 @@ int main()
    { volatile atomic<int,kokkos> a(0);  a++; }
    { volatile atomic<int,kokkos> a(0);  --a; }
    { volatile atomic<int,kokkos> a(0);  a--; }
-   #endif
+#endif
 
    // strong
    { volatile atomic<int,strong> a(0);  a +=  2; }
@@ -1027,7 +1029,7 @@ int main()
    { volatile atomic<ulong,cpp> a(0);  a--; }
 
    // kokkos
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
    { volatile atomic<ulong,kokkos> a(0);  a +=  2; }
    { volatile atomic<ulong,kokkos> a(0);  a -=  2; }
    { volatile atomic<ulong,kokkos> a(0);  a *=  2; }
@@ -1042,7 +1044,7 @@ int main()
    { volatile atomic<ulong,kokkos> a(0);  a++; }
    { volatile atomic<ulong,kokkos> a(0);  --a; }
    { volatile atomic<ulong,kokkos> a(0);  a--; }
-   #endif
+#endif
 
    // strong
    { volatile atomic<ulong,strong> a(0);  a +=  2; }
@@ -1163,7 +1165,7 @@ int main()
 // { volatile atomic<double,cpp> a(0);  a--; }  // ...though plain double has those.
 
    // kokkos
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
    { volatile atomic<double,kokkos> a(0);  a +=  2; }
    { volatile atomic<double,kokkos> a(0);  a -=  2; }
    { volatile atomic<double,kokkos> a(0);  a *=  2; }
@@ -1178,7 +1180,7 @@ int main()
    { volatile atomic<double,kokkos> a(0);  a++; }
    { volatile atomic<double,kokkos> a(0);  --a; }
    { volatile atomic<double,kokkos> a(0);  a--; }
-   #endif
+#endif
 
    // strong
    { volatile atomic<double,strong> a(0);  a +=  2; }
@@ -1279,10 +1281,11 @@ int main()
 
 
    // ------------------------
-   // int *
+   // int*
    // So: pointer arithmetic
    // ------------------------
 
+#if !defined(ATOMICS_TEST)
    // cpp
    { volatile atomic<int*,cpp> a(&i);  a +=  2; }
    { volatile atomic<int*,cpp> a(&i);  a -=  2; }
@@ -1300,7 +1303,7 @@ int main()
    { volatile atomic<int*,cpp> a(&i);  a--; }
 
    // kokkos
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
 // { volatile atomic<int*,kokkos> a(&i);  a +=  2; }  // Kokkos has nothing for pointers
 // { volatile atomic<int*,kokkos> a(&i);  a -=  2; }  // ...
 // { volatile atomic<int*,kokkos> a(&i);  a *=  2; }  // ...
@@ -1315,7 +1318,7 @@ int main()
 // { volatile atomic<int*,kokkos> a(&i);  a++; }  // ...
 // { volatile atomic<int*,kokkos> a(&i);  --a; }  // ...
 // { volatile atomic<int*,kokkos> a(&i);  a--; }  // ...
-   #endif
+#endif
 
    // strong
    { volatile atomic<int*,strong> a(&i);  a +=  2; }
@@ -1412,6 +1415,7 @@ int main()
    { volatile atomic<int*,serial> a(&i);  a++; }
    { volatile atomic<int*,serial> a(&i);  --a; }
    { volatile atomic<int*,serial> a(&i);  a--; }
+#endif
 
 
 
@@ -1436,7 +1440,7 @@ int main()
 // { volatile atomic<cmplx,cpp> a(0);  a--; } // ...
 
    // kokkos
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
 // { volatile atomic<cmplx,kokkos> a(0);  a +=  c; } // Kokkos atomics don't either
 // { volatile atomic<cmplx,kokkos> a(0);  a -=  c; } // ...
 // { volatile atomic<cmplx,kokkos> a(0);  a *=  c; } // ...
@@ -1451,10 +1455,10 @@ int main()
 // { volatile atomic<cmplx,kokkos> a(0);  a++; } // ...
 // { volatile atomic<cmplx,kokkos> a(0);  --a; } // ...
 // { volatile atomic<cmplx,kokkos> a(0);  a--; } // ...
-   #endif
+#endif
 
    // strong
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<cmplx,strong> a(0);  a +=  c; }
    { volatile atomic<cmplx,strong> a(0);  a -=  c; }
    { volatile atomic<cmplx,strong> a(0);  a *=  c; }
@@ -1472,7 +1476,7 @@ int main()
 // { volatile atomic<cmplx,strong> a(0);  a--; } // ...
 
    // strong::pun
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<cmplx,strong::pun> a(0);  a +=  c; }
    { volatile atomic<cmplx,strong::pun> a(0);  a -=  c; }
    { volatile atomic<cmplx,strong::pun> a(0);  a *=  c; }
@@ -1490,7 +1494,7 @@ int main()
 // { volatile atomic<cmplx,strong::pun> a(0);  a--; } // ...
 
    // weak
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<cmplx,weak> a(0);  a +=  c; }
    { volatile atomic<cmplx,weak> a(0);  a -=  c; }
    { volatile atomic<cmplx,weak> a(0);  a *=  c; }
@@ -1508,7 +1512,7 @@ int main()
 // { volatile atomic<cmplx,weak> a(0);  a--; } // ...
 
    // weak::pun
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<cmplx,weak::pun> a(0);  a +=  c; }
    { volatile atomic<cmplx,weak::pun> a(0);  a -=  c; }
    { volatile atomic<cmplx,weak::pun> a(0);  a *=  c; }
@@ -1581,7 +1585,7 @@ int main()
 // { volatile atomic<foo,cpp> a(0);  a--; }
 
    // kokkos
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
    // Note: there's really more than one Kokkos issue here. Kokkos atomic
    // functions can take a general T, but the functions assume that the
    // right-hand side is also a T. That is, X += Y may work if Y is of the
@@ -1605,10 +1609,10 @@ int main()
 // { volatile atomic<foo,kokkos> a(0);  a++; }
 // { volatile atomic<foo,kokkos> a(0);  --a; }
 // { volatile atomic<foo,kokkos> a(0);  a--; }
-   #endif
+#endif
 
    // strong
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<foo,strong> a(0);  a +=  b; }
    { volatile atomic<foo,strong> a(0);  a -=  b; }
    { volatile atomic<foo,strong> a(0);  a *=  b; }
@@ -1626,7 +1630,7 @@ int main()
 #endif
 
    // strong::pun
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<foo,strong::pun> a(0);  a +=  b; }
    { volatile atomic<foo,strong::pun> a(0);  a -=  b; }
    { volatile atomic<foo,strong::pun> a(0);  a *=  b; }
@@ -1644,7 +1648,7 @@ int main()
 #endif
 
    // weak
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<foo,weak> a(0);  a +=  b; }
    { volatile atomic<foo,weak> a(0);  a -=  b; }
    { volatile atomic<foo,weak> a(0);  a *=  b; }
@@ -1662,7 +1666,7 @@ int main()
 #endif
 
    // weak::pun
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<foo,weak::pun> a(0);  a +=  b; }
    { volatile atomic<foo,weak::pun> a(0);  a -=  b; }
    { volatile atomic<foo,weak::pun> a(0);  a *=  b; }

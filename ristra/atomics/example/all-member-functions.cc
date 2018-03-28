@@ -6,7 +6,6 @@ See comments there.
 
 #define ATOMICS_KOKKOS
 #define ATOMICS_DEBUG
-//#define ATOMICS_PRINT
 
 #include "atomics.h"
 #include <complex>
@@ -23,7 +22,7 @@ int main()
    using ulong = unsigned long;
    using cmplx = std::complex<float>;
 
-   int i(0), j(0); // for the int * cases
+   int i(0), j(0); // for the int* cases
    const cmplx c(1.2,3.4);
    const bar b(2); // for the foo cases
 
@@ -96,7 +95,7 @@ int main()
 // { atomic<int,cpp> a(0);  a.predec (  success,failure); }
 // { atomic<int,cpp> a(0);  a.postdec(  success,failure); }
 
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
    { atomic<int,kokkos> a(0);  a.add    (2); }
    { atomic<int,kokkos> a(0);  a.sub    (2); }
    { atomic<int,kokkos> a(0);  a.mul    (2); }
@@ -151,7 +150,7 @@ int main()
 // { atomic<int,kokkos> a(0);  a.dec    (  success,failure); }
 // { atomic<int,kokkos> a(0);  a.predec (  success,failure); }
 // { atomic<int,kokkos> a(0);  a.postdec(  success,failure); }
-   #endif
+#endif
 
    { atomic<int,strong> a(0);  a.add    (2); }
    { atomic<int,strong> a(0);  a.sub    (2); }
@@ -544,7 +543,7 @@ int main()
 // { atomic<ulong,cpp> a(0);  a.predec (  success,failure); }
 // { atomic<ulong,cpp> a(0);  a.postdec(  success,failure); }
 
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
    { atomic<ulong,kokkos> a(0);  a.add    (2); }
    { atomic<ulong,kokkos> a(0);  a.sub    (2); }
    { atomic<ulong,kokkos> a(0);  a.mul    (2); }
@@ -599,7 +598,7 @@ int main()
 // { atomic<ulong,kokkos> a(0);  a.dec    (  success,failure); }
 // { atomic<ulong,kokkos> a(0);  a.predec (  success,failure); }
 // { atomic<ulong,kokkos> a(0);  a.postdec(  success,failure); }
-   #endif
+#endif
 
    { atomic<ulong,strong> a(0);  a.add    (2); }
    { atomic<ulong,strong> a(0);  a.sub    (2); }
@@ -992,7 +991,7 @@ int main()
 // { atomic<double,cpp> a(0);  a.predec (  success,failure); }
 // { atomic<double,cpp> a(0);  a.postdec(  success,failure); }
 
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
    { atomic<double,kokkos> a(0);  a.add    (2); }
    { atomic<double,kokkos> a(0);  a.sub    (2); }
    { atomic<double,kokkos> a(0);  a.mul    (2); }
@@ -1047,7 +1046,7 @@ int main()
 // { atomic<double,kokkos> a(0);  a.dec    (  success,failure); }
 // { atomic<double,kokkos> a(0);  a.predec (  success,failure); }
 // { atomic<double,kokkos> a(0);  a.postdec(  success,failure); }
-   #endif
+#endif
 
    { atomic<double,strong> a(0);  a.add    (2); }
    { atomic<double,strong> a(0);  a.sub    (2); }
@@ -1382,9 +1381,12 @@ int main()
 
 
    // ------------------------
-   // int *
+   // int*
    // ------------------------
 
+   (void)i;
+   (void)j;
+#if !defined(ATOMICS_TEST)
    { atomic<int*,cpp> a(&i);  a.add    (2); }
    { atomic<int*,cpp> a(&i);  a.sub    (2); }
 // { atomic<int*,cpp> a(&i);  a.mul    (2); }
@@ -1440,7 +1442,7 @@ int main()
 // { atomic<int*,cpp> a(&i);  a.predec (  success,failure); }
 // { atomic<int*,cpp> a(&i);  a.postdec(  success,failure); }
 
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
 // { atomic<int*,kokkos> a(&i);  a.add    (2); }
 // { atomic<int*,kokkos> a(&i);  a.sub    (2); }
 // { atomic<int*,kokkos> a(&i);  a.mul    (2); }
@@ -1495,7 +1497,7 @@ int main()
 // { atomic<int*,kokkos> a(&i);  a.dec    (  success,failure); }
 // { atomic<int*,kokkos> a(&i);  a.predec (  success,failure); }
 // { atomic<int*,kokkos> a(&i);  a.postdec(  success,failure); }
-   #endif
+#endif
 
    { atomic<int*,strong> a(&i);  a.add    (2); }
    { atomic<int*,strong> a(&i);  a.sub    (2); }
@@ -1826,6 +1828,7 @@ int main()
 // { atomic<int*,serial> a(&i);  a.dec    (  success,failure); }
 // { atomic<int*,serial> a(&i);  a.predec (  success,failure); }
 // { atomic<int*,serial> a(&i);  a.postdec(  success,failure); }
+#endif
 
 
 
@@ -1888,7 +1891,7 @@ int main()
 // { atomic<cmplx,cpp> a(0);  a.predec (  success,failure); }
 // { atomic<cmplx,cpp> a(0);  a.postdec(  success,failure); }
 
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
 // { atomic<cmplx,kokkos> a(0);  a.add    (c); }
 // { atomic<cmplx,kokkos> a(0);  a.sub    (c); }
 // { atomic<cmplx,kokkos> a(0);  a.mul    (c); }
@@ -1943,7 +1946,7 @@ int main()
 // { atomic<cmplx,kokkos> a(0);  a.dec    (  success,failure); }
 // { atomic<cmplx,kokkos> a(0);  a.predec (  success,failure); }
 // { atomic<cmplx,kokkos> a(0);  a.postdec(  success,failure); }
-   #endif
+#endif
 
    { atomic<cmplx,strong> a(0);  a.add    (c); }
    { atomic<cmplx,strong> a(0);  a.sub    (c); }
@@ -2336,7 +2339,7 @@ int main()
 // { atomic<foo,cpp> a(0);  a.predec (  success,failure); }
 // { atomic<foo,cpp> a(0);  a.postdec(  success,failure); }
 
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
 // { atomic<foo,kokkos> a(0);  a.add    (b); }
 // { atomic<foo,kokkos> a(0);  a.sub    (b); }
 // { atomic<foo,kokkos> a(0);  a.mul    (b); }
@@ -2391,7 +2394,7 @@ int main()
 // { atomic<foo,kokkos> a(0);  a.dec    (  success,failure); }
 // { atomic<foo,kokkos> a(0);  a.predec (  success,failure); }
 // { atomic<foo,kokkos> a(0);  a.postdec(  success,failure); }
-   #endif
+#endif
 
    { atomic<foo,strong> a(0);  a.add    (b); }
    { atomic<foo,strong> a(0);  a.sub    (b); }
@@ -2788,7 +2791,7 @@ int main()
 // { volatile atomic<int,cpp> a(0);  a.predec (  success,failure); }
 // { volatile atomic<int,cpp> a(0);  a.postdec(  success,failure); }
 
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
    { volatile atomic<int,kokkos> a(0);  a.add    (2); }
    { volatile atomic<int,kokkos> a(0);  a.sub    (2); }
    { volatile atomic<int,kokkos> a(0);  a.mul    (2); }
@@ -2843,7 +2846,7 @@ int main()
 // { volatile atomic<int,kokkos> a(0);  a.dec    (  success,failure); }
 // { volatile atomic<int,kokkos> a(0);  a.predec (  success,failure); }
 // { volatile atomic<int,kokkos> a(0);  a.postdec(  success,failure); }
-   #endif
+#endif
 
    { volatile atomic<int,strong> a(0);  a.add    (2); }
    { volatile atomic<int,strong> a(0);  a.sub    (2); }
@@ -3236,7 +3239,7 @@ int main()
 // { volatile atomic<ulong,cpp> a(0);  a.predec (  success,failure); }
 // { volatile atomic<ulong,cpp> a(0);  a.postdec(  success,failure); }
 
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
    { volatile atomic<ulong,kokkos> a(0);  a.add    (2); }
    { volatile atomic<ulong,kokkos> a(0);  a.sub    (2); }
    { volatile atomic<ulong,kokkos> a(0);  a.mul    (2); }
@@ -3291,7 +3294,7 @@ int main()
 // { volatile atomic<ulong,kokkos> a(0);  a.dec    (  success,failure); }
 // { volatile atomic<ulong,kokkos> a(0);  a.predec (  success,failure); }
 // { volatile atomic<ulong,kokkos> a(0);  a.postdec(  success,failure); }
-   #endif
+#endif
 
    { volatile atomic<ulong,strong> a(0);  a.add    (2); }
    { volatile atomic<ulong,strong> a(0);  a.sub    (2); }
@@ -3684,7 +3687,7 @@ int main()
 // { volatile atomic<double,cpp> a(0);  a.predec (  success,failure); }
 // { volatile atomic<double,cpp> a(0);  a.postdec(  success,failure); }
 
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
    { volatile atomic<double,kokkos> a(0);  a.add    (2); }
    { volatile atomic<double,kokkos> a(0);  a.sub    (2); }
    { volatile atomic<double,kokkos> a(0);  a.mul    (2); }
@@ -3739,7 +3742,7 @@ int main()
 // { volatile atomic<double,kokkos> a(0);  a.dec    (  success,failure); }
 // { volatile atomic<double,kokkos> a(0);  a.predec (  success,failure); }
 // { volatile atomic<double,kokkos> a(0);  a.postdec(  success,failure); }
-   #endif
+#endif
 
    { volatile atomic<double,strong> a(0);  a.add    (2); }
    { volatile atomic<double,strong> a(0);  a.sub    (2); }
@@ -4074,9 +4077,10 @@ int main()
 
 
    // ------------------------
-   // int *
+   // int*
    // ------------------------
 
+#if !defined(ATOMICS_TEST)
    { volatile atomic<int*,cpp> a(&i);  a.add    (2); }
    { volatile atomic<int*,cpp> a(&i);  a.sub    (2); }
 // { volatile atomic<int*,cpp> a(&i);  a.mul    (2); }
@@ -4132,7 +4136,7 @@ int main()
 // { volatile atomic<int*,cpp> a(&i);  a.predec (  success,failure); }
 // { volatile atomic<int*,cpp> a(&i);  a.postdec(  success,failure); }
 
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
 // { volatile atomic<int*,kokkos> a(&i);  a.add    (2); }
 // { volatile atomic<int*,kokkos> a(&i);  a.sub    (2); }
 // { volatile atomic<int*,kokkos> a(&i);  a.mul    (2); }
@@ -4187,7 +4191,7 @@ int main()
 // { volatile atomic<int*,kokkos> a(&i);  a.dec    (  success,failure); }
 // { volatile atomic<int*,kokkos> a(&i);  a.predec (  success,failure); }
 // { volatile atomic<int*,kokkos> a(&i);  a.postdec(  success,failure); }
-   #endif
+#endif
 
    { volatile atomic<int*,strong> a(&i);  a.add    (2); }
    { volatile atomic<int*,strong> a(&i);  a.sub    (2); }
@@ -4518,6 +4522,7 @@ int main()
 // { volatile atomic<int*,serial> a(&i);  a.dec    (  success,failure); }
 // { volatile atomic<int*,serial> a(&i);  a.predec (  success,failure); }
 // { volatile atomic<int*,serial> a(&i);  a.postdec(  success,failure); }
+#endif
 
 
 
@@ -4580,7 +4585,7 @@ int main()
 // { volatile atomic<cmplx,cpp> a(0);  a.predec (  success,failure); }
 // { volatile atomic<cmplx,cpp> a(0);  a.postdec(  success,failure); }
 
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
 // { volatile atomic<cmplx,kokkos> a(0);  a.add    (c); }
 // { volatile atomic<cmplx,kokkos> a(0);  a.sub    (c); }
 // { volatile atomic<cmplx,kokkos> a(0);  a.mul    (c); }
@@ -4635,9 +4640,9 @@ int main()
 // { volatile atomic<cmplx,kokkos> a(0);  a.dec    (  success,failure); }
 // { volatile atomic<cmplx,kokkos> a(0);  a.predec (  success,failure); }
 // { volatile atomic<cmplx,kokkos> a(0);  a.postdec(  success,failure); }
-   #endif
+#endif
 
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<cmplx,strong> a(0);  a.add    (c); }
    { volatile atomic<cmplx,strong> a(0);  a.sub    (c); }
    { volatile atomic<cmplx,strong> a(0);  a.mul    (c); }
@@ -4657,7 +4662,7 @@ int main()
 // { volatile atomic<cmplx,strong> a(0);  a.dec    ( ); }
 // { volatile atomic<cmplx,strong> a(0);  a.predec ( ); }
 // { volatile atomic<cmplx,strong> a(0);  a.postdec( ); }
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<cmplx,strong> a(0);  a.add    (c,sync); }
    { volatile atomic<cmplx,strong> a(0);  a.sub    (c,sync); }
    { volatile atomic<cmplx,strong> a(0);  a.mul    (c,sync); }
@@ -4677,7 +4682,7 @@ int main()
 // { volatile atomic<cmplx,strong> a(0);  a.dec    (  sync); }
 // { volatile atomic<cmplx,strong> a(0);  a.predec (  sync); }
 // { volatile atomic<cmplx,strong> a(0);  a.postdec(  sync); }
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<cmplx,strong> a(0);  a.add    (c,success,failure); }
    { volatile atomic<cmplx,strong> a(0);  a.sub    (c,success,failure); }
    { volatile atomic<cmplx,strong> a(0);  a.mul    (c,success,failure); }
@@ -4698,7 +4703,7 @@ int main()
 // { volatile atomic<cmplx,strong> a(0);  a.predec (  success,failure); }
 // { volatile atomic<cmplx,strong> a(0);  a.postdec(  success,failure); }
 
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<cmplx,strong::pun> a(0);  a.add    (c); }
    { volatile atomic<cmplx,strong::pun> a(0);  a.sub    (c); }
    { volatile atomic<cmplx,strong::pun> a(0);  a.mul    (c); }
@@ -4718,7 +4723,7 @@ int main()
 // { volatile atomic<cmplx,strong::pun> a(0);  a.dec    ( ); }
 // { volatile atomic<cmplx,strong::pun> a(0);  a.predec ( ); }
 // { volatile atomic<cmplx,strong::pun> a(0);  a.postdec( ); }
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<cmplx,strong::pun> a(0);  a.add    (c,sync); }
    { volatile atomic<cmplx,strong::pun> a(0);  a.sub    (c,sync); }
    { volatile atomic<cmplx,strong::pun> a(0);  a.mul    (c,sync); }
@@ -4738,7 +4743,7 @@ int main()
 // { volatile atomic<cmplx,strong::pun> a(0);  a.dec    (  sync); }
 // { volatile atomic<cmplx,strong::pun> a(0);  a.predec (  sync); }
 // { volatile atomic<cmplx,strong::pun> a(0);  a.postdec(  sync); }
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<cmplx,strong::pun> a(0);  a.add    (c,success,failure); }
    { volatile atomic<cmplx,strong::pun> a(0);  a.sub    (c,success,failure); }
    { volatile atomic<cmplx,strong::pun> a(0);  a.mul    (c,success,failure); }
@@ -4759,7 +4764,7 @@ int main()
 // { volatile atomic<cmplx,strong::pun> a(0);  a.predec (  success,failure); }
 // { volatile atomic<cmplx,strong::pun> a(0);  a.postdec(  success,failure); }
 
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<cmplx,weak> a(0);  a.add    (c); }
    { volatile atomic<cmplx,weak> a(0);  a.sub    (c); }
    { volatile atomic<cmplx,weak> a(0);  a.mul    (c); }
@@ -4779,7 +4784,7 @@ int main()
 // { volatile atomic<cmplx,weak> a(0);  a.dec    ( ); }
 // { volatile atomic<cmplx,weak> a(0);  a.predec ( ); }
 // { volatile atomic<cmplx,weak> a(0);  a.postdec( ); }
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<cmplx,weak> a(0);  a.add    (c,sync); }
    { volatile atomic<cmplx,weak> a(0);  a.sub    (c,sync); }
    { volatile atomic<cmplx,weak> a(0);  a.mul    (c,sync); }
@@ -4799,7 +4804,7 @@ int main()
 // { volatile atomic<cmplx,weak> a(0);  a.dec    (  sync); }
 // { volatile atomic<cmplx,weak> a(0);  a.predec (  sync); }
 // { volatile atomic<cmplx,weak> a(0);  a.postdec(  sync); }
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<cmplx,weak> a(0);  a.add    (c,success,failure); }
    { volatile atomic<cmplx,weak> a(0);  a.sub    (c,success,failure); }
    { volatile atomic<cmplx,weak> a(0);  a.mul    (c,success,failure); }
@@ -4820,7 +4825,7 @@ int main()
 // { volatile atomic<cmplx,weak> a(0);  a.predec (  success,failure); }
 // { volatile atomic<cmplx,weak> a(0);  a.postdec(  success,failure); }
 
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<cmplx,weak::pun> a(0);  a.add    (c); }
    { volatile atomic<cmplx,weak::pun> a(0);  a.sub    (c); }
    { volatile atomic<cmplx,weak::pun> a(0);  a.mul    (c); }
@@ -4840,7 +4845,7 @@ int main()
 // { volatile atomic<cmplx,weak::pun> a(0);  a.dec    ( ); }
 // { volatile atomic<cmplx,weak::pun> a(0);  a.predec ( ); }
 // { volatile atomic<cmplx,weak::pun> a(0);  a.postdec( ); }
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<cmplx,weak::pun> a(0);  a.add    (c,sync); }
    { volatile atomic<cmplx,weak::pun> a(0);  a.sub    (c,sync); }
    { volatile atomic<cmplx,weak::pun> a(0);  a.mul    (c,sync); }
@@ -4860,7 +4865,7 @@ int main()
 // { volatile atomic<cmplx,weak::pun> a(0);  a.dec    (  sync); }
 // { volatile atomic<cmplx,weak::pun> a(0);  a.predec (  sync); }
 // { volatile atomic<cmplx,weak::pun> a(0);  a.postdec(  sync); }
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<cmplx,weak::pun> a(0);  a.add    (c,success,failure); }
    { volatile atomic<cmplx,weak::pun> a(0);  a.sub    (c,success,failure); }
    { volatile atomic<cmplx,weak::pun> a(0);  a.mul    (c,success,failure); }
@@ -5052,7 +5057,7 @@ int main()
 // { volatile atomic<foo,cpp> a(0);  a.predec (  success,failure); }
 // { volatile atomic<foo,cpp> a(0);  a.postdec(  success,failure); }
 
-   #if defined(ATOMICS_KOKKOS)
+#if defined(ATOMICS_KOKKOS)
 // { volatile atomic<foo,kokkos> a(0);  a.add    (b); }
 // { volatile atomic<foo,kokkos> a(0);  a.sub    (b); }
 // { volatile atomic<foo,kokkos> a(0);  a.mul    (b); }
@@ -5107,9 +5112,9 @@ int main()
 // { volatile atomic<foo,kokkos> a(0);  a.dec    (  success,failure); }
 // { volatile atomic<foo,kokkos> a(0);  a.predec (  success,failure); }
 // { volatile atomic<foo,kokkos> a(0);  a.postdec(  success,failure); }
-   #endif
+#endif
 
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<foo,strong> a(0);  a.add    (b); }
    { volatile atomic<foo,strong> a(0);  a.sub    (b); }
    { volatile atomic<foo,strong> a(0);  a.mul    (b); }
@@ -5166,7 +5171,7 @@ int main()
    { volatile atomic<foo,strong> a(0);  a.postdec(  success,failure); }
 #endif
 
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<foo,strong::pun> a(0);  a.add    (b); }
    { volatile atomic<foo,strong::pun> a(0);  a.sub    (b); }
    { volatile atomic<foo,strong::pun> a(0);  a.mul    (b); }
@@ -5223,7 +5228,7 @@ int main()
    { volatile atomic<foo,strong::pun> a(0);  a.postdec(  success,failure); }
 #endif
 
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<foo,weak> a(0);  a.add    (b); }
    { volatile atomic<foo,weak> a(0);  a.sub    (b); }
    { volatile atomic<foo,weak> a(0);  a.mul    (b); }
@@ -5280,7 +5285,7 @@ int main()
    { volatile atomic<foo,weak> a(0);  a.postdec(  success,failure); }
 #endif
 
-#if !defined(__clang__)
+#if !defined(__clang__) && !defined(ATOMICS_TEST)
    { volatile atomic<foo,weak::pun> a(0);  a.add    (b); }
    { volatile atomic<foo,weak::pun> a(0);  a.sub    (b); }
    { volatile atomic<foo,weak::pun> a(0);  a.mul    (b); }

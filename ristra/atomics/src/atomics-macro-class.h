@@ -25,10 +25,17 @@ public:
       const cpp,
       const std::memory_order sync = std::memory_order_seq_cst
    ) const noexcept {
+      using T = typename is_std_atomic<STDATOMIC>::value_type;
       #ifdef ATOMICS_PRINT
          debug_binary_cpp(atomics_stringify(atomics_cpp),atom,val,sync);
       #endif
-      return atom.atomics_cpp(val,sync); // e.g. atom.fetch_add(val,sync)
+
+      // std::atomic<>'s fetch_add() etc. return the contained value BEFORE
+      // the call, which is inconsistent with what we expect from "+=" etc.,
+      // and with what we get from our other atomicity schemes (below). So,
+      // we split the call and the return.
+      atom.atomics_cpp(val,sync); // e.g. atom.fetch_add(val,sync)
+      return T(atom);
    }
    #endif
 
@@ -45,22 +52,24 @@ public:
       ATOMIC &atom,
       const kokkos // for overload resolution vs. other operator()s
    ) const {
+      using T = typename is_atomic<ATOMIC>::value_type;
       #ifdef ATOMICS_PRINT
          debug_binary_kokkos(atomics_stringify(atomics_kokkos),atom,val);
       #endif
-
       #if defined(atomics_kokkos_to_t)
          // For most of the Kokkos functions, convert the right-hand side
          // to T; without this, different left- and right-hand sides would
          // make their Ts indeterminate.
-         using T = typename is_atomic<ATOMIC>::value_type;
-         return Kokkos::atomics_kokkos(&atom.ref(), T(val));
+         Kokkos::atomics_kokkos(&atom.ref(), T(val));
       #else
          // For the atomic_fetch_lshift and atomic_fetch_rshift functions,
          // however, Kokkos stipulates (T,unsigned); so, here, we *don't*
          // mess with the right-hand side.
-         return Kokkos::atomics_kokkos(&atom.ref(), val);
+         Kokkos::atomics_kokkos(&atom.ref(), val);
       #endif
+
+      // Similar remark as for above operator()'s return value
+      return T(atom);
    }
    #endif
    #endif

@@ -1,0 +1,3912 @@
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(1).fetch_sub(int(-5),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(6).fetch_sub(int(-5),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(11).fetch_sub(int(-5),memory_order_seq_cst)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(16).fetch_sub(int(-3),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(19).fetch_sub(int(-3),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(22).fetch_sub(int(-3),memory_order_seq_cst)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(25).fetch_sub(int(-1),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(26).fetch_sub(int(-1),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(27).fetch_sub(int(-1),memory_order_seq_cst)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(28).fetch_sub(int(1),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(27).fetch_sub(int(1),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(26).fetch_sub(int(1),memory_order_seq_cst)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(25).fetch_sub(int(3),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(22).fetch_sub(int(3),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(19).fetch_sub(int(3),memory_order_seq_cst)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(16).fetch_sub(int(5),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(11).fetch_sub(int(5),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: std::atomic<int>(6).fetch_sub(int(5),memory_order_seq_cst)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(1)),int(-5))
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(6)),int(-5))
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(11)),int(-5))
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(16)),int(-3))
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(19)),int(-3))
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(22)),int(-3))
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(25)),int(-1))
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(26)),int(-1))
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(27)),int(-1))
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(28)),int(1))
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(27)),int(1))
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(26)),int(1))
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(25)),int(3))
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(22)),int(3))
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(19)),int(3))
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(16)),int(5))
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(11)),int(5))
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: Kokkos::atomic_fetch_sub(&(int(6)),int(5))
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(1) -= int(-5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(6) -= int(-5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(11) -= int(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(16) -= int(-3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(19) -= int(-3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(22) -= int(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(25) -= int(-1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(26) -= int(-1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(27) -= int(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(28) -= int(1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(27) -= int(1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(26) -= int(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(25) -= int(3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(22) -= int(3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(19) -= int(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(16) -= int(5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(11) -= int(5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(6) -= int(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(1) -= int(-5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(6) -= int(-5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(11) -= int(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(16) -= int(-3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(19) -= int(-3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(22) -= int(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(25) -= int(-1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(26) -= int(-1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(27) -= int(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(28) -= int(1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(27) -= int(1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(26) -= int(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(25) -= int(3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(22) -= int(3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(19) -= int(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(16) -= int(5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(11) -= int(5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(6) -= int(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(1) -= int(-5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(6) -= int(-5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(11) -= int(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(16) -= int(-3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(19) -= int(-3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(22) -= int(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(25) -= int(-1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(26) -= int(-1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(27) -= int(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(28) -= int(1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(27) -= int(1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(26) -= int(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(25) -= int(3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(22) -= int(3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(19) -= int(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(16) -= int(5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(11) -= int(5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   operation: int(6) -= int(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(1) -= int(-5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(6) -= int(-5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(11) -= int(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(16) -= int(-3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(19) -= int(-3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(22) -= int(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(25) -= int(-1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(26) -= int(-1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(27) -= int(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(28) -= int(1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(27) -= int(1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(26) -= int(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(25) -= int(3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(22) -= int(3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(19) -= int(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(16) -= int(5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(11) -= int(5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<int>
+   sync     : memory_order_seq_cst
+   T/return : int
+   P/pun    : int
+   operation: int(6) -= int(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(1) -= int(-5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(6) -= int(-5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(11) -= int(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(16) -= int(-3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(19) -= int(-3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(22) -= int(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(25) -= int(-1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(26) -= int(-1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(27) -= int(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(28) -= int(1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(27) -= int(1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(26) -= int(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(25) -= int(3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(22) -= int(3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(19) -= int(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(16) -= int(5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(11) -= int(5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(6) -= int(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(1) -= int(-5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(6) -= int(-5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(11) -= int(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(16) -= int(-3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(19) -= int(-3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(22) -= int(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(25) -= int(-1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(26) -= int(-1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(27) -= int(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(28) -= int(1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(27) -= int(1)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(26) -= int(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(25) -= int(3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(22) -= int(3)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(19) -= int(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(16) -= int(5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(11) -= int(5)
+apply
+   left side: ristra::atomics::atomic<int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<int>
+   T/return : int
+   operation: int(6) -= int(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(100).fetch_sub(unsigned int(5),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(95).fetch_sub(unsigned int(5),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(90).fetch_sub(unsigned int(5),memory_order_seq_cst)
+value == 85
+atom  == 85
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(85).fetch_sub(unsigned int(7),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(78).fetch_sub(unsigned int(7),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(71).fetch_sub(unsigned int(7),memory_order_seq_cst)
+value == 64
+atom  == 64
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(64).fetch_sub(unsigned int(9),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(55).fetch_sub(unsigned int(9),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(46).fetch_sub(unsigned int(9),memory_order_seq_cst)
+value == 37
+atom  == 37
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(37).fetch_sub(unsigned int(11),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(26).fetch_sub(unsigned int(11),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(15).fetch_sub(unsigned int(11),memory_order_seq_cst)
+value == 4
+atom  == 4
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(4).fetch_sub(unsigned int(13),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(4294967287).fetch_sub(unsigned int(13),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(4294967274).fetch_sub(unsigned int(13),memory_order_seq_cst)
+value == 4294967261
+atom  == 4294967261
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(4294967261).fetch_sub(unsigned int(15),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(4294967246).fetch_sub(unsigned int(15),memory_order_seq_cst)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::cpp, 0ul>
+   scheme   : cpp
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: std::atomic<unsigned int>(4294967231).fetch_sub(unsigned int(15),memory_order_seq_cst)
+value == 4294967216
+atom  == 4294967216
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(100)),unsigned int(5))
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(95)),unsigned int(5))
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(90)),unsigned int(5))
+value == 85
+atom  == 85
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(85)),unsigned int(7))
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(78)),unsigned int(7))
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(71)),unsigned int(7))
+value == 64
+atom  == 64
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(64)),unsigned int(9))
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(55)),unsigned int(9))
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(46)),unsigned int(9))
+value == 37
+atom  == 37
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(37)),unsigned int(11))
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(26)),unsigned int(11))
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(15)),unsigned int(11))
+value == 4
+atom  == 4
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(4)),unsigned int(13))
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(4294967287)),unsigned int(13))
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(4294967274)),unsigned int(13))
+value == 4294967261
+atom  == 4294967261
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(4294967261)),unsigned int(15))
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(4294967246)),unsigned int(15))
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: Kokkos::atomic_fetch_sub(&(unsigned int(4294967231)),unsigned int(15))
+value == 4294967216
+atom  == 4294967216
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(100) -= unsigned int(5)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(95) -= unsigned int(5)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(90) -= unsigned int(5)
+value == 85
+atom  == 85
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(85) -= unsigned int(7)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(78) -= unsigned int(7)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(71) -= unsigned int(7)
+value == 64
+atom  == 64
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(64) -= unsigned int(9)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(55) -= unsigned int(9)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(46) -= unsigned int(9)
+value == 37
+atom  == 37
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(37) -= unsigned int(11)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(26) -= unsigned int(11)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(15) -= unsigned int(11)
+value == 4
+atom  == 4
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(4) -= unsigned int(13)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(4294967287) -= unsigned int(13)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(4294967274) -= unsigned int(13)
+value == 4294967261
+atom  == 4294967261
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(4294967261) -= unsigned int(15)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(4294967246) -= unsigned int(15)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(4294967231) -= unsigned int(15)
+value == 4294967216
+atom  == 4294967216
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(100) -= unsigned int(5)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(95) -= unsigned int(5)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(90) -= unsigned int(5)
+value == 85
+atom  == 85
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(85) -= unsigned int(7)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(78) -= unsigned int(7)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(71) -= unsigned int(7)
+value == 64
+atom  == 64
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(64) -= unsigned int(9)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(55) -= unsigned int(9)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(46) -= unsigned int(9)
+value == 37
+atom  == 37
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(37) -= unsigned int(11)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(26) -= unsigned int(11)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(15) -= unsigned int(11)
+value == 4
+atom  == 4
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(4) -= unsigned int(13)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(4294967287) -= unsigned int(13)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(4294967274) -= unsigned int(13)
+value == 4294967261
+atom  == 4294967261
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(4294967261) -= unsigned int(15)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(4294967246) -= unsigned int(15)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(4294967231) -= unsigned int(15)
+value == 4294967216
+atom  == 4294967216
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(100) -= unsigned int(5)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(95) -= unsigned int(5)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(90) -= unsigned int(5)
+value == 85
+atom  == 85
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(85) -= unsigned int(7)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(78) -= unsigned int(7)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(71) -= unsigned int(7)
+value == 64
+atom  == 64
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(64) -= unsigned int(9)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(55) -= unsigned int(9)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(46) -= unsigned int(9)
+value == 37
+atom  == 37
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(37) -= unsigned int(11)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(26) -= unsigned int(11)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(15) -= unsigned int(11)
+value == 4
+atom  == 4
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(4) -= unsigned int(13)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(4294967287) -= unsigned int(13)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(4294967274) -= unsigned int(13)
+value == 4294967261
+atom  == 4294967261
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(4294967261) -= unsigned int(15)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(4294967246) -= unsigned int(15)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   operation: unsigned int(4294967231) -= unsigned int(15)
+value == 4294967216
+atom  == 4294967216
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(100) -= unsigned int(5)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(95) -= unsigned int(5)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(90) -= unsigned int(5)
+value == 85
+atom  == 85
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(85) -= unsigned int(7)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(78) -= unsigned int(7)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(71) -= unsigned int(7)
+value == 64
+atom  == 64
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(64) -= unsigned int(9)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(55) -= unsigned int(9)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(46) -= unsigned int(9)
+value == 37
+atom  == 37
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(37) -= unsigned int(11)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(26) -= unsigned int(11)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(15) -= unsigned int(11)
+value == 4
+atom  == 4
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(4) -= unsigned int(13)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(4294967287) -= unsigned int(13)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(4294967274) -= unsigned int(13)
+value == 4294967261
+atom  == 4294967261
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(4294967261) -= unsigned int(15)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(4294967246) -= unsigned int(15)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<unsigned int>
+   sync     : memory_order_seq_cst
+   T/return : unsigned int
+   P/pun    : int
+   operation: unsigned int(4294967231) -= unsigned int(15)
+value == 4294967216
+atom  == 4294967216
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(100) -= unsigned int(5)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(95) -= unsigned int(5)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(90) -= unsigned int(5)
+value == 85
+atom  == 85
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(85) -= unsigned int(7)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(78) -= unsigned int(7)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(71) -= unsigned int(7)
+value == 64
+atom  == 64
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(64) -= unsigned int(9)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(55) -= unsigned int(9)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(46) -= unsigned int(9)
+value == 37
+atom  == 37
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(37) -= unsigned int(11)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(26) -= unsigned int(11)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(15) -= unsigned int(11)
+value == 4
+atom  == 4
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(4) -= unsigned int(13)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(4294967287) -= unsigned int(13)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(4294967274) -= unsigned int(13)
+value == 4294967261
+atom  == 4294967261
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(4294967261) -= unsigned int(15)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(4294967246) -= unsigned int(15)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(4294967231) -= unsigned int(15)
+value == 4294967216
+atom  == 4294967216
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(100) -= unsigned int(5)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(95) -= unsigned int(5)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(90) -= unsigned int(5)
+value == 85
+atom  == 85
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(85) -= unsigned int(7)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(78) -= unsigned int(7)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(71) -= unsigned int(7)
+value == 64
+atom  == 64
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(64) -= unsigned int(9)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(55) -= unsigned int(9)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(46) -= unsigned int(9)
+value == 37
+atom  == 37
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(37) -= unsigned int(11)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(26) -= unsigned int(11)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(15) -= unsigned int(11)
+value == 4
+atom  == 4
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(4) -= unsigned int(13)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(4294967287) -= unsigned int(13)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(4294967274) -= unsigned int(13)
+value == 4294967261
+atom  == 4294967261
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(4294967261) -= unsigned int(15)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(4294967246) -= unsigned int(15)
+apply
+   left side: ristra::atomics::atomic<unsigned int, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<unsigned int>
+   T/return : unsigned int
+   operation: unsigned int(4294967231) -= unsigned int(15)
+value == 4294967216
+atom  == 4294967216
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(1) -= float(-5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(6) -= float(-5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(11) -= float(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(16) -= float(-3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(19) -= float(-3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(22) -= float(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(25) -= float(-1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(26) -= float(-1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(27) -= float(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(28) -= float(1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(27) -= float(1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(26) -= float(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(25) -= float(3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(22) -= float(3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(19) -= float(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(16) -= float(5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(11) -= float(5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(6) -= float(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(1) -= float(-5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(6) -= float(-5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(11) -= float(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(16) -= float(-3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(19) -= float(-3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(22) -= float(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(25) -= float(-1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(26) -= float(-1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(27) -= float(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(28) -= float(1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(27) -= float(1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(26) -= float(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(25) -= float(3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(22) -= float(3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(19) -= float(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(16) -= float(5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(11) -= float(5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(6) -= float(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(1) -= float(-5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(6) -= float(-5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(11) -= float(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(16) -= float(-3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(19) -= float(-3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(22) -= float(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(25) -= float(-1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(26) -= float(-1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(27) -= float(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(28) -= float(1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(27) -= float(1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(26) -= float(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(25) -= float(3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(22) -= float(3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(19) -= float(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(16) -= float(5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(11) -= float(5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   operation: float(6) -= float(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(1) -= float(-5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(6) -= float(-5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(11) -= float(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(16) -= float(-3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(19) -= float(-3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(22) -= float(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(25) -= float(-1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(26) -= float(-1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(27) -= float(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(28) -= float(1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(27) -= float(1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(26) -= float(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(25) -= float(3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(22) -= float(3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(19) -= float(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(16) -= float(5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(11) -= float(5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<float>
+   sync     : memory_order_seq_cst
+   T/return : float
+   P/pun    : int
+   operation: float(6) -= float(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(1) -= float(-5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(6) -= float(-5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(11) -= float(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(16) -= float(-3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(19) -= float(-3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(22) -= float(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(25) -= float(-1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(26) -= float(-1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(27) -= float(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(28) -= float(1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(27) -= float(1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(26) -= float(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(25) -= float(3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(22) -= float(3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(19) -= float(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(16) -= float(5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(11) -= float(5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(6) -= float(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(1) -= float(-5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(6) -= float(-5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(11) -= float(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(16) -= float(-3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(19) -= float(-3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(22) -= float(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(25) -= float(-1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(26) -= float(-1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(27) -= float(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(28) -= float(1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(27) -= float(1)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(26) -= float(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(25) -= float(3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(22) -= float(3)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(19) -= float(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(16) -= float(5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(11) -= float(5)
+apply
+   left side: ristra::atomics::atomic<float, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<float>
+   T/return : float
+   operation: float(6) -= float(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(1)),double(-5))
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(6)),double(-5))
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(11)),double(-5))
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(16)),double(-3))
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(19)),double(-3))
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(22)),double(-3))
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(25)),double(-1))
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(26)),double(-1))
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(27)),double(-1))
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(28)),double(1))
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(27)),double(1))
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(26)),double(1))
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(25)),double(3))
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(22)),double(3))
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(19)),double(3))
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(16)),double(5))
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(11)),double(5))
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::kokkos, 0ul>
+   scheme   : kokkos
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: Kokkos::atomic_fetch_sub(&(double(6)),double(5))
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(1) -= double(-5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(6) -= double(-5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(11) -= double(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(16) -= double(-3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(19) -= double(-3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(22) -= double(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(25) -= double(-1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(26) -= double(-1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(27) -= double(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(28) -= double(1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(27) -= double(1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(26) -= double(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(25) -= double(3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(22) -= double(3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(19) -= double(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(16) -= double(5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(11) -= double(5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong, 0ul>
+   scheme   : strong
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(6) -= double(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(1) -= double(-5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(6) -= double(-5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(11) -= double(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(16) -= double(-3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(19) -= double(-3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(22) -= double(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(25) -= double(-1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(26) -= double(-1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(27) -= double(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(28) -= double(1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(27) -= double(1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(26) -= double(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(25) -= double(3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(22) -= double(3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(19) -= double(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(16) -= double(5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(11) -= double(5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::strong::pun, 0ul>
+   scheme   : strong::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(6) -= double(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(1) -= double(-5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(6) -= double(-5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(11) -= double(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(16) -= double(-3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(19) -= double(-3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(22) -= double(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(25) -= double(-1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(26) -= double(-1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(27) -= double(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(28) -= double(1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(27) -= double(1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(26) -= double(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(25) -= double(3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(22) -= double(3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(19) -= double(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(16) -= double(5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(11) -= double(5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak, 0ul>
+   scheme   : weak
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   operation: double(6) -= double(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(1) -= double(-5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(6) -= double(-5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(11) -= double(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(16) -= double(-3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(19) -= double(-3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(22) -= double(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(25) -= double(-1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(26) -= double(-1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(27) -= double(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(28) -= double(1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(27) -= double(1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(26) -= double(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(25) -= double(3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(22) -= double(3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(19) -= double(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(16) -= double(5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(11) -= double(5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::weak::pun, 0ul>
+   scheme   : weak::pun
+   function : ristra::atomics::internal::subequal<double>
+   sync     : memory_order_seq_cst
+   T/return : double
+   P/pun    : long
+   operation: double(6) -= double(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(1) -= double(-5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(6) -= double(-5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(11) -= double(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(16) -= double(-3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(19) -= double(-3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(22) -= double(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(25) -= double(-1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(26) -= double(-1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(27) -= double(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(28) -= double(1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(27) -= double(1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(26) -= double(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(25) -= double(3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(22) -= double(3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(19) -= double(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(16) -= double(5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(11) -= double(5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::lock, 0ul>
+   scheme   : lock
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(6) -= double(5)
+value == 1
+atom  == 1
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(1) -= double(-5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(6) -= double(-5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(11) -= double(-5)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(16) -= double(-3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(19) -= double(-3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(22) -= double(-3)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(25) -= double(-1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(26) -= double(-1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(27) -= double(-1)
+value == 28
+atom  == 28
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(28) -= double(1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(27) -= double(1)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(26) -= double(1)
+value == 25
+atom  == 25
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(25) -= double(3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(22) -= double(3)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(19) -= double(3)
+value == 16
+atom  == 16
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(16) -= double(5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(11) -= double(5)
+apply
+   left side: ristra::atomics::atomic<double, ristra::atomics::serial, 0ul>
+   scheme   : serial
+   function : ristra::atomics::internal::subequal<double>
+   T/return : double
+   operation: double(6) -= double(5)
+value == 1
+atom  == 1

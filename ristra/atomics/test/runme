@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Dumb script now, for starters.
+# We may do something more intelligent later.
+
+#export PRE='clang++ -std=c++14 -Wno-c++11-extensions
+export  PRE='g++ -std=gnu++14 -malign-double
+   -Wall -Winit-self -Wmissing-include-dirs -Wswitch-default -Wswitch-enum
+   -Wstrict-aliasing=2 -Wundef -Wextra -Wpointer-arith -Wunused-parameter
+   -Wcast-align -Wwrite-strings -Wredundant-decls -Wcast-qual -Wno-sign-compare
+   -I/home/staley/atomics/src/
+   -I/home/staley/kokkos/core/src/
+   -I/home/staley/kokkos/benchmarks/atomic/
+   -fno-exceptions -fno-math-errno -fno-trapping-math -fno-show-column
+   -pthread -pedantic -latomic -O3'
+export POST=''
+
+# Compile
+for file in unit*.cc
+do
+   echo "Compiling" ${file} "to" ${file/.cc/}
+   $PRE ${file} -o ${file/.cc/} $POST
+   echo "Comparing" ${file} "w/" ${file/.cc/}.blessed
+   ${file/.cc/} | diff ${file/.cc/}.blessed -
+done
