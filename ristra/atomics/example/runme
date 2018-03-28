@@ -17,10 +17,8 @@ export  PRE='g++ -std=gnu++14 -malign-double
 export POST=''
 
 # Compile
-for file in unit*.cc
+for file in *.cc
 do
    echo "Compiling" ${file} "to" ${file/.cc/}
    $PRE ${file} -o ${file/.cc/} $POST
-   echo "Comparing" ${file} "w/" ${file/.cc/}.blessed
-   ${file/.cc/} | diff ${file/.cc/}.blessed -
 done

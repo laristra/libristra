@@ -4,7 +4,7 @@ Member-function versions of the code in all-global-functions.cc.
 See comments there.
 */
 
-#define ATOMICS_KOKKOS
+//#define ATOMICS_KOKKOS
 #define ATOMICS_DEBUG
 
 #include "atomics.h"

@@ -98,7 +98,7 @@ to improve this, perhaps by using SFINAE constructs in higher-level functions
 that call the lower-level functions. At the moment, we don't do this.
 */
 
-#define ATOMICS_KOKKOS
+//#define ATOMICS_KOKKOS
 #define ATOMICS_DEBUG
 
 #include "atomics.h"

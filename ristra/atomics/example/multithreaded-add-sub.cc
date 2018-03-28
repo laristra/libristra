@@ -23,7 +23,7 @@ and the other half running:
 with the cpp scheme.
 */
 
-#define ATOMICS_KOKKOS
+//#define ATOMICS_KOKKOS
 //#define ATOMICS_DEBUG
 //#define ATOMICS_PRINT
 

@@ -10,7 +10,7 @@ member or namespace-scope add()). Also, for now, we're just illustrating all
 these operators.
 */
 
-#define ATOMICS_KOKKOS
+//#define ATOMICS_KOKKOS
 #define ATOMICS_DEBUG
 
 #include "atomics.h"

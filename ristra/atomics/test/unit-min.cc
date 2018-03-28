@@ -1,5 +1,5 @@
 
-#define ATOMICS_KOKKOS
+//#define ATOMICS_KOKKOS
 #define ATOMICS_DEBUG
 #define ATOMICS_PRINT
 
@@ -31,7 +31,9 @@ void fun()
 int main()
 {
 // fun<int, ristra::atomics::cpp        >();
+   #if defined(ATOMICS_KOKKOS)
    fun<int, ristra::atomics::kokkos     >();
+   #endif
    fun<int, ristra::atomics::strong     >();
    fun<int, ristra::atomics::strong::pun>();
    fun<int, ristra::atomics::weak       >();
@@ -40,7 +42,9 @@ int main()
    fun<int, ristra::atomics::serial     >();
 
 // fun<unsigned, ristra::atomics::cpp        >();
+   #if defined(ATOMICS_KOKKOS)
    fun<unsigned, ristra::atomics::kokkos     >();
+   #endif
    fun<unsigned, ristra::atomics::strong     >();
    fun<unsigned, ristra::atomics::strong::pun>();
    fun<unsigned, ristra::atomics::weak       >();
@@ -49,7 +53,9 @@ int main()
    fun<unsigned, ristra::atomics::serial     >();
 
 // fun<float, ristra::atomics::cpp        >();
+   #if defined(ATOMICS_KOKKOS)
 // fun<float, ristra::atomics::kokkos     >();
+   #endif
    fun<float, ristra::atomics::strong     >();
    fun<float, ristra::atomics::strong::pun>();
    fun<float, ristra::atomics::weak       >();
@@ -58,7 +64,9 @@ int main()
    fun<float, ristra::atomics::serial     >();
 
 // fun<double, ristra::atomics::cpp        >();
+   #if defined(ATOMICS_KOKKOS)
    fun<double, ristra::atomics::kokkos     >();
+   #endif
    fun<double, ristra::atomics::strong     >();
    fun<double, ristra::atomics::strong::pun>();
    fun<double, ristra::atomics::weak       >();
