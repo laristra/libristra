@@ -1,0 +1,14 @@
+#!/bin/bash
+
+export COMPILER='clang++ -std=c++14 -Wno-c++11-extensions -fno-exceptions
+   -Wall -Winit-self -Wmissing-include-dirs -Wswitch-default -Wswitch-enum
+   -Wstrict-aliasing=2 -Wundef -Wextra -Wpointer-arith -Wunused-parameter
+   -Wcast-align -Wwrite-strings -Wredundant-decls -Wcast-qual -Wno-sign-compare
+   -I../src
+   -pthread -pedantic -latomic -O3'
+
+for file in *.cc
+do
+   echo "Compiling" ${file} "to" ${file/.cc/}
+   $COMPILER ${file} -o ${file/.cc/}
+done

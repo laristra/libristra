@@ -1,0 +1,14 @@
+#!/bin/bash
+
+export COMPILER='icc -std=c++14
+   -Wall -Winit-self -Wmissing-include-dirs
+   -Wstrict-aliasing=2 -Wundef -Wextra -Wpointer-arith -Wunused-parameter
+   -Wwrite-strings -Wcast-qual -Wno-sign-compare
+   -I../src
+   -pthread -pedantic -latomic -O3'
+
+for file in *.cc
+do
+   echo "Compiling" ${file} "to" ${file/.cc/}
+   $COMPILER ${file} -o ${file/.cc/}
+done

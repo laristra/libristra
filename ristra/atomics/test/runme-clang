@@ -1,26 +1,16 @@
 #!/bin/bash
 
-# Dumb script now, for starters.
-# We may do something more intelligent later.
-
-#export PRE='clang++ -std=c++14 -Wno-c++11-extensions
-export  PRE='g++ -std=gnu++14 -malign-double
+export COMPILER='clang++ -std=c++14 -Wno-c++11-extensions -fno-exceptions
    -Wall -Winit-self -Wmissing-include-dirs -Wswitch-default -Wswitch-enum
    -Wstrict-aliasing=2 -Wundef -Wextra -Wpointer-arith -Wunused-parameter
    -Wcast-align -Wwrite-strings -Wredundant-decls -Wcast-qual -Wno-sign-compare
-   -Wno-missing-include-dirs
    -I../src
-   -I../kokkos/core/src
-   -I../kokkos/benchmarks/atomic
-   -fno-exceptions -fno-math-errno -fno-trapping-math -fno-show-column
    -pthread -pedantic -latomic -O3'
-export POST=''
 
-# Compile
-for file in unit*.cc
+for file in *.cc
 do
    echo "Compiling" ${file} "to" ${file/.cc/}
-   $PRE ${file} -o ${file/.cc/} $POST
+   $COMPILER ${file} -o ${file/.cc/}
    echo "Comparing" ${file} "w/" ${file/.cc/}.blessed
    ${file/.cc/} | diff ${file/.cc/}.blessed -
 done

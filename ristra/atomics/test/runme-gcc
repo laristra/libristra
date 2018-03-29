@@ -1,0 +1,16 @@
+#!/bin/bash
+
+export COMPILER='g++ -std=gnu++14
+   -Wall -Winit-self -Wmissing-include-dirs -Wswitch-default -Wswitch-enum
+   -Wstrict-aliasing=2 -Wundef -Wextra -Wpointer-arith -Wunused-parameter
+   -Wcast-align -Wwrite-strings -Wredundant-decls -Wcast-qual -Wno-sign-compare
+   -I../src
+   -pthread -pedantic -latomic -O3'
+
+for file in *.cc
+do
+   echo "Compiling" ${file} "to" ${file/.cc/}
+   $COMPILER ${file} -o ${file/.cc/}
+   echo "Comparing" ${file} "w/" ${file/.cc/}.blessed
+   ${file/.cc/} | diff ${file/.cc/}.blessed -
+done

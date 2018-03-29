@@ -1,0 +1,13 @@
+#!/bin/bash
+
+export COMPILER='pgc++ -std=c++14
+   -I../src
+   -pedantic -latomic -O3'
+
+for file in *.cc
+do
+   echo "Compiling" ${file} "to" ${file/.cc/}
+   $COMPILER ${file} -o ${file/.cc/}
+   echo "Comparing" ${file} "w/" ${file/.cc/}.blessed
+   ${file/.cc/} | diff ${file/.cc/}.blessed -
+done

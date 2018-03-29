@@ -33,18 +33,24 @@
 
 // Kokkos (optional)
 #if defined(ATOMICS_KOKKOS)
-#include <Kokkos_Atomic.hpp>
+   #include <Kokkos_Atomic.hpp>
 #endif
 
 // For debug-mode assertions
 #if defined(ATOMICS_DEBUG)
-#include <cassert>
+   #include <cassert>
 #endif
 
 // For print-mode printing
 #if defined(ATOMICS_PRINT)
-#include <iostream>
-#include <boost/core/demangle.hpp>
+   #include <iostream>
+   #if defined(ATOMICS_BOOST)
+      #include <boost/core/demangle.hpp>
+   #else
+      #include <cxxabi.h> // for abi::__cxa_demangle()
+      #include <memory>   // for std::unique_ptr<>
+      #include <typeinfo> // for typeid()
+   #endif
 #endif
 
 // Everything in the rest of this file is placed into ristra::atomics.
@@ -143,11 +149,35 @@ namespace internal {
 
 #if defined(ATOMICS_PRINT)
 
-/// Print type T's type name as determined by Boost's demangle()
+// demangle (if we don't use Boost's)
+#if !defined(ATOMICS_BOOST)
+inline std::string demangle(const char *const name)
+{
+   #ifdef __GNUG__
+      int status = -4;
+      const std::unique_ptr<char, void (*)(void *)> res {
+         abi::__cxa_demangle(name, NULL, NULL, &status),
+         std::free
+      };
+      if (status == 0)
+         return res.get();
+   #endif
+   // does nothing if not __GNUG__, or if abi::__cxa_demangle failed
+   return name;
+}
+#endif // #if !defined(ATOMICS_BOOST)
+
+/// Print type T's type name
 template<class T>
 inline void print_type() noexcept
 {
-   std::cout << boost::core::demangle(typeid(T).name());
+   #if defined(ATOMICS_BOOST)
+      // Boost's demangle
+      std::cout << boost::core::demangle(typeid(T).name());
+   #else
+      // our own demangle (see above)
+      std::cout << demangle(typeid(T).name());
+   #endif
 }
 
 /// Print the name of a std::memory_order value
