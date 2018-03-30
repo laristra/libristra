@@ -5,6 +5,7 @@ export COMPILER='icc -std=c++14
    -Wstrict-aliasing=2 -Wundef -Wextra -Wpointer-arith -Wunused-parameter
    -Wwrite-strings -Wcast-qual -Wno-sign-compare
    -I../src
+   -no-ansi-alias
    -pthread -pedantic -latomic -O3'
 
 for file in *.cc

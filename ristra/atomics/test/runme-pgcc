@@ -9,5 +9,5 @@ do
    echo "Compiling" ${file} "to" ${file/.cc/}
    $COMPILER ${file} -o ${file/.cc/}
    echo "Comparing" ${file} "w/" ${file/.cc/}.blessed
-   ${file/.cc/} | diff ${file/.cc/}.blessed -
+   ./${file/.cc/} | diff ${file/.cc/}.blessed -
 done

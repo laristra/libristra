@@ -1455,6 +1455,12 @@ unnecessarily stall any atomic operations being performed on the other.
 template<class T, class SCHEME, std::size_t NMUX>
 class atomic : public std::atomic<T> {
 
+   /*
+   FIXME, 2018-03-29, Martin Staley
+   I'd like to have the following. However, it seemed that
+   std::is_trivially_copyable wasn't supported yet on some
+   compilers+machines I tried. So, for now, I'll remove it.
+
    // T must be trivially copyable.
    // std::atomic<T> already checks this, but we might
    // as well make the error message more direct.
@@ -1462,6 +1468,7 @@ class atomic : public std::atomic<T> {
       std::is_trivially_copyable<T>::value,
      "atomics::atomic requires a trivially copyable type"
    );
+   */
 
    // BASE
    using BASE = std::atomic<T>;
@@ -1538,7 +1545,7 @@ public:
       inline cv T &ref() cv noexcept \
       { \
          atomics_assert(sizeof(*this) == sizeof(T)); \
-         return *reinterpret_cast<cv T *const>(this); \
+         return *reinterpret_cast<cv T *>(this); \
       }
 
    /// Return reference to contained data, via reinterpret_cast
