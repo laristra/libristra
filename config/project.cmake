@@ -136,7 +136,11 @@ endif()
 if(RISTRA_ENABLE_CALIPER)
   message(STATUS "Found Caliper: ${Caliper_INCLUDE_DIRS}")
   include_directories(${Caliper_INCLUDE_DIRS})
+  add_definitions(-DENABLE_CALIPER)
   list( APPEND RISTRA_LIBRARIES ${Caliper_LIBRARIES} )
+  if(FLECSI_RUNTIME_MODEL STREQUAL "mpi")
+    list( APPEND FleCSALE_LIBRARIES ${Caliper_MPI_LIBRARIES} )
+  endif()
 endif()
 
 #------------------------------------------------------------------------------#
