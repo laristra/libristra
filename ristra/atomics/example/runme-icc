@@ -6,7 +6,7 @@ export COMPILER='icc -std=c++14
    -Wwrite-strings -Wcast-qual -Wno-sign-compare
    -I../src
    -no-ansi-alias
-   -pthread -pedantic -latomic -O3'
+   -pthread -pedantic -O3'
 
 for file in *.cc
 do

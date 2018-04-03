@@ -5,7 +5,7 @@ export COMPILER='g++ -std=gnu++14
    -Wstrict-aliasing=2 -Wundef -Wextra -Wpointer-arith -Wunused-parameter
    -Wcast-align -Wwrite-strings -Wredundant-decls -Wcast-qual -Wno-sign-compare
    -I../src
-   -pthread -pedantic -latomic -O3'
+   -pthread -pedantic -O3'
 
 for file in *.cc
 do

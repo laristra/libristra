@@ -2,7 +2,7 @@
 
 export COMPILER='pgc++ -std=c++14
    -I../src
-   -pedantic -latomic -O3'
+   -w'
 
 for file in *.cc
 do

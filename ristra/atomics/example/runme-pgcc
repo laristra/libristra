@@ -2,7 +2,7 @@
 
 export COMPILER='pgc++ -std=c++14
    -I../src
-   -pedantic -latomic -O3'
+   -w'
 
 # For now, exclude *.cc files that need threads.
 # Those have linking problems with pgc++.
