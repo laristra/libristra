@@ -26,7 +26,6 @@
 
 // C++
 #include <atomic>
-#include <cassert>
 #include <cstddef>
 #include <mutex>
 #include <type_traits>

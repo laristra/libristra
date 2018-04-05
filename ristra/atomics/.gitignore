@@ -37,3 +37,6 @@ test/unit-preinc
 test/unit-rshift
 test/unit-sub
 test/unit-xor
+test/unit-threads-add
+test/unit-threads-sub
+test/clean

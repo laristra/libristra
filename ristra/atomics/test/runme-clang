@@ -7,10 +7,18 @@ export COMPILER='clang++ -std=c++11 -Wno-c++14-extensions -fno-exceptions
    -I../src
    -pthread -pedantic -latomic -O3'
 
+echo
 for file in *.cc
 do
-   echo "Compiling" ${file} "to" ${file/.cc/}
+   echo "build" ${file} "to" ${file/.cc/}
    $COMPILER ${file} -o ${file/.cc/}
-   echo "Comparing" ${file} "w/" ${file/.cc/}.blessed
-   ./${file/.cc/} | diff ${file/.cc/}.blessed -
+   if [ -e ${file/.cc/}.blessed ]
+   then
+      echo "compare" ${file/.cc/} "output to" ${file/.cc/}.blessed
+      ./${file/.cc/} | diff ${file/.cc/}.blessed -
+   else
+      echo "run" ${file/.cc/}
+      ./${file/.cc/}
+   fi
+   echo
 done
