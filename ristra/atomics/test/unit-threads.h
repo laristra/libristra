@@ -8,6 +8,7 @@
 #include <cassert>
 #include <complex>
 #include <iostream>
+#include <limits>
 #include <thread>
 #include <vector>
 
@@ -67,6 +68,31 @@ struct compatible {
        !same<SCHEME,weak::pun>::value)
       ;
 };
+
+
+// approximately_equal: integral or pointer
+template<class T>
+typename std::enable_if<
+   std::is_integral<T>::value || std::is_pointer<T>::value,
+   bool
+>::type
+approximately_equal(const T a, const T b)
+{
+   return a == b;
+}
+
+// approximately_equal: general
+template<class T>
+typename std::enable_if<
+   !(std::is_integral<T>::value || std::is_pointer<T>::value),
+   bool
+>::type
+approximately_equal(const T a, const T b)
+{
+   // This is sort of simple-minded and has a magic number,
+   // but for now it suffices for our purposes.
+   return std::abs(a-b) < 1e-6*(std::abs(a) + std::abs(b));
+}
 
 
 
@@ -147,6 +173,11 @@ void action(
    // two are the same
    // ------------------------
 
+   if (!approximately_equal(T(atomic_value), serial_value)) {
+      std::cout << "serial_value == " << serial_value << std::endl;
+      std::cout << "atomic_value == " << T(atomic_value) << std::endl;
+   }
+
    /*
    if (T(atomic_value) != serial_value) {
       std::cout << "Case:";
@@ -162,12 +193,16 @@ void action(
       std::cout << "serial_value == " << serial_value << std::endl;
       std::cout << "atomic_value == " << atomic_value << std::endl;
    }
-
    std::cout << "serial_value == " << serial_value << std::endl;
    std::cout << "atomic_value == " << atomic_value << std::endl;
+
+   typedef std::numeric_limits<T> NLT;
+   std::cout.precision(NLT::max_digits10);
+   std::cout << "serial_value == " << std::fixed << serial_value << std::endl;
+   std::cout << "atomic_value == " << std::fixed << atomic_value << std::endl;
    */
 
-   assert(T(atomic_value) == serial_value);
+   assert(approximately_equal(T(atomic_value), serial_value));
 }
 
 
@@ -242,7 +277,9 @@ void type(
    exit(1);
    */
 
+#if !defined(ATOMICS_NO_CPP)
    scheme< T, cpp        >(initial, rhs);
+#endif
 #if defined(ATOMICS_KOKKOS)
    scheme< T, kokkos     >(initial, rhs);
 #endif

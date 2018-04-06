@@ -1,0 +1,12 @@
+
+A few notes regarding compilers.
+
+We have compiled Atomics examples and tests with four compilers:
+
+   clang++
+   g++
+   icc (Intel) on Darwin
+   pgc++ (Portland Group) on Darwin
+
+At the moment, pgc++ has some link errors for examples and tests that use
+std::thread, so we're excluding those in the compile/run scripts for pgc++.

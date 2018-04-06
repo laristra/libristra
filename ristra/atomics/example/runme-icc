@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export COMPILER='icc -std=c++14
+export COMPILER='icc -std=c++14 -wd11074,11076
    -Wall -Winit-self -Wmissing-include-dirs
    -Wstrict-aliasing=2 -Wundef -Wextra -Wpointer-arith -Wunused-parameter
    -Wwrite-strings -Wcast-qual -Wno-sign-compare

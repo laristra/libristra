@@ -40,3 +40,16 @@ test/unit-xor
 test/unit-threads-add
 test/unit-threads-sub
 test/clean
+
+test/unit-threads-and
+test/unit-threads-div
+test/unit-threads-lshift
+test/unit-threads-mod
+test/unit-threads-mul
+test/unit-threads-or
+test/unit-threads-postdec
+test/unit-threads-postinc
+test/unit-threads-predec
+test/unit-threads-preinc
+test/unit-threads-rshift
+test/unit-threads-xor
