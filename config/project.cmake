@@ -200,7 +200,7 @@ include_directories(${CMAKE_BINARY_DIR})
 # Add library targets
 #------------------------------------------------------------------------------#
 
-cinch_add_library_target(Ristra ristra)
+cinch_add_library_target(Ristra ristra EXPORT_TARGET RistraTargets)
 cinch_target_link_libraries( Ristra ${RISTRA_LIBRARIES} )
 
 #------------------------------------------------------------------------------#
