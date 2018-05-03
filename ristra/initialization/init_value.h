@@ -82,7 +82,7 @@ class init_value_t
     return t;
   }
 
-  status_t & status() const { return m_status; }
+  status_t const & status() const { return m_status; }
 
   /**\brief Has this init_value been resolved?
    * Does not throw.*/
