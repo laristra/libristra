@@ -31,7 +31,7 @@ set(initialization_SOURCES
 # Unit tests.
 #------------------------------------------------------------------------------#
 
-cinch_add_unit(ristra-test
+cinch_add_unit(ristra_initialization
   SOURCES
     test/test-announce.cc
     test/init_value.cc
