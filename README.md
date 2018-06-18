@@ -37,7 +37,7 @@ cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DENABLE_UNIT_TESTS=True \
     -DENABLE_BOOST_PREPROCESSOR=True \
-    -DBOOST_INCLUDEDIR=/path/to/boost \
+    -DBOOST_INCLUDEDIR=/path/to/boost/include \
     -DRISTRA_ENABLE_LUA=True \
     -DLUA_INCLUDE_DIR=/path/to/lua/include \
     -DLUA_LIBRARY=/path/to/lua/lib/liblua.a \
