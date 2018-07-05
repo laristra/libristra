@@ -10,6 +10,7 @@
 #include "ristra/assertions/detail/dbc_impl.h"
 #undef IM_OK_TO_INCLUDE_DBC_IMPL
 #include <functional>
+#include <set>
 #include <sstream>
 #include <string>
 
@@ -162,6 +163,20 @@ inline bool less_than_func(gt_t const & x, gt_t const & min, char const * name,
   return cond;
 } // GreaterThan
 
+template <typename T, typename container_t = std::set<T>>
+inline bool one_of_func(T const &key, container_t const &c, char const * name,
+  const char * file_name, const char * func_name, int line){
+  size_t count = c.count(key);
+  bool cond = count > 0;
+  auto gen = [&](){
+    std::stringstream errstr;
+    errstr << name << " not in set";
+    return errstr.str();
+  };
+  assertf_l(cond, gen, file_name, func_name, line, dbc_action);
+  return cond;
+} // OneOf
+
 } // namespace dbc
 } // namespace exception
 } // namespace ristra
@@ -172,6 +187,7 @@ inline bool less_than_func(gt_t const & x, gt_t const & min, char const * name,
     ristra::assertions::dbc::dbc_action);
 
 #ifdef RISTRA_REQUIRE_ON
+
 /*! \def Require(condition,descriptive_string): Precondition assertion. */
 #define Require(c, cs)    \
   ristra::assertions::dbc::assertf( \
@@ -207,6 +223,10 @@ inline bool less_than_func(gt_t const & x, gt_t const & min, char const * name,
 #define LessThan(x, mx) \
   ristra::assertions::dbc::less_than_func(x, mx, #x, __FILE__, __FUNCTION__, \
       __LINE__);
+/*! \def OneOf(x,set): Assert x element of set */
+#define OneOf(x, set) \
+  (ristra::assertions::dbc::one_of_func((x), (set), #x, __FILE__, __FUNCTION__, \
+      __LINE__));
 
 #else // REQUIRE_ON
 
@@ -218,6 +238,7 @@ inline bool less_than_func(gt_t const & x, gt_t const & min, char const * name,
 #define GreaterThan(x, mn) ((x) > (mn))
 #define GreaterEqual(x, mn) ((x) >= (mn))
 #define LessThan(x, mn) ((x) < (mn))
+#define OneOf(x,set) (true)
 
 #endif // REQUIRE_ON
 
