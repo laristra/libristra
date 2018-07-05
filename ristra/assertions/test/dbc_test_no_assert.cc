@@ -43,6 +43,36 @@ inline bool check_messages(std::string const & s1, std::string const & s2)
   return msg_ok;
 } // check_messages
 
+TEST(dbc_no_assert, OneOf){
+  std::string key("Key1");
+  int fail_line = -1;
+  try{
+    std::set<std::string> set1{key,"Key2","something else"};
+    bool retval1 = OneOf(key,set1);
+    EXPECT_TRUE(retval1);
+    // clang-format off
+    std::set<std::string> set2{"Key3","something completely different"};
+    fail_line = __LINE__; bool retval2 = OneOf(key,set2);
+    // clang-format on
+#if (defined RISTRA_REQUIRE_ON && defined RISTRA_DBC_THROW)
+    // Should not get here with exceptions
+    EXPECT_TRUE(false);
+#elif defined RISTRA_REQUIRE_ON
+    EXPECT_EQ(false, retval2);
+#else
+    EXPECT_EQ(true, retval2);
+#endif
+
+  } catch (std::exception & e) {
+    // exact message depends on build details. This part shd be invariant:
+    std::stringstream exp_msg;
+    exp_msg << __FILE__ << ":" << fail_line
+            << ":TestBody assertion 'key not in set' failed";
+    std::string excmsg(e.what());
+    EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));
+    }
+} // TEST(dbc_no_assert, OneOf)
+
 TEST(dbc_no_assert, Equal)
 {
   // int

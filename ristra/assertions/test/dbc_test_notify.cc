@@ -63,6 +63,33 @@ inline bool check_messages(std::string const & s1, std::string const & s2)
   return msg_ok;
 } // check_messages
 
+TEST(dbc_notify, OneOf){
+  std::string key("Key1");
+  int fail_line = -1;
+  std::stringstream outs;
+  divert_stream(&outs);
+  try{
+    std::set<std::string> set1{key,"Key2","something else"};
+    bool retval1 = OneOf(key,set1);
+    EXPECT_TRUE(retval1);
+    // clang-format off
+    std::set<std::string> set2{"Key3","something completely different"};
+    fail_line = __LINE__; bool retval2 = OneOf(key,set2);
+    // clang-format on
+    EXPECT_FALSE(retval2);
+    std::string fail_msg(outs.str());
+    std::stringstream exp_msg;
+    exp_msg << __FILE__ << ":" << fail_line
+            << ":TestBody assertion 'key not in set' failed";
+    EXPECT_TRUE(check_messages(exp_msg.str(), fail_msg));
+  } catch (std::exception & e) {
+    printf("%s:%i: With DBC notify enabled, no exception should be thrown!!\n",
+      __FUNCTION__, __LINE__);
+    EXPECT_TRUE(false); // should not get here!
+  }
+  restore_stream();
+} // TEST(dbc_notify, OneOf)
+
 TEST(dbc_notify, Equal)
 {
   int i = 1;
