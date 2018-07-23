@@ -106,6 +106,39 @@ TEST(dbc_no_assert, Equal)
   } // int
 } // TEST(dbc,Equal){
 
+TEST(dbc_no_assert, NotEqual)
+{
+  // int
+  {
+    int i = 1;
+    int j = 2;
+    int k = 1;
+    int fail_line = -1;
+    try {
+      bool ret_val(true);
+      ret_val = NotEqual(i, j);
+      EXPECT_TRUE(ret_val); // clang-format off
+      fail_line = __LINE__;ret_val = NotEqual(i,k);
+// clang-format on
+/* Should not get here with exceptions*/
+#if (RISTRA_REQUIRE_ON && RISTRA_DBC_THROW)
+      EXPECT_TRUE(false);
+#elif RISTRA_REQUIRE_ON
+      EXPECT_EQ(false, ret_val);
+#else
+      EXPECT_FALSE(ret_val);
+#endif
+    } catch (std::exception & e) {
+      // exact message depends on build details. This part shd be invariant:
+      std::stringstream exp_msg;
+      exp_msg << "flecsi/utils/test/dbc_test_no_assert.cc:" << fail_line
+              << ":TestBody Assertion 'i != j' failed";
+      std::string excmsg(e.what());
+      EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));
+    }
+  } // int
+} // TEST(dbc,NotEqual){
+
 TEST(dbc_no_assert, InOpenRange)
 {
   // int
