@@ -9,7 +9,7 @@ set(assertions_HEADERS
   errors.h
   exceptions.h
   here.h
-  
+
   PARENT_SCOPE # THIS NEEDS TO BE HERE
 )
 
@@ -21,6 +21,12 @@ set(assertions_SOURCES
 cinch_add_unit( dbc_notify
   SOURCES
     test/dbc_test_notify.cc
+  LIBRARIES Ristra
+)
+
+cinch_add_unit( dbc_no_assert
+  SOURCES
+    test/dbc_test_no_assert.cc
   LIBRARIES Ristra
 )
 

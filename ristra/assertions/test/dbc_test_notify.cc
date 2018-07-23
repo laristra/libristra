@@ -118,6 +118,34 @@ TEST(dbc_notify, Equal)
   restore_stream();
 } // TEST(dbc,Equal){
 
+TEST(dbc_notify, NotEqual)
+{
+  int i = 1;
+  int j = 2;
+  int k = 1;
+  int fail_line = -1;
+  std::stringstream outs;
+  divert_stream(&outs);
+  try {
+    bool ret_val(true);
+    ret_val = NotEqual(i, j);
+    EXPECT_TRUE(ret_val); // clang-format off
+    fail_line = __LINE__;ret_val = NotEqual(i,k);
+    // clang-format on
+    EXPECT_FALSE(ret_val);
+    std::string fail_msg(outs.str());
+    std::stringstream exp_msg;
+    exp_msg << __FILE__ << ":" << fail_line
+            << ":TestBody assertion 'i expected != k' failed";
+    EXPECT_TRUE(check_messages(exp_msg.str(), fail_msg));
+  } catch (std::exception & e) {
+    printf("%s:%i: With DBC notify enabled, no exception should be thrown!!\n",
+      __FUNCTION__, __LINE__);
+    EXPECT_TRUE(false); // shouldn't get here!
+  }
+  restore_stream();
+} // TEST(dbc,NotEqual){
+
 TEST(dbc_notify, InOpenRange)
 {
   int i = 1;

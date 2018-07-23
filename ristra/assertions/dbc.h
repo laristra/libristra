@@ -104,6 +104,23 @@ inline bool equal_func(eq_t const & a, eq_t const & b, char const * a_name_cstr,
   return cond;
 } // equal_func
 
+/**\brief assert that a == b. Give names for a and b. */
+template <class eq_t>
+inline bool not_equal_func(eq_t const & a, eq_t const & b, char const * a_name_cstr,
+  char const * b_name_cstr, const char * file_name, const char * func_name,
+  int line)
+{
+  auto gen = [&]() {
+    std::string const a_name(a_name_cstr);
+    std::string const b_name(b_name_cstr);
+    std::string const errstr(a_name + " expected != " + b_name);
+    return errstr;
+  };
+  bool cond = a != b;
+  assertf_l(cond, gen, file_name, func_name, line, dbc_action);
+  return cond;
+} // not_equal_func
+
 /**\brief min < x < max */
 template <typename comp_t>
 inline bool in_open_range_func(comp_t const & x, comp_t const & min,
@@ -207,6 +224,10 @@ inline bool one_of_func(T const &key, container_t const &c, char const * name,
 #define Equal(a, b) \
   ristra::assertions::dbc::equal_func(a, b, #a, #b, __FILE__, __FUNCTION__, \
       __LINE__);
+/*! \def Equal(x,y): Assert x == y */
+#define NotEqual(a, b) \
+  ristra::assertions::dbc::not_equal_func(a, b, #a, #b, __FILE__, __FUNCTION__, \
+      __LINE__);
 /*! \def InOpenRange(x,min,max): Assert x > min && x < max */
 #define InOpenRange(x, mn, mx)       \
   ristra::assertions::dbc::in_open_range_func( \
@@ -234,6 +255,7 @@ inline bool one_of_func(T const &key, container_t const &c, char const * name,
 #define Check(c, cs)
 #define Ensure(c, cs)
 #define Equal(a, b) ((a) == (b))
+#define NotEqual(a, b) ((a) != (b))
 #define InOpenRange(x, mn, mx) ((x) > (mn) && (x) < (mx))
 #define GreaterThan(x, mn) ((x) > (mn))
 #define GreaterEqual(x, mn) ((x) >= (mn))

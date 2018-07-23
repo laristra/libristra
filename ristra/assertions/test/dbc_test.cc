@@ -109,6 +109,39 @@ TEST(dbc, Equal)
   } // int
 } // TEST(dbc,Equal){
 
+TEST(dbc, NotEqual)
+{
+  // int
+  {
+    int i = 1;
+    int j = 2;
+    int k = 1;
+    int fail_line = -1;
+    try {
+      bool ret_val(true);
+      ret_val = NotEqual(i, j);
+      EXPECT_TRUE(ret_val); // clang-format off
+      fail_line = __LINE__;ret_val = NotEqual(i,k);
+// clang-format on
+/* Should not get here with exceptions*/
+#if (defined RISTRA_REQUIRE_ON && defined RISTRA_DBC_THROW)
+      EXPECT_TRUE(false);
+#elif defined RISTRA_REQUIRE_ON
+      EXPECT_EQ(false, ret_val);
+#else
+      EXPECT_EQ(true, ret_val);
+#endif
+    } catch (std::exception & e) {
+      // exact message depends on build details. This part shd be invariant:
+      std::stringstream exp_msg;
+      exp_msg << __FILE__ << ":" << fail_line
+              << ":TestBody assertion 'i expected != k' failed";
+      std::string excmsg(e.what());
+      EXPECT_TRUE(check_messages(exp_msg.str(), excmsg));
+    }
+  } // int
+} // TEST(dbc,NotEqual){
+
 TEST(dbc, InOpenRange)
 {
   // int
