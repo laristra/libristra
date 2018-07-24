@@ -155,4 +155,23 @@ TEST(type_traits, subscriptable)
 
 } // TEST(type_traits,subscriptable)
 
+struct Foo{};
+
+struct Zoo{
+  friend std::ostream & operator<<(std::ostream & s, Zoo const &) { return s; }
+};
+
+TEST(type_traits, is_ostream_writeable)
+{
+  bool constexpr case1_result = is_ostream_writeable<int>();
+  EXPECT_TRUE(case1_result);
+
+  bool constexpr case2_result = is_ostream_writeable<Foo>();
+  EXPECT_FALSE(case2_result);
+
+  bool constexpr case3_result = is_ostream_writeable<Zoo>();
+  EXPECT_TRUE(case3_result);
+
+} // TEST(type_traits, is_ostream_writeable)
+
 // End of file
