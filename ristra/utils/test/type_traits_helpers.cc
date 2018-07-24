@@ -9,6 +9,7 @@
 // some containers that yeild interesting types
 #include <array>
 #include <map>
+#include <memory>
 #include <vector>
 
 using namespace ristra::utils;
@@ -154,6 +155,33 @@ TEST(type_traits, subscriptable)
   EXPECT_FALSE(case9_ok);
 
 } // TEST(type_traits,subscriptable)
+
+///////////////////////////////////////////////////////////////////////////////
+// Tests of is_iterator
+///////////////////////////////////////////////////////////////////////////////
+TEST(type_traits, is_iterator){
+  std::vector<int> v;
+  constexpr bool case1_result = is_iterator_v<decltype(v.begin())>;
+  EXPECT_TRUE(case1_result);
+
+  constexpr bool case2_result = is_iterator_v<int>;
+  EXPECT_FALSE(case2_result);
+
+  // a pointer can be used with any iterator algorithm
+  constexpr bool case3_result = is_iterator_v<int *>;
+  EXPECT_TRUE(case3_result);
+
+  // a shared pointer cannot be used with any iterator algorithm
+  constexpr bool case4_result = is_iterator_v<std::shared_ptr<int>>;
+  EXPECT_FALSE(case4_result);
+} // TEST(type_traits, is_iterator){
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Tests of is_ostream_writeable
+///////////////////////////////////////////////////////////////////////////////
+
 
 struct Foo{};
 
