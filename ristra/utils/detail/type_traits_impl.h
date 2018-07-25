@@ -31,9 +31,6 @@ struct and_<Cond, Conds...>
   : std::conditional<Cond::value, and_<Conds...>, std::false_type>::type {
 };
 
-template <class...>
-using ignored_t = void;
-
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Helper type to check that T has operator[]
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +40,7 @@ struct has_subscript_operator_impl : std::false_type {
 
 template <class T, class Index>
 struct has_subscript_operator_impl<T, Index,
-  ignored_t<decltype(std::declval<T>()[std::declval<Index>()])>>
+  std::void_t<decltype(std::declval<T>()[std::declval<Index>()])>>
   : std::true_type {
 };
 
@@ -56,18 +53,23 @@ struct has_call_operator_impl : std::false_type {
 
 template <class T, class... Args>
 struct has_call_operator_impl<T,
-  ignored_t<decltype(std::declval<T>()(std::declval<Args>()...))>, Args...>
+  std::void_t<decltype(std::declval<T>()(std::declval<Args>()...))>, Args...>
   : std::true_type {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-//! \brief A helper type for checking if a particular type T is callable.
+//! \brief A helper type for checking if a particular type T is callable with
+//! any signature--i.e. does it define operator().
+//
+//! \remark See https://stackoverflow.com/questions/15393938/
+//! \remark Basic idea is, if the call operator is the same as Fallback's, then
+//! T does not implemant a call operator.
+//! \remark Updated a bit to use true_type / false_type, instead of the olde
+//! school sizeof trick.
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 struct is_callable {
  private:
-  typedef char (&yes)[1];
-  typedef char (&no)[2];
 
   struct Fallback {
     void operator()();
@@ -79,14 +81,15 @@ struct is_callable {
   struct Check;
 
   template <typename>
-  static yes test(...);
+  static std::true_type test(...);
 
   template <typename C>
-  static no test(Check<void (Fallback::*)(), &C::operator()> *);
+  static std::false_type test(Check<void (Fallback::*)(), &C::operator()> *);
 
  public:
   //! \brief True if T is callable.
-  static const bool value = sizeof(test<Derived>(0)) == sizeof(yes);
+  using result_type = decltype(test<Derived>(0));
+  static const bool value = result_type::value ;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

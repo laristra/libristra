@@ -95,6 +95,25 @@ template <typename T>
 constexpr bool is_container_v = is_container<T>::value;
 
 ////////////////////////////////////////////////////////////////////////////////
+//! \brief Check if a particular type T can be written a std::ostream.
+//! \remark If "strm << t" doesn't work, this version is instantiated.
+////////////////////////////////////////////////////////////////////////////////
+template <typename T,  typename = void>
+struct is_ostream_writeable : std::false_type{};
+
+////////////////////////////////////////////////////////////////////////////////
+//! \remark If "strm << t" works, this version is instantiated.
+////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+struct is_ostream_writeable<T,
+  std::void_t<decltype(std::declval<std::ostream &>() << std::declval<T>())>>
+  : std::true_type {
+};
+
+template <typename T>
+constexpr bool is_ostream_writeable_v = is_ostream_writeable<T>();
+
+////////////////////////////////////////////////////////////////////////////////
 /// \brief A Helper to identify if this is a container
 //! \remark If T is, this version is instantiated.
 //! \remark This version uses to a reduced set of requirements for a container.
