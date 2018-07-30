@@ -9,7 +9,7 @@
 #include<cinchtest.h>
 #include<ristra-config.h>
 
-#ifdef RISTRA_ENABLE_CALIPER
+#ifdef ENABLE_CALIPER
 
 // caliper includes
 #include <Annotation.h>
@@ -60,4 +60,4 @@ TEST(caliper, simple)
 
 } // TEST
 
-#endif // RISTRA_ENABLE_CALIPER
+#endif // ENABLE_CALIPER
