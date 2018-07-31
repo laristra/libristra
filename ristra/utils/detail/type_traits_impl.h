@@ -11,6 +11,7 @@
 
 // system includes
 #include <utility>
+#include <type_traits>
 
 namespace ristra {
 namespace utils {
