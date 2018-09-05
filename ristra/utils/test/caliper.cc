@@ -12,7 +12,7 @@
 #ifdef RISTRA_ENABLE_CALIPER
 
 // caliper includes
-#include <Annotation.h>
+#include <caliper/Annotation.h>
 
 // system includes
 #include<iostream>
