@@ -9,7 +9,12 @@ env:
   matrix:
     - DISTRO=ubuntu_mpi BUILD_TYPE=Debug DOCKERHUB=true
     - DISTRO=fedora_mpi BUILD_TYPE=Release DOCKERHUB=true
+    - DISTRO=ubuntu_mpich_mpi BUILD_TYPE=Release DOCKERHUB=true
     - DISTRO=fedora_mpich_mpi BUILD_TYPE=Release DOCKERHUB=true
+    - DISTRO=ubuntu_legion BUILD_TYPE=Debug DOCKERHUB=true
+    - DISTRO=fedora_legion BUILD_TYPE=Release DOCKERHUB=true
+    - DISTRO=ubuntu_mpich_legion BUILD_TYPE=Release DOCKERHUB=true
+    - DISTRO=fedora_mpich_legion BUILD_TYPE=Release DOCKERHUB=true
     
 before_install:
  - git fetch --unshallow && git fetch --tags #for versioning
