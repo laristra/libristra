@@ -396,3 +396,30 @@ TEST(matrix, divide_2d) {
   ASSERT_TRUE( g == ans ) << " error in operator/ with scalar";
  
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Test the inverse of a one-by-one matrix.
+///////////////////////////////////////////////////////////////////////////////
+TEST(matrix, invert_1d) {
+
+  matrix<real_t,1,1> a{ 4.0 };
+  matrix<real_t,1,1> ans{ 0.25 }; 
+
+  auto ainv = inverse(a);
+  ASSERT_TRUE( ainv == ans ) << " error in inverse(matrix)";
+  
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Test the inverse of a two-by-two matrix.
+///////////////////////////////////////////////////////////////////////////////
+TEST(matrix, invert_2d) {
+
+  matrix<real_t,2,2> a{ 1.0, 2.0, 3.0, 4.0 };
+  matrix<real_t,2,2> ans{ -2.0, 1.0, 1.5, -0.5 };
+
+  auto ainv = inverse(a);
+  ASSERT_TRUE( ainv == ans ) << " error in inverse(matrix)";
+  
+}
+

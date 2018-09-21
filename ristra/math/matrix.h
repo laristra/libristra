@@ -172,6 +172,16 @@ auto determinant( const matrix<T, 1, 1> & mat )
 ////////////////////////////////////////////////////////////////////////////////
 //! @{
 template < typename T >
+auto inverse( const matrix<T, 1, 1> & mat )
+{
+  matrix<T,1,1> tmp;
+  auto a = mat(0,0);
+  assert( a != T() );
+  tmp(0,0) = T(1) / a;
+  return tmp;
+}
+
+template < typename T >
 auto inverse( const matrix<T, 2, 2> & mat )
 {
   matrix<T,2,2> tmp;
