@@ -30,7 +30,7 @@ private:
   //! \brief private centroid utitility
   template< class T, class U, class V, class W, class X >
   static constexpr 
-  void centroid__( T & vol, U & cx, V & nsum, const W & vm, X && v )
+  void centroid_u( T & vol, U & cx, V & nsum, const W & vm, X && v )
   { 
     // nothing left to do
   }
@@ -40,7 +40,7 @@ private:
     class T, class U, class V, class W, class X1, class X2, class ... Args 
   >
   static constexpr 
-  void centroid__( 
+  void centroid_u( 
     T & vol, U & cx, V & nsum, const W & vm, X1 && v1, X2 && v2, Args&&... args 
   ) { 
    
@@ -58,7 +58,7 @@ private:
     // dot with any coordinate for volume
     vol += dot_product( n, vm );
     // do next edge
-    centroid__( 
+    centroid_u( 
       vol, cx, nsum, vm,
       std::forward<X2>(v2), 
       std::forward<Args>(args)... 
@@ -79,7 +79,7 @@ private:
     auto xm = quadrilateral<3>::midpoint( pt0, pt1, pt2, pt3 );
 
     // call main implementation, sticking first point back on end
-    centroid__( vol, cx, nsum, xm, pt0, pt1, pt2, pt3, pt0 );
+    centroid_u( vol, cx, nsum, xm, pt0, pt1, pt2, pt3, pt0 );
 
 
   }

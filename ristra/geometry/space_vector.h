@@ -28,7 +28,7 @@ namespace geometry {
   for more information on the vector_t interface.
  */
 template <typename T, size_t D>
-using space_vector = ristra::utils::dimensioned_array__<T, D, 2>;
+using space_vector = ristra::utils::dimensioned_array_u<T, D, 2>;
 
 /*!
   \function point_to_vector(const point<T, D> & a)
