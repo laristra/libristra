@@ -45,31 +45,31 @@ TEST(elements, all) {
    real_t Z = 0.0;
 
    //Test function order controls
-   int n_i;
-   int n_j;
-   int n_k;
+   int n_i = 2;
+   int n_j = 2;
+   int n_k = 2;
    
-   // user input for arbitrary point in element and funciton order
+   // (DISABLED) user input for arbitrary point in element and funciton order
 
-   std::cout << "Enter coordinates to check element"<< std::endl;
-   std::cout << "Enter X (-1 < X <  1):" ;
-   std::cin >> X;
+   // std::cout << "Enter coordinates to check element"<< std::endl;
+   // std::cout << "Enter X (-1 < X <  1):" ;
+   // std::cin >> X;
 
-   std::cout << "Enter Y (-1 < Y <  1):" ;
-   std::cin >> Y;
+   // std::cout << "Enter Y (-1 < Y <  1):" ;
+   // std::cin >> Y;
 
-   std::cout << "Enter Z (-1 < Z <  1):" ;
-   std::cin >> Z;
+   // std::cout << "Enter Z (-1 < Z <  1):" ;
+   // std::cin >> Z;
 
 
-   std::cout << "Enter function order n_i:" ;
-   std::cin >> n_i;
+   // std::cout << "Enter function order n_i:" ;
+   // std::cin >> n_i;
 
-   std::cout << "Enter function order n_j:" ;
-   std::cin >> n_j;
-   
-   std::cout << "Enter function order n_k:" ;
-   std::cin >> n_k;
+   // std::cout << "Enter function order n_j:" ;
+   // std::cin >> n_j;
+   // 
+   // std::cout << "Enter function order n_k:" ;
+   // std::cin >> n_k;
 
    
    int order = n_i + n_j + n_k;    // Function order for integration testing
@@ -77,10 +77,10 @@ TEST(elements, all) {
    vector <real_t> xi_2D_point{X,Y};     // 2D arbitraty reference point for testing   
    vector <real_t> xi_point{X,Y,Z};      // 3D arbitrary reference point for testing
 
-   // user input for quadrature order
-   int quad_order;
-   std::cout << "Enter Quadrature order. Current options = (1,2,3,4,5,6,7,8):" ;
-   std::cin >> quad_order;
+   // (DISABLED) user input for quadrature order
+   int quad_order = 2;
+   // std::cout << "Enter Quadrature order. Current options = (1,2,3,4,5,6,7,8):" ;
+   // std::cin >> quad_order;
 
    //number of qiadrature points in 3D
    int tot_q_pts_3d = quad_order * quad_order * quad_order; 
