@@ -58,7 +58,7 @@ inline void WriteBinary(std::ostream &file, T buffer) {
 
 /// \brief This is the base template.
 template <class T> 
-inline void WriteBinarySwap(std::ofstream &file, T buffer) {};
+inline void WriteBinarySwap(std::ofstream &file, T buffer) {}
 
 /// \brief This is a specialization for 32-bit integers.
 template <>

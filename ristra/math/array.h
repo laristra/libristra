@@ -70,6 +70,9 @@ private:
   //! \brief Private Data
   //===========================================================================
   //! @{
+  
+  //! \brief The array size.
+  static constexpr counter_type length_as_counter = N;
 
   //! \brief The main data container, which is just a std::array.
   T elems_[length];
@@ -94,7 +97,7 @@ public:
   template <typename T2>
   constexpr array(const array<T2,N> &rhs) noexcept
   {
-    for ( counter_type i=0; i<N; ++i )
+    for ( counter_type i=0; i<length_as_counter; i++ )
       elems_[i] = rhs.elems_[i]; 
   }
 
@@ -273,14 +276,15 @@ public:
   //  \brief swap contents (note: linear complexity)
   void swap (array& y) 
   {
-    for ( counter_type i=0; i<N; i++ ) std::swap(elems_[i], y.elems_[i]);    
+    for ( counter_type i=0; i<length_as_counter; i++ )
+      std::swap(elems_[i], y.elems_[i]);    
   }
 
   //! \brief assign one value to all elements
   void fill(const T& value)
   {
-    for ( counter_type i=0; i<N; i++ ) elems_[i] = value;    
-
+    for ( counter_type i=0; i<length_as_counter; i++ )
+      elems_[i] = value;    
   }
 
   //! \brief Replaces the contents of the container. 
@@ -311,7 +315,8 @@ public:
   //!\brief  assignment with type conversion
   template <typename T2>
   auto & operator= (const array<T2,N>& rhs) {
-    for ( counter_type i=0; i<N; i++ ) elems_[i] = rhs.elems_[i];    
+    for ( counter_type i=0; i<length_as_counter; i++ )
+      elems_[i] = rhs.elems_[i];    
     return *this;
   }
 
@@ -330,7 +335,8 @@ public:
   //! \return A reference to the current object.
   template <typename T2>
   auto & operator+=(const array<T2,N> & rhs) {
-    for ( counter_type i=0; i<N; i++ ) elems_[i] += rhs.elems_[i];    
+    for ( counter_type i=0; i<length_as_counter; i++ )
+      elems_[i] += rhs.elems_[i];    
     return *this;
   }
 
@@ -339,7 +345,8 @@ public:
   //! \return A reference to the current object.
   template <typename T2>
   auto & operator+=(const T2 & val) {
-    for ( counter_type i=0; i<N; i++ ) elems_[i] += val;    
+    for ( counter_type i=0; i<length_as_counter; i++ )
+      elems_[i] += val;    
     return *this;
   }
 
@@ -348,7 +355,8 @@ public:
   //! \return A reference to the current object.
   template <typename T2>
   auto & operator-=(const array<T2,N> & rhs) {
-    for ( counter_type i=0; i<N; i++ ) elems_[i] -= rhs.elems_[i];    
+    for ( counter_type i=0; i<length_as_counter; i++ )
+      elems_[i] -= rhs.elems_[i];    
     return *this;
   }
 
@@ -357,7 +365,8 @@ public:
   //! \return A reference to the current object.
   template <typename T2>
   auto & operator-=(const T2 & val) {
-    for ( counter_type i=0; i<N; i++ ) elems_[i] -= val;    
+    for ( counter_type i=0; i<length_as_counter; i++ )
+      elems_[i] -= val;    
     return *this;
   }
 
@@ -367,7 +376,8 @@ public:
   //! \return A reference to the current object.
   template <typename T2> 
   auto & operator*=(const array<T2,N> & rhs) {
-    for ( counter_type i=0; i<N; i++ ) elems_[i] *= rhs.elems_[i];    
+    for ( counter_type i=0; i<length_as_counter; i++ )
+      elems_[i] *= rhs.elems_[i];    
     return *this;
   }
 
@@ -376,7 +386,8 @@ public:
   //! \return A reference to the current object.
   template <typename T2>
   auto & operator*=(const T2 & val) {
-    for ( counter_type i=0; i<N; i++ ) elems_[i] *= val;    
+    for ( counter_type i=0; i<length_as_counter; i++ )
+      elems_[i] *= val;    
     return *this;
   }
 
@@ -385,7 +396,8 @@ public:
   //! \return A reference to the current object.
   template <typename T2>
   auto & operator/=(const array<T2,N> & rhs) {
-    for ( counter_type i=0; i<N; i++ ) elems_[i] /= rhs.elems_[i];    
+    for ( counter_type i=0; i<length_as_counter; i++ )
+      elems_[i] /= rhs.elems_[i];    
     return *this;
   }
 
@@ -395,7 +407,8 @@ public:
   template <typename T2>
   auto & operator/=(const T2 & val) {
     auto inv = static_cast<T>(1) / val;
-    for ( counter_type i=0; i<N; i++ ) elems_[i] *= inv;
+    for ( counter_type i=0; i<length_as_counter; i++ )
+      elems_[i] *= inv;
     return *this;
   }
 
@@ -404,7 +417,8 @@ public:
   //! \return A reference to the current object.
   auto operator-() const {
     array tmp;
-    for ( counter_type i=0; i<N; i++ ) tmp[i] = -elems_[i];
+    for ( counter_type i=0; i<length_as_counter; i++ )
+      tmp[i] = -elems_[i];
     return tmp;
   }
 
@@ -424,7 +438,9 @@ public:
 template<typename T, std::size_t N>
 bool operator==(const array<T,N>& lhs, const array<T,N>& rhs)
 {
-  for ( typename array<T,N>::counter_type i=0; i<N; i++ )
+  using counter_type = typename array<T,N>::counter_type;
+  constexpr auto len = static_cast<counter_type>(N);
+  for ( counter_type i=0; i<len; i++ )
     if ( lhs[i] != rhs[i] ) 
       return false;
   return true;
@@ -433,7 +449,9 @@ bool operator==(const array<T,N>& lhs, const array<T,N>& rhs)
 template<typename T, typename U, std::size_t N>
 bool operator==(const array<T,N>& lhs, const U& rhs)
 {
-  for ( typename array<T,N>::counter_type i=0; i<N; i++ )
+  using counter_type = typename array<T,N>::counter_type;
+  constexpr auto len = static_cast<counter_type>(N);
+  for ( counter_type i=0; i<len; i++ )
     if ( lhs[i] != rhs ) 
       return false;
   return true;
@@ -481,7 +499,9 @@ auto operator+( const array<T,N>& lhs,
                 const array<T,N>& rhs )
 {
   array<T,N> tmp;
-  for ( typename array<T,N>::counter_type i=0; i<N; i++ ) 
+  using counter_type = typename array<T,N>::counter_type;
+  constexpr auto len = static_cast<counter_type>(N);
+  for ( counter_type i=0; i<len; i++ )
     tmp[i] = lhs[i] + rhs[i];    
   return tmp;
 }
@@ -498,7 +518,9 @@ operator+( const array<T,N>& lhs,
            const U& rhs )
 {
   array<T,N> tmp;
-  for ( typename array<T,N>::counter_type i=0; i<N; i++ ) 
+  using counter_type = typename array<T,N>::counter_type;
+  constexpr auto len = static_cast<counter_type>(N);
+  for ( counter_type i=0; i<len; i++ )
     tmp[i] = lhs[i] + rhs;
   return tmp;
 }
@@ -509,7 +531,9 @@ operator+( const U& lhs,
            const array<T,N>& rhs )
 {
   array<T,N> tmp;
-  for ( typename array<T,N>::counter_type i=0; i<N; i++ ) 
+  using counter_type = typename array<T,N>::counter_type;
+  constexpr auto len = static_cast<counter_type>(N);
+  for ( counter_type i=0; i<len; i++ )
     tmp[i] = lhs + rhs[i];
   return tmp;
 }
@@ -525,7 +549,9 @@ auto operator-( const array<T,N>& lhs,
                 const array<T,N>& rhs )
 {
   array<T,N> tmp;
-  for ( typename array<T,N>::counter_type i=0; i<N; i++ ) 
+  using counter_type = typename array<T,N>::counter_type;
+  constexpr auto len = static_cast<counter_type>(N);
+  for ( counter_type i=0; i<len; i++ )
     tmp[i] = lhs[i] - rhs[i];    
   return tmp;
 }
@@ -542,7 +568,9 @@ operator-( const array<T,N>& lhs,
            const U& rhs )
 {
   array<T,N> tmp;
-  for ( typename array<T,N>::counter_type i=0; i<N; i++ ) 
+  using counter_type = typename array<T,N>::counter_type;
+  constexpr auto len = static_cast<counter_type>(N);
+  for ( counter_type i=0; i<len; i++ )
     tmp[i] = lhs[i] - rhs;
   return tmp;
 }
@@ -553,7 +581,9 @@ operator-( const U& lhs,
            const array<T,N>& rhs )
 {
   array<T,N> tmp;
-  for ( typename array<T,N>::counter_type i=0; i<N; i++ ) 
+  using counter_type = typename array<T,N>::counter_type;
+  constexpr auto len = static_cast<counter_type>(N);
+  for ( counter_type i=0; i<len; i++ )
     tmp[i] = lhs - rhs[i];
   return tmp;
 }
@@ -569,7 +599,9 @@ auto operator*( const array<T,N>& lhs,
                 const array<T,N>& rhs )
 {
   array<T,N> tmp;
-  for ( typename array<T,N>::counter_type i=0; i<N; i++ ) 
+  using counter_type = typename array<T,N>::counter_type;
+  constexpr auto len = static_cast<counter_type>(N);
+  for ( counter_type i=0; i<len; i++ )
     tmp[i] = lhs[i] * rhs[i];    
   return tmp;
 }
@@ -587,7 +619,9 @@ operator*( const array<T,N>& lhs,
            const U& rhs )
 {
   array<T,N> tmp;
-  for ( typename array<T,N>::counter_type i=0; i<N; i++ ) 
+  using counter_type = typename array<T,N>::counter_type;
+  constexpr auto len = static_cast<counter_type>(N);
+  for ( counter_type i=0; i<len; i++ )
     tmp[i] = lhs[i] * rhs;
   return tmp;
 }
@@ -598,7 +632,9 @@ operator*( const U & lhs,
            const array<T,N>& rhs )
 {
   array<T,N> tmp;
-  for ( typename array<T,N>::counter_type i=0; i<N; i++ ) 
+  using counter_type = typename array<T,N>::counter_type;
+  constexpr auto len = static_cast<counter_type>(N);
+  for ( counter_type i=0; i<len; i++ )
     tmp[i] = lhs * rhs[i];
   return tmp;
 }
@@ -614,7 +650,9 @@ auto operator/( const array<T,N>& lhs,
                 const array<T,N>& rhs )
 {
   array<T,N> tmp;
-  for ( typename array<T,N>::counter_type i=0; i<N; i++ ) 
+  using counter_type = typename array<T,N>::counter_type;
+  constexpr auto len = static_cast<counter_type>(N);
+  for ( counter_type i=0; i<len; i++ )
     tmp[i] = lhs[i] / rhs[i];    
   return tmp;
 }
@@ -634,7 +672,9 @@ operator/( const array<T,N>& lhs,
 {
   array<T,N> tmp;
   auto inv = static_cast<T>(1) / rhs;
-  for ( typename array<T,N>::counter_type i=0; i<N; i++ ) 
+  using counter_type = typename array<T,N>::counter_type;
+  constexpr auto len = static_cast<counter_type>(N);
+  for ( counter_type i=0; i<len; i++ )
     tmp[i] = lhs[i] * inv;
   return tmp;
 }
@@ -645,7 +685,9 @@ operator/( const U& lhs,
            const array<T,N>& rhs )
 {
   array<T,N> tmp;
-  for ( typename array<T,N>::counter_type i=0; i<N; i++ ) 
+  using counter_type = typename array<T,N>::counter_type;
+  constexpr auto len = static_cast<counter_type>(N);
+  for ( counter_type i=0; i<len; i++ )
     tmp[i] = lhs / rhs[i];
   return tmp;
 }

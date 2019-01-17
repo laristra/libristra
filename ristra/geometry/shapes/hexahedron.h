@@ -72,9 +72,6 @@ private:
     T & cx, U & vol, T & nsum
   ) {
 
-    using point_type = T;
-    using coord_type = typename T::value_type;
-
     // face midpoint
     auto xm = quadrilateral<3>::midpoint( pt0, pt1, pt2, pt3 );
 
