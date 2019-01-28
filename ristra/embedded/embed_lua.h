@@ -243,7 +243,7 @@ struct lua_value< Array<T,N> >
 /// \brief Push an integer onto the stack.
 /// \param [in] s  The lua state to push a value to.
 /// \param [in] i  The integer to push.
-inline size_t lua_push(lua_State * s, int i)
+inline std::size_t lua_push(lua_State * s, int i)
 {
   lua_pushinteger( s, i );
   return 1;
@@ -252,7 +252,7 @@ inline size_t lua_push(lua_State * s, int i)
 /// \brief Push a long long onto the stack.
 /// \param [in] s  The lua state to push a value to.
 /// \param [in] i  The long long to push.
-inline size_t lua_push(lua_State * s, long long i)
+inline std::size_t lua_push(lua_State * s, long long i)
 {
   lua_pushinteger( s, i );
   return 1;
@@ -261,7 +261,7 @@ inline size_t lua_push(lua_State * s, long long i)
 /// \brief Push a float onto the stack.
 /// \param [in] s  The lua state to push a value to.
 /// \param [in] x  The float to push.
-inline size_t lua_push(lua_State * s, float x)
+inline std::size_t lua_push(lua_State * s, float x)
 {
   lua_pushnumber( s, x );
   return 1;
@@ -270,7 +270,7 @@ inline size_t lua_push(lua_State * s, float x)
 /// \brief Push a double onto the stack.
 /// \param [in] s  The lua state to push a value to.
 /// \param [in] x  The double to push.
-inline size_t lua_push(lua_State * s, double x) 
+inline std::size_t lua_push(lua_State * s, double x) 
 {
   lua_pushnumber( s, x );
   return 1;
@@ -279,7 +279,7 @@ inline size_t lua_push(lua_State * s, double x)
 /// \brief Push a boolean onto the stack.
 /// \param [in] s  The lua state to push a value to.
 /// \param [in] b  The boolean to push.
-inline size_t lua_push(lua_State * s, bool b)
+inline std::size_t lua_push(lua_State * s, bool b)
 {
   lua_pushboolean( s, b );
   return 1;
@@ -288,7 +288,7 @@ inline size_t lua_push(lua_State * s, bool b)
 /// \brief Push a character array onto the stack.
 /// \param [in] s  The lua state to push a value to.
 /// \param [in] str  The character array to push.
-inline size_t lua_push(lua_State * s, const char * str)
+inline std::size_t lua_push(lua_State * s, const char * str)
 {
   lua_pushstring( s, str );
   return 1;
@@ -297,7 +297,7 @@ inline size_t lua_push(lua_State * s, const char * str)
 /// \brief Push a std::string onto the stack.
 /// \param [in] s  The lua state to push a value to.
 /// \param [in] str  The string to push.
-inline size_t lua_push(lua_State * s, const std::string & str) 
+inline std::size_t lua_push(lua_State * s, const std::string & str) 
 {
   lua_pushlstring( s, str.c_str(), str.size() );
   return 1;
@@ -306,8 +306,11 @@ inline size_t lua_push(lua_State * s, const std::string & str)
 /// \brief Push a std::array onto the stack.
 /// \param [in] s  The lua state to push a value to.
 /// \param [in] str  The array to push.
-template <size_t N>
-inline size_t lua_push(lua_State * s, const std::array<double, N> & arr)
+template <
+  std::size_t N,
+  template <typename, std::size_t> typename Array
+>
+inline std::size_t lua_push(lua_State * s, const Array<double, N> & arr)
 {
   // Caller always checks for 1, we must check for the rest
   auto ret = lua_checkstack(s, N - 1);
@@ -319,7 +322,7 @@ inline size_t lua_push(lua_State * s, const std::array<double, N> & arr)
     throw_runtime_error(ss.str());
   }
   // push each element of the array
-  for (size_t i = 0; i < N; ++i) {
+  for (std::size_t i = 0; i < N; ++i) {
     lua_push(s, arr[i]);
   }
   return N;
@@ -532,14 +535,14 @@ class lua_result_t : public lua_base_t {
   /// \{
 
   /// \brief Final templated function to end the recursion.
-  size_t push_args() const
+  std::size_t push_args() const
   { return 0; }
   
   /// \brief The main recursive function.
   /// \tparam Arg,Args  The function argument types.
   /// \param [in]  arg,args  The values of the function arguments.
   template< typename Arg, typename... Args >
-  size_t push_args( Arg&& arg, Args&&... args ) const
+  std::size_t push_args( Arg&& arg, Args&&... args ) const
   {
     // grow the stack
     check_stack(1);
