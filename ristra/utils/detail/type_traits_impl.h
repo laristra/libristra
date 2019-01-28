@@ -109,7 +109,7 @@ constexpr auto extract_extents_helper(std::index_sequence<I...>)
   constexpr std::size_t extents[std::rank<T>::value] = {
     std::extent<T, I>::value...};
   return extents;
-};
+}
 
 } // detail::
 } // utils::

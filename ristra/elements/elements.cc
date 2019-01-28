@@ -274,7 +274,7 @@ void Gauss3D(
    //find Gauss-Quadrature Points for volume integration
    for (int m = 0; m < tot_pts; m++) {
       
-      int i, j, k, jj, pn;
+      int i, j, k, jj;
 
       double x,w;
  
@@ -365,7 +365,7 @@ void Lobatto3D(
    //find Gauss-Quadrature Points for volume integration
    for (int m = 0; m < tot_pts; m++) {
       
-      int i, j, k, jj, pn;
+      int i, j, k, jj;
 
       double x,w;
  
@@ -561,20 +561,20 @@ void Quad_4_2D::physical_position(
    for (int dim = 0; dim < 2; dim++)
       x_point[dim] = 0.0;
 
-      check_unity = 0.0;
-      for (int this_vert = 0; this_vert < 4; this_vert++ ){
-        	for (int dim = 0; dim < 2; dim++){
-         	x_point[dim] += vertices[this_vert][dim]*shape_fcn[this_vert];
+   check_unity = 0.0;
+   for (int this_vert = 0; this_vert < 4; this_vert++ ){
+     	for (int dim = 0; dim < 2; dim++){
+      	x_point[dim] += vertices[this_vert][dim]*shape_fcn[this_vert];
 
-         }// end for dim
-          
-         // check partition of unity
-         check_unity += shape_fcn[this_vert];
-
-      } // end for this_vert
+      }// end for dim
        
-      // unit test
-      //std::cout << "partion of unity quad 4 2D: " << check_unity << std::endl;
+      // check partition of unity
+      check_unity += shape_fcn[this_vert];
+
+   } // end for this_vert
+    
+   // unit test
+   //std::cout << "partion of unity quad 4 2D: " << check_unity << std::endl;
             
 } // end of physical position functionfunction
 
@@ -698,18 +698,18 @@ void Quad_8_2D::physical_position(
    for (int dim = 0; dim < 2; dim++)
       x_point[dim] = 0.0;
 
-      check_unity = 0.0;
-      for (int this_vert = 0; this_vert < 8; this_vert++ ){
-         for (int dim = 0; dim < 2; dim++){
-            x_point[dim] += vertices[this_vert][dim]*shape_fcn[this_vert];
-         } // end for dim
-              
-         // check partition of unity
-         check_unity += shape_fcn[this_vert];
-      } // end for this_vert
+   check_unity = 0.0;
+   for (int this_vert = 0; this_vert < 8; this_vert++ ){
+      for (int dim = 0; dim < 2; dim++){
+         x_point[dim] += vertices[this_vert][dim]*shape_fcn[this_vert];
+      } // end for dim
+           
+      // check partition of unity
+      check_unity += shape_fcn[this_vert];
+   } // end for this_vert
    
-      // unit test
-      //std::cout << "partion of unity quad 8 2D: " << check_unity << std::endl;
+   // unit test
+   //std::cout << "partion of unity quad 8 2D: " << check_unity << std::endl;
          
 } // end of function
 

@@ -256,7 +256,6 @@ public:
     assert( num_points > 2 && "not enough points for 2d" );
 
     // determine the vector and coordinate type
-    using point_type = std::decay_t< decltype(*first) >;
     using coord_type = std::decay_t< decltype( (*first)[0] ) >;
 
     coord_type a(0);
@@ -619,7 +618,6 @@ public:
     assert( num_points > 3 && "not enough points for 3d" );
 
     // determine the vector and coordinate type
-    using point_type = std::decay_t< decltype(*first) >;
     using coord_type = std::decay_t< decltype( (*first)[0] ) >;
 
     // get the centroid
@@ -666,7 +664,6 @@ public:
   normal( T && t, Types&&... args )
   { 
     using point_type = std::decay_t<T>;
-    using coord_type = typename point_type::value_type;
     // initialize normal
     point_type n(0);
     // get the centroid
@@ -696,7 +693,6 @@ public:
 
     // determine the vector and coordinate type
     using point_type = std::decay_t< decltype(*first) >;
-    using coord_type = std::decay_t< decltype( (*first)[0] ) >;
 
     // get the centroid
     auto xm = midpoint( first, last );
