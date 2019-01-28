@@ -27,11 +27,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 set(CINCH_HEADER_SUFFIXES "\\.h")
 
 #------------------------------------------------------------------------------#
-# If a C++14 compiler is available, then set the appropriate flags
+# If a C++17 compiler is available, then set the appropriate flags
 #------------------------------------------------------------------------------#
 
-# We need C++ 14
-set(CMAKE_CXX_STANDARD 14)
+# We need C++ 17
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
 set(CMAKE_CXX_EXTENSIONS off)
 
