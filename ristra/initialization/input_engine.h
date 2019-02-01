@@ -7,6 +7,7 @@
 #include<ristra-config.h>
 
 #include "ristra/assertions/dbc.h"
+#include "ristra/embedded/embed_lua.h"
 #include "ristra/initialization/detail/inputs_impl.h"
 #include "ristra/initialization/input_source.h"
 #include "ristra/utils/type_traits.h"
@@ -577,6 +578,7 @@ class input_engine_t
     {
       registry<func_t> & hc_registry(inp.get_registry<func_t>());
       bool found_target(false);
+#ifdef RISTRA_ENABLE_LUA
       if (lua_source) {
         embedded::lua_result_uptr_t tval;
         found_target = lua_source->get_value(target, tval);
@@ -586,6 +588,7 @@ class input_engine_t
           hc_registry[target] = cpp_f;
         } // if lua found
       } // if lua
+#endif
       // if not there, or no there there, next try hard-coded (default) case
       if (!found_target && hard_coded_source) {
         func_t f;

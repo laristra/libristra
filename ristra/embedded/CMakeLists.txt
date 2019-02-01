@@ -4,18 +4,13 @@
 #~----------------------------------------------------------------------------~#
 
 set(embedded_HEADERS
-  detail/lua_base.h
-  detail/lua_ref.h
-  detail/lua_result.h
-  detail/lua_utils.h
-  detail/lua_value.h
   embed_lua.h
   embed_python.h
   
   PARENT_SCOPE # THIS NEEDS TO BE HERE
 )
 
-cinch_add_unit( ristra_iua_utils
+cinch_add_unit( ristra_lua_utils
   SOURCES test/lua_utils.cc
   INPUTS test/lua_test.lua test/mock_box_2d.lua
   LIBRARIES Ristra )
