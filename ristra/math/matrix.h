@@ -261,7 +261,7 @@ auto inverse( const matrix<T, N, N> & mat )
       auto minor = cofactor(mat,j,i);
       // compute the result
       auto val = inv_det * determinant(minor);
-      if ( (i+j)%2 == 1 ) val = val;
+      if ( (i+j)%2 == 1 ) val = -val;
       tmp(i,j) = val;
     }
   }
