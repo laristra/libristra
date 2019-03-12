@@ -234,24 +234,24 @@ struct lua_value< Array<T,N> >
 
 /// \}
   
-/// \brief The implementation for ristra multiarrays.
+/// \brief The implementation for ristra::math::matrix.
 //! This lua_value_t expects to be initialized using nested lua tables,
 //! e.g. {{1,2}, {3,4}}. Remember, ristra multiarrays are row-major ordered!
 template< 
   typename T, 
   std::size_t M,
   std::size_t N,
-  template <typename,std::size_t,std::size_t> class MultiArray
+  template <typename,std::size_t,std::size_t> class Matrix
 >
-struct lua_value< MultiArray<T,M,N> > 
+struct lua_value< Matrix<T,M,N> > 
 {
 
   /// \brief Return the value in the lua stack.
   /// \param [in] s  The lua state to query.
   /// \param [in] index  The row to access.  Defaults to the value at the top
   ///                    of the stack.
-  /// \return The requested value as a multiarray.
-  static MultiArray<T,M,N> get(lua_State * s, int index = -1)
+  /// \return The requested value as a matrix
+  static Matrix<T,M,N> get(lua_State * s, int index = -1)
   {
     // make sure we are accessing a table
     if ( !lua_istable(s, index) )
@@ -265,7 +265,7 @@ struct lua_value< MultiArray<T,M,N> >
         "Expecting array of size"<<M<<", stack array is size " << n
       );
     // extract the results
-    MultiArray<T,M,N> res;
+    Matrix<T,M,N> res;
     for ( int i=1; i<=M; ++i ) {
       lua_rawgeti(s, -1, i);  // push t[i]
       for (int j=1; j<=N; ++j) {
