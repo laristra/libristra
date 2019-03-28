@@ -28,7 +28,6 @@ WORKDIR build
 RUN cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
           -DENABLE_UNIT_TESTS=ON \
           ..
-RUN ctest -V -R ristra_elements
 RUN make -j2 || make VERBOSE=1
 RUN make test ARGS="CTEST_OUTPUT_ON_FAILURE=1"
 RUN make install DESTDIR=${PWD}/install && rm -rf ${PWD}/install
