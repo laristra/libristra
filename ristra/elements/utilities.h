@@ -10,6 +10,8 @@ namespace elements{
 template<class T>
 using vector = std::vector<T>;
 
+using real_t = double;
+
 }
 }
 

@@ -1,10 +1,10 @@
-//   ____               _____ _       _  _
-//  / ___|  _     _    |  ___(_)_ __ (_)| |_   ___
-// | |    _| |_ _| |_  | |_  | | '_ \| || __| / _ \
-// | |___|_   _|_   _| |  _| | | | | | || |  |  __/
+//   ____               _____ _       _  _                              
+//  / ___|  _     _    |  ___(_)_ __ (_)| |_   ___  
+// | |    _| |_ _| |_  | |_  | | '_ \| || __| / _ \ 
+// | |___|_   _|_   _| |  _| | | | | | || |  |  __/ 
 //  \____| |_|   |_|   |_|   |_|_| |_|_| \_\  \___|
-//  _____ _                           _     _     _ _
-// | ____| | ___ _ __ ___   ___ _ __ | |_  | |   (_| |__  _ __ __ _ _ __ _   _
+//  _____ _                           _     _     _ _                          
+// | ____| | ___ _ __ ___   ___ _ __ | |_  | |   (_| |__  _ __ __ _ _ __ _   _ 
 // |  _| | |/ _ | '_ ` _ \ / _ | '_ \| __| | |   | | '_ \| '__/ _` | '__| | | |
 // | |___| |  __| | | | | |  __| | | | |_  | |___| | |_) | | | (_| | |  | |_| |
 // |_____|_|\___|_| |_| |_|\___|_| |_|\__| |_____|_|_.__/|_|  \__,_|_|   \__, |
@@ -21,7 +21,7 @@
 
 namespace elements = ristra::elements;
 using ristra::elements::vector;
-using real_t = double;
+using ristra::elements::real_t;
 
 
 /*
@@ -36,60 +36,77 @@ using real_t = double;
   | |{  __\__ | |_                      
   |_| \___|___/\__|    
 */
-// Main function for the program
+// Main function for the testing program
 TEST(elements, all) {
 
-   // variables for position
+
+// User interface
+
+   // variables for position in reference space
    real_t X = 0.0;
    real_t Y = 0.0;
    real_t Z = 0.0;
+   real_t L = 0.0;
 
-   //Test function order controls
+   //Order of variation per dimension of integration test
    int n_i = 2;
    int n_j = 2;
    int n_k = 2;
-   
-   // (DISABLED) user input for arbitrary point in element and funciton order
-
-   // std::cout << "Enter coordinates to check element"<< std::endl;
-   // std::cout << "Enter X (-1 < X <  1):" ;
-   // std::cin >> X;
-
-   // std::cout << "Enter Y (-1 < Y <  1):" ;
-   // std::cin >> Y;
-
-   // std::cout << "Enter Z (-1 < Z <  1):" ;
-   // std::cin >> Z;
+   int n_l = 2;
 
 
-   // std::cout << "Enter function order n_i:" ;
-   // std::cin >> n_i;
+   // Total order of integration test
+   int intg_order2D = n_i+n_j;        // Function order for integration testing 2D elements
+   int intg_order3D = n_i+n_j+n_k;    // Function order for integration testing 3D elements
+   int intg_order4D = n_i+n_j+n_k+n_l;// Function order for integration testing 4D elements
 
-   // std::cout << "Enter function order n_j:" ;
-   // std::cin >> n_j;
-   // 
-   // std::cout << "Enter function order n_k:" ;
-   // std::cin >> n_k;
 
-   
-   int order = n_i + n_j + n_k;    // Function order for integration testing
+   //vector of positions in reference frame
+   vector <real_t> xi_2d_point{X,Y};     // 2D arbitraty reference point for testing   
+   vector <real_t> xi_3d_point{X,Y,Z};   // 3D arbitrary reference point for testing
+   vector <real_t> xi_4d_point{X,Y,Z,L}; // 4D arbitrary reference point for testing
 
-   vector <real_t> xi_2D_point{X,Y};     // 2D arbitraty reference point for testing   
-   vector <real_t> xi_point{X,Y,Z};      // 3D arbitrary reference point for testing
-
-   // (DISABLED) user input for quadrature order
+   // input for quadrature order for all element types
    int quad_order = 2;
-   // std::cout << "Enter Quadrature order. Current options = (1,2,3,4,5,6,7,8):" ;
-   // std::cin >> quad_order;
 
-   //number of qiadrature points in 3D
-   int tot_q_pts_3d = quad_order * quad_order * quad_order; 
+   //defining the point of interest
 
-   //number of qiadrature points in 2D
+   // a point in 2D physical space
+   vector <real_t> x_2d_point(2);
+   x_2d_point = {0.0, 0.0};
+
+   // a point in 3D physical space
+   vector<real_t> x_3d_point (3);
+   x_3d_point = {0.0, 0.0, 0.0};
+
+   // a point in 4D physical space
+   vector<real_t> x_4d_point (4);
+   x_4d_point = {0.0, 0.0, 0.0, 0.0};
+
+   // Order of elment for arbitrary order elements
+   int orderN = 4;
+
+
+   //User intput for testing, set true to run element checks
+   bool shift      = false; // To linearly shift the serendipity elements
+   bool Q4_check   = false; //Quad 4  checks
+   bool Q8_check   = false; //Quad 8  checks
+   bool Q12_check  = false; //Quad 12 checks
+   bool H8_check   = false; //Hex  8  checks
+   bool H20_check  = false; //Hex  20 checks
+   bool H32_check  = false; //Hex  32 checks
+   bool Tess_check = false; //4D linear elements
+   bool HexN_check = false; //HexN order elements
+   bool QuadN_check= false; //QuadN order elements
+
+// End user interface
+
+// Number of quadrature points in element
    int tot_q_pts_2d = quad_order * quad_order; 
-
-
-// vector definiteion 
+   int tot_q_pts_3d = quad_order * quad_order * quad_order; 
+   int tot_q_pts_4d = quad_order * quad_order * quad_order * quad_order;
+  
+// vector definiteion for serendipity elements
    // create element node vectors
    vector<vector<real_t> > quad4_x_verts (4 , vector<real_t>(2));
    vector<vector<real_t> > quad8_x_verts (8 , vector<real_t>(2));
@@ -256,6 +273,8 @@ TEST(elements, all) {
    real_t quad4_det_j;
    real_t quad8_det_j;
    real_t quad12_det_j;
+
+   // Determinant per quadrature point
    vector <real_t> hex8_q_det_j  (tot_q_pts_3d);
    vector <real_t> hex20_q_det_j (tot_q_pts_3d);
    vector <real_t> hex32_q_det_j (tot_q_pts_3d);
@@ -293,10 +312,128 @@ TEST(elements, all) {
    vector<vector<vector<real_t>> > hex8_q_inverse_jacobian  (tot_q_pts_3d, vector<vector<real_t>>(3, vector<real_t>(3)));
    vector<vector<vector<real_t>> > hex20_q_inverse_jacobian (tot_q_pts_3d, vector<vector<real_t>>(3, vector<real_t>(3)));
    vector<vector<vector<real_t>> > hex32_q_inverse_jacobian (tot_q_pts_3d, vector<vector<real_t>>(3, vector<real_t>(3)));
-// end vector definition 
+
+// vector definitions for 4D elements
+  
+   int tess16_pts = 16;
+   // create element node arrays
+   vector<vector<real_t> > tess16_x_verts(16, vector<real_t>(4));
+   
+   // create element nodal displacements
+   vector<vector<real_t> > tess16_deltax_verts(16, vector<real_t>(4));
+   
+   // create arrays of gauss points
+   vector< vector<real_t> > tess16_g_pts( tot_q_pts_4d, vector<real_t>(4));
+   
+   // create array of gauss weights
+   vector< vector<real_t> > tess16_g_weights( tot_q_pts_4d, vector<real_t>(4));
+
+   // create partial derivative vectors for basis (shape) functions
+   //xi
+
+   vector <real_t> tess16_partial_xi(16);
+
+   //eta
+   vector <real_t> tess16_partial_eta(16);
+
+   //mu
+   vector <real_t> tess16_partial_mu(16);
+
+   //Tau
+   vector <real_t> tess16_partial_tau(16);
 
 
-// Position vector initialization
+   //overall partial derivative matrix (to multiply Xi*Eta*Mu)
+   // for Tess16
+   vector<vector<real_t> > tess16_partial(16, vector<real_t>(4));
+   
+   
+   // create jacobian matrices
+   vector<vector<real_t> > tess16_jacobian(4, vector<real_t>(4));
+
+   // create determinant
+   real_t tess16_det_j = 0.0;
+
+
+   // create inverse jacobian matrices
+   vector<vector<real_t> > tess16_inverse_jacobian(4, vector<real_t>(4));
+
+   // I matrix
+   real_t identity[4][4] = {{1,0,0,0},{0,1,0,0},{0,0,1,0},{0,0,0,1}};
+
+
+   tess16_x_verts = // listed as {Xi, Eta, Mu, Tau}
+   {
+   // Interior cube bottom
+   {-1.0, -1.0, -1.0, -1.0},//0
+   {+1.0, -1.0, -1.0, -1.0},//1
+   {+1.0, -1.0, +1.0, -1.0},//2
+   {-1.0, -1.0, +1.0, -1.0},//3
+   // Interior cube top
+   {-1.0, +1.0, -1.0, -1.0},//4
+   {+1.0, +1.0, -1.0, -1.0},//5
+   {+1.0, +1.0, +1.0, -1.0},//6
+   {-1.0, +1.0, +1.0, -1.0},//7
+   // Exterior cube bottom
+   {-1.0, -1.0, -1.0, +1.0},//8
+   {+1.0, -1.0, -1.0, +1.0},//9
+   {+1.0, -1.0, +1.0, +1.0},//10
+   {-1.0, -1.0, +1.0, +1.0},//11
+   // Exterior cube top
+   {-1.0, +1.0, -1.0, +1.0},//12
+   {+1.0, +1.0, -1.0, +1.0},//13
+   {+1.0, +1.0, +1.0, +1.0},//14
+   {-1.0, +1.0, +1.0, +1.0},//15
+   };
+
+// vector definitions for arbitrary order elements
+   int numnodes_1d = orderN + 1;
+   int numnodes_2d = numnodes_1d * numnodes_1d;
+   int numnodes_3d = numnodes_1d * numnodes_1d * numnodes_1d;
+
+
+   // element nodes (xi_points)
+
+   vector <real_t> cheb_nodes_1d (orderN + 1);
+
+   //Legrange interpolant value (at any position)
+   vector <real_t> val_1d (orderN + 1);
+   vector< vector<real_t> > val_2d (numnodes_2d, vector<real_t>(numnodes_1d));
+   vector< vector<real_t> > val_3d (numnodes_3d, vector<real_t>(numnodes_1d));
+
+   //Legrange interpolant value (at any position) for 1d
+   vector <real_t> interp1d (orderN + 1);
+
+   //Derivative of the basis in 
+   vector <real_t> DVal_1d (orderN + 1);
+   vector< vector<real_t> >  DVal_2d (numnodes_2d, vector<real_t>(numnodes_1d));
+   vector< vector<real_t> >  DVal_3d (numnodes_3d, vector<real_t>(numnodes_1d));
+
+   // Nodal positions for a 2D/3D lagrange element
+   vector< vector<real_t> > vertices_2d (numnodes_2d, vector<real_t>(2));
+   vector< vector<real_t> > vertices_3d (numnodes_3d, vector<real_t>(3));
+
+   // Corners of Lagrange element
+   vector< vector<real_t> > lag_corner_2d (4, vector<real_t>(2));
+   vector< vector<real_t> > lag_corner_3d (8, vector<real_t>(3));
+
+   // Basis values for 2D/3D element
+   vector <real_t> lag_basis_2d(numnodes_2d);
+   vector <real_t> lag_basis_3d(numnodes_3d);
+
+   // Basis partials for 2D/3D element
+   vector< vector<real_t> > lag_partial_2d(numnodes_2d, vector<real_t>(2));
+   vector< vector<real_t> > lag_partial_3d(numnodes_3d, vector<real_t>(3));
+
+   // create jacobian matrices
+   vector<vector<real_t> > lagrange_jacobian_2d (3, vector<real_t>(3));
+   vector<vector<real_t> > lagrange_jacobian_3d (3, vector<real_t>(3));
+
+   //create determinant of jacobian
+   real_t lag_det_2d;
+   real_t lag_det_3d;
+
+// Position vector initialization for serendipity elements
    // create notational coordinates for Quad4 element
    quad4_x_verts[0] = {-1.0, -1.0};
    quad4_x_verts[1] = { 1.0, -1.0};
@@ -409,13 +546,6 @@ TEST(elements, all) {
    hex32_x_verts[30] = { 1.0,  1./3.,  1.0};
    hex32_x_verts[31] = {-1.0,  1./3.,  1.0};   
 
-// End position vector initialization  
-
-   // a point in the element for testing purposes
-   
-   vector <real_t> x_2D_point(2);
-   vector <real_t> x_point(3);
-   
    
 // create element types
    elements::Hex8          hex8_element;
@@ -424,6 +554,12 @@ TEST(elements, all) {
    elements::Quad_4_2D     quad4_element;
    elements::Quad_8_2D     quad8_element;
    elements::Quad_12_2D    quad12_element;
+
+   elements::Tess16        tess16_element;
+   
+   elements::HexN          hexN_element;
+   elements::QuadN         quadN_element;
+   
    
 
    //Elements to add
@@ -443,8 +579,15 @@ TEST(elements, all) {
    elements::Element2D *this_quad8        = &quad8_element;
    elements::Element2D *this_quad12       = &quad12_element;
 
+   // Arbitrary order elements
+   elements::QuadN     *this_quadN            = &quadN_element;
+   elements::HexN      *this_hexN             = &hexN_element;
+
+
+   // 4D elements
+   elements::Element4D *this_tess16 = &tess16_element;
+
 // Linearly shifting/scaling position vectors
-   bool shift = false;
    if(shift){
 
       //Quad4
@@ -525,14 +668,14 @@ int dim_2d = 2; // number of dimensions
    //call the gauss quadrature functions to set points/weights
    elements::Gauss2D(quad4_g_pts, quad4_g_weights, quad4_weight, quad_order);
 
-   this_quad4 -> physical_position(x_2D_point, xi_2D_point, quad4_x_verts);
+   this_quad4 -> physical_position(x_2d_point, xi_2d_point, quad4_x_verts);
 
    //storing the values for the basis functions
-   this_quad4 -> basis(quad4_basis, xi_2D_point, quad4_x_verts);
+   this_quad4 -> basis(quad4_basis, xi_2d_point, quad4_x_verts);
 
    // defining the partials
-   this_quad4 -> partial_xi_shape_fcn(quad4_partial_xi, xi_2D_point);
-   this_quad4 -> partial_eta_shape_fcn(quad4_partial_eta, xi_2D_point);             
+   this_quad4 -> partial_xi_shape_fcn(quad4_partial_xi, xi_2d_point);
+   this_quad4 -> partial_eta_shape_fcn(quad4_partial_eta, xi_2d_point);             
 
    // defining the partials per gauss point
    for (int i = 0; i < tot_q_pts_2d; i++){
@@ -582,14 +725,14 @@ int dim_2d = 2; // number of dimensions
 
    //call the gauss quadrature functions to set points/g_weights
    elements::Gauss2D( quad8_g_pts, quad8_g_weights, quad8_weight, quad_order);
-   this_quad8 -> physical_position(x_2D_point, xi_2D_point, quad8_x_verts);
+   this_quad8 -> physical_position(x_2d_point, xi_2d_point, quad8_x_verts);
 
    //storing the values for the basis functions
-   this_quad8 -> basis(quad8_basis, xi_2D_point, quad8_x_verts);
+   this_quad8 -> basis(quad8_basis, xi_2d_point, quad8_x_verts);
 
    // Calling the partial functions
-   this_quad8 -> partial_xi_shape_fcn(quad8_partial_xi, xi_2D_point);
-   this_quad8 -> partial_eta_shape_fcn(quad8_partial_eta, xi_2D_point);
+   this_quad8 -> partial_xi_shape_fcn(quad8_partial_xi, xi_2d_point);
+   this_quad8 -> partial_eta_shape_fcn(quad8_partial_eta, xi_2d_point);
 
    //creating matrix of partials
    for (int i = 0; i < quad8_pts; i++){
@@ -638,14 +781,14 @@ int dim_2d = 2; // number of dimensions
 
    //call the gauss quadrature functions to set points/g_weights
    elements::Gauss2D( quad12_g_pts, quad12_g_weights, quad12_weight, quad_order);
-   this_quad12 -> physical_position(x_2D_point, xi_2D_point, quad12_x_verts);
+   this_quad12 -> physical_position(x_2d_point, xi_2d_point, quad12_x_verts);
 
    //storing the values for the basis functions
-   this_quad12 -> basis(quad12_basis, xi_2D_point, quad12_x_verts);
+   this_quad12 -> basis(quad12_basis, xi_2d_point, quad12_x_verts);
 
    // Calling the partial functions
-   this_quad12 -> partial_xi_shape_fcn(quad12_partial_xi, xi_2D_point);
-   this_quad12 -> partial_eta_shape_fcn(quad12_partial_eta, xi_2D_point);
+   this_quad12 -> partial_xi_shape_fcn(quad12_partial_xi, xi_2d_point);
+   this_quad12 -> partial_eta_shape_fcn(quad12_partial_eta, xi_2d_point);
 
    //creating matrix of partials
    for (int i = 0; i < quad12_pts; i++){
@@ -715,20 +858,20 @@ int dim_3d = 3; // dimensions for 3D elements
    //call the gauss quadrature functions to set quad points
    elements::Gauss3D(hex8_g_pts, hex8_g_weights, hex8_weight, quad_order);
 
-   this_hex8 -> physical_position(x_point, xi_point, hex8_x_verts);
+   this_hex8 -> physical_position(x_3d_point, xi_3d_point, hex8_x_verts);
 
    //storing the values for the basis functions
-   this_hex8 -> basis(hex8_basis, xi_point, hex8_x_verts);
+   this_hex8 -> basis(hex8_basis, xi_3d_point, hex8_x_verts);
 
-   std::cout << "x location :" << x_point[0] << std::endl;
-   std::cout << "y location :" << x_point[1] << std::endl;
-   std::cout << "z location :" << x_point[2] << std::endl;
+   std::cout << "x location :" << x_3d_point[0] << std::endl;
+   std::cout << "y location :" << x_3d_point[1] << std::endl;
+   std::cout << "z location :" << x_3d_point[2] << std::endl;
    std::cout << "---" << std::endl;
 
-   //solving the partials for the hex 8 at given point (xi_point)
-   this_hex8 -> partial_xi_shape_fcn (hex8_partial_xi,  xi_point);
-   this_hex8 -> partial_eta_shape_fcn(hex8_partial_eta, xi_point);
-   this_hex8 -> partial_mu_shape_fcn (hex8_partial_mu,  xi_point);
+   //solving the partials for the hex 8 at given point (xi_3d_point)
+   this_hex8 -> partial_xi_shape_fcn (hex8_partial_xi,  xi_3d_point);
+   this_hex8 -> partial_eta_shape_fcn(hex8_partial_eta, xi_3d_point);
+   this_hex8 -> partial_mu_shape_fcn (hex8_partial_mu,  xi_3d_point);
 
    //Creating matrix of hex 8 partials at a point(add to class?)
    for (int i = 0; i < hex8_pts ; i++){
@@ -781,21 +924,21 @@ int dim_3d = 3; // dimensions for 3D elements
    //call the gauss quadrature functions to set points/g_weights
    elements::Gauss3D(hex20_g_pts, hex20_g_weights, hex20_weight, quad_order);
 
-   this_hex20 -> physical_position(x_point, xi_point, hex20_x_verts);
+   this_hex20 -> physical_position(x_3d_point, xi_3d_point, hex20_x_verts);
 
    //storing the values for the basis functions
-   this_hex20 -> basis(hex20_basis, xi_point, hex20_x_verts);
+   this_hex20 -> basis(hex20_basis, xi_3d_point, hex20_x_verts);
 
-   // outputting x_point locations
-   std::cout << "x location :" << x_point[0] << std::endl;
-   std::cout << "y location :" << x_point[1] << std::endl;
-   std::cout << "z location :" << x_point[2] << std::endl;
+   // outputting x_3d_point locations
+   std::cout << "x location :" << x_3d_point[0] << std::endl;
+   std::cout << "y location :" << x_3d_point[1] << std::endl;
+   std::cout << "z location :" << x_3d_point[2] << std::endl;
    std::cout << "---" << std::endl;
    
    //defining the hex 20 partials
-   this_hex20 -> partial_xi_shape_fcn (hex20_partial_xi,  xi_point); 
-   this_hex20 -> partial_eta_shape_fcn(hex20_partial_eta, xi_point);
-   this_hex20 -> partial_mu_shape_fcn (hex20_partial_mu,  xi_point); 
+   this_hex20 -> partial_xi_shape_fcn (hex20_partial_xi,  xi_3d_point); 
+   this_hex20 -> partial_eta_shape_fcn(hex20_partial_eta, xi_3d_point);
+   this_hex20 -> partial_mu_shape_fcn (hex20_partial_mu,  xi_3d_point); 
 
    //Creating matrix of hex 20 partials
    for (int i = 0; i < 20; i++){
@@ -851,21 +994,21 @@ int dim_3d = 3; // dimensions for 3D elements
    //call the gauss quadrature functions to set points/g_weights
    elements::Gauss3D(hex32_g_pts, hex32_g_weights, hex32_weight, quad_order);
 
-   this_hex32 -> physical_position(x_point, xi_point, hex32_x_verts);
+   this_hex32 -> physical_position(x_3d_point, xi_3d_point, hex32_x_verts);
 
    //storing the values for the basis functions
-   this_hex32 -> basis(hex32_basis, xi_point, hex32_x_verts);
+   this_hex32 -> basis(hex32_basis, xi_3d_point, hex32_x_verts);
 
-   // outputting x_point locations
-   std::cout << "x location :" << x_point[0] << std::endl;
-   std::cout << "y location :" << x_point[1] << std::endl;
-   std::cout << "z location :" << x_point[2] << std::endl;
+   // outputting x_3d_point locations
+   std::cout << "x location :" << x_3d_point[0] << std::endl;
+   std::cout << "y location :" << x_3d_point[1] << std::endl;
+   std::cout << "z location :" << x_3d_point[2] << std::endl;
    std::cout << "---" << std::endl;
    
    //defining the hex 32 partials
-   this_hex32 -> partial_xi_shape_fcn (hex32_partial_xi,  xi_point); 
-   this_hex32 -> partial_eta_shape_fcn(hex32_partial_eta, xi_point);
-   this_hex32 -> partial_mu_shape_fcn (hex32_partial_mu,  xi_point); 
+   this_hex32 -> partial_xi_shape_fcn (hex32_partial_xi,  xi_3d_point); 
+   this_hex32 -> partial_eta_shape_fcn(hex32_partial_eta, xi_3d_point);
+   this_hex32 -> partial_mu_shape_fcn (hex32_partial_mu,  xi_3d_point); 
 
    //Creating matrix of hex 32 partials
    for (int i = 0; i < 32; i++){
@@ -910,6 +1053,97 @@ int dim_3d = 3; // dimensions for 3D elements
 // end of Hex 32
 
 
+
+  ////////////////////////////////////////////////
+  //     QuadN element (arbitrary order N )     //
+//////////////////////////////////////////////////
+
+   // testing the functions
+   // setting the xi nodes
+   this_quadN -> chebyshev_nodes_1D(cheb_nodes_1d, orderN);
+
+   //evaluating Legrange interpolants for each function at x_3d_point
+   this_quadN -> lagrange_1D(interp1d, DVal_1d, x_2d_point[0], cheb_nodes_1d, orderN);
+
+
+   // building the 3D lagrange elements: nodes, basis, partials, derivatives
+   this_quadN -> basis_partials(vertices_2d, cheb_nodes_1d, val_1d, 
+                                DVal_1d, val_2d,  DVal_2d, lag_basis_2d,  
+                                lag_partial_2d, x_2d_point, orderN);
+
+
+   this_quadN -> corners( vertices_2d, lag_corner_2d, orderN); 
+
+   // Building the jacobian matrix and determinant
+
+   elements::jacobian(lagrange_jacobian_2d, lag_det_2d, vertices_2d, 
+                      lag_partial_2d, numnodes_2d, dim_2d ); 
+
+// end of QuadN element
+
+
+
+  ////////////////////////////////////////////////
+  //     HexN element (arbitrary order N )      //
+//////////////////////////////////////////////////
+
+   // testing the functions
+   // setting the xi nodes
+   this_hexN -> chebyshev_nodes_1D(cheb_nodes_1d, orderN);
+
+   //evaluating Legrange interpolants for each function at x_3d_point
+   this_hexN -> lagrange_1D(interp1d, DVal_1d, x_3d_point[0], cheb_nodes_1d, orderN);
+
+
+
+
+   // building the 3D lagrange elements: nodes, basis, partials, derivatives
+   this_hexN -> basis_partials(vertices_3d, cheb_nodes_1d, val_1d, 
+                               DVal_1d, val_3d,  DVal_3d, lag_basis_3d,  
+                               lag_partial_3d, x_3d_point, orderN);
+
+
+   this_hexN -> corners( vertices_3d, lag_corner_3d, orderN); 
+
+   // Building the jacobian matrix and determinant
+
+   elements::jacobian(lagrange_jacobian_3d, lag_det_3d, vertices_3d, 
+                      lag_partial_3d, numnodes_3d, dim_3d ); 
+// end of HexN element
+
+  /////////////////////////////////
+  //     Tesseract Elements      //
+///////////////////////////////////
+
+   this_tess16 -> physical_position(x_4d_point, xi_4d_point, tess16_x_verts);
+   
+   //defining the hex 20 partials
+   this_tess16 -> partial_xi_shape_fcn (tess16_partial_xi,  xi_4d_point); 
+   this_tess16 -> partial_eta_shape_fcn(tess16_partial_eta, xi_4d_point);
+   this_tess16 -> partial_mu_shape_fcn (tess16_partial_mu,  xi_4d_point); 
+   this_tess16 -> partial_tau_shape_fcn (tess16_partial_tau, xi_4d_point);
+
+   //Creating matrix of hex 20 partials
+   for (int i = 0; i < 16; i++){
+      tess16_partial[i][0] = tess16_partial_xi[i];
+      tess16_partial[i][1] = tess16_partial_eta[i];
+      tess16_partial[i][2] = tess16_partial_mu[i];
+      tess16_partial[i][3] = tess16_partial_tau[i];
+   }// end for
+   
+
+
+   //Calling Jacobian and inverse jacobian functions
+   elements::jacobian4D(tess16_jacobian, tess16_det_j, tess16_x_verts, tess16_partial, 
+      tess16_pts, dim_3d);
+   
+   elements::jacobian_inverse_4d(tess16_inverse_jacobian, tess16_jacobian, tess16_det_j);
+// end of Tesseract Elements
+
+
+
+
+
 /*  ______  _                                _   
    |  ____|| |                              | |  
    | |__   | |  ___  _ __ ___    ___  _ __  | |_ 
@@ -923,15 +1157,6 @@ int dim_3d = 3; // dimensions for 3D elements
    | |____ | | | ||  __/| (__ |   < \__ \        
     \_____||_| |_| \___| \___||_|\_\|___/  
 */
-
-
-// set true to run element checks
-bool Q4_check  = true; //Quad 4  checks
-bool Q8_check  = true; //Quad 8  checks
-bool Q12_check = true; //Quad 12 checks
-bool H8_check  = true; //Hex  8  checks
-bool H20_check = true; //Hex  20 checks
-bool H32_check = true; //Hex  32 checks
 
 // debuging block
 
@@ -990,149 +1215,150 @@ if(Q4_check){
       std::cout<<quad4_q_partial[i][j][0] << "    "; 
    }
    std::cout<<std::endl; 
-}
-std::cout<<std::endl; 
-
-std::cout<<"D_Eta  "<< std:: endl;
-for(int i = 0; i < tot_q_pts_2d; i++){
-   for(int j = 0; j< 4; j++){
-      std::cout<<quad4_q_partial[i][j][1] << "    "; 
    }
    std::cout<<std::endl; 
-}
-std::cout<<std::endl; 
 
-
-   // Summing the partials Xi
-for (int i = 0; i < tot_q_pts_2d; i++){
-   for (int j = 0; j < 4; j++){
-      partialSumXi +=  quad4_q_partial_xi[i][j];     
+   std::cout<<"D_Eta  "<< std:: endl;
+   for(int i = 0; i < tot_q_pts_2d; i++){
+      for(int j = 0; j< 4; j++){
+         std::cout<<quad4_q_partial[i][j][1] << "    "; 
+      }
+      std::cout<<std::endl; 
    }
-}
-std::cout << "quad pts partial Sum Xi: " << partialSumXi << std::endl;
+   std::cout<<std::endl; 
 
-   // Summing the partials Eta
-for (int i = 0; i < tot_q_pts_2d; i++){
-   for (int j = 0; j < 4; j++){
-      partialSumEta +=  quad4_q_partial_eta[i][j];     
+
+      // Summing the partials Xi
+   for (int i = 0; i < tot_q_pts_2d; i++){
+      for (int j = 0; j < 4; j++){
+         partialSumXi +=  quad4_q_partial_xi[i][j];     
+      }
    }
-}
-std::cout << "quad pts partial Sum eta:" << partialSumEta << std::endl;
+   std::cout << "quad pts partial Sum Xi: " << partialSumXi << std::endl;
 
-   // showing the matrix of quad 4 jacobians
-std::cout<<"Quad 4 jacobians"<< std::endl;
-for(int i = 0; i< 2; i++){
-   for(int j = 0; j < 2; j++){
-      std::cout<<quad4_jacobian[i][j] << "    ";             
+      // Summing the partials Eta
+   for (int i = 0; i < tot_q_pts_2d; i++){
+      for (int j = 0; j < 4; j++){
+         partialSumEta +=  quad4_q_partial_eta[i][j];     
+      }
    }
-   std::cout << std::endl;
-}
-std::cout << std::endl;
+   std::cout << "quad pts partial Sum eta:" << partialSumEta << std::endl;
 
-   // showing the matrix of quad4 inverse jacobians
-std::cout<<"Quad4 Jacobian determinant"<< std::endl;
-std::cout<<quad4_det_j << "    ";             
-std::cout << std::endl;
-
-   // showing the matrix of quad4 inverse jacobians
-std::cout<<"Quad4 inverse Jacobian"<< std::endl;
-for(int i = 0; i< 2; i++){
-   for(int j = 0; j < 2; j++){
-      std::cout<<quad4_inverse_jacobian[i][j] << "    ";             
-   }
-   std::cout << std::endl;
-}
-
-   // showing the matrix of quad4 quad point jacobians
-std::cout<<"Quad 4 quad point jacobians:"<< std::endl;
-for (int q = 0; q < tot_q_pts_2d; q++){
-   for(int i = 0; i < 2; i++){
+      // showing the matrix of quad 4 jacobians
+   std::cout<<"Quad 4 jacobians"<< std::endl;
+   for(int i = 0; i< 2; i++){
       for(int j = 0; j < 2; j++){
-         std::cout<<quad4_q_jacobian[q][i][j] << "    ";             
+         std::cout<<quad4_jacobian[i][j] << "    ";             
       }
       std::cout << std::endl;
    }
-   std::cout<<std::endl; 
-}
+   std::cout << std::endl;
 
-   // showing the matrix of quad4 quad point inverse jacobians
-std::cout<<"Quad 4 quad point inverse jacobians:"<< std::endl;
-for (int q = 0; q < tot_q_pts_2d; q++){
-   for(int i = 0; i < 2; i++){
+      // showing the matrix of quad4 inverse jacobians
+   std::cout<<"Quad4 Jacobian determinant"<< std::endl;
+   std::cout<<quad4_det_j << "    ";             
+   std::cout << std::endl;
+
+      // showing the matrix of quad4 inverse jacobians
+   std::cout<<"Quad4 inverse Jacobian"<< std::endl;
+   for(int i = 0; i< 2; i++){
       for(int j = 0; j < 2; j++){
-         std::cout<<quad4_q_inverse_jacobian[q][i][j] << "    ";             
+         std::cout<<quad4_inverse_jacobian[i][j] << "    ";             
       }
       std::cout << std::endl;
    }
-   std::cout<<std::endl; 
-}
 
-   // Quad 4 integration check
-   //printing node locations
-std::cout<< "Quad4 nodes"<<std::endl;
-for(int this_vert=0; this_vert < quad4_pts; this_vert++){
-   for(int this_dim = 0; this_dim < dim_2d ; this_dim++){
-      std::cout<<quad4_x_verts[this_vert][this_dim] << "    "; 
+      // showing the matrix of quad4 quad point jacobians
+   std::cout<<"Quad 4 quad point jacobians:"<< std::endl;
+   for (int q = 0; q < tot_q_pts_2d; q++){
+      for(int i = 0; i < 2; i++){
+         for(int j = 0; j < 2; j++){
+            std::cout<<quad4_q_jacobian[q][i][j] << "    ";             
+         }
+         std::cout << std::endl;
+      }
+      std::cout<<std::endl; 
+   }
+
+      // showing the matrix of quad4 quad point inverse jacobians
+   std::cout<<"Quad 4 quad point inverse jacobians:"<< std::endl;
+   for (int q = 0; q < tot_q_pts_2d; q++){
+      for(int i = 0; i < 2; i++){
+         for(int j = 0; j < 2; j++){
+            std::cout<<quad4_q_inverse_jacobian[q][i][j] << "    ";             
+         }
+         std::cout << std::endl;
+      }
+      std::cout<<std::endl; 
+   }
+
+      // Quad 4 integration check
+      //printing node locations
+   std::cout<< "Quad4 nodes"<<std::endl;
+   for(int this_vert=0; this_vert < quad4_pts; this_vert++){
+      for(int this_dim = 0; this_dim < dim_2d ; this_dim++){
+         std::cout<<quad4_x_verts[this_vert][this_dim] << "    "; 
+      }
+      std::cout<<std::endl; 
    }
    std::cout<<std::endl; 
-}
-std::cout<<std::endl; 
 
-   //combining quad weights and printing
-std::cout<< "Quad4 Gauss weights combined"<<std::endl;
-for(int this_vert=0; this_vert < tot_q_pts_2d; this_vert++){
-   std::cout<<quad4_weight[this_vert]<<std::endl;
-}
+      //combining quad weights and printing
+   std::cout<< "Quad4 Gauss weights combined"<<std::endl;
+   for(int this_vert=0; this_vert < tot_q_pts_2d; this_vert++){
+      std::cout<<quad4_weight[this_vert]<<std::endl;
+   }
 
 
-   // printig gauss point locatons
-std::cout<< "Quad4 gauss points in refernece space"<<std::endl;
-for(int this_vert=0; this_vert < tot_q_pts_2d; this_vert++){
-   for(int this_dim = 0; this_dim < dim_2d ; this_dim++){
-      std::cout<<quad4_g_pts[this_vert][this_dim] << "    "; 
+      // printig gauss point locatons
+   std::cout<< "Quad4 gauss points in refernece space"<<std::endl;
+   for(int this_vert=0; this_vert < tot_q_pts_2d; this_vert++){
+      for(int this_dim = 0; this_dim < dim_2d ; this_dim++){
+         std::cout<<quad4_g_pts[this_vert][this_dim] << "    "; 
+      }
+      std::cout<<std::endl; 
    }
    std::cout<<std::endl; 
-}
-std::cout<<std::endl; 
 
-   //Shifting gauss points into real space
-for(int this_vert = 0; this_vert < tot_q_pts_2d; this_vert++){
-   this_quad4 -> physical_position(quad4_g_pts_real[this_vert], quad4_g_pts[this_vert], quad4_x_verts);  
-}
+      //Shifting gauss points into real space
+   for(int this_vert = 0; this_vert < tot_q_pts_2d; this_vert++){
+      this_quad4 -> physical_position(quad4_g_pts_real[this_vert], quad4_g_pts[this_vert], quad4_x_verts);  
+   }
 
-   //Printing gauss points in real space
-std::cout<< "Quad4 gauss points real space"<<std::endl;
-for(int this_vert=0; this_vert < tot_q_pts_2d; this_vert++){
-   for(int this_dim = 0; this_dim < dim_2d ; this_dim++){
-      std::cout<<quad4_g_pts_real[this_vert][this_dim] << "    "; 
+      //Printing gauss points in real space
+   std::cout<< "Quad4 gauss points real space"<<std::endl;
+   for(int this_vert=0; this_vert < tot_q_pts_2d; this_vert++){
+      for(int this_dim = 0; this_dim < dim_2d ; this_dim++){
+         std::cout<<quad4_g_pts_real[this_vert][this_dim] << "    "; 
+      }
+      std::cout<<std::endl; 
    }
    std::cout<<std::endl; 
-}
-std::cout<<std::endl; 
 
    // Create taylor-like nth order polynomial
    // coordinates are of gauss points in real space
 
-for(int this_vert=0; this_vert < tot_q_pts_2d; this_vert++){
-   for(int i_order=0; i_order <= n_i; i_order++){
-      for(int j_order=0; j_order <= n_j; j_order++){
-         taylorQ4[this_vert] += pow(quad4_g_pts_real[this_vert][0],(real_t)i_order) 
-         * pow(quad4_g_pts_real[this_vert][1],(real_t)j_order);
+   for(int this_vert=0; this_vert < tot_q_pts_2d; this_vert++){
+      for(int i_order=0; i_order <= n_i; i_order++){
+         for(int j_order=0; j_order <= n_j; j_order++){
+            taylorQ4[this_vert] += pow(quad4_g_pts_real[this_vert][0],(real_t)i_order) 
+            * pow(quad4_g_pts_real[this_vert][1],(real_t)j_order);
+         }
       }
    }
-}
 
    //summing to solve integral
 
-for(int this_vert=0; this_vert < tot_q_pts_2d; this_vert++){
-   integral += quad4_weight[this_vert]*taylorQ4[this_vert]*quad4_q_det_j[this_vert];
-}
+   for(int this_vert=0; this_vert < tot_q_pts_2d; this_vert++){
+      integral += quad4_weight[this_vert]*taylorQ4[this_vert]*quad4_q_det_j[this_vert];
+   }
 
 
-std::cout<<"Quad4 order ="<< order <<" test integral = "<<integral<<std::endl;
-   // end quad 4 integration check
-// end of quad 4
-}
+   std::cout<<"Quad4 order ="<< intg_order2D <<" test integral = "<<integral<<std::endl;
+      // end quad 4 integration check
+   // end of quad 4
+   }
+// end of quad 4 checks
 
 if(Q8_check){
   /////////////////////////////
@@ -1342,7 +1568,7 @@ if(Q8_check){
       * taylorQ8[this_vert]*quad8_q_det_j[this_vert];
    }
 
-   std::cout<<"Quad8 order ="<< order <<" test integral = "<<integral<<std::endl;
+   std::cout<<"Quad8 order ="<< intg_order2D <<" test integral = "<<integral<<std::endl;
    // end quad8 integration check
 // end of quad 8 element
 }
@@ -1556,7 +1782,7 @@ if(Q12_check){
       * taylorQ12[this_vert] * quad12_q_det_j[this_vert];
    }
 
-   std::cout<<"Quad12 order ="<< order <<" test integral = "<<integral<<std::endl;
+   std::cout<<"Quad12 order ="<< intg_order2D <<" test integral = "<<integral<<std::endl;
    //end quad 12 integration check
 // end of quad 12 element
 } 
@@ -1632,246 +1858,247 @@ if(H8_check){
   partialSumEta = 0.0;
   for (int i = 0; i < 8; i++){
    partialSumEta +=  hex8_partial_eta[i];     
-}
-std::cout << "partial Sum eta:" << partialSumEta << std::endl;
+   }
+   std::cout << "partial Sum eta:" << partialSumEta << std::endl;
 
-   // Summing the partials Mu
+      // Summing the partials Mu
 
-for (int i = 0; i < 8; i++){
-   partialSumMu +=  hex8_partial_mu[i];     
-}
-std::cout << "partial Sum Mu: " << partialSumMu << std::endl;
-std::cout<<std::endl; 
+   for (int i = 0; i < 8; i++){
+      partialSumMu +=  hex8_partial_mu[i];     
+   }
+   std::cout << "partial Sum Mu: " << partialSumMu << std::endl;
+   std::cout<<std::endl; 
 
 
-   // showing the matrix of hex8 partials on the screen
-   // (quad_pt, node position, Xi/Eta/Mu)
-std::cout<<"Hex 8 quad pts partial Derivatives"<< std:: endl;
-std::cout<<"D_Xi  "<< std:: endl;
-for(int i = 0; i < tot_q_pts_3d; i++){
-   for(int j = 0; j< 8; j++){
-      std::cout<<hex8_q_partial[i][j][0] << "    "; 
+      // showing the matrix of hex8 partials on the screen
+      // (quad_pt, node position, Xi/Eta/Mu)
+   std::cout<<"Hex 8 quad pts partial Derivatives"<< std:: endl;
+   std::cout<<"D_Xi  "<< std:: endl;
+   for(int i = 0; i < tot_q_pts_3d; i++){
+      for(int j = 0; j< 8; j++){
+         std::cout<<hex8_q_partial[i][j][0] << "    "; 
+      }
+      std::cout<<std::endl; 
    }
    std::cout<<std::endl; 
-}
-std::cout<<std::endl; 
 
-std::cout<<"D_Eta  "<< std:: endl;
-for(int i = 0; i < tot_q_pts_3d; i++){
-   for(int j = 0; j< 8; j++){
-      std::cout<<hex8_q_partial[i][j][1] << "    "; 
+   std::cout<<"D_Eta  "<< std:: endl;
+   for(int i = 0; i < tot_q_pts_3d; i++){
+      for(int j = 0; j< 8; j++){
+         std::cout<<hex8_q_partial[i][j][1] << "    "; 
+      }
+      std::cout<<std::endl; 
    }
    std::cout<<std::endl; 
-}
-std::cout<<std::endl; 
 
-std::cout<<"D_Mu  "<< std:: endl;
-for(int i = 0; i < tot_q_pts_3d; i++){
-   for(int j = 0; j< 8; j++){
-      std::cout<<hex8_q_partial[i][j][2] << "    "; 
+   std::cout<<"D_Mu  "<< std:: endl;
+   for(int i = 0; i < tot_q_pts_3d; i++){
+      for(int j = 0; j< 8; j++){
+         std::cout<<hex8_q_partial[i][j][2] << "    "; 
+      }
+      std::cout<<std::endl; 
    }
    std::cout<<std::endl; 
-}
-std::cout<<std::endl; 
 
 
-   // Summing the partials Xi
-partialSumXi = 0.0;
-for (int i = 0; i <tot_q_pts_3d; i++){
-   for (int j = 0; j < 8; j++){
-      partialSumXi +=  hex8_q_partial_xi[i][j];     
+      // Summing the partials Xi
+   partialSumXi = 0.0;
+   for (int i = 0; i <tot_q_pts_3d; i++){
+      for (int j = 0; j < 8; j++){
+         partialSumXi +=  hex8_q_partial_xi[i][j];     
+      }
    }
-}
-std::cout << "quad pts partial Sum Xi: " << partialSumXi << std::endl;
+   std::cout << "quad pts partial Sum Xi: " << partialSumXi << std::endl;
 
-   // Summing the partials Eta
-partialSumEta = 0.0;
-for (int i = 0; i < tot_q_pts_3d; i++){
-   for (int j = 0; j < 8; j++){
-      partialSumEta +=  hex8_q_partial_eta[i][j];     
+      // Summing the partials Eta
+   partialSumEta = 0.0;
+   for (int i = 0; i < tot_q_pts_3d; i++){
+      for (int j = 0; j < 8; j++){
+         partialSumEta +=  hex8_q_partial_eta[i][j];     
+      }
    }
-}
-std::cout << "quad pts partial Sum eta:" << partialSumEta << std::endl;
+   std::cout << "quad pts partial Sum eta:" << partialSumEta << std::endl;
 
-   // Summing the partials Mu
-partialSumMu = 0.0;
-for (int i = 0; i < tot_q_pts_3d; i++){
-   for (int j = 0; j < 8; j++){
-     partialSumMu +=  hex8_q_partial_mu[i][j];   
-  }
-}
-std::cout << "quad pts partial Sum Mu: " << partialSumMu << std::endl;
-std::cout<<std::endl; 
-
-   // showing the matrix of hex8 jacobians
-std::cout<<"Hex 8 jacobians:"<< std::endl;
-for(int i = 0; i< 3; i++){
-   for(int j = 0; j < 3; j++){
-      std::cout<<hex8_jacobian[i][j] << "    ";             
+      // Summing the partials Mu
+   partialSumMu = 0.0;
+   for (int i = 0; i < tot_q_pts_3d; i++){
+      for (int j = 0; j < 8; j++){
+        partialSumMu +=  hex8_q_partial_mu[i][j];   
+     }
    }
-   std::cout << std::endl;
-}
-std::cout<<std::endl; 
+   std::cout << "quad pts partial Sum Mu: " << partialSumMu << std::endl;
+   std::cout<<std::endl; 
 
-   // showing the matrix of quad4 inverse jacobians
-std::cout<<"Hex8 Jacobian determinant"<< std::endl;
-std::cout<<hex8_det_j << std::endl;             
-
-   // showing the matrix of hex8 inverse jacobians
-std::cout<<"Hex 8 inverse jacobian"<< std::endl;
-for(int i = 0; i< 3; i++){
-   for(int j = 0; j < 3; j++){
-      std::cout<<hex8_inverse_jacobian[i][j] << "    ";             
-   }
-   std::cout << std::endl;
-}
-std::cout<<std::endl; 
-
-   // showing the matrix of hex8 quad point jacobians
-std::cout<<"Hex 8 quad point jacobians:"<< std::endl;
-for (int q = 0; q < tot_q_pts_3d; q++){
-   for(int i = 0; i < 3; i++){
-     for(int j = 0; j < 3; j++){
-      std::cout<<hex8_q_jacobian[q][i][j] << "    ";             
-   }
-   std::cout << std::endl;
-}
-std::cout<<std::endl; 
-}
-
-   // showing the matrix of hex8 quad point inverse jacobians
-std::cout<<"Hex 8 quad point inverse jacobians:"<< std::endl;
-for (int q = 0; q < tot_q_pts_3d; q++){
-   for(int i = 0; i < 3; i++){
+      // showing the matrix of hex8 jacobians
+   std::cout<<"Hex 8 jacobians:"<< std::endl;
+   for(int i = 0; i< 3; i++){
       for(int j = 0; j < 3; j++){
-         std::cout<<hex8_q_inverse_jacobian[q][i][j] << "    ";             
+         std::cout<<hex8_jacobian[i][j] << "    ";             
       }
       std::cout << std::endl;
    }
    std::cout<<std::endl; 
-}
 
+      // showing the matrix of quad4 inverse jacobians
+   std::cout<<"Hex8 Jacobian determinant"<< std::endl;
+   std::cout<<hex8_det_j << std::endl;             
 
-
-   // checking that dot prodct of magnitude of partials
-   // and magnitude of position of node is 1
-
-   // for hex 8 element
-real_t mag_hex8_verts[8];
-real_t mag_hex8_partial[8];
-
-   // magnitude of vector to verts from center
-for (int i = 0; i < 8; i++) {
-   mag_hex8_verts[i] = sqrt((hex8_x_verts[i][0]*hex8_x_verts[i][0])
-      + (hex8_x_verts[i][1]*hex8_x_verts[i][1])
-      + (hex8_x_verts[i][2]*hex8_x_verts[i][2]));
-}
-
-   //magnitude of partials at each vertex
-for (int i = 0; i < 8; i++) {
-   mag_hex8_partial[i] = sqrt((hex8_partial[i][0]*hex8_partial[i][0])
-    + (hex8_partial[i][1]*hex8_partial[i][1])
-    + (hex8_partial[i][2]*hex8_partial[i][2]));
-}
-
-   //creating unit vectors to verts
-real_t hex8_ehat_p_mag[8][3];
-for (int i = 0; i < 8; i++){
-   hex8_ehat_p_mag[i][0] = hex8_x_verts[i][0]/mag_hex8_verts[i];
-   hex8_ehat_p_mag[i][1] = hex8_x_verts[i][1]/mag_hex8_verts[i];
-   hex8_ehat_p_mag[i][2] = hex8_x_verts[i][2]/mag_hex8_verts[i];
-}
-
-   // creating unit vectors of partials at nodes
-real_t hex8_del_phi[8][3];
-for (int i = 0; i < 8; i++){
-   hex8_del_phi[i][0] = hex8_partial[i][0]/mag_hex8_partial[i];
-   hex8_del_phi[i][1] = hex8_partial[i][1]/mag_hex8_partial[i];
-   hex8_del_phi[i][2] = hex8_partial[i][2]/mag_hex8_partial[i];
-}
-
-   //calculating dot product for hex 8 vectors
-real_t dot_hex8_vec[8];
-for(int i = 0; i < 8; i++){
-   dot_hex8_vec[i] = (hex8_ehat_p_mag[i][0])*(hex8_del_phi[i][0])
-   + (hex8_ehat_p_mag[i][1])*(hex8_del_phi[i][1])
-   + (hex8_ehat_p_mag[i][2])*(hex8_del_phi[i][2]);
-}
-
-std::cout<<"dot product of hex 8 vectors:"<< std::endl;
-for(int i = 0; i < 8; i++){
-   std::cout<< dot_hex8_vec[i]<< std::endl;
-}
-
-   //Hex 8 integration check
-   //printing node locations
-std::cout<< "Hex8 nodes"<<std::endl;
-for(int this_vert=0; this_vert < hex8_pts; this_vert++){
-   for(int this_dim = 0; this_dim < dim_3d ; this_dim++){
-      std::cout<<hex8_x_verts[this_vert][this_dim] << "    "; 
+      // showing the matrix of hex8 inverse jacobians
+   std::cout<<"Hex 8 inverse jacobian"<< std::endl;
+   for(int i = 0; i< 3; i++){
+      for(int j = 0; j < 3; j++){
+         std::cout<<hex8_inverse_jacobian[i][j] << "    ";             
+      }
+      std::cout << std::endl;
    }
    std::cout<<std::endl; 
-}
-std::cout<<std::endl; 
 
-   //combining quad weights and printing
-std::cout<< "Hex8 Gauss weights combined"<<std::endl;
-for(int this_vert=0; this_vert < tot_q_pts_3d; this_vert++){
-   std::cout<<hex8_weight[this_vert]<<std::endl;
-}
-
-   // printig gauss point locatons
-std::cout<< "Hex8 gauss points in refernece space"<<std::endl;
-for(int this_vert=0; this_vert < tot_q_pts_3d; this_vert++){
-   for(int this_dim = 0; this_dim < dim_3d ; this_dim++){
-      std::cout<<hex8_g_pts[this_vert][this_dim] << "    "; 
+      // showing the matrix of hex8 quad point jacobians
+   std::cout<<"Hex 8 quad point jacobians:"<< std::endl;
+   for (int q = 0; q < tot_q_pts_3d; q++){
+      for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+         std::cout<<hex8_q_jacobian[q][i][j] << "    ";             
+      }
+      std::cout << std::endl;
    }
    std::cout<<std::endl; 
-}
-std::cout<<std::endl; 
+   }
 
-   //Shifting gauss points into real space
-for(int this_vert = 0; this_vert < tot_q_pts_3d; this_vert++){
-   this_hex8 -> physical_position(hex8_g_pts_real[this_vert], 
-     hex8_g_pts[this_vert], hex8_x_verts);  
-}
+      // showing the matrix of hex8 quad point inverse jacobians
+   std::cout<<"Hex 8 quad point inverse jacobians:"<< std::endl;
+   for (int q = 0; q < tot_q_pts_3d; q++){
+      for(int i = 0; i < 3; i++){
+         for(int j = 0; j < 3; j++){
+            std::cout<<hex8_q_inverse_jacobian[q][i][j] << "    ";             
+         }
+         std::cout << std::endl;
+      }
+      std::cout<<std::endl; 
+   }
 
-   //Printing gauss points in real space
-std::cout<< "Hex8 gauss points real space"<<std::endl;
-for(int this_vert=0; this_vert < tot_q_pts_3d; this_vert++){
-   for(int this_dim = 0; this_dim < dim_3d ; this_dim++){
-      std::cout<<hex8_g_pts_real[this_vert][this_dim] << "    "; 
+
+
+      // checking that dot prodct of magnitude of partials
+      // and magnitude of position of node is 1
+
+      // for hex 8 element
+   real_t mag_hex8_verts[8];
+   real_t mag_hex8_partial[8];
+
+      // magnitude of vector to verts from center
+   for (int i = 0; i < 8; i++) {
+      mag_hex8_verts[i] = sqrt((hex8_x_verts[i][0]*hex8_x_verts[i][0])
+         + (hex8_x_verts[i][1]*hex8_x_verts[i][1])
+         + (hex8_x_verts[i][2]*hex8_x_verts[i][2]));
+   }
+
+      //magnitude of partials at each vertex
+   for (int i = 0; i < 8; i++) {
+      mag_hex8_partial[i] = sqrt((hex8_partial[i][0]*hex8_partial[i][0])
+       + (hex8_partial[i][1]*hex8_partial[i][1])
+       + (hex8_partial[i][2]*hex8_partial[i][2]));
+   }
+
+      //creating unit vectors to verts
+   real_t hex8_ehat_p_mag[8][3];
+   for (int i = 0; i < 8; i++){
+      hex8_ehat_p_mag[i][0] = hex8_x_verts[i][0]/mag_hex8_verts[i];
+      hex8_ehat_p_mag[i][1] = hex8_x_verts[i][1]/mag_hex8_verts[i];
+      hex8_ehat_p_mag[i][2] = hex8_x_verts[i][2]/mag_hex8_verts[i];
+   }
+
+      // creating unit vectors of partials at nodes
+   real_t hex8_del_phi[8][3];
+   for (int i = 0; i < 8; i++){
+      hex8_del_phi[i][0] = hex8_partial[i][0]/mag_hex8_partial[i];
+      hex8_del_phi[i][1] = hex8_partial[i][1]/mag_hex8_partial[i];
+      hex8_del_phi[i][2] = hex8_partial[i][2]/mag_hex8_partial[i];
+   }
+
+      //calculating dot product for hex 8 vectors
+   real_t dot_hex8_vec[8];
+   for(int i = 0; i < 8; i++){
+      dot_hex8_vec[i] = (hex8_ehat_p_mag[i][0])*(hex8_del_phi[i][0])
+      + (hex8_ehat_p_mag[i][1])*(hex8_del_phi[i][1])
+      + (hex8_ehat_p_mag[i][2])*(hex8_del_phi[i][2]);
+   }
+
+   std::cout<<"dot product of hex 8 vectors:"<< std::endl;
+   for(int i = 0; i < 8; i++){
+      std::cout<< dot_hex8_vec[i]<< std::endl;
+   }
+
+      //Hex 8 integration check
+      //printing node locations
+   std::cout<< "Hex8 nodes"<<std::endl;
+   for(int this_vert=0; this_vert < hex8_pts; this_vert++){
+      for(int this_dim = 0; this_dim < dim_3d ; this_dim++){
+         std::cout<<hex8_x_verts[this_vert][this_dim] << "    "; 
+      }
+      std::cout<<std::endl; 
    }
    std::cout<<std::endl; 
-}
-std::cout<<std::endl; 
 
-   // Create taylor-like nth order polynomial
-   // coordinates are of gauss points in real space
+      //combining quad weights and printing
+   std::cout<< "Hex8 Gauss weights combined"<<std::endl;
+   for(int this_vert=0; this_vert < tot_q_pts_3d; this_vert++){
+      std::cout<<hex8_weight[this_vert]<<std::endl;
+   }
 
-for(int this_vert=0; this_vert < tot_q_pts_3d; this_vert++){
-   for(int i_order=0; i_order <= n_i; i_order++){
-      for(int j_order=0; j_order <= n_j; j_order++){
-         for(int k_order=0; k_order <= n_k; k_order++){
-            taylorH8[this_vert] += pow(hex8_g_pts_real[this_vert][0],(real_t)i_order) 
-            * pow(hex8_g_pts_real[this_vert][1],(real_t)j_order)
-            * pow(hex8_g_pts_real[this_vert][3],(real_t)k_order);
+      // printig gauss point locatons
+   std::cout<< "Hex8 gauss points in refernece space"<<std::endl;
+   for(int this_vert=0; this_vert < tot_q_pts_3d; this_vert++){
+      for(int this_dim = 0; this_dim < dim_3d ; this_dim++){
+         std::cout<<hex8_g_pts[this_vert][this_dim] << "    "; 
+      }
+      std::cout<<std::endl; 
+   }
+   std::cout<<std::endl; 
+
+      //Shifting gauss points into real space
+   for(int this_vert = 0; this_vert < tot_q_pts_3d; this_vert++){
+      this_hex8 -> physical_position(hex8_g_pts_real[this_vert], 
+        hex8_g_pts[this_vert], hex8_x_verts);  
+   }
+
+      //Printing gauss points in real space
+   std::cout<< "Hex8 gauss points real space"<<std::endl;
+   for(int this_vert=0; this_vert < tot_q_pts_3d; this_vert++){
+      for(int this_dim = 0; this_dim < dim_3d ; this_dim++){
+         std::cout<<hex8_g_pts_real[this_vert][this_dim] << "    "; 
+      }
+      std::cout<<std::endl; 
+   }
+   std::cout<<std::endl; 
+
+      // Create taylor-like nth order polynomial
+      // coordinates are of gauss points in real space
+
+   for(int this_vert=0; this_vert < tot_q_pts_3d; this_vert++){
+      for(int i_order=0; i_order <= n_i; i_order++){
+         for(int j_order=0; j_order <= n_j; j_order++){
+            for(int k_order=0; k_order <= n_k; k_order++){
+               taylorH8[this_vert] += pow(hex8_g_pts_real[this_vert][0],(real_t)i_order) 
+               * pow(hex8_g_pts_real[this_vert][1],(real_t)j_order)
+               * pow(hex8_g_pts_real[this_vert][3],(real_t)k_order);
+            }
          }
       }
    }
-}
 
-   //summing to solve integral
+      //summing to solve integral
 
-for(int this_vert=0; this_vert < tot_q_pts_3d; this_vert++){
-   integral += hex8_weight[this_vert]
-   * taylorH8[this_vert]*hex8_q_det_j[this_vert];
-}
+   for(int this_vert=0; this_vert < tot_q_pts_3d; this_vert++){
+      integral += hex8_weight[this_vert]
+      * taylorH8[this_vert]*hex8_q_det_j[this_vert];
+   }
 
-std::cout<<"Hex8 order ="<< order <<" test integral = "<<integral<<std::endl;
-   // end Hex8 integration check
+   std::cout<<"Hex8 order ="<< intg_order3D <<" test integral = "<<integral<<std::endl;
+      // end Hex8 integration check
+   
+   }
 // end of hex8 element checks
-}
 
 if(H20_check){
   /////////////////////////////
@@ -2186,7 +2413,7 @@ if(H20_check){
       * hex20_q_det_j[this_vert];
    }
 
-   std::cout<<"Hex20 order ="<< order <<" test integral = "<<integral<<std::endl;
+   std::cout<<"Hex20 order ="<< intg_order3D <<" test integral = "<<integral<<std::endl;
    // end Hex20 integration check
 // end of hex 20
 }
@@ -2207,7 +2434,7 @@ if(H32_check){
    real_t partialSumXi  = 0.0;
    real_t partialSumEta = 0.0;
    real_t partialSumMu  = 0.0;
-   real_t unity_check = 0.0;
+   real_t unity_check   = 0.0;
    vector<real_t> taylorH32(tot_q_pts_3d);
 
    //checking partition of unity
@@ -2500,9 +2727,147 @@ if(H32_check){
       * hex32_q_det_j[this_vert];
    }
 
-   std::cout<<"Hex32 order ="<< order <<" test integral = "<<integral<<std::endl;
+   std::cout<<"Hex32 order ="<< intg_order3D <<" test integral = "<<integral<<std::endl;
    // end Hex32 integration check
 // end of hex 32
+}
+
+if(QuadN_check){
+   ////////////////////////////////////////////////
+   //     Arbitrary Order Lagrange elements      //
+//////////////////////////////////////////////////
+
+   std::cout<< "Determinant =  "<< lag_det_3d<< std::endl;
+
+   std::cout << "Order = "<< orderN << std::endl;
+   std::cout << "Number of nodes in 1D = "<< cheb_nodes_1d.size() << std::endl;
+   std::cout << "Number of nodes in 2D = "<< vertices_2d.size() << std::endl;
+
+
+   // Chebyshev node position
+   for(int i = 0; i < orderN + 1; i++){
+      std::cout << "Cheb node position of node " << i << "= "<< cheb_nodes_1d[i] << std::endl;
+   }
+
+
+   std::cout << "Nodal postions in 2D"<< std::endl;
+   for( int i = 0;  i < numnodes_2d; i++){
+      std::cout<<"Number = "<< i <<" :   "<< vertices_2d[i][0]<<" , " << vertices_2d[i][1] << std::endl;
+   }
+
+
+   //interpolant values for nodes at point x_3d_point
+   for(int i = 0; i < orderN + 1; i++){
+      std::cout << "Interp Val at node " << i << " = "<< interp1d[i] << std::endl;
+   }
+
+
+   //Partition of unity 1D
+   real_t unity = 0.0;
+   for(int i = 0; i < orderN + 1; i++){
+      unity += interp1d[i];
+   }
+   std::cout << "Partition of unity 1D = " << unity << std::endl;
+   std::cout << std::endl;
+
+
+   // Basis values and partition of unity
+   real_t unity_2d = 0.0;
+   std::cout<<"Basis values at each node: "<<std::endl;
+   std::cout<<"Node #:  Basis Value"<< std::endl;
+   for(int i = 0; i < numnodes_2d; i++){
+      std::cout<<"  "<<i<<":     "<<lag_basis_2d[i]<< std::endl;
+      unity_2d += lag_basis_2d[i];
+   }
+   std::cout << "Partition of unity 2D = " << unity_2d << std::endl;
+
+
+   //Sum of Derivatives 1D
+   real_t Dunity = 0.0;
+   for(int i = 0; i < orderN + 1; i++){
+      Dunity += DVal_1d[i];
+      std::cout<<"derivative 1D node: "<<i<<" = "<< DVal_1d[i]<<std::endl;
+   }
+   std::cout << "Sum of derivatives 1D = " << Dunity << std::endl;
+
+
+   //Sum of Derivatives 2D
+   real_t Dunity_2D = 0.0;
+   //std::cout<<"Node #:       dXi        dExa     DMu"<< std::endl;
+   for(int i = 0; i < numnodes_2d; i++){
+      // std::cout<<"  "<<i<<":           "<<lag_partial_2d_xi[i]<<"     "<<lag_partial_2d_eta[i]<< std::endl;
+      Dunity_2D += lag_partial_2d[i][0] + lag_partial_2d[i][1];
+   }
+   std::cout << "Sum of partials 2D = " << Dunity_2D << std::endl;
+}
+
+if(HexN_check){
+   ////////////////////////////////////////////////
+   //     Arbitrary Order Lagrange elements      //
+//////////////////////////////////////////////////
+
+   std::cout<< "Determinant =  "<< lag_det_3d<< std::endl;
+
+   std::cout << "Order = "<< orderN << std::endl;
+   std::cout << "Number of nodes in 1D = "<< cheb_nodes_1d.size() << std::endl;
+   std::cout << "Number of nodes in 3D = "<< vertices_3d.size() << std::endl;
+
+
+   // Chebyshev node position
+   for(int i = 0; i < orderN + 1; i++){
+      std::cout << "Cheb node position of node " << i << "= "<< cheb_nodes_1d[i] << std::endl;
+   }
+
+
+   std::cout << "Nodal postions in 3D"<< std::endl;
+   for( int i = 0;  i < numnodes_3d; i++){
+      std::cout<<"Number = "<< i <<" :   "<< vertices_3d[i][0]<<" , " << vertices_3d[i][1] << " , " << vertices_3d[i][2] << std::endl;
+   }
+
+
+   //interpolant values for nodes at point x_3d_point
+   for(int i = 0; i < orderN + 1; i++){
+      std::cout << "Interp Val at node " << i << " = "<< interp1d[i] << std::endl;
+   }
+
+
+   //Partition of unity 1D
+   real_t unity = 0.0;
+   for(int i = 0; i < orderN + 1; i++){
+      unity += interp1d[i];
+   }
+   std::cout << "Partition of unity 1D = " << unity << std::endl;
+   std::cout << std::endl;
+
+
+   // Basis values and partition of unity
+   real_t unity_3d = 0.0;
+   std::cout<<"Basis values at each node: "<<std::endl;
+   std::cout<<"Node #:  Basis Value"<< std::endl;
+   for(int i = 0; i < numnodes_3d; i++){
+      std::cout<<"  "<<i<<":     "<<lag_basis_3d[i]<< std::endl;
+      unity_3d += lag_basis_3d[i];
+   }
+   std::cout << "Partition of unity 3D = " << unity_3d << std::endl;
+
+
+   //Sum of Derivatives 1D
+   real_t Dunity = 0.0;
+   for(int i = 0; i < orderN + 1; i++){
+      Dunity += DVal_1d[i];
+      std::cout<<"derivative 1D node: "<<i<<" = "<< DVal_1d[i]<<std::endl;
+   }
+   std::cout << "Sum of derivatives 1D = " << Dunity << std::endl;
+
+
+   //Sum of Derivatives 3D
+   real_t Dunity_3D = 0.0;
+   //std::cout<<"Node #:       dXi        dExa     DMu"<< std::endl;
+   for(int i = 0; i < numnodes_3d; i++){
+      // std::cout<<"  "<<i<<":           "<<lag_partial_3d_xi[i]<<"     "<<lag_partial_3d_eta[i]<<"     "<<lag_partial_3d_mu[i]<<":     "<< std::endl;
+      Dunity_3D += lag_partial_3d[i][0] + lag_partial_3d[i][1] + lag_partial_3d[i][2];
+   }
+   std::cout << "Sum of partials 3D = " << Dunity_3D << std::endl;
 }
 
 }// end  of main function
