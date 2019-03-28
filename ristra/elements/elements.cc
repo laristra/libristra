@@ -2258,16 +2258,16 @@ void QuadN::corners (
 
 
    lag_corner[0] = lag_nodes[A];
-   std::cout<<"Corner A = "<<lag_corner[0][0] << "  "<<lag_corner[0][1] << "  "<<lag_corner[0][2] <<std::endl;
+   std::cout<<"Corner A = "<<lag_corner[0][0] << "  "<<lag_corner[0][1] <<std::endl;
 
    lag_corner[1] = lag_nodes[B];
-   std::cout<<"Corner B = "<<lag_corner[1][0] << "  "<<lag_corner[1][1] << "  "<<lag_corner[1][2] <<std::endl;
+   std::cout<<"Corner B = "<<lag_corner[1][0] << "  "<<lag_corner[1][1] <<std::endl;
 
    lag_corner[2] = lag_nodes[C];
-   std::cout<<"Corner C = "<<lag_corner[2][0] << "  "<<lag_corner[2][1] << "  "<<lag_corner[2][2] <<std::endl;
+   std::cout<<"Corner C = "<<lag_corner[2][0] << "  "<<lag_corner[2][1] <<std::endl;
 
    lag_corner[3] = lag_nodes[D];
-   std::cout<<"Corner D = "<<lag_corner[3][0] << "  "<<lag_corner[3][1] << "  "<<lag_corner[3][2] <<std::endl;
+   std::cout<<"Corner D = "<<lag_corner[3][0] << "  "<<lag_corner[3][1] <<std::endl;
 }// end of corner mapping function
 
 // Functions for mapping reference position to physical position for any 
@@ -2788,7 +2788,7 @@ void Tess16::physical_position(
    real_t sum = 0;
    
    // calculate the shape functions from each vertex for (xi,eta,mu, tau)
-   for(int this_vert = 0; this_vert < num_nodes; this_vert++){
+   for(int this_vert = 0; this_vert < 16; this_vert++){
       shape_fcn[this_vert] = 1.0/16.0
                   * (1 + xi_point[0]*ref_vert[this_vert][0]) 
                   * (1 + xi_point[1]*ref_vert[this_vert][1]) 

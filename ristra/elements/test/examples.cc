@@ -414,7 +414,7 @@ TEST(elements, all) {
    vector< vector<real_t> > vertices_3d (numnodes_3d, vector<real_t>(3));
 
    // Corners of Lagrange element
-   vector< vector<real_t> > lag_corner_2d (8, vector<real_t>(2));
+   vector< vector<real_t> > lag_corner_2d (4, vector<real_t>(2));
    vector< vector<real_t> > lag_corner_3d (8, vector<real_t>(3));
 
    // Basis values for 2D/3D element
