@@ -20,7 +20,7 @@
 #include <iostream>
 
 #ifndef __CUDACC__
-#define FLECSI_FUNC 
+#define FLECSI_FUNC
 #else
 #define FLECSI_FUNC __device__ __host__ inline
 #endif
