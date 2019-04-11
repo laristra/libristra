@@ -19,6 +19,12 @@
 #include <cassert>
 #include <iostream>
 
+#ifndef __CUDACC__
+#define FLECSI_FUNC 
+#else
+#define FLECSI_FUNC __device__ __host__ inline
+#endif
+
 namespace ristra {
 namespace math {
 
@@ -186,7 +192,7 @@ public:
     return elems_[i];
   }
         
-  const_reference operator[](size_type i) const 
+  FLECSI_FUNC const_reference operator[](size_type i) const 
   {     
     assert( i < size() && "out of range" );
     return elems_[i]; 
@@ -281,7 +287,7 @@ public:
   }
 
   //! \brief assign one value to all elements
-  void fill(const T& value)
+  FLECSI_FUNC void fill(const T& value)
   {
     for ( counter_type i=0; i<length_as_counter; i++ )
       elems_[i] = value;    

@@ -19,6 +19,12 @@
 #include <cassert>
 #include <iomanip>
 
+#ifndef __CUDACC__
+#define FLECSI_FUNC 
+#else
+#define FLECSI_FUNC __device__ __host__ inline
+#endif
+
 namespace ristra {
 namespace math {
 
@@ -197,7 +203,7 @@ public:
   //! \brief Constructor with one value.
   //! \param[in] val The value to set the multi_array to.
   template < typename T2 >
-  multi_array(const T2 & val)
+  FLECSI_FUNC multi_array(const T2 & val)
   { 
     //std::cout << "multi_array (single value constructor)\n";
     fill( val ); 
@@ -414,7 +420,7 @@ public:
 
   //! \brief Assign one value to all elements.
   //! \param [in] value   The value to set.
-  void fill(const T& value)
+  FLECSI_FUNC void fill(const T& value)
   {
     for ( counter_type i=0; i<elements; i++ ) elems_[i] = value;    
   }
