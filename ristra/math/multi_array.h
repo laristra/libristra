@@ -20,7 +20,11 @@
 #include <iomanip>
 
 #ifndef __CUDACC__
+<<<<<<< HEAD
 #define FLECSI_FUNC
+=======
+#define FLECSI_FUNC 
+>>>>>>> b4212981b598552ac8bdb490a808fc2f539c71b1
 #else
 #define FLECSI_FUNC __device__ __host__ inline
 #endif
