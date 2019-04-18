@@ -270,7 +270,7 @@ struct lua_value< Matrix<T,M,N> >
       lua_rawgeti(s, -1, i);  // push t[i]
       for (int j=1; j<=N; ++j) {
         lua_rawgeti(s, -1, j); // push t[j]
-        res(i-1,j-1) = lua_value<T>.get(s);
+        res(i-1,j-1) = lua_value<T>::get(s);
       }
       lua_remove(s, -1);
     }
