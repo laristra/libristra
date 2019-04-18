@@ -21,7 +21,7 @@ before_install:
 
 script:
  - if [[ ${CC} != gcc ]]; then TAG="_${CC}"; fi
- - if [[ ${TRAVIS_BRANCH} != stable ]]; then TAG="${TAG}_master"; fi
+ - if [[ ${TRAVIS_BRANCH} != stable ]]; then TAG="${TAG}_${TRAVIS_BRANCH//[^a-zA-Z0-9]/_}"; fi
  - cp -vr docker ${HOME}/docker
  - sed -i "1s/fedora_serial/${DISTRO}${TAG}/" ${HOME}/docker/Dockerfile
  - cd ../../
