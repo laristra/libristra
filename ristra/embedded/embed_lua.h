@@ -939,8 +939,8 @@ public:
   ///                          Default is true.
   lua_t(bool with_system = true) : lua_base_t() 
   {
-    if ( !state_ )
-      throw_runtime_error("Cannot initialize lua state.");
+    if (!state_)
+      THROW_RUNTIME_ERROR("Cannot initialize lua state.");
     // open all system libraries
     if ( with_system )
       luaL_openlibs(state());
@@ -954,7 +954,7 @@ public:
     auto ret = luaL_dostring(state(),script.c_str());
     if ( ret ) {
       print_last_row();
-      throw_runtime_error("Cannot load buffer.");
+      THROW_RUNTIME_ERROR("Cannot load buffer.");
     }
     return ret;
   }
@@ -966,7 +966,7 @@ public:
     auto ret = luaL_dofile(state(),file.c_str());
     if ( ret ) {
       print_last_row();
-      throw_runtime_error("Cannot load file.");
+      THROW_RUNTIME_ERROR("Cannot load file.");
     }
   }
 

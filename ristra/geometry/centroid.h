@@ -89,7 +89,7 @@ auto centroid( const V<T, Args...> & points )
   if ( dim == 2 )
     return centroid_2d( points );
   else {
-    throw_implemented_error( "unsuported dimemsion" );
+    THROW_IMPLEMENTED_ERROR( "unsuported dimemsion" );
     return points[0]; // should never get here
   }
 }

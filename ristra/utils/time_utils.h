@@ -41,16 +41,16 @@ double get_wall_time(void)
   // use windows api
   LARGE_INTEGER time,freq;
   if (!QueryPerformanceFrequency(&freq)) 
-    throw_runtime_error( "Error getting clock frequency." );
+    THROW_RUNTIME_ERROR( "Error getting clock frequency." );
   if (!QueryPerformanceCounter(&time))
-    throw_runtime_error( "Error getting wall time." );
+    THROW_RUNTIME_ERROR( "Error getting wall time." );
   return (double)time.QuadPart / freq.QuadPart;
 
 #else
 
   // Use system time call
   struct timeval tm;
-  if (gettimeofday( &tm, 0 )) throw_runtime_error( "Error getting wall time." );
+  if (gettimeofday( &tm, 0 )) THROW_RUNTIME_ERROR( "Error getting wall time." );
   return (double)tm.tv_sec + (double)tm.tv_usec * 1.e-6;
 
 #endif
