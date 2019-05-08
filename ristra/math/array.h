@@ -245,11 +245,11 @@ public:
   //  \brief direct access to data (read-only)
   //! @{
   const T* data() const { return elems_; }
-  T* data() { return elems_.data(); }
+  T* data() { return elems_; }
   //! @}
 
   // use array as C array (direct read/write access to data)
-  T* c_array() { return elems_.data(); }
+  T* c_array() { return elems_; }
 
   //===========================================================================
   //! \brief Capacity

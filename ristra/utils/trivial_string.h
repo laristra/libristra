@@ -24,7 +24,7 @@ namespace utils {
 //! \tparam N  The maximum length of the string.
 ////////////////////////////////////////////////////////////////////////////////
 template< std::size_t N >
-class trivial_string__ {
+class trivial_string {
 
 public:
 
@@ -77,7 +77,7 @@ private:
 template< std::size_t N >
 auto to_trivial_string( const std::string & str )
 {
-  trivial_string__<N> tmp;
+  trivial_string<N> tmp;
   strcpy( tmp.data(), str.c_str() );
   return tmp;
 }
