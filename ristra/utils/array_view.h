@@ -1400,7 +1400,7 @@ public:
     }
     // If we're here the preconditions were violated
     // "pre: there exists s such that r == ++s"
-    throw_runtime_error( "index out of range" );
+    THROW_RUNTIME_ERROR( "index out of range" );
     return *this;
   }
 

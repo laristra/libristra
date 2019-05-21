@@ -32,7 +32,7 @@
 //! \brief Raise a runtime error.
 //! \param[in] the message to display
 ////////////////////////////////////////////////////////////////////////////////
-#define throw_runtime_error(msg)                                               \
+#define THROW_RUNTIME_ERROR(msg)                                               \
   do {                                                                         \
     std::cerr << RISTRA_HERE << std::endl;                                     \
     std::cerr << msg << std::endl;                                             \
@@ -44,7 +44,7 @@
 //! \brief Raise a logic error.
 //! \param[in] the message to display
 ////////////////////////////////////////////////////////////////////////////////
-#define throw_logic_error(msg)                                                 \
+#define THROW_LOGIC_ERROR(msg)                                                 \
   do {                                                                         \
     std::cerr << RISTRA_HERE << std::endl;                                     \
     std::cerr << msg << std::endl;                                             \
@@ -55,7 +55,7 @@
 //! \brief Raise a file-related error.
 //! \param[in] the file in question
 ////////////////////////////////////////////////////////////////////////////////
-#define throw_file_error(file)                                          \
+#define THROW_FILE_ERROR(file)                                          \
   do {                                                                  \
     std::cerr << RISTRA_HERE << std::endl;                                     \
     THROW_EXCEPTION(ristra::assertions::ExceptionFileError(file));              \
@@ -66,7 +66,7 @@
 //! \brief Raise a not-implemented error.
 //! \param[in] the message to display
 ////////////////////////////////////////////////////////////////////////////////
-#define throw_implemented_error(msg)                                    \
+#define THROW_IMPLEMENTED_ERROR(msg)                                    \
   do {                                                                  \
     std::cerr << RISTRA_HERE << std::endl;                                     \
     std::cerr << msg << std::endl;                                      \
@@ -80,7 +80,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #define assert_true(cond, msg)                                          \
   if ( ! (cond) )                                                       \
-    throw_runtime_error("Assertion falied: " << msg)
+    THROW_RUNTIME_ERROR("Assertion falied: " << msg)
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Display a warning.

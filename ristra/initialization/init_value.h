@@ -76,7 +76,7 @@ class init_value_t
     bool valid(m_valid(t));
     if (!valid) {
       m_status = status_t::invalid;
-      throw_runtime_error("Invalid init_value " + fname);
+      THROW_RUNTIME_ERROR("Invalid init_value " + fname);
     }
     m_status = status_t::valid;
     return t;

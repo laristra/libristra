@@ -394,7 +394,7 @@ template <
 >
 C<T, 3> normal(const C<T, 3> &a, const C<T, 3> &b) 
 {
-  throw_runtime_error("you should never get here");
+  THROW_RUNTIME_ERROR("you should never get here");
   return { 0, 0, 0 }; // FIXME - this is here as a hack
 }
 

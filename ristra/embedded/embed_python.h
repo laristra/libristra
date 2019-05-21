@@ -80,7 +80,7 @@ void python_set_program_name( std::string name )
 #else
   auto program = Py_DecodeLocale(name.c_str(), NULL);
   if (!program) 
-    throw_runtime_error("Cannot decode program \"" << name << "\"");
+    THROW_RUNTIME_ERROR("Cannot decode program \"" << name << "\"");
   Py_SetProgramName(program);
   PyMem_RawFree(program);
 #endif
@@ -91,7 +91,7 @@ void python_initialize( void )
   Py_Initialize();
   if (!Py_IsInitialized()) {
     python_check();
-    throw_runtime_error("Cannot initialize python interpreter.");
+    THROW_RUNTIME_ERROR("Cannot initialize python interpreter.");
   }
 }
 
@@ -114,12 +114,12 @@ auto python_import( std::string name )
 #endif
   if (!pname) {
     python_check();
-    throw_runtime_error("Cannot decode module name \"" << name << "\"");
+    THROW_RUNTIME_ERROR("Cannot decode module name \"" << name << "\"");
   }
   auto pmodule = PyImport_Import(pname);
   if (!pmodule) {
     python_check();
-    throw_runtime_error("Cannot import module \"" << name << "\"");
+    THROW_RUNTIME_ERROR("Cannot import module \"" << name << "\"");
   }
   Py_DECREF(pname);
   return pmodule;
@@ -130,7 +130,7 @@ auto python_add_to_path( std::string path )
   auto syspath = PySys_GetObject((char*)"path");
   if (!syspath) {
     python_check();
-    throw_runtime_error("Cannot get system path.");
+    THROW_RUNTIME_ERROR("Cannot get system path.");
   }
 #if PY_MAJOR_VERSION < 3
   auto pname = PyString_FromString( const_cast<char*>(path.c_str()) );
@@ -139,15 +139,15 @@ auto python_add_to_path( std::string path )
 #endif
   if (!pname) {
     python_check();
-    throw_runtime_error("Cannot decode path \"" << path << "\"");
+    THROW_RUNTIME_ERROR("Cannot decode path \"" << path << "\"");
   }
   if (PyList_Insert(syspath, 0, pname)) {
     python_check();
-    throw_runtime_error("Cannot insert path \"" << path << "\"");
+    THROW_RUNTIME_ERROR("Cannot insert path \"" << path << "\"");
   }
   if (PySys_SetObject((char*)"path", syspath)) {
     python_check();
-    throw_runtime_error("Cannot set new path.");
+    THROW_RUNTIME_ERROR("Cannot set new path.");
   }
   Py_DECREF(pname);
   return syspath; 
@@ -158,7 +158,7 @@ auto python_get_attribute( PyObject * py_module, std::string attribute )
   auto attr = PyObject_GetAttrString(py_module, attribute.c_str());
   if (!attr) {
     python_check();
-    throw_runtime_error("Cannot get attribute \"" << attribute << "\"");
+    THROW_RUNTIME_ERROR("Cannot get attribute \"" << attribute << "\"");
   }
   return attr;
 }
@@ -178,7 +178,7 @@ auto python_get_value( long arg )
   auto pvalue = PyLong_FromLong(arg);
   if (!pvalue) {
     python_check();
-    throw_runtime_error("Cannot set argument.");
+    THROW_RUNTIME_ERROR("Cannot set argument.");
   }
   return pvalue;
 }
@@ -193,7 +193,7 @@ auto python_get_value( double arg )
   auto pvalue = PyFloat_FromDouble(arg);
   if (!pvalue) {
     python_check();
-    throw_runtime_error("Cannot set argument.");
+    THROW_RUNTIME_ERROR("Cannot set argument.");
   }
   return pvalue;
 }
@@ -203,12 +203,12 @@ auto python_get_tuple_element( PyObject * py_tup, std::size_t i )
   auto n = PyTuple_GET_SIZE(py_tup);
   if (i>=n) {
     python_check();
-    throw_runtime_error("Index out of range (i="<<i<<">="<<n<<").");
+    THROW_RUNTIME_ERROR("Index out of range (i="<<i<<">="<<n<<").");
   }
   auto pitem = PyTuple_GetItem(py_tup, i);
   if (!pitem) {
     python_check();
-    throw_runtime_error("Problem getting item.");
+    THROW_RUNTIME_ERROR("Problem getting item.");
   }
   return pitem;
 }
@@ -220,14 +220,14 @@ void python_set_tuple_element( PyObject * py_tup, std::size_t i, Arg && arg )
   auto n = PyTuple_GET_SIZE(py_tup);
   if (i>=n) {
     python_check();
-    throw_runtime_error("Index out of range (i="<<i<<">="<<n<<").");
+    THROW_RUNTIME_ERROR("Index out of range (i="<<i<<">="<<n<<").");
   }
   auto pvalue = python_get_value( std::forward<Arg>(arg) );
   // pvalue reference stolen here:
   auto pitem = PyTuple_SetItem(py_tup, i, pvalue);
   if (pitem) {
     python_check();
-    throw_runtime_error("Problem setting item.");
+    THROW_RUNTIME_ERROR("Problem setting item.");
   }
 }
 
@@ -259,7 +259,7 @@ auto python_build_args( Args&&... args )
   auto pargs = PyTuple_New(sizeof...(args));
   if (!pargs) {
     python_check();
-    throw_runtime_error("Cannot initialize arguments.");
+    THROW_RUNTIME_ERROR("Cannot initialize arguments.");
   }
   detail::python_build_args(pargs, 0, std::forward<Args>(args)...);
   return pargs;
@@ -270,17 +270,17 @@ auto python_call_function( PyObject * py_func, Args&&... args )
 {
   if (!PyCallable_Check(py_func)) {
     python_check();
-    throw_runtime_error("Function is not callable.");
+    THROW_RUNTIME_ERROR("Function is not callable.");
   }
   auto pargs = python_build_args(std::forward<Args>(args)...);
   if (!pargs) {
     python_check();
-    throw_runtime_error("Cannot initialize arguments.");
+    THROW_RUNTIME_ERROR("Cannot initialize arguments.");
   }
   auto pval = PyObject_CallObject(py_func, pargs);
   if (!pval) {
     python_check();
-    throw_runtime_error("Problem calling function.");
+    THROW_RUNTIME_ERROR("Problem calling function.");
   }
   Py_DECREF(pargs);
   return pval;
