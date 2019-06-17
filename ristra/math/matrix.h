@@ -466,5 +466,174 @@ auto projection_matrix( const C<T,D> & n ) {
   return mat;
 }
 
+template < typename T, size_t N >
+auto infinity_norm( const matrix<T, N, N> & mat )
+{
+    using counter_t = utils::select_counter_t< N >;
+    //
+    T norm = 0.;
+    //
+    for ( counter_t ii = 0; ii < N; ii++ )
+    {
+        T sum_row = 0.;
+        for ( counter_t jj = 0; jj < N; jj++ )
+        {
+            sum_row += std::abs( mat(ii,jj) );
+        }
+        norm = std::max( norm, sum_row );
+    }
+    return norm;
+}
+
+template < typename T, size_t N >
+auto one_norm( const matrix<T, N, N> & mat )
+{
+    using counter_t = utils::select_counter_t< N >;
+    //
+    T norm = 0.;
+    //
+    for ( counter_t jj = 0; jj < N; jj++ )
+    {
+        T sum_col = 0.;
+        for ( counter_t ii = 0; ii < N; ii++ )
+        {
+            sum_col += std::abs( mat(ii,jj) );
+        }
+        norm = std::max( norm, sum_col );
+    }
+    return norm;
+}
+
+template < typename T, size_t N >
+auto two_norm( const matrix<T, N, N> & mat )
+{
+    using counter_t = utils::select_counter_t< N >;
+    //
+    T norm = 0.;
+    //
+    for ( counter_t ii = 0; ii < N; ii++ )
+        for ( counter_t jj = 0; jj < N; jj++ )
+            norm += mat(ii,jj) * mat(ii,jj);
+    //
+    return std::sqrt(norm);
+}
+
+template < typename T, size_t N >
+auto identity_matrix( )
+{
+    matrix<T, N, N> mat(0);
+    using counter_t = utils::select_counter_t< N >;
+    //
+    for ( counter_t ii = 0; ii < N; ii++ )
+    {
+        mat(ii,ii) = 1;
+    }
+    return mat;
+}
+
+template < typename T, size_t N >
+auto trace_matrix( const matrix<T,N,N> & mat )
+{
+    T trace = 0.;
+    using counter_t = utils::select_counter_t< N >;
+    //
+    for ( counter_t ii = 0; ii < N; ii++ )
+    {
+        trace += mat(ii,ii);
+    }
+    return trace;
+}
+
+template < typename T, size_t D1, size_t D2 >
+auto transpose( const matrix<T, D1, D2> & mat )
+{
+    using counter1_t = utils::select_counter_t< D1 >;
+    using counter2_t = utils::select_counter_t< D2 >;
+    //
+    matrix< T, D2, D1 > t_mat;
+    //
+    for ( counter1_t ii = 0; ii < D1; ii++ )
+        for ( counter2_t jj = 0; jj < D2; jj++ )
+            t_mat(jj,ii) = mat(ii,jj);
+    //
+    return t_mat;
+}
+
+template < typename T, size_t N >
+auto exponential( const matrix<T, N, N> & mat )
+{
+    //
+    //    Cleve Moler and Charles VanLoan, 
+    //    "Nineteen Dubious Ways to Compute the Exponential of a Matrix,
+    //     Twenty-Five Years Later",
+    //    SIAM Review, 2003
+    //
+    // maximum number of power elevations. The higher q
+    // the higher the precision
+    constexpr size_t q = 6;
+    //
+    T mat_norm            = infinity_norm( mat );
+    T scaling_coefficient = ( std::log(mat_norm)
+                            / std::log(2.)
+                            ) + 1.;
+    const size_t s =
+        static_cast<size_t>
+        (
+            std::max( 0, 
+                      static_cast<int>(scaling_coefficient) + 1
+                    )
+        );
+    // scale matrix
+    auto A = mat/std::pow(2,s);
+    //
+    auto E = identity_matrix<T,N>() + 0.5 * A;
+    // auxiliary matrices
+    auto D = identity_matrix<T,N>() - 0.5 * A;
+    auto X = A;
+    //
+    T c = 0.5;
+    //
+    for ( size_t ii = 2; ii <= q; ii++ )
+    {
+        c *= static_cast<T>( q - ii + 1 )
+           / static_cast<T>( ii * ( 2 * q - ii + 1 ) );
+        //
+        X = matrix_multiply( A, X );
+        E = c * X + E;
+        //
+        if ( ii % 2  )
+            D -= c * X;
+        else
+            D += c * X;
+        //
+    }
+    //
+    E = matrix_multiply(inverse(D), E);
+    //
+    for ( size_t ii = 0; ii < s; ii++ ){
+        E = matrix_multiply(E, E);
+    }
+    //
+    return E;
+}
+
+
+template < typename T, size_t N1, size_t N2 >
+T doubledot_product(
+        const matrix<T, N1, N2> & mat1,
+        const matrix<T, N1, N2> & mat2 
+        )
+{
+    T dd = 0.;
+    for ( size_t ii = 0; ii < N1; ii++ )
+    {
+        for ( size_t jj = 0; jj < N2; jj++ )
+        {
+            dd += mat1(ii,jj) * mat2(ii,jj);
+        }
+    }
+    return dd;
+}
+
 } // namespace math
 } // namespace ristra
