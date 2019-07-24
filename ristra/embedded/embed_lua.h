@@ -83,7 +83,7 @@ struct lua_value< T, std::enable_if_t< std::is_integral<T>::value > >
   static T get(lua_State * s, int index = -1) 
   {
     if ( !lua_isnumber(s,index) )
-     throw_runtime_error( "Invalid conversion of type \"" <<
+     THROW_RUNTIME_ERROR( "Invalid conversion of type \"" <<
       lua_typename(s, lua_type(s, index)) << "\" to int."
     );
     auto i = lua_tointeger(s, index);
@@ -105,7 +105,7 @@ struct lua_value<T, std::enable_if_t< std::is_floating_point<T>::value > >
   static T get(lua_State * s, int index = -1) 
   {
     if ( !lua_isnumber(s,index) )
-     throw_runtime_error( "Invalid conversion of type \"" <<
+     THROW_RUNTIME_ERROR( "Invalid conversion of type \"" <<
       lua_typename(s, lua_type(s, index)) << "\" to double."
     );
     auto x = lua_tonumber(s, index);
@@ -126,7 +126,7 @@ struct lua_value<bool>
   static bool get(lua_State * s, int index = -1) 
   {
     if ( !lua_isboolean(s,index) )
-     throw_runtime_error( "Invalid conversion of type \"" <<
+     THROW_RUNTIME_ERROR( "Invalid conversion of type \"" <<
       lua_typename(s, lua_type(s, index)) << "\" to bool."
     );
     auto b = lua_toboolean(s, index);
@@ -147,7 +147,7 @@ struct lua_value<std::string>
   static std::string get(lua_State * s, int index = -1)
   {
     if ( !lua_isstring(s, index) )
-     throw_runtime_error( "Invalid conversion of type \"" <<
+     THROW_RUNTIME_ERROR( "Invalid conversion of type \"" <<
       lua_typename(s, lua_type(s, index)) << "\" to string."
     );
     auto str = lua_tostring(s, index);
@@ -174,7 +174,7 @@ struct lua_value< Vector<T,Allocator> >
   {
     // make sure we are accessing a table
     if ( !lua_istable(s, index) )
-     throw_runtime_error( "Invalid conversion of type \"" <<
+     THROW_RUNTIME_ERROR( "Invalid conversion of type \"" <<
       lua_typename(s, lua_type(s, index)) << "\" to vector."
     );
     // get the size of the table
@@ -211,13 +211,13 @@ struct lua_value< Array<T,N> >
     // make sure we are accessing a table
     // make sure we are accessing a table
     if ( !lua_istable(s, index) )
-     throw_runtime_error( "Invalid conversion of type \"" <<
+     THROW_RUNTIME_ERROR( "Invalid conversion of type \"" <<
       lua_typename(s, lua_type(s, index)) << "\" to vector."
     );
     // get the size of the table
     auto n = lua_rawlen(s, -1);
     if ( n != N )
-      throw_runtime_error( 
+      THROW_RUNTIME_ERROR( 
         "Expecting array of size"<<N<<", stack array is size " << n
       );
     // extract the results
@@ -255,13 +255,13 @@ struct lua_value< Matrix<T,M,N> >
   {
     // make sure we are accessing a table
     if ( !lua_istable(s, index) )
-     throw_runtime_error( "Invalid conversion of type \"" <<
+     THROW_RUNTIME_ERROR( "Invalid conversion of type \"" <<
       lua_typename(s, lua_type(s, index)) << "\" to multiarray."
     );
     // get the size of the table
     auto n = lua_rawlen(s, -1);
     if ( n != M )
-      throw_runtime_error( 
+      THROW_RUNTIME_ERROR( 
         "Expecting array of size"<<M<<", stack array is size " << n
       );
     // extract the results
@@ -365,7 +365,7 @@ inline std::size_t lua_push(lua_State * s, const Array<double, N> & arr)
     ss << "Cannot grow stack " << (N - 1) << " slots operating on element \""
        << "\"." << std::endl
        << "Current stack size is " << lua_gettop(s) << ".";
-    throw_runtime_error(ss.str());
+    THROW_RUNTIME_ERROR(ss.str());
   }
   // push each element of the array
   for (std::size_t i = 0; i < N; ++i) {
@@ -610,7 +610,7 @@ class lua_result_t : public lua_base_t {
       ss << "Cannot grow stack " << extra << " slots operating on element \""
          << name_ << "\"." << std::endl << "Current stack size is " 
          << lua_gettop(s) << ".";
-      throw_runtime_error(ss.str());
+      THROW_RUNTIME_ERROR(ss.str());
     }
   } 
 
@@ -618,7 +618,7 @@ class lua_result_t : public lua_base_t {
   {
     if ( lua_isnil(state(), -1) ) {
       print_last_row();
-      throw_runtime_error("\"" << name << "\" does not exist.");
+      THROW_RUNTIME_ERROR("\"" << name << "\" does not exist.");
     }
   }
 
@@ -627,7 +627,7 @@ class lua_result_t : public lua_base_t {
     check_nil(name);
     if ( !lua_istable(state(), -1) ) {
       print_last_row();
-      throw_runtime_error("\"" << name << "\" is not a table.");
+      THROW_RUNTIME_ERROR("\"" << name << "\" is not a table.");
     }
   }
 
@@ -637,7 +637,7 @@ class lua_result_t : public lua_base_t {
   {
     if (lua_isnil(state(), -1)) {
       print_last_row();
-      throw_runtime_error("\"" << name << "\" returned nil.");
+      THROW_RUNTIME_ERROR("\"" << name << "\" returned nil.");
     }
   }
 
@@ -648,7 +648,7 @@ class lua_result_t : public lua_base_t {
     check_nil(name);
     if ( !lua_isfunction(state(), -1) ) {
       print_last_row();
-      throw_runtime_error("\"" << name << "\" is not a function.");
+      THROW_RUNTIME_ERROR("\"" << name << "\" is not a function.");
     }
   }
 
@@ -727,7 +727,7 @@ public:
   template< typename T >
   explicit operator T() const {
     if ( refs_.size() != 1 )
-      throw_runtime_error( "Expecting 1 result, stack has " << refs_.size() );
+      THROW_RUNTIME_ERROR( "Expecting 1 result, stack has " << refs_.size() );
     push_last();
     return lua_value<T>::get(state());
   }
@@ -740,7 +740,7 @@ public:
     constexpr int N = sizeof...(Args);
     using Tup = std::tuple<Args...>; 
     if ( refs_.size() != N )
-      throw_runtime_error( 
+      THROW_RUNTIME_ERROR( 
         "Expecting "<<N<<" results, stack has " << refs_.size() 
       );
     push_all();
@@ -798,7 +798,7 @@ public:
     auto ret = lua_pcall(s, nargs_pushed, LUA_MULTRET, 0);
     if (ret) {
       print_last_row();
-      throw_runtime_error("Problem calling \"" << name_ << "\".");
+      THROW_RUNTIME_ERROR("Problem calling \"" << name_ << "\".");
     }
     // make sure the result is non nill
     check_result(name_);
