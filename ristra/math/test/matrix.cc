@@ -13,7 +13,7 @@
 #include "ristra/math/matrix.h"
 
 // system includes
-#include <cinchtest.h>
+#include <gtest/gtest.h>
 #include <iostream>
 #include <cmath>
 

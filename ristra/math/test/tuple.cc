@@ -8,7 +8,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // test include
-#include <cinchtest.h>
+#include <gtest/gtest.h>
 #include <ristra-config.h>
 
 // user includes

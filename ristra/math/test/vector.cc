@@ -14,7 +14,7 @@
 #include "ristra/math/vector.h"
 
 // system includes
-#include <cinchtest.h>
+#include <gtest/gtest.h>
 #include <iostream>
 
 // explicitly use some stuff

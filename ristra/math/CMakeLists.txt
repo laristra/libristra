@@ -15,6 +15,6 @@ add_library( ${PROJECT_NAME}_math
   vector.h
 )
 
-#cinch_add_unit(ristra_tuple SOURCES test/tuple.cc)
-#cinch_add_unit(ristra_vector SOURCES test/vector.cc)
-#cinch_add_unit(ristra_matrix SOURCES test/matrix.cc)
+add_unit(ristra_tuple SOURCES test/tuple.cc)
+add_unit(ristra_vector SOURCES test/vector.cc)
+add_unit(ristra_matrix SOURCES test/matrix.cc)

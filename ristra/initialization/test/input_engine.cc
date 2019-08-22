@@ -6,7 +6,7 @@
 #include<ristra-config.h>
 
 #include "ristra/initialization/input_engine.h"
-#include "cinchtest.h"
+#include "gtest/gtest.h"
 // #include "ristra/flecsale-vector.h"
 #include <array>
 #include "test_input_hard_coded_problems.h"

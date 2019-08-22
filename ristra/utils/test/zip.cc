@@ -12,7 +12,7 @@
 
 // system includes
 #include<array>
-#include<cinchtest.h>
+#include<gtest/gtest.h>
 #include<iostream>
 #include<list>
 #include<vector>

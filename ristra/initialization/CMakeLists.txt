@@ -22,14 +22,14 @@ add_library( ${PROJECT_NAME}_initialization
 # Unit tests.
 #------------------------------------------------------------------------------#
 
-#cinch_add_unit(ristra_initialization
-#  SOURCES
-#    test/test-announce.cc
-#    test/init_value.cc
-#    test/input_source.cc
-#    test/input_engine.cc
-#    test/test_input_hard_coded_problems.cc
-#  LIBRARIES Ristra
-#  INPUTS
-#    test/mock_box_2d.lua
-#)
+add_unit(ristra_initialization
+  SOURCES
+    test/test-announce.cc
+    test/init_value.cc
+    test/input_source.cc
+    test/input_engine.cc
+    test/test_input_hard_coded_problems.cc
+  LIBRARIES Ristra
+  INPUTS
+    test/mock_box_2d.lua
+)

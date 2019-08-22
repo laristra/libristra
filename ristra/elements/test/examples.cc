@@ -14,7 +14,7 @@
 #include <iostream>  // std::cout etc.
 #include <cmath>
 
-#include <cinchtest.h>
+#include <gtest/gtest.h>
 
 #include "ristra/elements/elements.h"
 #include "ristra/elements/utilities.h"

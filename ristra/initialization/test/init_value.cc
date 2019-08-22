@@ -5,7 +5,7 @@
 
 #include <array>
 
-#include "cinchtest.h"
+#include "gtest/gtest.h"
 #include "ristra/initialization/init_value.h"
 #include "test_input_hard_coded_problems.h"
 #include "test_inputs.h"

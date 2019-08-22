@@ -4,7 +4,7 @@
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
 #include "ristra/utils/type_traits.h"
-#include "cinchtest.h"
+#include "gtest/gtest.h"
 
 // some containers that yeild interesting types
 #include <array>

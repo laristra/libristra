@@ -19,6 +19,7 @@ cmake_minimum_required(VERSION 2.8)
 project(Ristra)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+include(cmake/unit.cmake)
 
 #------------------------------------------------------------------------------#
 # If a C++17 compiler is available, then set the appropriate flags
@@ -137,7 +138,8 @@ if (RISTRA_ENABLE_CATALYST)
 endif()
 
 #------------------------------------------------------------------------------#
-# Legion / MPI
+# MPI
+# Only used for wall-time right now.
 #------------------------------------------------------------------------------#
 
 find_package(MPI)
@@ -151,6 +153,25 @@ endif()
 if(RISTRA_ENABLE_MPI)
   include_directories(${MPI_C_INCLUDE_PATH})
 endif()
+
+#------------------------------------------------------------------------------#
+# Google test
+#------------------------------------------------------------------------------#
+option(RISTRA_ENABLE_UNIT_TESTS "Enable unit testing" OFF)
+
+set( GTEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/gtest )
+file(GLOB _gtest_contents ${GTEST_DIR}/*)
+
+if (RISTRA_ENABLE_UNIT_TESTS)
+  enable_testing()
+  if (_gtest_contents)
+    add_subdirectory( ${GTEST_DIR} )
+    include_directories(${GTEST_DIR}/googletest/include)
+  else()
+    find_package(GTest REQUIRED)
+  endif()
+endif()
+
 
 #------------------------------------------------------------------------------#
 # configure library

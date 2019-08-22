@@ -6,7 +6,7 @@
 /// \file
 ////////////////////////////////////////////////////////////////////////////////
 
-#include<cinchtest.h>
+#include<gtest/gtest.h>
 #include<ristra-config.h>
 
 #ifdef ENABLE_CALIPER

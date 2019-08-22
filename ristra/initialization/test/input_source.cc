@@ -7,7 +7,7 @@
 
 #include "ristra/initialization/input_source.h"
 #include <array>
-#include "cinchtest.h"
+#include "gtest/gtest.h"
 
 TEST(input_source, compiles) { EXPECT_TRUE(true); } // smoke
 

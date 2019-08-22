@@ -8,7 +8,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 // user includes
-#include<cinchtest.h>
+#include<gtest/gtest.h>
 #include<ristra-config.h>
 
 #ifdef RISTRA_ENABLE_PYTHON

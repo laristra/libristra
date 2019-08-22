@@ -11,7 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 // test includes
-#include <cinchtest.h>
+#include <gtest/gtest.h>
 #include <ristra-config.h>
 
 // user includes

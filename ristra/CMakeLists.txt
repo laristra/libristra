@@ -30,3 +30,4 @@ add_library( ${PROJECT_NAME}
   $<TARGET_OBJECTS:${PROJECT_NAME}_math>
   $<TARGET_OBJECTS:${PROJECT_NAME}_utils>
 )
+target_link_libraries( ${PROJECT_NAME} ${RISTRA_LIBRARIES} )

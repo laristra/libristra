@@ -4,7 +4,7 @@
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
 /* Test will take control of the test environment */
-#include "cinchtest.h"
+#include<gtest/gtest.h>
 #include<ristra-config.h>
 
 // #if defined RISTRA_REQUIRE_ON && defined RISTRA_DBC_NOTIFY

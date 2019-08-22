@@ -9,4 +9,5 @@ add_library( ${PROJECT_NAME}_elements
   utilities.h
   elements.cc
 )
-#cinch_add_unit(ristra_elements SOURCES test/examples.cc LIBRARIES Ristra)
+
+add_unit(ristra_elements SOURCES test/examples.cc LIBRARIES Ristra)

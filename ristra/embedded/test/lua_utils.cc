@@ -7,7 +7,7 @@
 /// \brief Tests related to embedded lua.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include<cinchtest.h>
+#include<gtest/gtest.h>
 #include<ristra-config.h>
 
 #ifdef RISTRA_ENABLE_LUA

@@ -3,7 +3,7 @@
 // May 02, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
-#include "cinchtest.h"
+#include<gtest/gtest.h>
 #include<ristra-config.h>
 
 
