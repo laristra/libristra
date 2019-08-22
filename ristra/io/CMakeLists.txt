@@ -1,11 +1,12 @@
 #~----------------------------------------------------------------------------~#
-# Copyright (c) 2017 Los Alamos National Security, LLC
+# Copyright (c) 2014 Los Alamos National Security, LLC
 # All rights reserved.
 #~----------------------------------------------------------------------------~#
 
-set(compatibility_HEADERS
-  type_traits.h
-  
-  PARENT_SCOPE # THIS NEEDS TO BE HERE
+add_library( ${PROJECT_NAME}_io
+  OBJECT
+  catalyst/adaptor.h
+  vtk.h
+  write_binary.h
+  vtk.cc
 )
-
