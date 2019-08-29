@@ -3,16 +3,6 @@
 # All rights reserved.
 #~----------------------------------------------------------------------------~#
 
-add_library( ${PROJECT_NAME}_assertions
-  OBJECT
-  dbc.h
-  detail/dbc_impl.h
-  errors.h
-  exceptions.h
-  here.h
-  detail/dbc_impl.cc
-)
-
 add_unit( dbc_notify
   SOURCES
     test/dbc_test_notify.cc

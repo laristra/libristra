@@ -13,7 +13,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
-#include "ristra/initialization/detail/inputs_impl.h"
+#include "ristra/initialization/inputs_impl.h"
 #include "ristra/embedded/embed_lua.h"
 
 namespace ristra

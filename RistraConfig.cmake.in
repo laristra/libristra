@@ -2,7 +2,7 @@
 # Set the path to the Ristra headers.
 #------------------------------------------------------------------------------#
 
-set(RISTRA_INCLUDE_DIRS @RISTRA_INCLUDE_DIR@ @RISTRA_EXTERNAL_INCLUDE_DIRS@)
+set(RISTRA_INCLUDE_DIRS @CMAKE_INSTALL_PREFIX@/include @RISTRA_EXTERNAL_INCLUDE_DIRS@)
 
 
 #------------------------------------------------------------------------------#
@@ -16,7 +16,7 @@ set(RISTRA_INCLUDE_DIRS @RISTRA_INCLUDE_DIR@ @RISTRA_EXTERNAL_INCLUDE_DIRS@)
 #------------------------------------------------------------------------------#
 
 if(NOT TARGET Ristra AND NOT Ristra_BINARY_DIR)
-  include(@RISTRA_CMAKE_DIR@/RistraTargets.cmake)
+  include(@CMAKE_INSTALL_PREFIX@/@LIBDIR@/RistraTargets.cmake)
 endif()
 
 #------------------------------------------------------------------------------#

@@ -27,7 +27,7 @@
 #else
 
 // user includes
-#include "detail/zip_impl.h"
+#include "zip_impl.h"
 #include "ristra/utils/type_traits.h"
 
 // system includes

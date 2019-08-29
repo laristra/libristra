@@ -12,6 +12,7 @@ function (add_unit name)
 
   add_executable(${name} ${unit_SOURCES} ${PROJECT_SOURCE_DIR}/testing/unit.cc)
   target_link_libraries(${name} ${unit_LIBRARIES} gtest)
+  target_include_directories(${name} PRIVATE ${GTEST_DIR}/googletest/include)
 
   foreach(input ${unit_INPUTS})
      get_filename_component(_basename ${input} NAME)

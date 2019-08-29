@@ -3,38 +3,6 @@
 # All rights reserved.
 #~----------------------------------------------------------------------------~#
 
-add_library( ${PROJECT_NAME}_utils
-  OBJECT
-  algorithm.h
-  array_ref.h
-  array_view.h
-  const_string.h
-  detail/array_view_impl.h
-  detail/template_helpers_impl.h
-  detail/tuple_for_each_impl.h
-  detail/tuple_visit_impl.h
-  detail/tuple_zip_impl.h
-  detail/type_traits_impl.h
-  detail/zip_impl.h
-  dimensioned_array.h
-  filter_iterator.h
-  fixed_vector.h
-  functional.h
-  static_for.h
-  string_utils.h
-  static_warning.h
-  tasks.h
-  template_helpers.h
-  time_utils.h
-  trivial_string.h
-  tuple_for_each.h
-  tuple_to_array.h
-  tuple_visit.h
-  tuple_zip.h
-  type_traits.h
-  zip.h
-)
-
 add_unit( ristra_array_view SOURCES test/array_view.cc )
 
 add_unit( ristra_caliper

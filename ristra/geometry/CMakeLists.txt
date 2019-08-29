@@ -3,22 +3,6 @@
 # All rights reserved
 #~----------------------------------------------------------------------------~#
 
-add_library( ${PROJECT_NAME}_geometry
-  OBJECT
-  area.h      detail/area_impl.h
-  centroid.h  detail/centroid_impl.h
-  normal.h
-  point.h
-  shapes/geometric_shapes.h
-  shapes/hexahedron.h
-  shapes/polygon.h
-  shapes/polyhedron.h
-  shapes/quadrilateral.h
-  shapes/tetrahedron.h
-  shapes/triangle.h
-  space_vector.h
-)
-
 add_unit(ristra_centroid SOURCES test/centroid.cc )
 add_unit(ristra_point SOURCES test/point.cc )
 add_unit(ristra_shapes SOURCES shapes/test/shapes.cc )

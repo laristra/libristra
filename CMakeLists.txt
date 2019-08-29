@@ -85,7 +85,8 @@ endif()
 if(RISTRA_ENABLE_LUA)
    message (STATUS "Found Lua: ${LUA_INCLUDE_DIR}")
    include_directories(${LUA_INCLUDE_DIR})
-   list(APPEND RISTRA_LIBRARIES ${LUA_LIBRARIES} ${CMAKE_DL_LIBS})
+   #list(APPEND RISTRA_LIBRARIES ${LUA_LIBRARIES} ${CMAKE_DL_LIBS})
+   target_link_libraries( ${PROJECT_NAME} PUBLIC ${LUA_LIBRARIES} ${CMAKE_DL_LIBS} )
 endif ()
 
 #------------------------------------------------------------------------------#
@@ -117,44 +118,6 @@ set(RISTRA_DBC_REQUIRE ON CACHE BOOL
   "Enable DBC Pre/Post Condition Assertions")
 
 #------------------------------------------------------------------------------#
-# Catalyst
-#------------------------------------------------------------------------------#
-
-option(RISTRA_ENABLE_CATALYST "Link the sim with Catalyst for in situ" OFF)
-
-if (RISTRA_ENABLE_CATALYST)
-  find_package(ParaView REQUIRED COMPONENTS vtkPVPythonCatalyst)
-
-  message(STATUS "Found Paraview: ${ParaView_DIR}")
-  message(STATUS "IO with Paraview Catalyst enabled" )
-
-  include("${PARAVIEW_USE_FILE}")
-
-  if (NOT PARAVIEW_USE_MPI)
-    message(SEND_ERROR "ParaView must be built with MPI enabled")
-  endif()
-
-  list( APPEND RISTRA_LIBRARIES vtkPVPythonCatalyst vtkParallelMPI )
-endif()
-
-#------------------------------------------------------------------------------#
-# MPI
-# Only used for wall-time right now.
-#------------------------------------------------------------------------------#
-
-find_package(MPI)
-
-option(RISTRA_ENABLE_MPI "Enable MPI Support" ${MPI_FOUND})
-
-if(RISTRA_ENABLE_MPI AND NOT MPI_FOUND)
-  message(FATAL_ERROR "MPI requested, but not found")
-endif()
-
-if(RISTRA_ENABLE_MPI)
-  include_directories(${MPI_C_INCLUDE_PATH})
-endif()
-
-#------------------------------------------------------------------------------#
 # Google test
 #------------------------------------------------------------------------------#
 option(RISTRA_ENABLE_UNIT_TESTS "Enable unit testing" OFF)
@@ -166,7 +129,6 @@ if (RISTRA_ENABLE_UNIT_TESTS)
   enable_testing()
   if (_gtest_contents)
     add_subdirectory( ${GTEST_DIR} )
-    include_directories(${GTEST_DIR}/googletest/include)
   else()
     find_package(GTest REQUIRED)
   endif()
@@ -176,73 +138,66 @@ endif()
 #------------------------------------------------------------------------------#
 # configure library
 #------------------------------------------------------------------------------#
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 add_subdirectory(ristra)
 
 
-## #------------------------------------------------------------------------------#
-## # Add library targets
-## #------------------------------------------------------------------------------#
-## 
-## cinch_add_library_target(Ristra ristra EXPORT_TARGET RistraTargets)
-## cinch_target_link_libraries( Ristra ${RISTRA_LIBRARIES} )
-## 
-## #------------------------------------------------------------------------------#
-## # Extract all project options so they can be exported to the ProjectConfig.cmake
-## # file.
-## #------------------------------------------------------------------------------#
-## 
-## get_cmake_property(_variableNames VARIABLES)
-## string (REGEX MATCHALL "(^|;)RISTRA_[A-Za-z0-9_]*" _matchedVars "${_variableNames}")
-## foreach (_variableName ${_matchedVars})
-##   set( RISTRA_CONFIG_CODE
-##     "${RISTRA_CONFIG_CODE}
-## set(${_variableName} \"${${_variableName}}\")"
-##   )
-## endforeach()
-## 
-## #------------------------------------------------------------------------------#
-## # Prepare variables for ProjectConfig file.
-## #------------------------------------------------------------------------------#
-## 
-## get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-##   PROPERTY INCLUDE_DIRECTORIES)
-## 
-## foreach(dir ${dirs})
-##   if(NOT ${dir} MATCHES ${CMAKE_CURRENT_SOURCE_DIR})
-##     list(APPEND RISTRA_EXTERNAL_INCLUDE_DIRS ${dir})
-##   endif()
-## endforeach()
-## 
-## set(RISTRA_LIBRARY_DIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR})
-## set(RISTRA_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
-## set(RISTRA_CMAKE_DIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/Ristra)
-## 
-## #------------------------------------------------------------------------------#
-## # Export targets and package.
-## #------------------------------------------------------------------------------#
-## 
-## export(
-##   TARGETS Ristra
-##   FILE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraTargets.cmake
-## )
-## 
-## export(PACKAGE Ristra)
-## 
-## #------------------------------------------------------------------------------#
-## # configure .cmake file (for other projects)
-## #------------------------------------------------------------------------------#
-## 
-## configure_file(${PROJECT_SOURCE_DIR}/config/RistraConfig.cmake.in
-##   ${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraConfig.cmake @ONLY)
-## 
-## install(
-##   FILES ${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraConfig.cmake
-##   DESTINATION ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/Ristra
-## )
-## 
-## install(
-##   EXPORT RistraTargets
-##   DESTINATION ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/Ristra
-##   COMPONENT dev
-## )
+#------------------------------------------------------------------------------#
+# Extract all project options so they can be exported to the ProjectConfig.cmake
+# file.
+#------------------------------------------------------------------------------#
+
+get_cmake_property(_variableNames VARIABLES)
+string (REGEX MATCHALL "(^|;)RISTRA_[A-Za-z0-9_]*" _matchedVars "${_variableNames}")
+foreach (_variableName ${_matchedVars})
+  set( RISTRA_CONFIG_CODE
+    "${RISTRA_CONFIG_CODE}
+set(${_variableName} \"${${_variableName}}\")"
+  )
+endforeach()
+
+#------------------------------------------------------------------------------#
+# Prepare variables for ProjectConfig file.
+#------------------------------------------------------------------------------#
+
+get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  PROPERTY INCLUDE_DIRECTORIES)
+
+foreach(dir ${dirs})
+  if(NOT ${dir} MATCHES ${CMAKE_CURRENT_SOURCE_DIR})
+    list(APPEND RISTRA_EXTERNAL_INCLUDE_DIRS ${dir})
+  endif()
+endforeach()
+
+#------------------------------------------------------------------------------#
+# Export targets and package.
+#------------------------------------------------------------------------------#
+
+export(
+  TARGETS ${PROJECT_NAME}
+  FILE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraTargets.cmake
+)
+
+export(PACKAGE ${PROJECT_NAME})
+
+install( TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Targets
+       	DESTINATION lib PUBLIC_HEADER DESTINATION include) 
+
+#------------------------------------------------------------------------------#
+# configure .cmake file (for other projects)
+#------------------------------------------------------------------------------#
+
+configure_file(${PROJECT_SOURCE_DIR}/${PROJECT_NAME}Config.cmake.in
+  ${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}Config.cmake @ONLY)
+
+install(
+  FILES ${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}Config.cmake
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/${PROJECT_NAME}
+)
+
+install(
+  EXPORT ${PROJECT_NAME}Targets
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/${PROJECT_NAME}
+  COMPONENT dev
+)
