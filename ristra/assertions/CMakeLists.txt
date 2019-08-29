@@ -3,6 +3,8 @@
 # All rights reserved.
 #~----------------------------------------------------------------------------~#
 
+target_sources( ${PROJECT_NAME} PRIVATE  ${CMAKE_CURRENT_SOURCE_DIR}/dbc_impl.cc )
+
 add_unit( dbc_notify
   SOURCES
     test/dbc_test_notify.cc

@@ -66,7 +66,7 @@ endif()
 if (RISTRA_ENABLE_PYTHON)
    message (STATUS "Found PythonLibs: ${PYTHON_INCLUDE_DIRS}")
    include_directories( ${PYTHON_INCLUDE_DIRS} )
-   list( APPEND RISTRA_LIBRARIES ${PYTHON_LIBRARIES} )
+   target_link_libraries( ${PROJECT_NAME} PUBLIC ${PYTHON_LIBRARIES} )
 endif ()
 
 #------------------------------------------------------------------------------#
@@ -85,7 +85,6 @@ endif()
 if(RISTRA_ENABLE_LUA)
    message (STATUS "Found Lua: ${LUA_INCLUDE_DIR}")
    include_directories(${LUA_INCLUDE_DIR})
-   #list(APPEND RISTRA_LIBRARIES ${LUA_LIBRARIES} ${CMAKE_DL_LIBS})
    target_link_libraries( ${PROJECT_NAME} PUBLIC ${LUA_LIBRARIES} ${CMAKE_DL_LIBS} )
 endif ()
 
@@ -139,6 +138,7 @@ endif()
 # configure library
 #------------------------------------------------------------------------------#
 
+add_library( ${PROJECT_NAME} )
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 add_subdirectory(ristra)
 
