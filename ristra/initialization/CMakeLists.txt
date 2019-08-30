@@ -5,7 +5,7 @@
 
 target_sources( ${PROJECT_NAME} PRIVATE  ${CMAKE_CURRENT_SOURCE_DIR}/announce.cc )
 
-add_unit(ristra_initialization
+ristra_add_unit(ristra_initialization
   SOURCES
     test/test-announce.cc
     test/init_value.cc

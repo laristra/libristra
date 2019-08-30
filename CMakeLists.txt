@@ -13,16 +13,14 @@
 cmake_minimum_required(VERSION 3.2)
 
 #------------------------------------------------------------------------------#
-# Set the project name
+# Setup the project
 #------------------------------------------------------------------------------#
 
 project(Ristra VERSION 2.0.0)
 
-include(cmake/unit.cmake)
+include(cmake/ristra_helpers.cmake)
 
-#------------------------------------------------------------------------------#
-# If a C++17 compiler is available, then set the appropriate flags
-#------------------------------------------------------------------------------#
+add_library( ${PROJECT_NAME} )
 
 # We need C++ 17
 set(CMAKE_CXX_STANDARD 17)
@@ -64,7 +62,7 @@ endif()
 
 if (RISTRA_ENABLE_PYTHON)
    message (STATUS "Found PythonLibs: ${PYTHON_INCLUDE_DIRS}")
-   include_directories( ${PYTHON_INCLUDE_DIRS} )
+	 target_include_directories(${PROJECT_NAME}  PUBLIC ${PYTHON_INCLUDE_DIRS} )
    target_link_libraries( ${PROJECT_NAME} PUBLIC ${PYTHON_LIBRARIES} )
 endif ()
 
@@ -83,7 +81,7 @@ endif()
 
 if(RISTRA_ENABLE_LUA)
    message (STATUS "Found Lua: ${LUA_INCLUDE_DIR}")
-   include_directories(${LUA_INCLUDE_DIR})
+   target_include_directories( ${PROJECT_NAME} PUBLIC ${LUA_INCLUDE_DIR} )
    target_link_libraries( ${PROJECT_NAME} PUBLIC ${LUA_LIBRARIES} ${CMAKE_DL_LIBS} )
 endif ()
 
@@ -96,7 +94,7 @@ endif ()
 
 # TO DO: how important is this version of Boost? Can change to >= 1.58?
 find_package(Boost 1.58.0 REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PUBLIC ${Boost_INCLUDE_DIRS})
 
 #------------------------------------------------------------------------------#
 # Add options for design by contract
@@ -137,69 +135,45 @@ endif()
 # configure library
 #------------------------------------------------------------------------------#
 
-add_library( ${PROJECT_NAME} )
+add_subdirectory(cmake)
+
 target_include_directories( ${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
 	$<INSTALL_INTERFACE:include> )
+
 add_subdirectory(ristra)
 
-
-#------------------------------------------------------------------------------#
-# Extract all project options so they can be exported to the ProjectConfig.cmake
-# file.
-#------------------------------------------------------------------------------#
-
-get_cmake_property(_variableNames VARIABLES)
-string (REGEX MATCHALL "(^|;)RISTRA_[A-Za-z0-9_]*" _matchedVars "${_variableNames}")
-foreach (_variableName ${_matchedVars})
-  set( RISTRA_CONFIG_CODE
-    "${RISTRA_CONFIG_CODE}
-set(${_variableName} \"${${_variableName}}\")"
-  )
-endforeach()
-
-#------------------------------------------------------------------------------#
-# Prepare variables for ProjectConfig file.
-#------------------------------------------------------------------------------#
-
-get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  PROPERTY INCLUDE_DIRECTORIES)
-
-foreach(dir ${dirs})
-  if(NOT ${dir} MATCHES ${CMAKE_CURRENT_SOURCE_DIR})
-    list(APPEND RISTRA_EXTERNAL_INCLUDE_DIRS ${dir})
-  endif()
-endforeach()
 
 #------------------------------------------------------------------------------#
 # Export targets and package.
 #------------------------------------------------------------------------------#
 
-export(
-  TARGETS ${PROJECT_NAME}
-  FILE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraTargets.cmake
+install( TARGETS ${PROJECT_NAME}
+ 	EXPORT ${PROJECT_NAME}Targets
+	LIBRARY DESTINATION lib
+	ARCHIVE DESTINATION lib
+	RUNTIME DESTINATION bin
+	INCLUDES DESTINATION include) 
+
+install( EXPORT ${PROJECT_NAME}Targets
+	FILE ${PROJECT_NAME}Targets.cmake
+	NAMESPACE Ristra::
+	DESTINATION lib/cmake/${PROJECT_NAME}
 )
 
-export(PACKAGE ${PROJECT_NAME})
-
-install( TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Targets
-       	DESTINATION lib PUBLIC_HEADER DESTINATION include) 
-
-#------------------------------------------------------------------------------#
-# configure .cmake file (for other projects)
-#------------------------------------------------------------------------------#
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file("${PROJECT_NAME}ConfigVersion.cmake"
+  VERSION ${${PROJECT_NAME}_VERSION}
+  COMPATIBILITY SameMajorVersion
+)
 
 configure_file(${PROJECT_SOURCE_DIR}/${PROJECT_NAME}Config.cmake.in
-  ${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}Config.cmake @ONLY)
+  ${PROJECT_NAME}Config.cmake @ONLY)
 
-install(
-  FILES ${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}Config.cmake
-  DESTINATION ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/${PROJECT_NAME}
+install(FILES
+	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+ 	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+	DESTINATION lib/cmake/${PROJECT_NAME}
 )
 
-install(
-  EXPORT ${PROJECT_NAME}Targets
-  DESTINATION ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/${PROJECT_NAME}
-  COMPONENT dev
-)

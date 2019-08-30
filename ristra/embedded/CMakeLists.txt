@@ -4,14 +4,14 @@
 #~----------------------------------------------------------------------------~#
 
 if (RISTRA_ENABLE_LUA)
-  add_unit( ristra_lua_utils
+  ristra_add_unit( ristra_lua_utils
     SOURCES test/lua_utils.cc
     INPUTS test/lua_test.lua test/mock_box_2d.lua
     LIBRARIES Ristra )
 endif()
 
 if (RISTRA_ENABLE_PYTHON)
-  add_unit( ristra_python_utils 
+  ristra_add_unit( ristra_python_utils 
     SOURCES test/python_utils.cc 
     INPUTS test/python_test.py
     LIBRARIES ${PYTHON_LIBRARIES} )

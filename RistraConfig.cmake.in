@@ -1,28 +1,7 @@
-#------------------------------------------------------------------------------#
-# Set the path to the Ristra headers.
-#------------------------------------------------------------------------------#
+include(CMakeFindDependencyMacro)
 
-set(RISTRA_INCLUDE_DIRS @CMAKE_INSTALL_PREFIX@/include @RISTRA_EXTERNAL_INCLUDE_DIRS@)
+find_dependency(PythonLibs QUIET)
+find_dependency(Lua 5.2 QUIET)
+find_dependency(Boost 1.58.0 REQUIRED)
 
-
-#------------------------------------------------------------------------------#
-# Ristra configuration
-#------------------------------------------------------------------------------#
-
-@RISTRA_CONFIG_CODE@
-
-#------------------------------------------------------------------------------#
-# Ristra library dependencies (contains definitions for IMPORTED targets)
-#------------------------------------------------------------------------------#
-
-if(NOT TARGET Ristra AND NOT Ristra_BINARY_DIR)
-  include(@CMAKE_INSTALL_PREFIX@/@LIBDIR@/RistraTargets.cmake)
-endif()
-
-#------------------------------------------------------------------------------#
-# Set the Ristra libraries.
-#------------------------------------------------------------------------------#
-
-# this might override what is defined in RISTRA_CONFIG_CODE but thats ok
-set(RISTRA_LIBRARIES Ristra)
-
+include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@Targets.cmake")

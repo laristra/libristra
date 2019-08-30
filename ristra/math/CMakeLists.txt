@@ -3,6 +3,6 @@
 # All rights reserved.
 #~----------------------------------------------------------------------------~#
 
-add_unit(ristra_tuple SOURCES test/tuple.cc LIBRARIES Ristra)
-add_unit(ristra_vector SOURCES test/vector.cc LIBRARIES Ristra)
-add_unit(ristra_matrix SOURCES test/matrix.cc LIBRARIES Ristra)
+ristra_add_unit(ristra_tuple SOURCES test/tuple.cc LIBRARIES Ristra)
+ristra_add_unit(ristra_vector SOURCES test/vector.cc LIBRARIES Ristra)
+ristra_add_unit(ristra_matrix SOURCES test/matrix.cc LIBRARIES Ristra)

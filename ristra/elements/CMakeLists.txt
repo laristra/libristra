@@ -5,4 +5,4 @@
 
 target_sources( ${PROJECT_NAME} PRIVATE  ${CMAKE_CURRENT_SOURCE_DIR}/elements.cc )
 
-add_unit(ristra_elements SOURCES test/examples.cc LIBRARIES Ristra)
+ristra_add_unit(ristra_elements SOURCES test/examples.cc LIBRARIES Ristra)

@@ -5,20 +5,20 @@
 
 target_sources( ${PROJECT_NAME} PRIVATE  ${CMAKE_CURRENT_SOURCE_DIR}/dbc_impl.cc )
 
-add_unit( dbc_notify
+ristra_add_unit( dbc_notify
   SOURCES
     test/dbc_test_notify.cc
   LIBRARIES Ristra
 )
 
-add_unit( dbc_no_assert
+ristra_add_unit( dbc_no_assert
   SOURCES
     test/dbc_test_no_assert.cc
   LIBRARIES Ristra
 )
 
 
-add_unit( dbc
+ristra_add_unit( dbc
   SOURCES
     test/dbc_test.cc
     test/dbc_test_no_assert.cc
