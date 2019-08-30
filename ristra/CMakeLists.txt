@@ -4,7 +4,6 @@
 
 configure_file(ristra-config.h.in ristra-config.h @ONLY)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ristra-config.h DESTINATION include/ristra)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 #------------------------------------------------------------------------------#
 # add source subdirectories

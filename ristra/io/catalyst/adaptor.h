@@ -11,7 +11,7 @@
 #pragma once
 
 // configuration include
-#include "ristra-config.h"
+#include "ristra/ristra-config.h"
 
 #ifdef RISTRA_ENABLE_CATALYST
 

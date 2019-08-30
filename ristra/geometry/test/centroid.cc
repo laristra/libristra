@@ -12,7 +12,7 @@
 
 // test includes
 #include <gtest/gtest.h>
-#include <ristra-config.h>
+#include <ristra/ristra-config.h>
 
 // user includes
 #include <ristra/geometry/centroid.h>

@@ -10,15 +10,14 @@
 # Set the minimum Cinch version
 #------------------------------------------------------------------------------#
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.2)
 
 #------------------------------------------------------------------------------#
 # Set the project name
 #------------------------------------------------------------------------------#
 
-project(Ristra)
+project(Ristra VERSION 2.0.0)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 include(cmake/unit.cmake)
 
 #------------------------------------------------------------------------------#
@@ -139,7 +138,10 @@ endif()
 #------------------------------------------------------------------------------#
 
 add_library( ${PROJECT_NAME} )
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories( ${PROJECT_NAME} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+	$<INSTALL_INTERFACE:include> )
 add_subdirectory(ristra)
 
 

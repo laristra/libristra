@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include<ristra-config.h>
+#include<ristra/ristra-config.h>
 
 #include "ristra/assertions/dbc.h"
 #include "ristra/embedded/embed_lua.h"

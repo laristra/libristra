@@ -5,7 +5,7 @@
 
 /* Test will take control of the test environment */
 #include<gtest/gtest.h>
-#include<ristra-config.h>
+#include<ristra/ristra-config.h>
 
 // #if defined RISTRA_REQUIRE_ON && defined RISTRA_DBC_NOTIFY
 

@@ -14,8 +14,8 @@
 
 #include <gtest/gtest.h>
 
-#include "ristra/geometry/point.h"
-#include "ristra/utils/dimensioned_array.h"
+#include <ristra/geometry/point.h>
+#include <ristra/utils/dimensioned_array.h>
 
 using namespace ristra;
 using namespace ristra::geometry;

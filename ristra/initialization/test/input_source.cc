@@ -3,7 +3,7 @@
 // May 08, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
-#include<ristra-config.h>
+#include<ristra/ristra-config.h>
 
 #include "ristra/initialization/input_source.h"
 #include <array>

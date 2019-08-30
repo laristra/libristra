@@ -8,7 +8,7 @@
  */
 
 #include <gtest/gtest.h>
-#include <ristra-config.h>
+#include <ristra/ristra-config.h>
 #include <set>
 
 /* Test will take control of the test environment */

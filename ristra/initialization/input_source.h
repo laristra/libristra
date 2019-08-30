@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include<ristra-config.h>
+#include<ristra/ristra-config.h>
 
 #include <array>
 #include <functional>

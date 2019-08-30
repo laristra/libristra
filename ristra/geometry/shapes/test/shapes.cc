@@ -9,7 +9,7 @@
 
 // the main test include
 #include <gtest/gtest.h>
-#include <ristra-config.h>
+#include <ristra/ristra-config.h>
 
 // user includes
 #include <ristra/geometry/shapes/hexahedron.h>

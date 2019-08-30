@@ -4,7 +4,7 @@
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
 #include<gtest/gtest.h>
-#include<ristra-config.h>
+#include<ristra/ristra-config.h>
 
 
 /* Test will take control of the test environment */
