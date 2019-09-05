@@ -20,12 +20,13 @@ project(Ristra VERSION 2.0.0)
 
 include(cmake/ristra_helpers.cmake)
 
-add_library( ${PROJECT_NAME} )
+add_library( Ristra )
 
 # We need C++ 17
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED on)
-set(CMAKE_CXX_EXTENSIONS off)
+set_property(TARGET Ristra PROPERTY CXX_STANDARD 17)
+set_property(TARGET Ristra PROPERTY CXX_STANDARD 17)
+set_property(TARGET Ristra PROPERTY CXX_STANDARD_REQUIRED on)
+set_property(TARGET Ristra PROPERTY CXX_EXTENSIONS off)
 
 #------------------------------------------------------------------------------#
 # Enable exceptions
@@ -62,8 +63,8 @@ endif()
 
 if (RISTRA_ENABLE_PYTHON)
    message (STATUS "Found PythonLibs: ${PYTHON_INCLUDE_DIRS}")
-	 target_include_directories(${PROJECT_NAME}  PUBLIC ${PYTHON_INCLUDE_DIRS} )
-   target_link_libraries( ${PROJECT_NAME} PUBLIC ${PYTHON_LIBRARIES} )
+   target_include_directories(Ristra  PUBLIC ${PYTHON_INCLUDE_DIRS} )
+   target_link_libraries( Ristra PUBLIC ${PYTHON_LIBRARIES} )
 endif ()
 
 #------------------------------------------------------------------------------#
@@ -81,8 +82,8 @@ endif()
 
 if(RISTRA_ENABLE_LUA)
    message (STATUS "Found Lua: ${LUA_INCLUDE_DIR}")
-   target_include_directories( ${PROJECT_NAME} PUBLIC ${LUA_INCLUDE_DIR} )
-   target_link_libraries( ${PROJECT_NAME} PUBLIC ${LUA_LIBRARIES} ${CMAKE_DL_LIBS} )
+   target_include_directories( Ristra PUBLIC ${LUA_INCLUDE_DIR} )
+   target_link_libraries( Ristra PUBLIC ${LUA_LIBRARIES} ${CMAKE_DL_LIBS} )
 endif ()
 
 #------------------------------------------------------------------------------#
@@ -94,7 +95,7 @@ endif ()
 
 # TO DO: how important is this version of Boost? Can change to >= 1.58?
 find_package(Boost 1.58.0 REQUIRED)
-target_include_directories(${PROJECT_NAME} PUBLIC ${Boost_INCLUDE_DIRS})
+target_include_directories(Ristra PUBLIC ${Boost_INCLUDE_DIRS})
 
 #------------------------------------------------------------------------------#
 # Add options for design by contract
@@ -137,7 +138,7 @@ endif()
 
 add_subdirectory(cmake)
 
-target_include_directories( ${PROJECT_NAME} PUBLIC
+target_include_directories( Ristra PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
 	$<INSTALL_INTERFACE:include> )
@@ -149,7 +150,7 @@ add_subdirectory(ristra)
 # Export targets and package.
 #------------------------------------------------------------------------------#
 
-install( TARGETS ${PROJECT_NAME}
+install( TARGETS Ristra
  	EXPORT ${PROJECT_NAME}Targets
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib

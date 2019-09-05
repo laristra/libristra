@@ -1,2 +1,2 @@
-target_sources( ${PROJECT_NAME} PRIVATE  ${CMAKE_CURRENT_SOURCE_DIR}/vtk.cc )
+target_sources( Ristra PRIVATE  ${CMAKE_CURRENT_SOURCE_DIR}/vtk.cc )
 

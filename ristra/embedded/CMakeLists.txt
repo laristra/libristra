@@ -14,5 +14,5 @@ if (RISTRA_ENABLE_PYTHON)
   ristra_add_unit( ristra_python_utils 
     SOURCES test/python_utils.cc 
     INPUTS test/python_test.py
-    LIBRARIES ${PYTHON_LIBRARIES} )
+    LIBRARIES Ristra )
 endif()
