@@ -10,7 +10,7 @@
 # Set the minimum Cinch version
 #------------------------------------------------------------------------------#
 
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.5.2)
 
 #------------------------------------------------------------------------------#
 # Setup the project
@@ -93,9 +93,8 @@ endif ()
 # library dependencies, add COMPONENTS and specify the ones that you need.
 #------------------------------------------------------------------------------#
 
-# TO DO: how important is this version of Boost? Can change to >= 1.58?
 find_package(Boost 1.58.0 REQUIRED)
-target_include_directories(Ristra PUBLIC ${Boost_INCLUDE_DIRS})
+target_link_libraries(Ristra PUBLIC Boost::boost)
 
 #------------------------------------------------------------------------------#
 # Add options for design by contract
