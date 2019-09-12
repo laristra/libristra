@@ -295,6 +295,15 @@ inline std::size_t lua_push(lua_State * s, int i)
   return 1;
 }
 
+/// \brief Push a size_t onto the stack.
+/// \param [in] s  The lua state to push a value to.
+/// \param [in] i  The size_t to push.
+inline std::size_t lua_push(lua_State * s, size_t i)
+{
+  lua_pushinteger( s, i );
+  return 1;
+}
+
 /// \brief Push a long long onto the stack.
 /// \param [in] s  The lua state to push a value to.
 /// \param [in] i  The long long to push.
@@ -755,6 +764,12 @@ public:
   template< typename T >
   T as() const {
     return static_cast<T>(*this);
+  }
+  
+  template< typename T >
+  T as(const T & def ) const {
+    if (empty()) return def;
+    else return static_cast<T>(*this);
   }
   
   /// \brief Explicit type conversion operators for tuples.
