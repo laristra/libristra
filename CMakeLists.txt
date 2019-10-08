@@ -10,7 +10,7 @@
 # Set the minimum Cinch version
 #------------------------------------------------------------------------------#
 
-cmake_minimum_required(VERSION 3.5.2)
+cmake_minimum_required(VERSION 3.12)
 
 #------------------------------------------------------------------------------#
 # Setup the project
