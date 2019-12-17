@@ -16,12 +16,16 @@ class Libristra(CMakePackage):
 
     variant('build_type', default='Release', values=('Debug', 'Release'),
             description='The build type to build', multi=False)
+    variant('paraview', default=False,
+            description='Enable ParaView')
 
     depends_on('cmake@3.12:',  type='build')
     # Requires cinch > 1.0 due to cinchlog installation issue
     #depends_on('cinch@1.01:', type='build')
+    depends_on('mpi')
     depends_on('boost@1.70.0: cxxstd=14 +program_options')
     depends_on('lua@5.3.5')
+    depends_on('paraview', when='+paraview')
 
     def cmake_args(self):
         spec = self.spec
