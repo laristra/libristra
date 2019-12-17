@@ -101,8 +101,9 @@ endif ()
 #------------------------------------------------------------------------------#
 
 # TO DO: how important is this version of Boost? Can change to >= 1.58?
-find_package(Boost 1.58.0 REQUIRED)
+find_package(Boost 1.59.0 REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
+list(APPEND RISTRA_LIBRARIES Boost::boost)
 
 #------------------------------------------------------------------------------#
 # Add options for design by contract
