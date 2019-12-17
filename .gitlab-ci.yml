@@ -179,7 +179,7 @@ before_script:
 
 .build: &build_def
   <<: *job_def
-  <<: *artifacts_def
+  #<<: *artifacts_def
   stage: Build_n_Test
   script: &build_script |-
     echo 'Start building'
@@ -214,7 +214,7 @@ before_script:
     echo 'Start testing'
     cd ${CI_PROJECT_DIR}/build/
     make test ARGS="CTEST_OUTPUT_ON_FAILURE=1" || make test ARGS="-V"
-    gcovr .
+    #gcovr .
 
 ############
 # Env Jobs #
