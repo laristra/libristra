@@ -54,7 +54,6 @@ before_script:
     spack repo add ${CI_PROJECT_DIR}/spack-repo;
     spack repo list;
     spack build-env --dump ${LIBRISTRA_ENV_SOURCE_FILE} "${LIBRISTRA_SPACK_SPEC} ^${LIBRISTRA_MPI_PACKAGE}" || /bin/true;
-    fi;
     ) 200>${DEPS_LOCK}
   - source ${LIBRISTRA_ENV_SOURCE_FILE} || /bin/true
   - |
