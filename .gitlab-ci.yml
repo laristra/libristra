@@ -21,13 +21,10 @@ variables:
   CCACHE_DIR: "${CI_PROJECT_DIR}/ccache"
   CCACHE_UMASK: 000
   DISTRO: "centOS"
-  RUNTIME: "legion"
   BUILD_TYPE: "Debug"
   CC: "gcc"
   CXX: "g++"
-  CXXFLAGS: "-Werror -Wno-return-type -Wno-deprecated-declarations"
-  IGNORE_NOCI: "FALSE"
-  GASNET_BACKTRACE: 1
+  CXXFLAGS: ""
   SPACK_ROOT: /home/gitlab-runner/ci-spack/spack
   DEPS_LOCK: /home/gitlab-runner/ci-spack/deps.pid
   #lock_fd: 314
@@ -198,7 +195,7 @@ before_script:
         -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
         -DENABLE_UNIT_TESTS=ON \
         ..
-    make -k VERBOSE=1 -j2 -l40
+    make -k -j2 -l40 || make VERBOSE=1
     make install DESTDIR=${CI_PROJECT_DIR}/build/install
     make install
     ccache -s
@@ -216,7 +213,7 @@ before_script:
   script: &test_script |-
     echo 'Start testing'
     cd ${CI_PROJECT_DIR}/build/
-    make test || make test ARGS="-V"
+    make test ARGS="CTEST_OUTPUT_ON_FAILURE=1" || make test ARGS="-V"
     gcovr .
 
 ############
