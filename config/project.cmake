@@ -60,18 +60,16 @@ endif()
 # Support for embedded interpreters
 #------------------------------------------------------------------------------#
 
-find_package(PythonLibs QUIET)
+option(RISTRA_ENABLE_PYTHON "Enable Python Support" Python_FOUND)
 
-option(RISTRA_ENABLE_PYTHON "Enable Python Support" ${PYTHONLIBS_FOUND})
-
-if(RISTRA_ENABLE_PYTHON AND NOT PYTHONLIBS_FOUND)
+if(RISTRA_ENABLE_PYTHON AND NOT Python_FOUND)
   message(FATAL_ERROR "Python requested, but not found")
 endif()
 
 if (RISTRA_ENABLE_PYTHON)
-   message (STATUS "Found PythonLibs: ${PYTHON_INCLUDE_DIRS}")
-   include_directories( ${PYTHON_INCLUDE_DIRS} )
-   list( APPEND RISTRA_LIBRARIES ${PYTHON_LIBRARIES} )
+   message (STATUS "Found PythonLibs: ${Python_INCLUDE_DIRS}")
+   include_directories( ${Python_INCLUDE_DIRS} )
+   list( APPEND RISTRA_LIBRARIES Python::Python )
 endif ()
 
 #------------------------------------------------------------------------------#

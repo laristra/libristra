@@ -21,13 +21,10 @@ variables:
   CCACHE_DIR: "${CI_PROJECT_DIR}/ccache"
   CCACHE_UMASK: 000
   DISTRO: "centOS"
-  RUNTIME: "legion"
   BUILD_TYPE: "Debug"
   CC: "gcc"
   CXX: "g++"
-  CXXFLAGS: "-Werror -Wno-return-type -Wno-deprecated-declarations"
-  IGNORE_NOCI: "FALSE"
-  GASNET_BACKTRACE: 1
+  CXXFLAGS: ""
   SPACK_ROOT: /home/gitlab-runner/ci-spack/spack
   DEPS_LOCK: /home/gitlab-runner/ci-spack/deps.pid
   #lock_fd: 314
@@ -36,6 +33,7 @@ variables:
   LIBRISTRA_INTEL_VERSION: "19.0.2"
   LIBRISTRA_CLANG_VERSION: "8.0.1"
   LIBRISTRA_GCC_VERSION: "7.3.0"
+  LIBRISTRA_PYTHON_VERSION: "3.5.1"
   LIBRISTRA_ENV_SOURCE_FILE: "${CI_PROJECT_DIR}/libristra-deps-${LIBRISTRA_MPI_PACKAGE}-${CI_COMMIT_REF_SLUG}-${CI_CONCURRENT_ID}.sh"
   LIBRISTRA_SPACK_SPEC: "libristra%gcc@${LIBRISTRA_GCC_VERSION}"
 before_script:
@@ -43,6 +41,7 @@ before_script:
   - '[ "$(git rev-parse origin/$CI_COMMIT_REF_NAME)" != "$CI_COMMIT_SHA" ] && curl --header "PRIVATE-TOKEN: $MY_CI_API_TOKEN" -X POST https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/pipelines/$CI_PIPELINE_ID/cancel'
   #- find . -name "`basename cinch`" | grep "cinch\$" | xargs rm -fr
   - module load gcc/${LIBRISTRA_GCC_VERSION}
+  - module load python/${LIBRISTRA_PYTHON_VERSION}
   - echo ${LIBRISTRA_ENV_SOURCE_FILE}
   - echo ${LIBRISTRA_SPACK_SPEC}
   - rm ${LIBRISTRA_ENV_SOURCE_FILE} || /bin/true
@@ -54,7 +53,6 @@ before_script:
     spack repo add ${CI_PROJECT_DIR}/spack-repo;
     spack repo list;
     spack build-env --dump ${LIBRISTRA_ENV_SOURCE_FILE} "${LIBRISTRA_SPACK_SPEC} ^${LIBRISTRA_MPI_PACKAGE}" || /bin/true;
-    fi;
     ) 200>${DEPS_LOCK}
   - source ${LIBRISTRA_ENV_SOURCE_FILE} || /bin/true
   - |
@@ -183,7 +181,7 @@ before_script:
 
 .build: &build_def
   <<: *job_def
-  <<: *artifacts_def
+  #<<: *artifacts_def
   stage: Build_n_Test
   script: &build_script |-
     echo 'Start building'
@@ -199,7 +197,7 @@ before_script:
         -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
         -DENABLE_UNIT_TESTS=ON \
         ..
-    make -k VERBOSE=1 -j2 -l40
+    make -k -j2 -l40 || make VERBOSE=1
     make install DESTDIR=${CI_PROJECT_DIR}/build/install
     make install
     ccache -s
@@ -217,8 +215,8 @@ before_script:
   script: &test_script |-
     echo 'Start testing'
     cd ${CI_PROJECT_DIR}/build/
-    make test || make test ARGS="-V"
-    gcovr .
+    make test ARGS="CTEST_OUTPUT_ON_FAILURE=1" || make test ARGS="-V"
+    #gcovr .
 
 ############
 # Env Jobs #
@@ -267,7 +265,7 @@ build:centOS_mpi_intel:
   extends: build:centOS_mpi
   variables:
     <<: *compiler_intel
-  allow_failure: true
+  #allow_failure: true
 
 build:centOS_mpi_intel_release:
   extends: build:centOS_mpi_intel
@@ -305,7 +303,7 @@ build:centOS_mpich_mpi_intel:
   extends: build:centOS_mpich_mpi
   variables:
     <<: *compiler_intel
-  allow_failure: true
+  #allow_failure: true
 
 build:centOS_mpich_mpi_intel_release:
   extends: build:centOS_mpich_mpi_intel
