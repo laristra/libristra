@@ -18,7 +18,7 @@ cinch_add_unit( ristra_lua_utils
 cinch_add_unit( ristra_python_utils 
   SOURCES test/python_utils.cc 
   INPUTS test/python_test.py
-  LIBRARIES ${PYTHON_LIBRARIES} )
+  LIBRARIES Python::Python )
 
 #----------------------------------------------------------------------------~-#
 # Formatting options for vim.
