@@ -246,15 +246,10 @@ env_mpi:
     <<: *compiler_gcc
 
 env_update:
-  extends: .env_template
-  <<: *shell_def
+  extends: env_mpi
   only:
     refs:
       - master
-  variables:
-    <<: *runtime_mpi
-    <<: *buildtype_debug
-    <<: *compiler_gcc
   script:
     - *update_spackage
 
