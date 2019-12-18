@@ -25,6 +25,7 @@ class Libristra(CMakePackage):
     depends_on('mpi')
     depends_on('boost@1.70.0: cxxstd=14 +program_options')
     depends_on('lua@5.3.5')
+    # Might want to move paraview out of libristra
     depends_on('paraview', when='+paraview')
 
     def cmake_args(self):
