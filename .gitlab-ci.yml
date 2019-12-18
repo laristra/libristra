@@ -150,7 +150,7 @@ before_script:
 .update_spackage: &update_spackage |-
     echo 'Updating spackages...'
     cd ${CI_PROJECT_DIR}
-    git diff spack-repo/packages > spackage.patch
+    git diff spack-repo/packages | tee spackage.patch
     if [[ -s spackage.patch ]];
     then
       git clone git@gitlab.lanl.gov:laristra/ristra_spackages.git;
