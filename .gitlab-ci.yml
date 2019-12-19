@@ -156,7 +156,7 @@ before_script:
     if [[ -s spackage.patch ]];
     then
       git clone git@gitlab.lanl.gov:laristra/ristra_spackages.git;
-      cd ristra_spackages/repo/packages;
+      cd ristra_spackages;
       git apply ${CI_PROJECT_DIR}/spackage.patch;
       git add -u;
       git commit -m "Gitlab CI Automatic Spackage Update";
