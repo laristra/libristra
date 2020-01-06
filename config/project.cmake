@@ -60,6 +60,10 @@ endif()
 # Support for embedded interpreters
 #------------------------------------------------------------------------------#
 
+if(NOT TARGET Python::Python)
+  find_package(Python COMPONENTS Development)
+endif()
+
 option(RISTRA_ENABLE_PYTHON "Enable Python Support" Python_FOUND)
 
 if(RISTRA_ENABLE_PYTHON AND NOT Python_FOUND)
