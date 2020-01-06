@@ -253,6 +253,7 @@ env_update:
       - master
   script:
     - *update_spackage
+  allow_failure: true
 
 ##############
 # Build Jobs #
