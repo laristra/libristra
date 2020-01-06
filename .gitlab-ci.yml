@@ -5,6 +5,7 @@
 stages:
   - Env
   - Build_n_Test
+  - Deploy
 
 variables:
   #CI_DEBUG_TRACE: "true"
@@ -184,7 +185,7 @@ before_script:
         git -c ${SPACK_ROOT} pull https://github.com/spack/spack develop;
       fi;
       source ${SPACK_ROOT}/share/spack/setup-env.sh;
-      spack repo rm laristra_libristra || /bin/true ;
+      spack repo rm ${LIBRISTRA_SPACK_SCOPE} || /bin/true ;
       spack repo add ${CI_PROJECT_DIR}/spack-repo;
       spack repo list;
       spack install -v --only dependencies ${LIBRISTRA_SPACK_SPEC} ^openmpi%gcc@${LIBRISTRA_GCC_VERSION};
