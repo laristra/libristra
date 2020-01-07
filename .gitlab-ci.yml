@@ -161,7 +161,7 @@ before_script:
       cd ristra_spackages;
       git apply ${CI_PROJECT_DIR}/spackage.patch;
       git add -u;
-      git commit -m "Gitlab CI Automatic Spackage Update";
+      git commit -m "Gitlab CI Automatic Spackage Update - Libristra";
       git push;
     fi;
 
