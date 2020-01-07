@@ -153,7 +153,7 @@ before_script:
     echo 'Updating spackages...'
     cd ${CI_PROJECT_DIR}
     git clone git@gitlab.lanl.gov:laristra/ristra_spackages.git
-    $(git diff spack-repo/packages ristra_spackages/spack-repo/packages) && exit 0
+    if [[ -z $(git diff spack-repo/packages ristra_spackages/spack-repo/packages) ]]; then exit 0; fi
     export last_commit=$(git log -n 1 --pretty=format:%H -- spack-repo/packages)
     git diff ${last_commit}^ HEAD spack-repo/packages | tee spackage.patch
     if [[ -s spackage.patch ]];
