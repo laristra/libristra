@@ -153,7 +153,7 @@ before_script:
     echo 'Updating spackages...'
     cd ${CI_PROJECT_DIR}
     git clone git@gitlab.lanl.gov:laristra/ristra_spackages.git
-    echo $(diff spack-repo/packages/libristra/ ristra_spackages/spack-repo/packages/libristra/ | tee thediff)
+    echo $(diff -r ${CI_PROJECT_DIR}/spack-repo/packages/ ristra_spackages/spack-repo/packages/ | grep "${CI_PROJECT_DIR}/spack-repo" | tee thediff)
     export last_commit=$(git log -n 1 --pretty=format:%H -- spack-repo/packages)
     git diff ${last_commit}^ HEAD spack-repo/packages | tee spackage.patch
     if [[ -s spackage.patch && -s thediff ]];
