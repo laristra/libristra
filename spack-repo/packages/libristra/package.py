@@ -13,6 +13,7 @@ class Libristra(CMakePackage):
     git      = 'https://github.com/laristra/libristra.git'
 
     version('master', branch='master', submodules=False, preferred=True)
+    version('1.0.0', commit='33235fe0334ca7f1f99b386a90932d9f8e1e71de')
 
     variant('build_type', default='Release', values=('Debug', 'Release'),
             description='The build type to build', multi=False)
