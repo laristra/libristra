@@ -187,12 +187,13 @@ inline auto zero_padded(
 {
 
   auto number = n;
-  unsigned int digits = 1;
+  unsigned int digits = 0;
   while (number) {
     number /= 10;
     digits++;
   }
 
+  digits = std::max( digits, 1u );
   digits = std::max( padding, digits );
 
   std::stringstream ss;
