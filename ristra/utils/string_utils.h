@@ -178,26 +178,29 @@ std::vector<std::string> split(
 }
 
 
-///////////////////////////////////////////////////////////////////////////////
-//! \brief Tack on an iteration number to a string
-///////////////////////////////////////////////////////////////////////////////
-inline auto zero_padded( 
-  unsigned int n, unsigned int padding = 6 
-)
+inline auto num_digits( unsigned int n )
 {
-
-  auto number = n;
-  unsigned int digits = 0;
+  
+  auto number = n / 10;
+  unsigned int digits = 1;
   while (number) {
     number /= 10;
     digits++;
   }
 
-  digits = std::max( digits, 1u );
-  digits = std::max( padding, digits );
+  return digits;
 
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//! \brief Tack on an iteration number to a string
+///////////////////////////////////////////////////////////////////////////////
+inline auto zero_padded( 
+  unsigned int n, unsigned int padding = 6
+)
+{
   std::stringstream ss;
-  ss << std::setw( digits ) << std::setfill( '0' ) << n;
+  ss << std::setw( padding ) << std::setfill( '0' ) << n;
   return ss.str();
 }
 
