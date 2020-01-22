@@ -45,7 +45,7 @@ before_script:
   - module load gcc/${LIBRISTRA_GCC_VERSION}
   - module load python/${LIBRISTRA_PYTHON_VERSION}
   - echo ${LIBRISTRA_ENV_SOURCE_FILE}
-  - export LIBRISTRA_SPACK_FULL_SPEC=${LIBRISTRA_SPACK_SPEC} ^${LIBRISTRA_MPI_PACKAGE}
+  - export LIBRISTRA_SPACK_FULL_SPEC="${LIBRISTRA_SPACK_SPEC} ^${LIBRISTRA_MPI_PACKAGE}"
   - rm ${LIBRISTRA_ENV_SOURCE_FILE} || /bin/true
   - |
     ( flock -e 200
