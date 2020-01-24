@@ -10,7 +10,9 @@
 
 set(initialization_HEADERS
   announce.h
+  arguments.h
   detail/inputs_impl.h
+  input.h
   init_value.h
   input_engine.h
   input_source.h
