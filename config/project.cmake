@@ -149,7 +149,7 @@ endif()
 # Legion / MPI
 #------------------------------------------------------------------------------#
 
-find_package(MPI)
+find_package(MPI COMPONENTS C CXX REQUIRED)
 
 option(RISTRA_ENABLE_MPI "Enable MPI Support" ${MPI_FOUND})
 
@@ -158,7 +158,7 @@ if(RISTRA_ENABLE_MPI AND NOT MPI_FOUND)
 endif()
 
 if(RISTRA_ENABLE_MPI)
-  include_directories(${MPI_C_INCLUDE_PATH})
+  list( APPEND RISTRA_LIBRARIES  MPI::MPI_CXX MPI::MPI_C)
 endif()
 
 #------------------------------------------------------------------------------#
