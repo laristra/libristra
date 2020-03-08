@@ -123,7 +123,6 @@ before_script:
   only:
     - merge_requests
     - master
-    - refactor
 
 .cache_template: &cache_def
   cache:
