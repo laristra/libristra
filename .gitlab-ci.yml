@@ -189,10 +189,12 @@ before_script:
       spack repo rm ${LIBRISTRA_SPACK_SCOPE} || /bin/true ;
       spack repo add ${CI_PROJECT_DIR}/spack-repo;
       spack repo list;
-      spack install --show-log-on-error --only dependencies ${LIBRISTRA_SPACK_SPEC} ^openmpi%gcc@${LIBRISTRA_GCC_VERSION};
-      spack install --show-log-on-error --only dependencies ${LIBRISTRA_SPACK_SPEC} ^mpich%gcc@${LIBRISTRA_GCC_VERSION};
+      spack clean --all;
+      spack install --show-log-on-error --only dependencies ${LIBRISTRA_SPACK_SPEC} ^openmpi%gcc@${LIBRISTRA_GCC_VERSION} | tee -a spack_tmp.out;
+      spack install --show-log-on-error --only dependencies ${LIBRISTRA_SPACK_SPEC} ^mpich%gcc@${LIBRISTRA_GCC_VERSION} | tee -a spack_tmp.out;
       spack repo rm ${LIBRISTRA_SPACK_SCOPE};
       ) 200>${DEPS_LOCK}
+    - $([ "$(grep -c "Errno " spack_tmp.out)" = "0" ] && exit 0 || exit 1)
 
 ###############
 # Build Stage #
