@@ -164,7 +164,7 @@ before_script:
   cd ${CI_PROJECT_DIR}/ristra_spackages
   git add spack-repo/packages/*
   git commit -m "Gitlab CI Automatic Spackage Update - Libristra" || /bin/true
-  git push
+  git push -u origin master
 
 #############
 # Env Stage #
