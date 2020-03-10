@@ -31,9 +31,11 @@ variables:
   #lock_fd: 314
   LIBRISTRA_CI_JOB_NAME_NOSTAGE: ${CI_JOB_NAME#*:}
   LIBRISTRA_MPI_PACKAGE: ""
+  LIBRISTRA_MPICH_VERSION: "3.2.1"
+  LIBRISTRA_OPENMPI_VERSION: "3.1.3"
   LIBRISTRA_INTEL_VERSION: "19.0.2"
   LIBRISTRA_CLANG_VERSION: "8.0.1"
-  LIBRISTRA_GCC_VERSION: "7.3.0"
+  LIBRISTRA_GCC_VERSION: "8.3.0"
   LIBRISTRA_PYTHON_VERSION: "3.5.1"
   LIBRISTRA_ENV_SOURCE_FILE: "${CI_PROJECT_DIR}/build/libristra-deps-${LIBRISTRA_MPI_PACKAGE}-${CI_COMMIT_REF_SLUG}-${CI_CONCURRENT_ID}.sh"
   LIBRISTRA_SPACK_SCOPE: "lanl_ristra_libristra"
@@ -47,12 +49,11 @@ before_script:
   - module load gcc/${LIBRISTRA_GCC_VERSION}
   - module load python/${LIBRISTRA_PYTHON_VERSION}
   - echo ${LIBRISTRA_ENV_SOURCE_FILE}
-  - export LIBRISTRA_SPACK_FULL_SPEC="${LIBRISTRA_SPACK_SPEC} ^${LIBRISTRA_MPI_PACKAGE}"
+  - export LIBRISTRA_SPACK_FULL_SPEC="${LIBRISTRA_SPACK_SPEC} ^${LIBRISTRA_MPI_PACKAGE}@$([ ${LIBRISTRA_MPI_PACKAGE} == 'openmpi' ] && echo ${LIBRISTRA_OPENMPI_VERSION} || echo ${LIBRISTRA_MPICH_VERSION})%gcc@${LIBRISTRA_GCC_VERSION}"
   - rm ${LIBRISTRA_ENV_SOURCE_FILE} || /bin/true
   - |
     ( flock -e 200
     source ${SPACK_ROOT}/share/spack/setup-env.sh;
-    # spack load -r libristra-deps%gcc@${LIBRISTRA_GCC_COMPILER#*/} ~graphviz ^${LIBRISTRA_MPI_PACKAGE} || /bin/true;
     spack repo rm ${LIBRISTRA_SPACK_SCOPE} || /bin/true ;
     spack repo add ${CI_PROJECT_DIR}/spack-repo;
     spack repo list;
@@ -190,8 +191,8 @@ before_script:
       spack repo add ${CI_PROJECT_DIR}/spack-repo;
       spack repo list;
       spack clean --all;
-      spack install --show-log-on-error --only dependencies ${LIBRISTRA_SPACK_SPEC} ^openmpi%gcc@${LIBRISTRA_GCC_VERSION} | tee -a spack_tmp.out;
-      spack install --show-log-on-error --only dependencies ${LIBRISTRA_SPACK_SPEC} ^mpich%gcc@${LIBRISTRA_GCC_VERSION} | tee -a spack_tmp.out;
+      spack install --show-log-on-error --only dependencies ${LIBRISTRA_SPACK_SPEC} ^openmpi@${LIBRISTRA_OPENMPI_VERSION}%gcc@${LIBRISTRA_GCC_VERSION} | tee -a spack_tmp.out;
+      spack install --show-log-on-error --only dependencies ${LIBRISTRA_SPACK_SPEC} ^mpich@${LIBRISTRA_MPICH_VERSION}%gcc@${LIBRISTRA_GCC_VERSION} | tee -a spack_tmp.out;
       spack repo rm ${LIBRISTRA_SPACK_SCOPE};
       ) 200>${DEPS_LOCK}
     - $([ "$(grep -c "Errno " spack_tmp.out)" = "0" ] && exit 0 || exit 1)
