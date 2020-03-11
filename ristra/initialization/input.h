@@ -100,9 +100,22 @@ public:
   //===========================================================================
   auto operator[](const std::string & key) const &
   {
+    return this->state_[key];
+  }
+
+  //===========================================================================
+  /// \brief Try to access an object in the global table, if present return
+  ///        the oobject that points to that value
+  /// \param [in] key  The key to access.
+  /// \return A lua_result_t object which points to the value of the table
+  ///         lookup.
+  //===========================================================================    
+  auto try_access(const std::string & key) const &
+  {
     auto result = lua_try_access(this->state_, key);
     return result;
   }
+
   
   //===========================================================================
   //! register an argument group
