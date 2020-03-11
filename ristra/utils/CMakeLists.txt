@@ -46,7 +46,7 @@ cinch_add_unit( ristra_fixed_vector SOURCES test/fixed_vector.cc )
 
 cinch_add_unit( ristra_static_for SOURCES test/static_for.cc )
 cinch_add_unit( ristra_tasks SOURCES test/tasks.cc )
-#cinch_add_unit( ristra_tuple_for_each SOURCES test/tuple_for_each.cc )
+cinch_add_unit( ristra_tuple_for_each SOURCES test/tuple_for_each.cc )
 cinch_add_unit( ristra_tuple_visit SOURCES test/tuple_visit.cc )
 cinch_add_unit( ristra_tuple_zip SOURCES test/tuple_zip.cc )
 cinch_add_unit( ristra_type_traits_helpers SOURCES test/type_traits_helpers.cc )
