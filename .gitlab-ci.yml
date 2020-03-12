@@ -296,7 +296,7 @@ build:centOS_mpi_intel:
   extends: .build:centOS_mpi
   variables:
     <<: *compiler_intel
-  #allow_failure: true
+  allow_failure: true
 
 .build:centOS_mpi_intel_release:
   extends: build:centOS_mpi_intel
@@ -334,7 +334,7 @@ build:centOS_mpich_mpi_clang_release:
   extends: build:centOS_mpich_mpi
   variables:
     <<: *compiler_intel
-  #allow_failure: true
+  allow_failure: true
 
 build:centOS_mpich_mpi_intel_release:
   extends: .build:centOS_mpich_mpi_intel
