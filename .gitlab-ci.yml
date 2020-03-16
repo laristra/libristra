@@ -31,27 +31,29 @@ variables:
   #lock_fd: 314
   LIBRISTRA_CI_JOB_NAME_NOSTAGE: ${CI_JOB_NAME#*:}
   LIBRISTRA_MPI_PACKAGE: ""
+  LIBRISTRA_MPICH_VERSION: "3.2.1"
+  LIBRISTRA_OPENMPI_VERSION: "3.1.3"
   LIBRISTRA_INTEL_VERSION: "19.0.2"
   LIBRISTRA_CLANG_VERSION: "8.0.1"
-  LIBRISTRA_GCC_VERSION: "7.3.0"
+  LIBRISTRA_GCC_VERSION: "8.3.0"
   LIBRISTRA_PYTHON_VERSION: "3.5.1"
   LIBRISTRA_ENV_SOURCE_FILE: "${CI_PROJECT_DIR}/build/libristra-deps-${LIBRISTRA_MPI_PACKAGE}-${CI_COMMIT_REF_SLUG}-${CI_CONCURRENT_ID}.sh"
   LIBRISTRA_SPACK_SCOPE: "lanl_ristra_libristra"
-  LIBRISTRA_SPACK_SPEC: "libristra%gcc@${LIBRISTRA_GCC_VERSION}"
+  LIBRISTRA_SPACK_SPEC: "libristra%gcc@${LIBRISTRA_GCC_VERSION} ^cmake@3.12.4"
 before_script:
   - echo ${CI_JOB_NAME_NOSTAGE%.*}-${CI_COMMIT_REF_SLUG}
   - '[ "$(git rev-parse origin/$CI_COMMIT_REF_NAME)" != "$CI_COMMIT_SHA" ] && curl --header "PRIVATE-TOKEN: $MY_CI_API_TOKEN" -X POST https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/pipelines/$CI_PIPELINE_ID/cancel'
   #- find . -name "`basename cinch`" | grep "cinch\$" | xargs rm -fr
+  - export HOME=${CI_PROJECT_DIR}
   - mkdir -p ${CI_PROJECT_DIR}/build
   - module load gcc/${LIBRISTRA_GCC_VERSION}
   - module load python/${LIBRISTRA_PYTHON_VERSION}
   - echo ${LIBRISTRA_ENV_SOURCE_FILE}
-  - export LIBRISTRA_SPACK_FULL_SPEC="${LIBRISTRA_SPACK_SPEC} ^${LIBRISTRA_MPI_PACKAGE}"
+  - export LIBRISTRA_SPACK_FULL_SPEC="${LIBRISTRA_SPACK_SPEC} ^${LIBRISTRA_MPI_PACKAGE}@$([ ${LIBRISTRA_MPI_PACKAGE} == 'openmpi' ] && echo ${LIBRISTRA_OPENMPI_VERSION} || echo ${LIBRISTRA_MPICH_VERSION})%gcc@${LIBRISTRA_GCC_VERSION}"
   - rm ${LIBRISTRA_ENV_SOURCE_FILE} || /bin/true
   - |
     ( flock -e 200
     source ${SPACK_ROOT}/share/spack/setup-env.sh;
-    # spack load -r libristra-deps%gcc@${LIBRISTRA_GCC_COMPILER#*/} ~graphviz ^${LIBRISTRA_MPI_PACKAGE} || /bin/true;
     spack repo rm ${LIBRISTRA_SPACK_SCOPE} || /bin/true ;
     spack repo add ${CI_PROJECT_DIR}/spack-repo;
     spack repo list;
@@ -122,7 +124,6 @@ before_script:
   only:
     - merge_requests
     - master
-    - refactor
 
 .cache_template: &cache_def
   cache:
@@ -138,6 +139,7 @@ before_script:
     paths:
       - ${CI_PROJECT_DIR}/build #/builds/next-generation-codes/laristra/libristra/build
     when: always
+    expire_in: 2 weeks
   dependencies: []
 
 .shell_template: &shell_def
@@ -156,13 +158,13 @@ before_script:
   echo 'Updating spackages...'
   cd ${CI_PROJECT_DIR}
   git clone git@gitlab.lanl.gov:laristra/ristra_spackages.git
-  for f in $(find ./spack-repo/packages/ -type f); do diff -urN ${CI_PROJECT_DIR}/ristra_spackages/$f $f; done | tee $f.patch
-  for f in $(find ./spack-repo/packages/ -type f -name "*.patch"); do patch -i $f ${CI_PROJECT_DIR}/ristra_spackages/$f; done
+  for f in $(find ./spack-repo/packages/ -type f); do diff -urN ${CI_PROJECT_DIR}/ristra_spackages/$f $f | tee $f.patch || /bin/true; done
+  for f in $(find ./spack-repo/packages/ -type f -name "*.patch"); do patch -i $f ${CI_PROJECT_DIR}/ristra_spackages/${f%.*}; done
   for f in $(find ./spack-repo/packages/ -type f -name "*.patch"); do rm $f; done
   cd ${CI_PROJECT_DIR}/ristra_spackages
   git add spack-repo/packages/*
-  git commit -m "Gitlab CI Automatic Spackage Update - Libristra"
-  git push
+  git commit -m "Gitlab CI Automatic Spackage Update - Libristra" || /bin/true
+  git push -u origin master
 
 #############
 # Env Stage #
@@ -188,10 +190,12 @@ before_script:
       spack repo rm ${LIBRISTRA_SPACK_SCOPE} || /bin/true ;
       spack repo add ${CI_PROJECT_DIR}/spack-repo;
       spack repo list;
-      spack install --show-log-on-error --only dependencies ${LIBRISTRA_SPACK_SPEC} ^openmpi%gcc@${LIBRISTRA_GCC_VERSION};
-      spack install --show-log-on-error --only dependencies ${LIBRISTRA_SPACK_SPEC} ^mpich%gcc@${LIBRISTRA_GCC_VERSION};
+      spack clean --all;
+      spack install --show-log-on-error --only dependencies ${LIBRISTRA_SPACK_SPEC} ^openmpi@${LIBRISTRA_OPENMPI_VERSION}%gcc@${LIBRISTRA_GCC_VERSION} | tee -a spack_tmp.out;
+      spack install --show-log-on-error --only dependencies ${LIBRISTRA_SPACK_SPEC} ^mpich@${LIBRISTRA_MPICH_VERSION}%gcc@${LIBRISTRA_GCC_VERSION} | tee -a spack_tmp.out;
       spack repo rm ${LIBRISTRA_SPACK_SCOPE};
       ) 200>${DEPS_LOCK}
+    - $([ "$(grep -c "Errno " spack_tmp.out)" = "0" ] && exit 0 || exit 1)
 
 ###############
 # Build Stage #
@@ -261,7 +265,7 @@ env_update:
 # Build Jobs #
 ##############
 
-build:centOS_mpi:
+.build:centOS_mpi:
   extends: .build
   <<: *shell_def
   variables:
@@ -274,27 +278,27 @@ build:centOS_mpi:
     - *test_script
 
 build:centOS_mpi_release:
-  extends: build:centOS_mpi
+  extends: .build:centOS_mpi
   variables:
     <<: *buildtype_release
 
 build:centOS_mpi_clang:
-  extends: build:centOS_mpi
+  extends: .build:centOS_mpi
   variables:
     <<: *compiler_clang
 
-build:centOS_mpi_clang_release:
+.build:centOS_mpi_clang_release:
   extends: build:centOS_mpi_clang
   variables:
     <<: *buildtype_release
 
 build:centOS_mpi_intel:
-  extends: build:centOS_mpi
+  extends: .build:centOS_mpi
   variables:
     <<: *compiler_intel
-  #allow_failure: true
+  allow_failure: true
 
-build:centOS_mpi_intel_release:
+.build:centOS_mpi_intel_release:
   extends: build:centOS_mpi_intel
   variables:
     <<: *buildtype_release
@@ -311,29 +315,29 @@ build:centOS_mpich_mpi:
     - *build_script
     - *test_script
 
-build:centOS_mpich_mpi_release:
+.build:centOS_mpich_mpi_release:
   extends: build:centOS_mpich_mpi
   variables:
     <<: *buildtype_release
 
-build:centOS_mpich_mpi_clang:
+.build:centOS_mpich_mpi_clang:
   extends: build:centOS_mpich_mpi
   variables:
     <<: *compiler_clang
 
 build:centOS_mpich_mpi_clang_release:
-  extends: build:centOS_mpich_mpi_clang
+  extends: .build:centOS_mpich_mpi_clang
   variables:
     <<: *buildtype_release
 
-build:centOS_mpich_mpi_intel:
+.build:centOS_mpich_mpi_intel:
   extends: build:centOS_mpich_mpi
   variables:
     <<: *compiler_intel
-  #allow_failure: true
+  allow_failure: true
 
 build:centOS_mpich_mpi_intel_release:
-  extends: build:centOS_mpich_mpi_intel
+  extends: .build:centOS_mpich_mpi_intel
   variables:
     <<: *buildtype_release
 
