@@ -7,6 +7,8 @@ set(io_HEADERS
   catalyst/adaptor.h
   vtk.h
   write_binary.h
+  utils.h
+
   PARENT_SCOPE
 )
 
