@@ -508,8 +508,11 @@ public:
     : lua_base_t(state), 
       ref_( 
         new int{ref},
-        [s=state](int * r) 
-        { luaL_unref(s.get(), LUA_REGISTRYINDEX, *r); } 
+        [s=state](auto r) 
+        {
+          luaL_unref(s.get(), LUA_REGISTRYINDEX, *r);
+          delete r;
+        } 
       ),
       type_(type)
   {}
