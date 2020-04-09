@@ -216,6 +216,7 @@ before_script:
     cd ${CI_PROJECT_DIR}/build/
     cmake -DCMAKE_INSTALL_PREFIX=${CI_PROJECT_DIR}/build/install \
         -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+        -DENABLE_LUA=ON \
         -DENABLE_UNIT_TESTS=ON \
         ..
     make -k -j2 -l40 || make VERBOSE=1

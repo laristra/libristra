@@ -33,7 +33,7 @@ class Libristra(CMakePackage):
 
     def cmake_args(self):
         spec = self.spec
-        options = []
+        options = ['-DENABLE_LUA=ON']
         
         if '+cinch' in spec:
             options.append('-DCINCH_SOURCE_DIR=' + spec['cinch'].prefix)
