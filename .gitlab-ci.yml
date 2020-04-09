@@ -32,14 +32,14 @@ variables:
   LIBRISTRA_CI_JOB_NAME_NOSTAGE: ${CI_JOB_NAME#*:}
   LIBRISTRA_MPI_PACKAGE: ""
   LIBRISTRA_MPICH_VERSION: "3.2.1"
-  LIBRISTRA_OPENMPI_VERSION: "3.1.3"
+  LIBRISTRA_OPENMPI_VERSION: "3.1.4"
   LIBRISTRA_INTEL_VERSION: "19.0.2"
   LIBRISTRA_CLANG_VERSION: "8.0.1"
   LIBRISTRA_GCC_VERSION: "8.3.0"
   LIBRISTRA_PYTHON_VERSION: "3.5.1"
   LIBRISTRA_ENV_SOURCE_FILE: "${CI_PROJECT_DIR}/build/libristra-deps-${LIBRISTRA_MPI_PACKAGE}-${CI_COMMIT_REF_SLUG}-${CI_CONCURRENT_ID}.sh"
   LIBRISTRA_SPACK_SCOPE: "lanl_ristra_libristra"
-  LIBRISTRA_SPACK_SPEC: "libristra%gcc@${LIBRISTRA_GCC_VERSION} ^cmake@3.12.4"
+  LIBRISTRA_SPACK_SPEC: "libristra%gcc@${LIBRISTRA_GCC_VERSION}"
 before_script:
   - echo ${CI_JOB_NAME_NOSTAGE%.*}-${CI_COMMIT_REF_SLUG}
   - '[ "$(git rev-parse origin/$CI_COMMIT_REF_NAME)" != "$CI_COMMIT_SHA" ] && curl --header "PRIVATE-TOKEN: $MY_CI_API_TOKEN" -X POST https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/pipelines/$CI_PIPELINE_ID/cancel'
@@ -51,21 +51,20 @@ before_script:
   - echo ${LIBRISTRA_ENV_SOURCE_FILE}
   - export LIBRISTRA_SPACK_FULL_SPEC="${LIBRISTRA_SPACK_SPEC} ^${LIBRISTRA_MPI_PACKAGE}@$([ ${LIBRISTRA_MPI_PACKAGE} == 'openmpi' ] && echo ${LIBRISTRA_OPENMPI_VERSION} || echo ${LIBRISTRA_MPICH_VERSION})%gcc@${LIBRISTRA_GCC_VERSION}"
   - rm ${LIBRISTRA_ENV_SOURCE_FILE} || /bin/true
+  - . ${SPACK_ROOT}/share/spack/setup-env.sh
   - |
     ( flock -e 200
-    source ${SPACK_ROOT}/share/spack/setup-env.sh;
     spack repo rm ${LIBRISTRA_SPACK_SCOPE} || /bin/true ;
     spack repo add ${CI_PROJECT_DIR}/spack-repo;
     spack repo list;
     echo ${LIBRISTRA_SPACK_FULL_SPEC};
-    spack build-env --dump ${LIBRISTRA_ENV_SOURCE_FILE} "${LIBRISTRA_SPACK_FULL_SPEC}" || /bin/true;
+    spack module tcl loads --dependencies ${LIBRISTRA_SPACK_FULL_SPEC} | tee ${LIBRISTRA_ENV_SOURCE_FILE} || /bin/true;
     spack repo rm ${LIBRISTRA_SPACK_SCOPE};
     ) 200>${DEPS_LOCK}
   - source ${LIBRISTRA_ENV_SOURCE_FILE} || /bin/true
   - |
     if [[ ${CI_JOB_NAME} =~ "clang" ]];
     then
-      module unload clang;
       module load clang/${LIBRISTRA_CLANG_VERSION};
     elif [[ ${CI_JOB_NAME} =~ "intel" ]];
     then
@@ -191,8 +190,8 @@ before_script:
       spack repo add ${CI_PROJECT_DIR}/spack-repo;
       spack repo list;
       spack clean --all;
-      spack install --show-log-on-error --only dependencies ${LIBRISTRA_SPACK_SPEC} ^openmpi@${LIBRISTRA_OPENMPI_VERSION}%gcc@${LIBRISTRA_GCC_VERSION} | tee -a spack_tmp.out;
-      spack install --show-log-on-error --only dependencies ${LIBRISTRA_SPACK_SPEC} ^mpich@${LIBRISTRA_MPICH_VERSION}%gcc@${LIBRISTRA_GCC_VERSION} | tee -a spack_tmp.out;
+      spack install --show-log-on-error ${LIBRISTRA_SPACK_SPEC} ^openmpi@${LIBRISTRA_OPENMPI_VERSION}%gcc@${LIBRISTRA_GCC_VERSION} | tee -a spack_tmp.out;
+      spack install --show-log-on-error ${LIBRISTRA_SPACK_SPEC} ^mpich@${LIBRISTRA_MPICH_VERSION}%gcc@${LIBRISTRA_GCC_VERSION} | tee -a spack_tmp.out;
       spack repo rm ${LIBRISTRA_SPACK_SCOPE};
       ) 200>${DEPS_LOCK}
     - $([ "$(grep -c "Errno " spack_tmp.out)" = "0" ] && exit 0 || exit 1)
