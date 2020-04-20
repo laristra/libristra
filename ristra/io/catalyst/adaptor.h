@@ -28,6 +28,10 @@
 #include <vtkPointData.h>
 #include <vtkPoints.h>
 #include <vtkUnstructuredGrid.h>
+#include <vtkCPDataDescription.h>
+#include <vtkCPInputDataDescription.h>
+#include <vtkMPIController.h>
+#include <vtkMultiProcessController.h>
 
 // system includes
 #include <iostream>
@@ -37,6 +41,81 @@
 namespace ristra {
 namespace io {
 namespace catalyst {
+
+
+inline vtkCPProcessor* initAdaptor(std::vector<std::string> scripts)
+{
+	//MPI_Init(NULL,NULL); 
+	int rank, nprocs;
+
+    //MPI_Init(&argc,&argv); 
+    MPI_Comm_size(MPI_COMM_WORLD,&nprocs); 
+    MPI_Comm_rank(MPI_COMM_WORLD,&rank); 
+
+
+  std::cout << "nprocs " << nprocs << ", rank: " << rank << std::endl;
+  vtkCPProcessor* processor_ = nullptr;
+  std::cout << "a... 1 " << std::endl;
+  processor_ = vtkCPProcessor::New();
+  std::cout << "a... 2 " << std::endl;
+  processor_->Initialize();
+
+
+  //for (const auto & script : scripts)
+  for (int i=0; i<scripts.size(); i++)
+  {
+    vtkNew<vtkCPPythonScriptPipeline> pipeline;
+    pipeline->Initialize(scripts[i].c_str());
+    processor_->AddPipeline(pipeline.GetPointer());
+  }
+
+  std::cout << "... initAdaptor!" << std::endl;
+
+  return processor_;
+}
+
+
+
+inline void processCatalyst(vtkCPProcessor* processor_, vtkUnstructuredGrid * grid, double time, unsigned int timeStep, bool lastTimeStep) 
+{
+	std::cout << "processCatalyst..." << std::endl;
+
+  vtkNew<vtkCPDataDescription> dataDescription;
+  dataDescription->AddInput("input");
+  dataDescription->SetTimeData(time, timeStep);
+
+  if (lastTimeStep == true)
+  {
+    //std::cout << "processCatalyst  -   lastTimeStep == true"  << std::endl;
+
+    // assume that we want to all the pipelines to execute if it
+    // is the last time step.
+    dataDescription->ForceOutputOn();
+  }
+
+  dataDescription->ForceOutputOn();
+
+  // determine if any coprocessing needs to be done at this TimeStep/Time
+  auto do_coprocessing = processor_->RequestDataDescription(dataDescription.GetPointer()); 
+  if (do_coprocessing)
+  {
+    dataDescription->GetInputDescriptionByName("input")->SetGrid(grid);
+    processor_->CoProcess(dataDescription.GetPointer());
+  }
+
+  std::cout << "... processCatalyst!" << std::endl;
+}
+
+
+inline vtkCPProcessor* finalizeAdaptor(vtkCPProcessor* processor)
+{
+  if (processor)
+  {
+    processor->Delete();
+    processor = NULL;
+  }
+}
+
 
 
 class adaptor_t {
@@ -101,8 +180,8 @@ public:
 };
 
 
-} // end of Catalyst namespace
-} // end of Catalyst namespace
+} // end of ristra namespace
+} // end of io namespace
 } // end of Catalyst namespace
 
 
