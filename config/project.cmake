@@ -150,20 +150,20 @@ if (RISTRA_ENABLE_CATALYST)
   find_package(ParaView REQUIRED)
 
   if (NOT TARGET ParaView::PythonCatalyst)
-    message(STATUS
+    message(FATAL_ERROR
       "Skipping example: ${CMAKE_PROJECT_NAME} requires ParaView to be built "
       "with Catalyst and Python support enabled. Please rebuild ParaView (or "
       "point to a different build of ParaView) with PARAVIEW_USE_PYTHON set "
       "to TRUE")
-    return ()
+    #return ()
   endif()
 
   if (NOT PARAVIEW_USE_MPI)
-    message(STATUS
+    message(FATAL_ERROR
       "Skipping example: ${CMAKE_PROJECT_NAME} requires ParaView to be built "
       "with MPI support enabled. Please rebuild ParaView (or point to a "
       "different build of ParaView) with PARAVIEW_USE_MPI set to TRUE")
-    return ()
+    #return ()
   endif ()
 
   message(STATUS "Found Paraview: ${ParaView_DIR}")
