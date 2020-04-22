@@ -59,14 +59,18 @@ inline vtkCPProcessor* initAdaptor(std::vector<std::string> scripts)
   processor_ = vtkCPProcessor::New();
   std::cout << "a... 2 " << std::endl;
   processor_->Initialize();
-
+  std::cout << "a... 3 " << std::endl;
 
   //for (const auto & script : scripts)
   for (int i=0; i<scripts.size(); i++)
   {
+    std::cout << "a... 4a " << i << std::endl;
     vtkNew<vtkCPPythonScriptPipeline> pipeline;
+    std::cout << "a... 4b " << i << std::endl;
     pipeline->Initialize(scripts[i].c_str());
+    std::cout << "a... 4c " << i << std::endl;
     processor_->AddPipeline(pipeline.GetPointer());
+    std::cout << "a... 4d " << i << std::endl;
   }
 
   std::cout << "... initAdaptor!" << std::endl;

@@ -243,10 +243,11 @@ inline void UnstructuredGrid::insertNextCell(std::vector<T> pointIDs)
 
 inline void UnstructuredGrid::pushPointsCellsToGrid(int cellType)
 {
-	uGrid->SetPoints(pnts);
+	//uGrid->SetPoints(pnts);
 	std::cout << "numOfPoints: " << numOfPoints << std::endl;
 	std::cout << "numOfCells: " << numOfCells << std::endl;
-	uGrid->InsertNextCell(cellType, numOfPoints, &pointIDs[0], numOfCells, cells->GetPointer());
+	//uGrid->InsertNextCell(cellType, numOfPoints, &pointIDs[0], numOfCells, cells->GetPointer());
+	//uGrid->InsertNextCell(cellType, numOfPoints, &pointIDs[0], numOfCells, &cells[0]);
 }
 
 
