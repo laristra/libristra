@@ -7,37 +7,34 @@ services:
 
 env:
   matrix:
-    - DISTRO=ubuntu_mpi BUILD_TYPE=Debug DOCKERHUB=true
-    - DISTRO=fedora_mpi BUILD_TYPE=Release DOCKERHUB=true
-    - DISTRO=ubuntu_mpich_mpi BUILD_TYPE=Release DOCKERHUB=true
-    - DISTRO=fedora_mpich_mpi BUILD_TYPE=Release DOCKERHUB=true
-    - DISTRO=ubuntu_legion BUILD_TYPE=Debug DOCKERHUB=true
-    - DISTRO=fedora_legion BUILD_TYPE=Release DOCKERHUB=true
-    - DISTRO=ubuntu_mpich_legion BUILD_TYPE=Release DOCKERHUB=true
-    - DISTRO=fedora_mpich_legion BUILD_TYPE=Release DOCKERHUB=true
-    
+    - DISTRO=fedora30 MPI_PACKAGE=openmpi RUNTIME=mpi BUILD_TYPE=Release DOCKERHUB=true
+    - DISTRO=fedora30 MPI_PACKAGE=openmpi RUNTIME=legion BUILD_TYPE=Release DOCKERHUB=true
+    - DISTRO=ubuntu18 MPI_PACKAGE=mpich RUNTIME=mpi BUILD_TYPE=Release DOCKERHUB=true
+    - DISTRO=ubuntu18 MPI_PACKAGE=mpich RUNTIME=legion BUILD_TYPE=Release DOCKERHUB=true
+
 before_install:
  - git fetch --unshallow && git fetch --tags #for versioning
 
 script:
  - if [[ ${CC} != gcc ]]; then TAG="_${CC}"; fi
- - if [[ ${TRAVIS_BRANCH} != stable ]]; then TAG="${TAG}_${TRAVIS_BRANCH//[^a-zA-Z0-9]/_}"; fi
+ - if [[ ${TRAVIS_BRANCH} != master ]]; then TAG="${TAG}_${TRAVIS_BRANCH//[^a-zA-Z0-9]/_}"; fi
  - cp -vr docker ${HOME}/docker
- - sed -i "1s/fedora_serial/${DISTRO}${TAG}/" ${HOME}/docker/Dockerfile
+ - sed -i "1s/fedora30/${DISTRO}_${MPI_PACKAGE}_${RUNTIME}${TAG}/" ${HOME}/docker/Dockerfile
  - cd ../../
  - mv -v ${TRAVIS_REPO_SLUG} $HOME/docker
- - docker build --build-arg BUILD_TYPE=${BUILD_TYPE} 
+ - docker build --build-arg BUILD_TYPE=${BUILD_TYPE}
+                --build-arg MPI_PACKAGE=${MPI_PACKAGE} 
                 --build-arg CC=${CC} --build-arg CXX=${CXX}
                 --build-arg TRAVIS_BRANCH=${TRAVIS_BRANCH} --build-arg TRAVIS_JOB_NUMBER=${TRAVIS_JOB_NUMBER}
                 --build-arg TRAVIS_PULL_REQUEST=${TRAVIS_PULL_REQUEST} --build-arg TRAVIS_JOB_ID=${TRAVIS_JOB_ID}
                 --build-arg TRAVIS_TAG=${TRAVIS_TAG} --build-arg TRAVIS_REPO_SLUG=${TRAVIS_REPO_SLUG}
                 --build-arg TRAVIS_COMMIT=${TRAVIS_COMMIT}
-                -t ${TRAVIS_REPO_SLUG}:${DISTRO}${TAG} ${HOME}/docker/
+                -t ${TRAVIS_REPO_SLUG}:${DISTRO}_${MPI_PACKAGE}_${RUNTIME}${TAG} ${HOME}/docker/
 
 after_success:
   - if [[ ${DOCKERHUB} = true && ${DOCKER_USERNAME} && ${DOCKER_PASSWORD} && ${TRAVIS_PULL_REQUEST} == false && ${TRAVIS_BRANCH} == master && ${CC} = gcc ]]; then
       docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-      docker push "${TRAVIS_REPO_SLUG}:${DISTRO}${TAG}";
+      docker push "${TRAVIS_REPO_SLUG}:${DISTRO}_${MPI_PACKAGE}_${RUNTIME}${TAG}";
     fi
 
 compiler:
