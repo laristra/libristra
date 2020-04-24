@@ -45,15 +45,18 @@ WORKDIR $HOME/libristra
 RUN mkdir build
 WORKDIR build
 
-RUN cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+RUN source $HOME/load_deps.sh && \
+    cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
           -DENABLE_LUA=ON \
           -DENABLE_UNIT_TESTS=ON \
-          ..
-RUN make -j2 || make VERBOSE=1
+          .. && \
+    make -j2 || make VERBOSE=1
+
 RUN make test ARGS="CTEST_OUTPUT_ON_FAILURE=1"
 RUN make install DESTDIR=${PWD}/install && rm -rf ${PWD}/install
 
 USER root
 RUN make install
 
-WORKDIR /home/laristra
+USER laristra
+WORKDIR $HOME
