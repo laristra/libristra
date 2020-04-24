@@ -33,7 +33,7 @@ RUN export SPACK_SPEC="libristra%gcc ^$MPI_PACKAGE" && \
     spack repo add --scope site $HOME/libristra/spack-repo && \
     spack find && \
     echo "spack install --show-log-on-error $SPACK_SPEC" && \
-    spack install --show-log-on-error $SPACK_SPEC && \
+    spack install -j 1 --show-log-on-error $SPACK_SPEC && \
     rm deps.sh && \
     rm $HOME/load_deps.sh && \
     spack module tcl loads python | tee -a deps.sh && \
