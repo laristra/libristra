@@ -36,6 +36,7 @@ RUN export SPACK_SPEC="libristra%gcc ^$MPI_PACKAGE" && \
     spack install --show-log-on-error $SPACK_SPEC && \
     rm deps.sh && \
     rm $HOME/load_deps.sh && \
+    spack module tcl loads python | tee -a deps.sh && \
     spack module tcl loads --dependencies $SPACK_SPEC | tee -a deps.sh
 RUN echo ". $HOME/spack/share/spack/setup-env.sh && . $HOME/deps.sh" >> $HOME/load_deps.sh
 
@@ -50,10 +51,9 @@ RUN source $HOME/load_deps.sh && \
           -DENABLE_LUA=ON \
           -DENABLE_UNIT_TESTS=ON \
           .. && \
-    make -j2 || make VERBOSE=1
-
-RUN make test ARGS="CTEST_OUTPUT_ON_FAILURE=1"
-RUN make install DESTDIR=${PWD}/install && rm -rf ${PWD}/install
+    make -j2 || make VERBOSE=1 && \
+    make test ARGS="CTEST_OUTPUT_ON_FAILURE=1" && \
+    make install DESTDIR=${PWD}/install && rm -rf ${PWD}/install
 
 USER root
 RUN make install
