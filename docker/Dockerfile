@@ -47,6 +47,10 @@ RUN mkdir build
 WORKDIR build
 
 RUN source $HOME/load_deps.sh && \
+    which python && \
+    which python3
+
+RUN source $HOME/load_deps.sh && \
     cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
           -DENABLE_LUA=ON \
           -DENABLE_UNIT_TESTS=ON \
