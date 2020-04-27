@@ -15,10 +15,12 @@ cinch_add_unit( ristra_lua_utils
   INPUTS test/lua_test.lua test/mock_box_2d.lua
   LIBRARIES Ristra )
 
-cinch_add_unit( ristra_python_utils 
-  SOURCES test/python_utils.cc 
-  INPUTS test/python_test.py
-  LIBRARIES Python::Python )
+if(RISTRA_ENABLE_PYTHON)
+  cinch_add_unit( ristra_python_utils 
+    SOURCES test/python_utils.cc 
+    INPUTS test/python_test.py
+    LIBRARIES Python::Python )
+endif()
 
 #----------------------------------------------------------------------------~-#
 # Formatting options for vim.
