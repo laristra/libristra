@@ -346,3 +346,11 @@ build:centOS_mpich_mpi_intel_release:
 #######################################################################################
 #######################################################################################
 
+downstream_job:
+  variables:
+    UPSTREAM_REPO: "ristra"
+    UPSTREAM_BRANCH: $CI_COMMIT_REF_NAME
+  trigger:
+    project: gitlab.lanl.gov/laristra/flecsale-mm
+    branch: master
+    strategy: depend
