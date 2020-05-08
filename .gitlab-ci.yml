@@ -5,7 +5,7 @@
 stages:
   - Env
   - Build_n_Test
-  - Deploy
+  - Trigger
 
 variables:
   #CI_DEBUG_TRACE: "true"
@@ -346,12 +346,12 @@ build:centOS_mpich_mpi_intel_release:
 #######################################################################################
 #######################################################################################
 
-downstream_job:
-  stage: "Deploy"
+flecsale-mm:
+  stage: "Trigger"
   variables:
     UPSTREAM_REPO: "ristra"
     UPSTREAM_BRANCH: $CI_COMMIT_REF_NAME
   trigger:
-    project: gitlab.lanl.gov/laristra/flecsale-mm
+    project: laristra/flecsale-mm
     branch: master
     strategy: depend
