@@ -347,6 +347,7 @@ build:centOS_mpich_mpi_intel_release:
 #######################################################################################
 
 downstream_job:
+  stage: "Deploy"
   variables:
     UPSTREAM_REPO: "ristra"
     UPSTREAM_BRANCH: $CI_COMMIT_REF_NAME
