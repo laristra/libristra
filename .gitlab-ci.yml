@@ -348,6 +348,9 @@ build:centOS_mpich_mpi_intel_release:
 
 flecsale-mm:
   stage: "Trigger"
+  only:
+    - merge_requests
+    - master
   variables:
     UPSTREAM_REPO: "ristra"
     UPSTREAM_BRANCH: $CI_COMMIT_REF_NAME
