@@ -29,7 +29,7 @@ RUN chown -R laristra:laristra $HOME/libristra
 USER laristra
 
 WORKDIR $HOME
-RUN export SPACK_SPEC="libristra%gcc ^$MPI_PACKAGE" && \
+RUN export SPACK_SPEC="libristra%gcc ^$MPI_PACKAGE ^ncurses@6.1~termlib" && \
     spack repo add --scope site $HOME/libristra/spack-repo && \
     spack find && \
     echo "spack install --show-log-on-error $SPACK_SPEC" && \
@@ -45,10 +45,6 @@ RUN source $HOME/load_deps.sh && module list
 WORKDIR $HOME/libristra
 RUN mkdir build
 WORKDIR build
-
-RUN source $HOME/load_deps.sh && \
-    which python && \
-    which python3
 
 RUN source $HOME/load_deps.sh && \
     cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
