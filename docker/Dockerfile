@@ -29,7 +29,7 @@ RUN chown -R laristra:laristra $HOME/libristra
 USER laristra
 
 WORKDIR $HOME
-RUN export SPACK_SPEC="libristra%gcc ^$MPI_PACKAGE ^ncurses@6.1~termlib" && \
+RUN export SPACK_SPEC="libristra%gcc ^$MPI_PACKAGE" && \
     spack repo add --scope site $HOME/libristra/spack-repo && \
     spack find && \
     echo "spack install --show-log-on-error $SPACK_SPEC" && \
