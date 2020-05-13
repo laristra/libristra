@@ -92,7 +92,6 @@ inline void initVTKUnstructuredGrid(vtkSmartPointer<vtkUnstructuredGrid> grid)
 }
 
 
-
 template< typename T >
 inline void writePointsToGrid(T & mesh, vtkSmartPointer<vtkUnstructuredGrid> grid)
 {
@@ -255,8 +254,24 @@ inline vtkSmartPointer<vtkUnstructuredGrid> populate(
     //--------------------------------------------------------------------------
     // Face connectivity
     //-------------------------------------------------------------------------- 
+	const auto & owned_cells = m.cells(flecsi::owned);
+	auto num_owned_cells = owned_cells.size();
+	auto num_cells = m.cells().size();
+	std::vector< bool > is_ghost_cell( num_cells, true );
+	for ( auto c : owned_cells ) 
+		is_ghost_cell[c.id()] = false;
+
+// 	  // some mesh parameters
+//   const auto & cells = mesh.cells();
+//   const auto & owned_cells = mesh.cells(flecsi::owned);
+//   auto num_cells = cells.size();
+//   auto num_owned_cells = owned_cells.size();
+
 	for ( auto c : m.cells() ) 
 	{
+		if ( is_ghost_cell[c] )	// Skip ghost cells
+			continue;
+
 	    // get the vertices in this cell
 	    auto cell_verts = m.vertices(c);
 	    auto num_cell_verts = cell_verts.size();
