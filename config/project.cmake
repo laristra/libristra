@@ -71,7 +71,7 @@ if(RISTRA_ENABLE_PYTHON AND NOT Python3_FOUND)
 endif()
 
 if (RISTRA_ENABLE_PYTHON)
-   message (STATUS "Found PythonLibs: ${Python3_INCLUDE_DIRS}")
+   message (STATUS "Found Python3 Development Libraries: ${Python3_INCLUDE_DIRS}")
    include_directories( ${Python3_INCLUDE_DIRS} )
    list( APPEND RISTRA_LIBRARIES Python3::Python )
 endif ()
