@@ -348,7 +348,6 @@ flecsale-mm:
   only:
     - merge_requests
     - master
-  allow_failure: true
   variables:
     UPSTREAM_REPO: "ristra"
     UPSTREAM_BRANCH: $CI_COMMIT_REF_NAME
