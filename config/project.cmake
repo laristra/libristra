@@ -72,6 +72,7 @@ endif()
 
 if (RISTRA_ENABLE_PYTHON)
    message (STATUS "Found Python3 Development Libraries: ${Python3_INCLUDE_DIRS}")
+	 # We should remove these general commands to avoid polluting other build systems
    include_directories( ${Python3_INCLUDE_DIRS} )
    list( APPEND RISTRA_LIBRARIES Python3::Python )
 endif ()
