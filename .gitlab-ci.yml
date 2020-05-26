@@ -22,10 +22,7 @@ variables:
   CCACHE_DIR: "${CI_PROJECT_DIR}/ccache"
   CCACHE_UMASK: 000
   DISTRO: "centOS"
-  BUILD_TYPE: "Debug"
-  CC: "gcc"
-  CXX: "g++"
-  CXXFLAGS: ""
+  LIBRISTRA_BUILD_TYPE: "Debug"
   LIBRISTRA_SPACK_ROOT: /home/gitlab-runner/ci-spack/spack
   LIBRISTRA_DEPS_LOCK: /home/gitlab-runner/ci-spack/deps.pid
   #lock_fd: 314
@@ -101,10 +98,10 @@ before_script:
   CXX: "icpc"
 
 .buildtype_debug: &buildtype_debug
-  BUILD_TYPE: "Debug"
+  LIBRISTRA_BUILD_TYPE: "Debug"
 
 .buildtype_release: &buildtype_release
-  BUILD_TYPE: "Release"
+  LIBRISTRA_BUILD_TYPE: "Release"
 
 .openmpi: &openmpi
   LIBRISTRA_MPI_PACKAGE: "openmpi"
@@ -216,7 +213,7 @@ before_script:
     mkdir -p ${CI_PROJECT_DIR}/build/install
     cd ${CI_PROJECT_DIR}/build/
     cmake -DCMAKE_INSTALL_PREFIX=${CI_PROJECT_DIR}/build/install \
-        -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+        -DCMAKE_BUILD_TYPE=$LIBRISTRA_BUILD_TYPE \
         -DENABLE_LUA=ON \
         -DENABLE_UNIT_TESTS=ON \
         ..
