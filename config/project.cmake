@@ -60,20 +60,21 @@ endif()
 # Support for embedded interpreters
 #------------------------------------------------------------------------------#
 
-if(NOT TARGET Python::Python)
-  find_package(Python COMPONENTS Development)
+if(NOT TARGET Python3::Python)
+  find_package(Python3 COMPONENTS Development)
 endif()
 
-option(RISTRA_ENABLE_PYTHON "Enable Python Support" Python_FOUND)
+option(RISTRA_ENABLE_PYTHON "Enable Python Support" Python3_FOUND)
 
-if(RISTRA_ENABLE_PYTHON AND NOT Python_FOUND)
+if(RISTRA_ENABLE_PYTHON AND NOT Python3_FOUND)
   message(FATAL_ERROR "Python requested, but not found")
 endif()
 
 if (RISTRA_ENABLE_PYTHON)
-   message (STATUS "Found PythonLibs: ${Python_INCLUDE_DIRS}")
-   include_directories( ${Python_INCLUDE_DIRS} )
-   list( APPEND RISTRA_LIBRARIES Python::Python )
+   message (STATUS "Found Python3 Development Libraries: ${Python3_INCLUDE_DIRS}")
+	 # We should remove these general commands to avoid polluting other build systems
+   include_directories( ${Python3_INCLUDE_DIRS} )
+   list( APPEND RISTRA_LIBRARIES Python3::Python )
 endif ()
 
 #------------------------------------------------------------------------------#
