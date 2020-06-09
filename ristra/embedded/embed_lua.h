@@ -1018,6 +1018,7 @@ public:
   }
 };
 
+inline 
 lua_t lua_result_t::get_top() const { return lua_t(static_cast<lua_base_t>(*this)); }
 
 } // namespace embedded
