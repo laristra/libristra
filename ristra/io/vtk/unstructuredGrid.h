@@ -5,6 +5,8 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <cstdlib>
+#include <stdlib.h>
 
 #include <mpi.h>
 
@@ -112,6 +114,8 @@ inline UnstructuredGrid::UnstructuredGrid()
   	numOfCells = 0;
 
   	parallelOn = 1;
+
+	putenv("VTK_SILENCE_GET_VOID_POINTER_WARNINGS=1");
 }
 
 

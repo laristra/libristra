@@ -48,33 +48,22 @@ inline vtkCPProcessor* initAdaptor(std::vector<std::string> scripts)
 	//MPI_Init(NULL,NULL); 
 	int rank, nprocs;
 
-    //MPI_Init(&argc,&argv); 
-    MPI_Comm_size(MPI_COMM_WORLD,&nprocs); 
-    MPI_Comm_rank(MPI_COMM_WORLD,&rank); 
+  //MPI_Init(&argc,&argv); 
+  MPI_Comm_size(MPI_COMM_WORLD,&nprocs); 
+  MPI_Comm_rank(MPI_COMM_WORLD,&rank); 
 
-
-  std::cout << "nprocs " << nprocs << ", rank: " << rank << std::endl;
   vtkCPProcessor* processor_ = nullptr;
-  std::cout << "a... 1 " << std::endl;
   processor_ = vtkCPProcessor::New();
-  std::cout << "a... 2 " << std::endl;
   processor_->Initialize();
-  std::cout << "a... 3 " << std::endl;
+
 
   //for (const auto & script : scripts)
   for (int i=0; i<scripts.size(); i++)
   {
-    std::cout << "Script " << i << " : " << scripts[i].c_str() << std::endl;
-    std::cout << "a... 4a " << i << std::endl;
     vtkNew<vtkCPPythonScriptPipeline> pipeline;
-    std::cout << "a... 4b " << i << std::endl;
     pipeline->Initialize(scripts[i].c_str());
-    std::cout << "a... 4c " << i << std::endl;
     processor_->AddPipeline(pipeline.GetPointer());
-    std::cout << "a... 4d " << i << std::endl;
   }
-
-  std::cout << "... initAdaptor!" << std::endl;
 
   return processor_;
 }
@@ -83,16 +72,12 @@ inline vtkCPProcessor* initAdaptor(std::vector<std::string> scripts)
 
 inline void processCatalyst(vtkCPProcessor* processor_, vtkUnstructuredGrid * grid, double time, unsigned int timeStep, bool lastTimeStep) 
 {
-	std::cout << "processCatalyst..." << std::endl;
-
   vtkNew<vtkCPDataDescription> dataDescription;
   dataDescription->AddInput("input");
   dataDescription->SetTimeData(time, timeStep);
 
   if (lastTimeStep == true)
   {
-    //std::cout << "processCatalyst  -   lastTimeStep == true"  << std::endl;
-
     // assume that we want to all the pipelines to execute if it
     // is the last time step.
     dataDescription->ForceOutputOn();
@@ -107,8 +92,6 @@ inline void processCatalyst(vtkCPProcessor* processor_, vtkUnstructuredGrid * gr
     dataDescription->GetInputDescriptionByName("input")->SetGrid(grid);
     processor_->CoProcess(dataDescription.GetPointer());
   }
-
-  std::cout << "... processCatalyst!" << std::endl;
 }
 
 
@@ -136,7 +119,6 @@ public:
 
 	  for (const auto & script : scripts)
 	  {
-      std::cout << "Loading pipeline '" << script << "'." << std::endl;
 	  	vtkNew<vtkCPPythonScriptPipeline> pipeline;
 	  	pipeline->Initialize(script.c_str());
 	  	processor_->AddPipeline(pipeline.GetPointer());
