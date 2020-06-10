@@ -551,6 +551,9 @@ inline lua_ref_t make_lua_ref(const lua_state_ptr_t & state)
 /// The class is used to convert the refered lua value to a desired type.  It is
 /// is the root of the implementation.
 ////////////////////////////////////////////////////////////////////////////////
+
+class lua_t;
+
 class lua_result_t : public lua_base_t {
 
   /// \brief The name of the object.
@@ -882,6 +885,7 @@ public:
     return { state_, new_name, std::move(ref), len };
   }
 
+  lua_t get_top() const;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -964,6 +968,8 @@ public:
       luaL_openlibs(state());
   }
 
+  lua_t(const lua_base_t & base) : lua_base_t(base) {}
+
   /// \brief Run a string through the lua interpreter.
   /// \param [in] script  The script to run.
   /// \return The lua error code.
@@ -1011,6 +1017,9 @@ public:
     return run_string( script );
   }
 };
+
+inline 
+lua_t lua_result_t::get_top() const { return lua_t(static_cast<lua_base_t>(*this)); }
 
 } // namespace embedded
 } // namespace ristra

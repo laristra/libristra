@@ -5,7 +5,7 @@
 stages:
   - Env
   - Build_n_Test
-  - Deploy
+  - Trigger
 
 variables:
   #CI_DEBUG_TRACE: "true"
@@ -22,12 +22,9 @@ variables:
   CCACHE_DIR: "${CI_PROJECT_DIR}/ccache"
   CCACHE_UMASK: 000
   DISTRO: "centOS"
-  BUILD_TYPE: "Debug"
-  CC: "gcc"
-  CXX: "g++"
-  CXXFLAGS: ""
-  SPACK_ROOT: /home/gitlab-runner/ci-spack/spack
-  DEPS_LOCK: /home/gitlab-runner/ci-spack/deps.pid
+  LIBRISTRA_BUILD_TYPE: "Debug"
+  LIBRISTRA_SPACK_ROOT: /home/gitlab-runner/ci-spack/spack
+  LIBRISTRA_DEPS_LOCK: /home/gitlab-runner/ci-spack/deps.pid
   #lock_fd: 314
   LIBRISTRA_CI_JOB_NAME_NOSTAGE: ${CI_JOB_NAME#*:}
   LIBRISTRA_MPI_PACKAGE: ""
@@ -52,7 +49,7 @@ before_script:
   - echo ${LIBRISTRA_ENV_SOURCE_FILE}
   - export LIBRISTRA_SPACK_FULL_SPEC="${LIBRISTRA_SPACK_SPEC} ^${LIBRISTRA_MPI_PACKAGE}@$([ ${LIBRISTRA_MPI_PACKAGE} == 'openmpi' ] && echo ${LIBRISTRA_OPENMPI_VERSION} || echo ${LIBRISTRA_MPICH_VERSION})%gcc@${LIBRISTRA_GCC_VERSION}"
   - rm ${LIBRISTRA_ENV_SOURCE_FILE} || /bin/true
-  - . ${SPACK_ROOT}/share/spack/setup-env.sh
+  - . ${LIBRISTRA_SPACK_ROOT}/share/spack/setup-env.sh
   - |
     ( flock -e 200
     spack repo rm ${LIBRISTRA_SPACK_SCOPE} || /bin/true ;
@@ -61,7 +58,7 @@ before_script:
     echo ${LIBRISTRA_SPACK_FULL_SPEC};
     spack module tcl loads --dependencies ${LIBRISTRA_SPACK_FULL_SPEC} | tee ${LIBRISTRA_ENV_SOURCE_FILE} || /bin/true;
     spack repo rm ${LIBRISTRA_SPACK_SCOPE};
-    ) 200>${DEPS_LOCK}
+    ) 200>${LIBRISTRA_DEPS_LOCK}
   - source ${LIBRISTRA_ENV_SOURCE_FILE} || /bin/true
   - |
     if [[ ${CI_JOB_NAME} =~ "clang" ]];
@@ -101,10 +98,10 @@ before_script:
   CXX: "icpc"
 
 .buildtype_debug: &buildtype_debug
-  BUILD_TYPE: "Debug"
+  LIBRISTRA_BUILD_TYPE: "Debug"
 
 .buildtype_release: &buildtype_release
-  BUILD_TYPE: "Release"
+  LIBRISTRA_BUILD_TYPE: "Release"
 
 .openmpi: &openmpi
   LIBRISTRA_MPI_PACKAGE: "openmpi"
@@ -177,16 +174,16 @@ before_script:
     - |
       if [[ ${I_WANT_TO_CLEAN_UP} ]];
       then
-        rm -rf ${SPACK_ROOT}/*;
+        rm -rf ${LIBRISTRA_SPACK_ROOT}/*;
       fi
     - |
       ( flock -e 200
-      if [[ ! -d ${SPACK_ROOT} ]];
+      if [[ ! -d ${LIBRISTRA_SPACK_ROOT} ]];
       then
-        git init --shared=group ${SPACK_ROOT};
-        git -c ${SPACK_ROOT} pull https://github.com/spack/spack develop;
+        git init --shared=group ${LIBRISTRA_SPACK_ROOT};
+        git -c ${LIBRISTRA_SPACK_ROOT} pull https://github.com/spack/spack develop;
       fi;
-      source ${SPACK_ROOT}/share/spack/setup-env.sh;
+      source ${LIBRISTRA_SPACK_ROOT}/share/spack/setup-env.sh;
       spack repo rm ${LIBRISTRA_SPACK_SCOPE} || /bin/true ;
       spack repo add ${CI_PROJECT_DIR}/spack-repo;
       spack repo list;
@@ -194,7 +191,7 @@ before_script:
       spack install --show-log-on-error ${LIBRISTRA_SPACK_SPEC} ^openmpi@${LIBRISTRA_OPENMPI_VERSION}%gcc@${LIBRISTRA_GCC_VERSION} | tee -a spack_tmp.out;
       spack install --show-log-on-error ${LIBRISTRA_SPACK_SPEC} ^mpich@${LIBRISTRA_MPICH_VERSION}%gcc@${LIBRISTRA_GCC_VERSION} | tee -a spack_tmp.out;
       spack repo rm ${LIBRISTRA_SPACK_SCOPE};
-      ) 200>${DEPS_LOCK}
+      ) 200>${LIBRISTRA_DEPS_LOCK}
     - $([ "$(grep -c "Errno " spack_tmp.out)" = "0" ] && exit 0 || exit 1)
 
 ###############
@@ -216,7 +213,7 @@ before_script:
     mkdir -p ${CI_PROJECT_DIR}/build/install
     cd ${CI_PROJECT_DIR}/build/
     cmake -DCMAKE_INSTALL_PREFIX=${CI_PROJECT_DIR}/build/install \
-        -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+        -DCMAKE_BUILD_TYPE=$LIBRISTRA_BUILD_TYPE \
         -DENABLE_LUA=ON \
         -DENABLE_UNIT_TESTS=ON \
         ..
@@ -346,3 +343,17 @@ build:centOS_mpich_mpi_intel_release:
 #######################################################################################
 #######################################################################################
 
+flecsale-mm:
+  stage: "Trigger"
+  only:
+    - merge_requests
+    - master
+  allow_failure: true
+  variables:
+    UPSTREAM_REPO: "ristra"
+    UPSTREAM_BRANCH: $CI_COMMIT_REF_NAME
+    UPSTREAM_URL: $CI_PROJECT_URL
+  trigger:
+    project: laristra/flecsale-mm
+    branch: master
+    strategy: depend
