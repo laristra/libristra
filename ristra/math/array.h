@@ -10,6 +10,7 @@
 
 // user includes
 #include "ristra/compatibility/type_traits.h"
+#include "ristra/utils/target.h"
 #include "ristra/utils/template_helpers.h"
 #include "ristra/utils/tuple_visit.h"
 
@@ -179,24 +180,28 @@ public:
   //! \brief Return the `i`th element.
   //! \param [in] i  The element to access.
   //! @{
+  RISTRA_INLINE_TARGET
   reference operator[](size_type i) 
   { 
     assert( i < size() && "out of range" );
     return elems_[i];
   }
         
+  RISTRA_INLINE_TARGET
   const_reference operator[](size_type i) const 
   {     
     assert( i < size() && "out of range" );
     return elems_[i]; 
   }
 
+  RISTRA_INLINE_TARGET
   reference operator()(size_type i) 
   { 
     assert( i < size() && "out of range" );
     return elems_[i];
   }
 
+  RISTRA_INLINE_TARGET
   const_reference operator()(size_type i) const
   { 
     assert( i < size() && "out of range" );
@@ -207,6 +212,7 @@ public:
   //! \brief Return the `i`th element with a range check.
   //! \param [in] i  The element to access.
   //! @{
+  RISTRA_INLINE_TARGET
   reference at(size_type i) 
   { 
     return i >= size() ? 
@@ -214,6 +220,7 @@ public:
       elems_[i];
   }
 
+  RISTRA_INLINE_TARGET
   const_reference at(size_type i) const
   { 
     return i >= size() ? 
@@ -224,18 +231,22 @@ public:
 
   //! \brief return the first element
   //! @{
+  RISTRA_INLINE_TARGET
   reference front() 
   { return elems_[0]; }
         
+  RISTRA_INLINE_TARGET
   const_reference front() const 
   { return elems_[0]; }
   //! @}
         
   //! \brief return the last element
   //! @{
+  RISTRA_INLINE_TARGET
   reference back() 
   { return elems_[size()-1]; }
         
+  RISTRA_INLINE_TARGET
   const_reference back() const 
   {  return elems_[size()-1]; }
   //! @}
@@ -243,11 +254,13 @@ public:
 
   //  \brief direct access to data (read-only)
   //! @{
+  RISTRA_INLINE_TARGET
   const T* data() const { return elems_; }
   T* data() { return elems_; }
   //! @}
 
   // use array as C array (direct read/write access to data)
+  RISTRA_INLINE_TARGET
   T* c_array() { return elems_; }
 
   //===========================================================================
@@ -256,13 +269,17 @@ public:
   //! @{
 
   //! \brief return the size
+  RISTRA_INLINE_TARGET
   static constexpr size_type     size() { return length; }
+  RISTRA_INLINE_TARGET
   static constexpr size_type capacity() { return size(); }
 
   //! \brief checks whether container is empty
+  RISTRA_INLINE_TARGET
   static constexpr bool empty() { return false; }
   
   //! \brief returns the maximum possible number of elements
+  RISTRA_INLINE_TARGET
   static constexpr size_type max_size() { return size(); }
   //! @}
 
