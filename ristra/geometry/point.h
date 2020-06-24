@@ -10,6 +10,7 @@
 
 // user includes
 #include <ristra/math/vector.h>
+#include <ristra/utils/target.h>
 
 // system includes
 #include <cmath>
@@ -33,6 +34,7 @@ using point = math::vector<T,D>;
 /// \function distance
 ///
 template <typename T, size_t D>
+RISTRA_TARGET
 T distance(const point<T, D> & a, const point<T, D> & b)
 {
   T sum(0);
@@ -47,6 +49,7 @@ T distance(const point<T, D> & a, const point<T, D> & b)
 // \function midpoint
 ///
 template <typename T, size_t D>
+RISTRA_TARGET
 point<T, D> midpoint(const point<T, D> & a, const point<T, D> & b)
 {
   return point<T, D>((a + b) / 2.0);
@@ -59,6 +62,7 @@ point<T, D> midpoint(const point<T, D> & a, const point<T, D> & b)
 // \return a point that is the centroid.
 ///
 template <template <typename...> class LIST, typename T, size_t D>
+RISTRA_TARGET
 auto centroid(const LIST<point<T, D>> & vert_list)
 {
   point<T, D> tmp(0.0);
@@ -69,6 +73,7 @@ auto centroid(const LIST<point<T, D>> & vert_list)
 } // centroid
 
 template <typename T, size_t D>
+RISTRA_TARGET
 auto centroid(std::initializer_list<point<T, D>> vert_list)
 {
   point<T, D> tmp(0.0);
