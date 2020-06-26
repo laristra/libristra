@@ -261,11 +261,11 @@ inline vtkSmartPointer<vtkUnstructuredGrid> populate(
 	for ( auto c : owned_cells ) 
 		is_ghost_cell[c.id()] = false;
 
-// 	  // some mesh parameters
-//   const auto & cells = mesh.cells();
-//   const auto & owned_cells = mesh.cells(flecsi::owned);
-//   auto num_cells = cells.size();
-//   auto num_owned_cells = owned_cells.size();
+	// 	  // some mesh parameters
+	//   const auto & cells = mesh.cells();
+	//   const auto & owned_cells = mesh.cells(flecsi::owned);
+	//   auto num_cells = cells.size();
+	//   auto num_owned_cells = owned_cells.size();
 
 	for ( auto c : m.cells() ) 
 	{
@@ -372,6 +372,204 @@ inline vtkSmartPointer<vtkUnstructuredGrid> populate(
 
 	return temp.getUGrid();
 }
+
+
+
+
+
+
+//template< typename T > 
+inline vtkSmartPointer<vtkUnstructuredGrid> populate_mm(
+	mesh_t &m, std::vector< std::vector<real_t> > &var_vec, std::vector<std::string> &varname)
+{
+    // mesh statistics
+    // get the general statistics
+    constexpr auto num_dims = mesh_t::num_dimensions;
+    auto num_nodes = m.num_vertices();
+    auto num_faces = num_dims==3 ? m.num_faces() : 0;
+    auto num_elems = m.num_cells();
+    auto num_elem_blk = 1;
+    auto num_node_sets = 0;
+    auto num_side_sets = 0;
+    using  ex_real_t  = real_t;
+
+
+
+    //--------------------------------------------------------------------------
+    // Create structure
+    //--------------------------------------------------------------------------
+
+    ristra::io::vtk::UnstructuredGrid temp;
+
+    //--------------------------------------------------------------------------
+    // Point Coordinates
+    //--------------------------------------------------------------------------
+
+    std::vector<real_t> vertex_coord( num_nodes * num_dims );
+    std::vector<int> pointIDs;
+    for (auto v : m.vertices()) 
+    {
+    	auto & coords = v->coordinates();
+
+    	pointIDs.push_back(v.id());
+
+    	std::vector<float> vertex;
+    	int count = 0;
+      	for ( int i=0; i<num_dims; i++ )
+      	{
+      		vertex_coord[ v.id()*3 + i] = coords[i];
+      		vertex.push_back(coords[i]);
+      		count++;
+      	}
+      	if (num_dims == 2)
+      		vertex.push_back(0.0);
+
+      	temp.insertNextPoint(&vertex[0]);
+    }
+
+    temp.setPointIDs(pointIDs);
+
+
+    
+
+    //--------------------------------------------------------------------------
+    // Face connectivity
+    //-------------------------------------------------------------------------- 
+	const auto & owned_cells = m.cells(flecsi::owned);
+	auto num_owned_cells = owned_cells.size();
+	auto num_cells = m.cells().size();
+	std::vector< bool > is_ghost_cell( num_cells, true );
+	for ( auto c : owned_cells ) 
+		is_ghost_cell[c.id()] = false;
+
+	// 	  // some mesh parameters
+	//   const auto & cells = mesh.cells();
+	//   const auto & owned_cells = mesh.cells(flecsi::owned);
+	//   auto num_cells = cells.size();
+	//   auto num_owned_cells = owned_cells.size();
+
+	for ( auto c : m.cells() ) 
+	{
+		if ( is_ghost_cell[c] )	// Skip ghost cells
+			continue;
+
+	    // get the vertices in this cell
+	    auto cell_verts = m.vertices(c);
+	    auto num_cell_verts = cell_verts.size();
+
+	    // copy them to the vtk type
+	    std::vector< vtkIdType > vert_ids(num_cell_verts);
+	    std::transform( cell_verts.begin(), cell_verts.end(), vert_ids.begin(), [](auto && v) { return v.id(); } );
+
+	    // get the faces
+	    auto cell_faces = m.faces(c);
+	    auto num_cell_faces = cell_faces.size();
+
+	    // get the total number of vertices
+	    auto tot_verts = std::accumulate( 
+	      	cell_faces.begin(), cell_faces.end(), static_cast<size_t>(0),
+	      	[&m](auto sum, auto f) { return sum + m.vertices(f).size(); }
+	    );
+
+	    // the list of faces that vtk requires contains the number of points in each
+	    // face AND the point ids themselves.
+	    std::vector< vtkIdType > face_data;
+	    face_data.reserve( tot_verts + num_cell_faces );
+	    for ( auto f : cell_faces ) 
+	    {
+	    	auto face_cells = m.cells(f);
+	      	auto face_verts = m.vertices(f);
+	      	auto num_face_verts = face_verts.size();
+
+	      	// copy the face vert ids to the vtk type
+	      	std::vector< vtkIdType > face_vert_ids( num_face_verts );
+	      	std::transform( 
+	        	face_verts.begin(), face_verts.end(), face_vert_ids.begin(),
+	        	[](auto && v) { return v.id(); } 
+	      	);
+	      
+	      	// check the direction of the vertices
+	      	if ( face_cells[0] != c ) 
+	        	std::reverse( face_vert_ids.begin(), face_vert_ids.end() );
+	      
+	      	// now copy them to the global array
+	      	face_data.emplace_back( num_face_verts );
+	      	for ( auto v : face_vert_ids )
+	        	face_data.emplace_back( v );
+	    }
+
+	    
+	    // set the cell vertices
+	    temp.uGrid->InsertNextCell(
+	      VTK_POLYHEDRON, num_cell_verts, vert_ids.data(),
+	      num_cell_faces, face_data.data()
+	    );
+	}
+
+
+    temp.pushPointsToGrid();
+
+
+
+    //--------------------------------------------------------------------------
+    // Write Fields
+    //--------------------------------------------------------------------------
+
+    static int count = 0;
+  	for (int i=0; i<varname.size(); ++i)
+    {
+    	//std::stringstream outputData;
+
+        size_t cid = 0;
+        //std::vector<ex_real_t> tmp(m.num_cells()); 
+
+        //const T& f = *var_vec[i];
+        std::vector<float> data;
+        int numCells = 0;
+        for(auto c: m.cells())
+        {
+            //tmp[cid++] = f(c);
+            //data.push_back(f(c));
+
+			data.push_back( var_vec[i][numCells] );
+
+            //outputData << std::to_string( f(c) ) << "\n";
+
+            numCells++;
+        }
+
+		/*
+		for(auto c: m.cells())
+        {
+            tmp[cid++] = f(c);
+            data.push_back(f(c));
+
+            outputData << std::to_string( f(c) ) << "\n";
+
+            numCells++;
+
+        }
+		*/
+        int var_id(i+1);
+        
+		//template <typename T> void addScalarData(std::string scalarName, int numPoints, int type, T *data);
+        temp.addScalarData(varname[i].c_str(), numCells, 1, &data[0]);
+
+        // // Test
+        // std::string filename = "/home/pascal/Desktop/_" + std::to_string(i) +  "_" + varname[i] +  "_ts_" + std::to_string(count);
+        // outputFile(filename,outputData.str());
+    }
+    count++;
+
+
+    //--------------------------------------------------------------------------
+    // 
+    //--------------------------------------------------------------------------
+
+	return temp.getUGrid();
+}
+
+
 
 
 } // end of io namespace
