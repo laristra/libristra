@@ -80,6 +80,7 @@ class UnstructuredGrid
 
 
 	// Data
+	template <typename T> void addVectorData(std::string varName, int numPoints, int type, T *data1, T *data2, T *data3);
 	template <typename T> void addScalarData(std::string scalarName, int numPoints, int type, T *data);
 	template <typename T> void addVectorData(std::string scalarName, int numPoints, int numComponents, int type, T *data);
 	template <typename T> void addFieldData(std::string fieldName, T *data);
@@ -311,6 +312,42 @@ inline void UnstructuredGrid::addScalarData(std::string varName, int numPoints, 
   	// Works
    	for(int i=0; i<numPoints; i++)
 	 	temp->InsertNextValue(data[i]);
+
+
+  	if (type == 0) // point
+  		uGrid->GetPointData()->AddArray(temp);
+  	else
+  		uGrid->GetCellData()->AddArray(temp);
+}
+
+/*
+vtkFloatArray* velocity = vtkFloatArray::New();
+    velocity->SetName("Velocity");
+    velocity->SetNumberOfComponents(3);
+    velocity->SetNumberOfTuples(nx*ny*nz);
+    for(int i=0;i<mesh.nn;i++){
+       velocity->SetTuple3(i,10, 10, 10); // set everything to 10
+    }
+   rgrid->GetPointData()->AddArray(velocity);
+
+*/
+
+template <typename T>
+inline void UnstructuredGrid::addVectorData(std::string varName, int numPoints, int type, T *data1, T *data2, T *data3)
+{
+	vtkSOADataArrayTemplate<T>* temp = vtkSOADataArrayTemplate<T>::New();
+
+  	temp->SetNumberOfComponents(3);
+  	temp->SetName(varName.c_str());
+
+
+  	// Works
+   	for(int i=0; i<numPoints; i++)
+	{
+	 	temp->InsertNextValue(data1[i]);
+		temp->InsertNextValue(data2[i]);
+		temp->InsertNextValue(data3[i]); 
+	}
 
 
   	if (type == 0) // point
