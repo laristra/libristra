@@ -295,6 +295,15 @@ inline std::size_t lua_push(lua_State * s, int i)
   return 1;
 }
 
+/// \brief Push a size_t onto the stack.
+/// \param [in] s  The lua state to push a value to.
+/// \param [in] i  The size_t to push.
+inline std::size_t lua_push(lua_State * s, size_t i)
+{
+  lua_pushinteger( s, i );
+  return 1;
+}
+
 /// \brief Push a long long onto the stack.
 /// \param [in] s  The lua state to push a value to.
 /// \param [in] i  The long long to push.
@@ -499,8 +508,11 @@ public:
     : lua_base_t(state), 
       ref_( 
         new int{ref},
-        [s=state](int * r) 
-        { luaL_unref(s.get(), LUA_REGISTRYINDEX, *r); } 
+        [s=state](auto r) 
+        {
+          luaL_unref(s.get(), LUA_REGISTRYINDEX, *r);
+          delete r;
+        } 
       ),
       type_(type)
   {}
@@ -539,6 +551,9 @@ inline lua_ref_t make_lua_ref(const lua_state_ptr_t & state)
 /// The class is used to convert the refered lua value to a desired type.  It is
 /// is the root of the implementation.
 ////////////////////////////////////////////////////////////////////////////////
+
+class lua_t;
+
 class lua_result_t : public lua_base_t {
 
   /// \brief The name of the object.
@@ -757,6 +772,12 @@ public:
     return static_cast<T>(*this);
   }
   
+  template< typename T >
+  T as(const T & def ) const {
+    if (empty()) return def;
+    else return static_cast<T>(*this);
+  }
+  
   /// \brief Explicit type conversion operators for tuples.
   /// \tparam Args The element types of the tuple.
   /// \return The typecast tuple of values.
@@ -864,6 +885,7 @@ public:
     return { state_, new_name, std::move(ref), len };
   }
 
+  lua_t get_top() const;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -946,6 +968,8 @@ public:
       luaL_openlibs(state());
   }
 
+  lua_t(const lua_base_t & base) : lua_base_t(base) {}
+
   /// \brief Run a string through the lua interpreter.
   /// \param [in] script  The script to run.
   /// \return The lua error code.
@@ -993,6 +1017,9 @@ public:
     return run_string( script );
   }
 };
+
+inline 
+lua_t lua_result_t::get_top() const { return lua_t(static_cast<lua_base_t>(*this)); }
 
 } // namespace embedded
 } // namespace ristra

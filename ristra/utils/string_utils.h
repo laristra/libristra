@@ -178,11 +178,25 @@ std::vector<std::string> split(
 }
 
 
+inline auto num_digits( unsigned int n )
+{
+  
+  auto number = n / 10;
+  unsigned int digits = 1;
+  while (number) {
+    number /= 10;
+    digits++;
+  }
+
+  return digits;
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //! \brief Tack on an iteration number to a string
 ///////////////////////////////////////////////////////////////////////////////
 inline auto zero_padded( 
-  std::size_t n, std::size_t padding = 6 
+  unsigned int n, unsigned int padding = 6
 )
 {
   std::stringstream ss;

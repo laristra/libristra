@@ -14,6 +14,7 @@
 
 // user includes
 #include <ristra/embedded/embed_lua.h>
+#include <ristra/math/vector.h>
 
 // system includes
 #include<array>
@@ -78,9 +79,11 @@ TEST(lua_utils, embedded)
   auto arr1 = state["bar"];  
   auto arr1_vec_ans = std::vector<int>{1,2,3};
   auto arr1_arr_ans = std::array<int,3>{1,2,3};
-  arr1.as<std::array<int,3>>();
+  auto arr1_as_arr = arr1.as<std::array<int,3>>();
   ASSERT_EQ( arr1_vec_ans, arr1.as<std::vector<int>>() );
-  //ASSERT_EQ( arr1_arr_ans, arr1.as<std::array<int,3>>() );
+  ASSERT_EQ( arr1_arr_ans, arr1_as_arr );
+
+  auto arr1_as_vector_t = arr1.as< ristra::math::vector<int,3> >();
 
   // access non-existant data
   ASSERT_TRUE(state["not_there"].empty());

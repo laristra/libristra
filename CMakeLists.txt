@@ -53,19 +53,23 @@ endif()
 # Support for embedded interpreters
 #------------------------------------------------------------------------------#
 
-find_package(PythonLibs QUIET)
+if(NOT TARGET Python3::Python)
+  find_package(Python3 COMPONENTS Development)
+endif()
 
-option(RISTRA_ENABLE_PYTHON "Enable Python Support" ${PYTHONLIBS_FOUND})
+option(RISTRA_ENABLE_PYTHON "Enable Python Support" Python3_FOUND)
 
-if(RISTRA_ENABLE_PYTHON AND NOT PYTHONLIBS_FOUND)
+if(RISTRA_ENABLE_PYTHON AND NOT Python3_FOUND)
   message(FATAL_ERROR "Python requested, but not found")
 endif()
 
 if (RISTRA_ENABLE_PYTHON)
-   message (STATUS "Found PythonLibs: ${PYTHON_INCLUDE_DIRS}")
-   target_include_directories(Ristra  PUBLIC ${PYTHON_INCLUDE_DIRS} )
-   target_link_libraries( Ristra PUBLIC ${PYTHON_LIBRARIES} )
+  message (STATUS "Found Python3 Development Libraries: ${Python3_INCLUDE_DIRS}")
+  # We should remove these general commands to avoid polluting other build systems
+  include_directories( ${Python3_INCLUDE_DIRS} )
+  list( APPEND RISTRA_LIBRARIES Python3::Python )
 endif ()
+
 
 #------------------------------------------------------------------------------#
 # Lua
@@ -114,6 +118,27 @@ set(RISTRA_DBC_REQUIRE ON CACHE BOOL
   "Enable DBC Pre/Post Condition Assertions")
 
 #------------------------------------------------------------------------------#
+# Catalyst
+#------------------------------------------------------------------------------#
+
+option(RISTRA_ENABLE_CATALYST "Link the sim with Catalyst for in situ" OFF)
+
+if (RISTRA_ENABLE_CATALYST)
+  find_package(ParaView REQUIRED COMPONENTS vtkPVPythonCatalyst)
+
+  message(STATUS "Found Paraview: ${ParaView_DIR}")
+  message(STATUS "IO with Paraview Catalyst enabled" )
+
+  include("${PARAVIEW_USE_FILE}")
+
+  if (NOT PARAVIEW_USE_MPI)
+    message(SEND_ERROR "ParaView must be built with MPI enabled")
+  endif()
+
+  list( APPEND RISTRA_LIBRARIES vtkPVPythonCatalyst vtkParallelMPI )
+endif()
+
+#------------------------------------------------------------------------------#
 # Google test
 #------------------------------------------------------------------------------#
 option(RISTRA_ENABLE_UNIT_TESTS "Enable unit testing" OFF)
@@ -129,6 +154,23 @@ if (RISTRA_ENABLE_UNIT_TESTS)
     find_package(GTest REQUIRED)
   endif()
 endif()
+
+#------------------------------------------------------------------------------#
+# Legion / MPI
+#------------------------------------------------------------------------------#
+
+find_package(MPI COMPONENTS C CXX REQUIRED)
+
+option(RISTRA_ENABLE_MPI "Enable MPI Support" ${MPI_FOUND})
+
+if(RISTRA_ENABLE_MPI AND NOT MPI_FOUND)
+  message(FATAL_ERROR "MPI requested, but not found")
+endif()
+
+if(RISTRA_ENABLE_MPI)
+  list( APPEND RISTRA_LIBRARIES  MPI::MPI_CXX MPI::MPI_C)
+endif()
+
 
 
 #------------------------------------------------------------------------------#
@@ -177,3 +219,8 @@ install(FILES
 	DESTINATION lib/cmake/${PROJECT_NAME}
 )
 
+export(
+  TARGETS Ristra
+  FILE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraTargets.cmake
+)
+export(PACKAGE Ristra)

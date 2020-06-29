@@ -17,10 +17,10 @@ namespace utils {
 namespace detail {
 
 //! \brief create index list
-template<class T>
-constexpr std::make_index_sequence<std::tuple_size<T>::value>
+template<class T, typename Indices = std::make_index_sequence<std::tuple_size<T>::value>>
+constexpr auto
 get_indexes( T const& )
-{ return {}; }
+{ return Indices{}; }
 
 //! \brief actuall call to functions
 template<std::size_t... Is, class Tuple, class F>

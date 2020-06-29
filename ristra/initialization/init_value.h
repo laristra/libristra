@@ -98,7 +98,7 @@ class init_value_t
   }
 
   /**\brief Was a valid */
-  bool valid() const
+  bool valid() 
   {
     if (status_t::valid == m_status) {
       return true;
