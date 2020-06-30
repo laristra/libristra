@@ -91,6 +91,14 @@ if(RISTRA_ENABLE_LUA)
 endif ()
 
 #------------------------------------------------------------------------------#
+# GoogleTest
+#------------------------------------------------------------------------------#
+
+if(ENABLE_UNIT_TESTS)
+  find_package(GTest REQUIRED)
+endif()
+
+#------------------------------------------------------------------------------#
 # Boost
 #
 # Note that this find package only sets the header information. To find
