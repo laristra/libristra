@@ -1,0 +1,85 @@
+#############
+# Env Stage #
+#############
+
+.env:
+  extends:
+    - .job
+    - .artifacts
+  stage: Env
+  only:
+    refs:
+      - master
+      - merge_requests
+      - schedules
+  except:
+    refs:
+    variables:
+      - $LIBRISTRA_SCHEDULE == "spack-gen"
+  artifacts:
+    paths:
+      - ${CI_PROJECT_DIR}/spack #/builds/next-generation-codes/laristra/flecsale-mm/spack
+      - ${CI_PROJECT_DIR}/ristra_spackages
+      - ${CI_PROJECT_DIR}/spack_env
+  variables:
+    GIT_SUBMODULE_STRATEGY: none
+  script:
+    - cd ${CI_PROJECT_DIR}
+    - git clone git@gitlab.lanl.gov:laristra/ristra_spackages.git
+    - git clone https://${RISTRA_SPACK_CONFIG_USERNAME}:${RISTRA_SPACK_CONFIG_PASSWORD}@gitlab.lanl.gov/laristra/ristra-spack-configurations.git
+    - echo 'Spack Version:' ${LIBRISTRA_SPACK_HASH}
+    - git clone https://github.com/spack/spack.git
+    - cd spack && git checkout ${LIBRISTRA_SPACK_HASH} && cd ${CI_PROJECT_DIR}
+    - export SPACK_ARCH=`./spack/bin/spack arch`
+    - echo ${SPACK_ARCH}
+    - export ARCH_FOLDER_NAME="${SPACK_ARCH%%-*}"
+    - echo ${ARCH_FOLDER_NAME}
+    - mkdir -p ${CI_PROJECT_DIR}/spack/etc/spack/${ARCH_FOLDER_NAME}
+    - cp ${CI_PROJECT_DIR}/.gitlab-ci/config/*.yaml ${CI_PROJECT_DIR}/spack/etc/spack/${ARCH_FOLDER_NAME}/
+    - cp ${CI_PROJECT_DIR}/ristra-spack-configurations/Darwin/*.yaml ${CI_PROJECT_DIR}/spack/etc/spack/${ARCH_FOLDER_NAME}/
+    - . ${CI_PROJECT_DIR}/spack/share/spack/setup-env.sh
+    - spack repo add --scope site ${CI_PROJECT_DIR}/ristra_spackages/spack-repo
+    - spack repo add --scope site ${CI_PROJECT_DIR}/spack-repo
+    - spack repo list
+    - mkdir -p ${CI_PROJECT_DIR}/spack_env
+    - spack env create -d ${CI_PROJECT_DIR}/spack_env
+    - spack env activate -d ${CI_PROJECT_DIR}/spack_env
+    - export LIBRISTRA_CMD="spack install --show-log-on-error ${LIBRISTRA_SPACK_FULL_SPEC}"
+    - ( echo "$LIBRISTRA_CMD" && $LIBRISTRA_CMD )
+    - spack module tcl refresh -y
+    - spack env loads -r
+    - export modName="${CI_PROJECT_DIR}/spack_env/loads"
+    - sed -i "1s;^;module load python/${LIBRISTRA_PYTHON_VERSION}\n;" ${modName}
+    - sed -i "1s;^;module load gcc/${LIBRISTRA_GCC_VERSION}\n;" ${modName}
+    #- sed -i "1s;^;source ${CI_PROJECT_DIR}/spack/share/spack/setup-env.sh\n;" ${modName}
+    - sed -i "1s;^;#%Module\n;" ${modName}
+
+############
+# Env Jobs #
+############
+
+openmpi:
+  extends:
+    - .env
+  variables:
+    LIBRISTRA_BUILD_TYPE: "Debug"
+    LIBRISTRA_MPI_PROVIDER: "openmpi"
+
+mpich:
+  extends: openmpi
+  variables:
+    LIBRISTRA_MPI_PROVIDER: "mpich"
+
+update:
+  extends:
+    - openmpi
+    - .update_spackage
+  only:
+    refs:
+      - master
+    changes:
+      - spack-repo/*
+  artifacts:
+    paths:
+  allow_failure: true
+

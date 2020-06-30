@@ -1,0 +1,3 @@
+mirrors:
+  lanl: https://pe-serve.lanl.gov/spack-mirror
+  mirrors: file:///projects/ngc/private/ristra_module_gen/ristra_spack_mirrors/flecsalemm-deps-mirror

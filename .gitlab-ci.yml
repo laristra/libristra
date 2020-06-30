@@ -5,354 +5,58 @@
 stages:
   - Env
   - Build_n_Test
+  - Deploy
   - Trigger
 
-variables:
-  #CI_DEBUG_TRACE: "true"
-  GET_SOURCES_ATTEMPTS: 10
-  ARTIFACT_DOWNLOAD_ATTEMPTS: 10
-  RESTORE_CACHE_ATTEMPTS: 10
-  GIT_STRATEGY: fetch
-  GLOBAL_CI_VARIABLE: "global_ci_value"
-  http_proxy: "http://proxyout.lanl.gov:8080"
-  https_proxy: "http://proxyout.lanl.gov:8080"
-  ftp_proxy: "http://proxyout.lanl.gov:8080"
-  no_proxy: "lanl.gov"
-  GIT_SUBMODULE_STRATEGY: recursive
-  CCACHE_DIR: "${CI_PROJECT_DIR}/ccache"
-  CCACHE_UMASK: 000
-  DISTRO: "centOS"
-  LIBRISTRA_BUILD_TYPE: "Debug"
-  LIBRISTRA_SPACK_ROOT: /home/gitlab-runner/ci-spack/spack
-  LIBRISTRA_DEPS_LOCK: /home/gitlab-runner/ci-spack/deps.pid
-  #lock_fd: 314
-  LIBRISTRA_CI_JOB_NAME_NOSTAGE: ${CI_JOB_NAME#*:}
-  LIBRISTRA_MPI_PACKAGE: ""
-  LIBRISTRA_MPICH_VERSION: "3.2.1"
-  LIBRISTRA_OPENMPI_VERSION: "3.1.4"
-  LIBRISTRA_INTEL_VERSION: "19.0.2"
-  LIBRISTRA_CLANG_VERSION: "8.0.1"
-  LIBRISTRA_GCC_VERSION: "8.3.0"
-  LIBRISTRA_PYTHON_VERSION: "3.5.1"
-  LIBRISTRA_ENV_SOURCE_FILE: "${CI_PROJECT_DIR}/build/libristra-deps-${LIBRISTRA_MPI_PACKAGE}-${CI_COMMIT_REF_SLUG}-${CI_CONCURRENT_ID}.sh"
-  LIBRISTRA_SPACK_SCOPE: "lanl_ristra_libristra"
-  LIBRISTRA_SPACK_SPEC: "libristra%gcc@${LIBRISTRA_GCC_VERSION}"
-before_script:
-  - echo ${CI_JOB_NAME_NOSTAGE%.*}-${CI_COMMIT_REF_SLUG}
-  - '[ "$(git rev-parse origin/$CI_COMMIT_REF_NAME)" != "$CI_COMMIT_SHA" ] && curl --header "PRIVATE-TOKEN: $MY_CI_API_TOKEN" -X POST https://gitlab.lanl.gov/api/v4/projects/$CI_PROJECT_ID/pipelines/$CI_PIPELINE_ID/cancel'
-  #- find . -name "`basename cinch`" | grep "cinch\$" | xargs rm -fr
-  - export HOME=${CI_PROJECT_DIR}
-  - export TMPDIR=${CI_PROJECT_DIR}
-  - mkdir -p ${CI_PROJECT_DIR}/build
-  - module load gcc/${LIBRISTRA_GCC_VERSION}
-  - module load python/${LIBRISTRA_PYTHON_VERSION}
-  - echo ${LIBRISTRA_ENV_SOURCE_FILE}
-  - export LIBRISTRA_SPACK_FULL_SPEC="${LIBRISTRA_SPACK_SPEC} ^${LIBRISTRA_MPI_PACKAGE}@$([ ${LIBRISTRA_MPI_PACKAGE} == 'openmpi' ] && echo ${LIBRISTRA_OPENMPI_VERSION} || echo ${LIBRISTRA_MPICH_VERSION})%gcc@${LIBRISTRA_GCC_VERSION}"
-  - rm ${LIBRISTRA_ENV_SOURCE_FILE} || /bin/true
-  - . ${LIBRISTRA_SPACK_ROOT}/share/spack/setup-env.sh
-  - |
-    ( flock -e 200
-    spack repo rm ${LIBRISTRA_SPACK_SCOPE} || /bin/true ;
-    spack repo add ${CI_PROJECT_DIR}/spack-repo;
-    spack repo list;
-    echo ${LIBRISTRA_SPACK_FULL_SPEC};
-    spack module tcl loads --dependencies ${LIBRISTRA_SPACK_FULL_SPEC} | tee ${LIBRISTRA_ENV_SOURCE_FILE} || /bin/true;
-    spack repo rm ${LIBRISTRA_SPACK_SCOPE};
-    ) 200>${LIBRISTRA_DEPS_LOCK}
-  - source ${LIBRISTRA_ENV_SOURCE_FILE} || /bin/true
-  - |
-    if [[ ${CI_JOB_NAME} =~ "clang" ]];
-    then
-      module load clang/${LIBRISTRA_CLANG_VERSION};
-    elif [[ ${CI_JOB_NAME} =~ "intel" ]];
-    then
-      module load intel/${LIBRISTRA_INTEL_VERSION};
-    fi
-  - module list
-  - echo $CC;
-  - echo $CXX;
+include:
+  - .gitlab-ci/index.yaml
 
-##########################
-# Build Matrix Variables #
-##########################
+######################
+# Build_n_Test Stage #
+######################
 
-.runtime_mpi: &runtime_mpi
-  RUNTIME: "mpi"
-
-.runtime_legion: &runtime_legion
-  RUNTIME: "legion"
-
-.runtime_hpx: &runtime_hpx
-  RUNTIME: "hpx"
-
-.compiler_gcc: &compiler_gcc
-  CC: "gcc"
-  CXX: "g++"
-
-.compiler_clang: &compiler_clang
-  CC: "clang"
-  CXX: "clang++"
-
-.compiler_intel: &compiler_intel
-  CC: "icc"
-  CXX: "icpc"
-
-.buildtype_debug: &buildtype_debug
-  LIBRISTRA_BUILD_TYPE: "Debug"
-
-.buildtype_release: &buildtype_release
-  LIBRISTRA_BUILD_TYPE: "Release"
-
-.openmpi: &openmpi
-  LIBRISTRA_MPI_PACKAGE: "openmpi"
-
-.mpich: &mpich
-  LIBRISTRA_MPI_PACKAGE: "mpich"
-
-.ignore_noci: &ignore_noci
-  IGNORE_NOCI: "TRUE"
-
-#######################
-# Templates & Anchors #
-#######################
-
-.general_template: &general_def
-  retry: 1
-  only:
-    - merge_requests
-    - master
-
-.cache_template: &cache_def
-  cache:
-    #key: ${CI_JOB_NAME_NOSTAGE%.*}-${CI_COMMIT_REF_SLUG}
-    #key: ${CI_COMMIT_REF_SLUG}
-    key: ${DISTRO}-${RUNTIME}-${CC}
-    paths:
-      - ccache/
-
-.artifacts_template: &artifacts_def
-  artifacts:
-    name: "${CI_COMMIT_REF_SLUG}-${CI_JOB_NAME}"
-    paths:
-      - ${CI_PROJECT_DIR}/build #/builds/next-generation-codes/laristra/libristra/build
-    when: always
-    expire_in: 2 weeks
-  dependencies: []
-
-.shell_template: &shell_def
-  tags: &shell_tags
-    - shell
-
-.batch_template: &batch_def
-  tags: &batch_tags
-    - darwin-slurm
-
-.job_template: &job_def
-  <<: *general_def
-  <<: *cache_def
-
-.update_spackage: &update_spackage |-
-  echo 'Updating spackages...'
-  cd ${CI_PROJECT_DIR}
-  git clone git@gitlab.lanl.gov:laristra/ristra_spackages.git
-  for f in $(find ./spack-repo/packages/ -type f); do diff -urN ${CI_PROJECT_DIR}/ristra_spackages/$f $f | tee $f.patch || /bin/true; done
-  for f in $(find ./spack-repo/packages/ -type f -name "*.patch"); do patch -i $f ${CI_PROJECT_DIR}/ristra_spackages/${f%.*}; done
-  for f in $(find ./spack-repo/packages/ -type f -name "*.patch"); do rm $f; done
-  cd ${CI_PROJECT_DIR}/ristra_spackages
-  git add spack-repo/packages/*
-  git commit -m "Gitlab CI Automatic Spackage Update - Libristra" || /bin/true
-  git push -u origin master
-
-#############
-# Env Stage #
-#############
-
-.env_template: &env_def
-  <<: *job_def
-  stage: Env
-  script: &env_script
-    - |
-      if [[ ${I_WANT_TO_CLEAN_UP} ]];
-      then
-        rm -rf ${LIBRISTRA_SPACK_ROOT}/*;
-      fi
-    - |
-      ( flock -e 200
-      if [[ ! -d ${LIBRISTRA_SPACK_ROOT} ]];
-      then
-        git init --shared=group ${LIBRISTRA_SPACK_ROOT};
-        git -c ${LIBRISTRA_SPACK_ROOT} pull https://github.com/spack/spack develop;
-      fi;
-      source ${LIBRISTRA_SPACK_ROOT}/share/spack/setup-env.sh;
-      spack repo rm ${LIBRISTRA_SPACK_SCOPE} || /bin/true ;
-      spack repo add ${CI_PROJECT_DIR}/spack-repo;
-      spack repo list;
-      spack clean --all;
-      spack install --show-log-on-error ${LIBRISTRA_SPACK_SPEC} ^openmpi@${LIBRISTRA_OPENMPI_VERSION}%gcc@${LIBRISTRA_GCC_VERSION} | tee -a spack_tmp.out;
-      spack install --show-log-on-error ${LIBRISTRA_SPACK_SPEC} ^mpich@${LIBRISTRA_MPICH_VERSION}%gcc@${LIBRISTRA_GCC_VERSION} | tee -a spack_tmp.out;
-      spack repo rm ${LIBRISTRA_SPACK_SCOPE};
-      ) 200>${LIBRISTRA_DEPS_LOCK}
-    - $([ "$(grep -c "Errno " spack_tmp.out)" = "0" ] && exit 0 || exit 1)
-
-###############
-# Build Stage #
-###############
-
-.build: &build_def
-  <<: *job_def
-  #<<: *artifacts_def
+.build_n_test:
+  extends:
+    - .job
   stage: Build_n_Test
-  script: &build_script |-
-    echo 'Start building'
-    ccache -z
-    nproc
-    # git submodule init
-    # git config submodule.cinch.url https://github.com/laristra/cinch.git
-    # git submodule update --init --recursive
-    mkdir -p ${CI_PROJECT_DIR}/build
-    mkdir -p ${CI_PROJECT_DIR}/build/install
-    cd ${CI_PROJECT_DIR}/build/
-    cmake -DCMAKE_INSTALL_PREFIX=${CI_PROJECT_DIR}/build/install \
-        -DCMAKE_BUILD_TYPE=$LIBRISTRA_BUILD_TYPE \
-        -DENABLE_LUA=ON \
-        -DENABLE_UNIT_TESTS=ON \
-        ..
-    make -k -j2 -l40 || make VERBOSE=1
-    make install DESTDIR=${CI_PROJECT_DIR}/build/install
-    make install
-    ccache -s
-
-##############
-# Test Stage #
-##############
-
-.test: &test_def
-  <<: *job_def
-  stage: Test
-  dependencies:
-    #- "build:${CI_JOB_NAME#*:}"
-    - .build_template
-  script: &test_script |-
-    echo 'Start testing'
-    cd ${CI_PROJECT_DIR}/build/
-    make test ARGS="CTEST_OUTPUT_ON_FAILURE=1" || make test ARGS="-V"
-    #gcovr .
-
-############
-# Env Jobs #
-############
-
-env_mpi:
-  extends: .env_template
-  <<: *shell_def
-  variables:
-    <<: *runtime_mpi
-    <<: *buildtype_debug
-    <<: *compiler_gcc
-
-env_update:
-  extends: env_mpi
-  only:
-    refs:
-      - master
   script:
-    - *update_spackage
-  allow_failure: true
-
-##############
-# Build Jobs #
-##############
-
-.build:centOS_mpi:
-  extends: .build
-  <<: *shell_def
-  variables:
-    <<: *runtime_mpi
-    <<: *buildtype_debug
-    <<: *compiler_gcc
-    <<: *openmpi
-  script:
-    - *build_script
-    - *test_script
-
-build:centOS_mpi_release:
-  extends: .build:centOS_mpi
-  variables:
-    <<: *buildtype_release
-
-build:centOS_mpi_clang:
-  extends: .build:centOS_mpi
-  variables:
-    <<: *compiler_clang
-
-.build:centOS_mpi_clang_release:
-  extends: build:centOS_mpi_clang
-  variables:
-    <<: *buildtype_release
-
-build:centOS_mpi_intel:
-  extends: .build:centOS_mpi
-  variables:
-    <<: *compiler_intel
-  allow_failure: true
-
-.build:centOS_mpi_intel_release:
-  extends: build:centOS_mpi_intel
-  variables:
-    <<: *buildtype_release
-
-build:centOS_mpich_mpi:
-  extends: .build
-  <<: *shell_def
-  variables:
-    <<: *runtime_mpi
-    <<: *buildtype_debug
-    <<: *compiler_gcc
-    <<: *mpich
-  script:
-    - *build_script
-    - *test_script
-
-.build:centOS_mpich_mpi_release:
-  extends: build:centOS_mpich_mpi
-  variables:
-    <<: *buildtype_release
-
-.build:centOS_mpich_mpi_clang:
-  extends: build:centOS_mpich_mpi
-  variables:
-    <<: *compiler_clang
-
-build:centOS_mpich_mpi_clang_release:
-  extends: .build:centOS_mpich_mpi_clang
-  variables:
-    <<: *buildtype_release
-
-.build:centOS_mpich_mpi_intel:
-  extends: build:centOS_mpich_mpi
-  variables:
-    <<: *compiler_intel
-  allow_failure: true
-
-build:centOS_mpich_mpi_intel_release:
-  extends: .build:centOS_mpich_mpi_intel
-  variables:
-    <<: *buildtype_release
+    - module purge
+    - module use ${CI_PROJECT_DIR}/spack_env
+    - module load loads # module load compiler, deps, etc.
+    - |
+      if [[ ${CI_JOB_NAME} =~ "clang" ]];
+      then
+        module load clang/${LIBRISTRA_CLANG_VERSION};
+      elif [[ ${CI_JOB_NAME} =~ "intel" ]];
+      then
+        module load intel/${LIBRISTRA_INTEL_VERSION};
+      fi
+    - module list
+    - echo $CC
+    - echo $CXX
+    - mpiexec --version
+    - nproc
+    - echo 'Start building'
+    - mkdir -p ${CI_PROJECT_DIR}/build
+    - mkdir -p ${CI_PROJECT_DIR}/build/install
+    - cd ${CI_PROJECT_DIR}/build/
+    - echo ${LIBRISTRA_BUILD_TYPE}
+    #- ccache -z
+    - |
+      cmake -DCMAKE_INSTALL_PREFIX=${CI_PROJECT_DIR}/build/install \
+            -DCMAKE_BUILD_TYPE=$LIBRISTRA_BUILD_TYPE \
+            -DENABLE_UNIT_TESTS=ON \
+            -DENABLE_LUA=ON \
+            ..
+    - make -k -j2 -l40 || make VERBOSE=1
+    - make install DESTDIR=${CI_PROJECT_DIR}/build/install
+    - make install
+    #- ccache -s
+    - echo 'Start testing'
+    - cd ${CI_PROJECT_DIR}/build/
+    - make test ARGS="CTEST_OUTPUT_ON_FAILURE=1" || make test ARGS="-V"
+    #- gcovr .
 
 #######################################################################################
 #######################################################################################
 #######################################################################################
-
-flecsale-mm:
-  stage: "Trigger"
-  only:
-    - merge_requests
-    - master
-  variables:
-    UPSTREAM_REPO: "ristra"
-    UPSTREAM_BRANCH: $CI_COMMIT_REF_NAME
-    UPSTREAM_URL: $CI_PROJECT_URL
-  trigger:
-    project: laristra/flecsale-mm
-    branch: master
-    strategy: depend
