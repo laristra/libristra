@@ -518,46 +518,21 @@ inline vtkSmartPointer<vtkUnstructuredGrid> populate_mm(
     static int count = 0;
   	for (int i=0; i<varname.size(); ++i)
     {
-    	//std::stringstream outputData;
+		int strLength = varname[i].length();
+		if (varname[i][strLength-2] == '_')
+		{
+			if (varname[i][strLength-1] == '0')
+				if (varname[i+1][strLength-1] == '1')
+					if (varname[i+2][strLength-1] == '2')
+					{
+						temp.addVectorData(varname[i].c_str(), m.num_cells(), 1, &var_vec[i][0], &var_vec[i+1][0], &var_vec[i+2][0]);
+						i = i+2;
+						continue;
+					}
+		}
 
-        size_t cid = 0;
-        //std::vector<ex_real_t> tmp(m.num_cells()); 
 
-        //const T& f = *var_vec[i];
-        std::vector<float> data;
-        int numCells = 0;
-        for(auto c: m.cells())
-        {
-            //tmp[cid++] = f(c);
-            //data.push_back(f(c));
-
-			data.push_back( var_vec[i][numCells] );
-
-            //outputData << std::to_string( f(c) ) << "\n";
-
-            numCells++;
-        }
-
-		/*
-		for(auto c: m.cells())
-        {
-            tmp[cid++] = f(c);
-            data.push_back(f(c));
-
-            outputData << std::to_string( f(c) ) << "\n";
-
-            numCells++;
-
-        }
-		*/
-        int var_id(i+1);
-        
-		//template <typename T> void addScalarData(std::string scalarName, int numPoints, int type, T *data);
-        temp.addScalarData(varname[i].c_str(), numCells, 1, &data[0]);
-
-        // // Test
-        // std::string filename = "/home/pascal/Desktop/_" + std::to_string(i) +  "_" + varname[i] +  "_ts_" + std::to_string(count);
-        // outputFile(filename,outputData.str());
+		temp.addScalarData(varname[i].c_str(), m.num_cells(), 1, &var_vec[i][0]);
     }
     count++;
 
