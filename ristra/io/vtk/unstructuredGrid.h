@@ -23,6 +23,7 @@
 #include <vtkMPIController.h>
 #include <vtkPointData.h>
 
+
 namespace ristra {
 namespace io {
 namespace vtk {
@@ -81,9 +82,12 @@ class UnstructuredGrid
 
 	// Data
 	template <typename T> void addVectorData(std::string varName, int numPoints, int type, T *data1, T *data2, T *data3);
-	template <typename T> void addScalarData(std::string scalarName, int numPoints, int type, T *data);
 	template <typename T> void addVectorData(std::string scalarName, int numPoints, int numComponents, int type, T *data);
 	template <typename T> void addFieldData(std::string fieldName, T *data);
+
+	template <typename T> void addScalarData(std::string varName, T *data, size_t numPoints, int type);
+	template <typename T> void addVectorData(std::string varName, std::vector< std::vector<T> > data, size_t numPoints, int type);
+	template <typename T> void addTensorData(std::string varName, std::vector< std::vector<T> > data, size_t numPoints, int type);
 
 
 	// Writing
@@ -134,6 +138,13 @@ inline UnstructuredGrid::UnstructuredGrid(int _myRank, int _numRanks)
 
   	myRank = _myRank;
   	numRanks = _numRanks;
+
+	numOfPoints = 0;
+  	numOfCells = 0;
+
+  	parallelOn = 1;
+
+	putenv("VTK_SILENCE_GET_VOID_POINTER_WARNINGS=1");
 }
 
 
@@ -293,44 +304,7 @@ inline void UnstructuredGrid::addFieldData(std::string fieldName, T *data)
   	temp->Delete();
 }
 
-//GetCellData()->Add Array garbage data
-//https://public.kitware.com/pipermail/paraview-developers/2016-September/004665.html
-//
-// Data
-template <typename T>
-inline void UnstructuredGrid::addScalarData(std::string varName, int numPoints, int type, T *data)
-{
-	vtkSOADataArrayTemplate<T>* temp = vtkSOADataArrayTemplate<T>::New();
 
-  	temp->SetNumberOfComponents(1);
-  	temp->SetName(varName.c_str());
-
-
-  	// DOES NOT WORk!!!!
-  	// temp->SetArray(0, data, numPoints, 1, true); // DOES NOT WORk!!!!
-
-  	// Works
-   	for(int i=0; i<numPoints; i++)
-	 	temp->InsertNextValue(data[i]);
-
-
-  	if (type == 0) // point
-  		uGrid->GetPointData()->AddArray(temp);
-  	else
-  		uGrid->GetCellData()->AddArray(temp);
-}
-
-/*
-vtkFloatArray* velocity = vtkFloatArray::New();
-    velocity->SetName("Velocity");
-    velocity->SetNumberOfComponents(3);
-    velocity->SetNumberOfTuples(nx*ny*nz);
-    for(int i=0;i<mesh.nn;i++){
-       velocity->SetTuple3(i,10, 10, 10); // set everything to 10
-    }
-   rgrid->GetPointData()->AddArray(velocity);
-
-*/
 
 template <typename T>
 inline void UnstructuredGrid::addVectorData(std::string varName, int numPoints, int type, T *data1, T *data2, T *data3)
@@ -355,6 +329,76 @@ inline void UnstructuredGrid::addVectorData(std::string varName, int numPoints, 
   	else
   		uGrid->GetCellData()->AddArray(temp);
 }
+
+
+
+
+//GetCellData()->Add Array garbage data
+//https://public.kitware.com/pipermail/paraview-developers/2016-September/004665.html
+//
+// Data
+template <typename T>
+inline void UnstructuredGrid::addScalarData(std::string varName, T *data, size_t numElements, int discretization)
+{
+	vtkSOADataArrayTemplate<T>* temp = vtkSOADataArrayTemplate<T>::New();
+
+  	temp->SetNumberOfComponents(1);
+  	temp->SetName(varName.c_str());
+
+
+  	// DOES NOT WORk!!!!
+  	// temp->SetArray(0, data, numElements, 1, true); // DOES NOT WORk!!!!
+
+  	// Works
+   	for(size_t i=0; i<numElements; i++)
+	 	temp->InsertNextValue(data[i]);
+
+
+  	if (discretization == 0) // point
+  		uGrid->GetPointData()->AddArray(temp);
+  	else
+  		uGrid->GetCellData()->AddArray(temp);
+}
+
+
+template <typename T>
+inline void UnstructuredGrid::addVectorData(std::string varName, std::vector< std::vector<T> > data, size_t numElements, int discretization)
+{
+	vtkSOADataArrayTemplate<T>* temp = vtkSOADataArrayTemplate<T>::New();
+
+  	temp->SetNumberOfComponents( data.size() );
+  	temp->SetName(varName.c_str());
+
+  	for (size_t i=0; i<numElements; i++)
+		for (int n=0; n<data.size(); n++)
+			temp->InsertNextValue(data[n][i]);
+
+  	if (discretization == 0) // point
+  		uGrid->GetPointData()->AddArray(temp);
+  	else
+  		uGrid->GetCellData()->AddArray(temp);
+}
+
+
+template <typename T>
+inline void UnstructuredGrid::addTensorData(std::string varName, std::vector< std::vector<T> > data, size_t numElements, int discretization)
+{
+	vtkSOADataArrayTemplate<T>* temp = vtkSOADataArrayTemplate<T>::New();
+
+  	temp->SetNumberOfComponents( data.size() );
+  	temp->SetName(varName.c_str());
+
+	for (size_t i=0; i<numElements; i++)
+		for (int n=0; n<data.size(); n++)
+			temp->InsertNextValue(data[n][i]);
+
+  	if (discretization == 0) // point
+  		uGrid->GetPointData()->AddArray(temp);
+  	else
+  		uGrid->GetCellData()->AddArray(temp);
+}
+
+
 
 
 template <typename T>
@@ -396,7 +440,6 @@ inline void UnstructuredGrid::write(std::string fileName, int parallel)
 {
 	std::string outputFilename;
 
-	
 
 	if (parallel == 1)
 	{
@@ -442,6 +485,50 @@ inline void UnstructuredGrid::write(std::string fileName, int parallel)
 		serialwriter->Write();
 
 	}
+}
+
+
+// Data
+template <typename T>
+inline void addScalarData(std::string varName, T *data, size_t numPoints, int type, vtkSmartPointer<vtkUnstructuredGrid> & uGrid)
+{
+	vtkSOADataArrayTemplate<T>* temp = vtkSOADataArrayTemplate<T>::New();
+
+  	temp->SetNumberOfComponents(1);
+  	temp->SetName(varName.c_str());
+
+
+  	// DOES NOT WORk!!!!
+  	// temp->SetArray(0, data, numPoints, 1, true); // DOES NOT WORk!!!!
+
+  	// Works
+   	for(size_t i=0; i<numPoints; i++)
+	 	temp->InsertNextValue(data[i]);
+
+
+  	if (type == 0) // point
+  		uGrid->GetPointData()->AddArray(temp);
+  	else
+  		uGrid->GetCellData()->AddArray(temp);
+}
+
+
+template <typename T>
+inline void addTensorData(std::string varName, std::vector< std::vector<T> > data, size_t numPoints, int type, vtkSmartPointer<vtkUnstructuredGrid> & uGrid)
+{
+	vtkSOADataArrayTemplate<T>* temp = vtkSOADataArrayTemplate<T>::New();
+
+  	temp->SetNumberOfComponents( data.size() );
+  	temp->SetName(varName.c_str());
+
+	for (size_t i=0; i<numPoints; i++)
+		for (int n=0; n<data.size(); n++)
+			temp->InsertNextValue(data[n][i]);
+
+  	if (type == 0) // point
+  		uGrid->GetPointData()->AddArray(temp);
+  	else
+  		uGrid->GetCellData()->AddArray(temp);
 }
 
 
