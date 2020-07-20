@@ -91,14 +91,6 @@ if(RISTRA_ENABLE_LUA)
 endif ()
 
 #------------------------------------------------------------------------------#
-# GoogleTest
-#------------------------------------------------------------------------------#
-
-if(ENABLE_UNIT_TESTS)
-  find_package(GTest REQUIRED)
-endif()
-
-#------------------------------------------------------------------------------#
 # Boost
 #
 # Note that this find package only sets the header information. To find
@@ -149,18 +141,11 @@ endif()
 #------------------------------------------------------------------------------#
 # Google test
 #------------------------------------------------------------------------------#
-option(RISTRA_ENABLE_UNIT_TESTS "Enable unit testing" OFF)
+option(ENABLE_UNIT_TESTS "Enable unit testing" OFF)
 
-set( GTEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/gtest )
-file(GLOB _gtest_contents ${GTEST_DIR}/*)
-
-if (RISTRA_ENABLE_UNIT_TESTS)
+if (ENABLE_UNIT_TESTS)
   enable_testing()
-  if (_gtest_contents)
-    add_subdirectory( ${GTEST_DIR} )
-  else()
-    find_package(GTest REQUIRED)
-  endif()
+  find_package(GTest REQUIRED)
 endif()
 
 #------------------------------------------------------------------------------#
