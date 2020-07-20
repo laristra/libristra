@@ -10,11 +10,6 @@ if (RISTRA_ENABLE_LUA)
     LIBRARIES Ristra )
 endif()
 
-ristra_add_unit( ristra_lua_utils
-  SOURCES test/lua_utils.cc
-  INPUTS test/lua_test.lua test/mock_box_2d.lua
-  LIBRARIES Ristra )
-
 if(RISTRA_ENABLE_PYTHON)
   ristra_add_unit( ristra_python_utils
     SOURCES test/python_utils.cc 
