@@ -19,8 +19,12 @@ class Libristra(CMakePackage):
             description='The build type to build', multi=False)
     variant('paraview', default=False,
             description='Enable ParaView')
+    variant('cinch', default=True,
+            description='Enable External Cinch')
+
 
     depends_on('cmake@3.12:')
+    depends_on('cinch@1.01:', type='build', when='+cinch')
     depends_on('mpi')
     depends_on('boost@1.70.0: cxxstd=14 +program_options')
     depends_on('lua@5.3.5')
