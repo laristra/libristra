@@ -12,6 +12,9 @@
 #include <memory>
 #include <vector>
 
+// header required for std::function
+#include <functional>
+
 using namespace ristra::utils;
 
 struct A {
