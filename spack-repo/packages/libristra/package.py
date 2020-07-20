@@ -30,6 +30,9 @@ class Libristra(CMakePackage):
     depends_on('lua@5.3.5')
     # TODO: might want to move paraview out of libristra
     depends_on('paraview', when='+paraview')
+    # We explicitly depend on gtest and can no longer rely on others for it
+    depends_on('googletest@1.8.1+gmock')
+
 
     def cmake_args(self):
         spec = self.spec
