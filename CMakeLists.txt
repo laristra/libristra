@@ -148,6 +148,17 @@ if (ENABLE_UNIT_TESTS)
   find_package(GTest REQUIRED)
 endif()
 
+find_package(Caliper)
+option(RISTRA_ENABLE_CALIPER "Enable Caliper Support" ${Caliper_FOUND})
+
+if(RISTRA_ENABLE_CALIPER AND NOT Caliper_FOUND)
+  message(FATAL_ERROR "Caliper requested, but not found")
+endif()
+
+if(RISTRA_ENABLE_CALIPER)
+  list( APPEND RISTRA_LIBRARIES ${Caliper_LIBRARIES})
+endif()
+
 #------------------------------------------------------------------------------#
 # Legion / MPI
 #------------------------------------------------------------------------------#

@@ -5,9 +5,11 @@
 
 ristra_add_unit( ristra_array_view SOURCES test/array_view.cc LIBRARIES Ristra )
 
-ristra_add_unit( ristra_caliper
-  SOURCES test/caliper.cc
-  LIBRARIES Ristra ${Caliper_LIBRARIES} )
+if(RISTRA_ENABLE_CALIPER)
+  ristra_add_unit( ristra_caliper
+    SOURCES test/caliper.cc
+    LIBRARIES Ristra ${Caliper_LIBRARIES} )
+endif()
 
 ristra_add_unit( ristra_fixed_vector SOURCES test/fixed_vector.cc LIBRARIES Ristra)
 
