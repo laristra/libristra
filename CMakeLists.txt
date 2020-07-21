@@ -141,13 +141,16 @@ endif()
 #------------------------------------------------------------------------------#
 # Google test
 #------------------------------------------------------------------------------#
-option(ENABLE_UNIT_TESTS "Enable unit testing" OFF)
+option(RISTRA_ENABLE_UNIT_TESTS "Enable unit testing" ${ENABLE_UNIT_TESTS})
 
-if (ENABLE_UNIT_TESTS)
+if (RISTRA_ENABLE_UNIT_TESTS)
   enable_testing()
   find_package(GTest REQUIRED)
 endif()
 
+#------------------------------------------------------------------------------#
+# Caliper
+#------------------------------------------------------------------------------#
 find_package(Caliper)
 option(RISTRA_ENABLE_CALIPER "Enable Caliper Support" ${Caliper_FOUND})
 
