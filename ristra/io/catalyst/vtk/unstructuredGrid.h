@@ -120,7 +120,8 @@ inline UnstructuredGrid::UnstructuredGrid()
 
   	parallelOn = 1;
 
-	putenv("VTK_SILENCE_GET_VOID_POINTER_WARNINGS=1");
+	char * vtkWarning = (char*)"VTK_SILENCE_GET_VOID_POINTER_WARNINGS=1";
+	putenv(vtkWarning);
 }
 
 
@@ -144,7 +145,8 @@ inline UnstructuredGrid::UnstructuredGrid(int _myRank, int _numRanks)
 
   	parallelOn = 1;
 
-	putenv("VTK_SILENCE_GET_VOID_POINTER_WARNINGS=1");
+	char * vtkWarning = (char*)"VTK_SILENCE_GET_VOID_POINTER_WARNINGS=1";
+	putenv(vtkWarning);
 }
 
 
@@ -490,7 +492,7 @@ inline void UnstructuredGrid::write(std::string fileName, int parallel)
 
 // Data
 template <typename T>
-inline void addScalarData(std::string varName, T *data, size_t numPoints, int type, vtkSmartPointer<vtkUnstructuredGrid> & uGrid)
+inline void setScalarData(std::string varName, T *data, size_t numPoints, int type, vtkSmartPointer<vtkUnstructuredGrid> & uGrid)
 {
 	vtkSOADataArrayTemplate<T>* temp = vtkSOADataArrayTemplate<T>::New();
 
@@ -514,7 +516,7 @@ inline void addScalarData(std::string varName, T *data, size_t numPoints, int ty
 
 
 template <typename T>
-inline void addTensorData(std::string varName, std::vector< std::vector<T> > data, size_t numPoints, int type, vtkSmartPointer<vtkUnstructuredGrid> & uGrid)
+inline void setVectorData(std::string varName, std::vector< std::vector<T> > data, size_t numPoints, int type, vtkSmartPointer<vtkUnstructuredGrid> & uGrid)
 {
 	vtkSOADataArrayTemplate<T>* temp = vtkSOADataArrayTemplate<T>::New();
 
@@ -526,7 +528,26 @@ inline void addTensorData(std::string varName, std::vector< std::vector<T> > dat
 			temp->InsertNextValue(data[n][i]);
 
   	if (type == 0) // point
-  		uGrid->GetPointData()->AddArray(temp);
+  		uGrid->GetPointData()->AddArray(temp);	//SetVectors(temp)
+  	else
+  		uGrid->GetCellData()->AddArray(temp);
+}
+
+
+template <typename T>
+inline void setTensorData(std::string varName, std::vector< std::vector<T> > data, size_t numPoints, int type, vtkSmartPointer<vtkUnstructuredGrid> & uGrid)
+{
+	vtkSOADataArrayTemplate<T>* temp = vtkSOADataArrayTemplate<T>::New();
+
+  	temp->SetNumberOfComponents( data.size() );
+  	temp->SetName(varName.c_str());
+
+	for (size_t i=0; i<numPoints; i++)
+		for (int n=0; n<data.size(); n++)
+			temp->InsertNextValue(data[n][i]);
+
+  	if (type == 0) // point
+  		uGrid->GetPointData()->AddArray(temp);	//SetTensors(temp)
   	else
   		uGrid->GetCellData()->AddArray(temp);
 }
@@ -597,4 +618,4 @@ inline void writeUnstructuredGrid(std::string fileName,
 } // end of io namespace
 } // end of ristra namespace
 
-#endif
+#endif //RISTRA_ENABLE_CATALYST

@@ -5,15 +5,18 @@
 
 set(io_HEADERS
   catalyst/adaptor.h
-  vtk.h
-  write_binary.h
-  utils.h
+  catalyst/vtk/unstructuredGrid.h 
+  catalyst/flecsale_unstructuredGrid.h
+  #utils.h
+  #vtk.h
+  #write_binary.h
+  
 
   PARENT_SCOPE
 )
 
 set(io_SOURCES
-  vtk.cc
+  #vtk.cc
   PARENT_SCOPE
 )
 

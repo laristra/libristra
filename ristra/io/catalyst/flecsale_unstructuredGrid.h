@@ -5,7 +5,7 @@
 // user includes
 #include <flecsi/topology/mesh_utils.h>
 #include <ristra/utils/time_utils.h>
-#include <ristra/io/vtk/unstructuredGrid.h>
+#include <ristra/io/catalyst/vtk/unstructuredGrid.h>
 
 
 // system includes
@@ -34,6 +34,7 @@
 
 namespace ristra {
 namespace io {
+namespace catalyst {
 
 //using namespace apps::hydro;
 
@@ -344,30 +345,12 @@ inline vtkSmartPointer<vtkUnstructuredGrid> populate(
     static int count = 0;
   	for (int i=0; i<var_vec.size(); ++i)
     {
-    	//std::stringstream outputData;
-
-        //size_t cid = 0;
-        //std::vector<ex_real_t> tmp(m.num_cells()); 
-
         const T& f = *var_vec[i];
         std::vector<float> data;
-        //int numCells = 0;
         for(auto c: m.cells())
-        {
-            //tmp[cid++] = f(c);
             data.push_back(f(c));
-
-            //outputData << std::to_string( f(c) ) << "\n";
-
-            //numCells++;
-        }
-        //int var_id(i+1);
         
 		temp.addScalarData(varname[i].c_str(), &data[0], m.num_cells(), 1);
-
-        // // Test
-        // std::string filename = "/home/pascal/Desktop/_" + std::to_string(i) +  "_" + varname[i] +  "_ts_" + std::to_string(count);
-        // outputFile(filename,outputData.str());
     }
     count++;
 
@@ -547,7 +530,14 @@ template< typename T >
 inline void addScalar(T* data, std::string varname, vtkSmartPointer<vtkUnstructuredGrid> & uGrid, size_t numElements, int discretization=1)
 {
 	// discretization: cell based (1) or vextex based(0)
-	ristra::io::vtk::addScalarData(varname, &data[0], numElements, discretization, uGrid);
+	ristra::io::vtk::setScalarData(varname, &data[0], numElements, discretization, uGrid);
+}
+
+template< typename T >
+inline void addVector(std::vector< std::vector<T> > data, std::string varname, vtkSmartPointer<vtkUnstructuredGrid> & uGrid, size_t numElements, int discretization=1)
+{
+	// discretization: cell based (1) or vextex based(0)
+	ristra::io::vtk::setVectorData(varname, data, numElements, discretization, uGrid);
 }
 
 
@@ -555,7 +545,7 @@ template< typename T >
 inline void addTensor(std::vector< std::vector<T> > data, std::string varname, vtkSmartPointer<vtkUnstructuredGrid> & uGrid, size_t numElements, int discretization=1)
 {
 	// discretization: cell based (1) or vextex based(0)
-	ristra::io::vtk::addTensorData(varname, data, numElements, discretization, uGrid);
+	ristra::io::vtk::setTensorData(varname, data, numElements, discretization, uGrid);
 }
 
 
@@ -690,11 +680,11 @@ inline vtkSmartPointer<vtkUnstructuredGrid> createMesh(mesh_t &m)
 }
 
 
-
+} // end of catalyst namespace
 } // end of io namespace
 } // end of ristra namespace
 
 //} // end of interface
-#endif
+#endif //RISTRA_ENABLE_CATALYST
 
 

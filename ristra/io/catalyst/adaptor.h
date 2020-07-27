@@ -172,4 +172,4 @@ public:
 } // end of Catalyst namespace
 
 
-#endif // RISTRA_ENABLE_CATALYST
+#endif //RISTRA_ENABLE_CATALYST
