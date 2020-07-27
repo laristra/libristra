@@ -22,6 +22,7 @@ set(utils_HEADERS
   static_for.h
   string_utils.h
   static_warning.h
+  target.h
   tasks.h
   template_helpers.h
   time_utils.h
