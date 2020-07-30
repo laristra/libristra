@@ -79,7 +79,7 @@ update:
     refs:
       - master
     changes:
-      - spack-repo/*
+      - spack-repo/
   artifacts:
     paths:
   allow_failure: true
