@@ -71,7 +71,7 @@ mpich:
   variables:
     LIBRISTRA_MPI_PROVIDER: "mpich"
 
-update:
+.update:
   extends:
     - openmpi
     - .update_spackage
