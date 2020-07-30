@@ -26,7 +26,7 @@ class Libristra(CMakePackage):
     # Requires cinch > 1.0 due to cinchlog installation issue
     depends_on('cinch@1.01:', type='build', when='+cinch')
     depends_on('mpi')
-    depends_on('boost@1.70.0: cxxstd=14 +program_options')
+    depends_on('boost@1.70.0: cxxstd=17 +program_options')
     depends_on('lua@5.3.5')
     # TODO: might want to move paraview out of libristra
     depends_on('paraview', when='+paraview')
