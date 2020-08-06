@@ -12,6 +12,7 @@
       - master
       - merge_requests
       - schedules
+  except:
   artifacts:
     paths:
       - ${CI_PROJECT_DIR}/spack #/builds/next-generation-codes/laristra/flecsale-mm/spack
