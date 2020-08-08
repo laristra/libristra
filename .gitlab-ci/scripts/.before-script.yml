@@ -13,3 +13,9 @@ before_script:
     else
       export LIBRISTRA_SPACK_FULL_SPEC="${LIBRISTRA_SPACK_SPEC} ^${LIBRISTRA_MPI_PROVIDER}@${LIBRISTRA_MPICH_VERSION}%gcc@${LIBRISTRA_GCC_VERSION} ${LIBRISTRA_MPICH_SPEC}";
     fi
+  - |
+    if [[ -d ${CI_PROJECT_DIR}/spack ]];
+    then
+      spack reindex;
+      spack module tcl refresh -y;
+    fi
