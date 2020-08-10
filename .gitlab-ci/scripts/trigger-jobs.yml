@@ -11,4 +11,3 @@ flecsale-mm:
     project: laristra/flecsale-mm
     branch: master
     strategy: depend
-
