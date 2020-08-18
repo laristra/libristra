@@ -3,16 +3,14 @@
 # All rights reserved.
 #~----------------------------------------------------------------------------~#
 
-ristra_add_unit( ristra_array_view SOURCES test/array_view.cc LIBRARIES Ristra )
-
 if(RISTRA_ENABLE_CALIPER)
   ristra_add_unit( ristra_caliper
     SOURCES test/caliper.cc
     LIBRARIES Ristra ${Caliper_LIBRARIES} )
 endif()
 
+#ristra_add_unit( ristra_array_view SOURCES test/array_view.cc LIBRARIES Ristra )
 ristra_add_unit( ristra_fixed_vector SOURCES test/fixed_vector.cc LIBRARIES Ristra)
-
 ristra_add_unit( ristra_static_for SOURCES test/static_for.cc LIBRARIES Ristra)
 ristra_add_unit( ristra_tasks SOURCES test/tasks.cc LIBRARIES Ristra)
 ristra_add_unit( ristra_tuple_for_each SOURCES test/tuple_for_each.cc LIBRARIES Ristra)
