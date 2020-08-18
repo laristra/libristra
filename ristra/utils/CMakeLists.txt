@@ -37,7 +37,7 @@ set(utils_HEADERS
   PARENT_SCOPE # THIS NEEDS TO BE HERE
 )
 
-cinch_add_unit( ristra_array_view SOURCES test/array_view.cc )
+#cinch_add_unit( ristra_array_view SOURCES test/array_view.cc )
 
 cinch_add_unit( ristra_caliper
   SOURCES test/caliper.cc
