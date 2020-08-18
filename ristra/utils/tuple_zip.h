@@ -13,7 +13,7 @@
 
 
 // user includes
-#include "detail/tuple_zip_impl.h"
+#include "tuple_zip_impl.h"
 
 namespace ristra {
 namespace utils {

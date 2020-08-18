@@ -19,24 +19,20 @@ class Libristra(CMakePackage):
             description='The build type to build', multi=False)
     variant('paraview', default=False,
             description='Enable ParaView')
-    variant('cinch', default=True,
-            description='Enable External Cinch')
 
     depends_on('cmake@3.12:')
-    # Requires cinch > 1.0 due to cinchlog installation issue
-    depends_on('cinch@1.01:', type='build', when='+cinch')
     depends_on('mpi')
     depends_on('boost@1.70.0: cxxstd=17 +program_options')
     depends_on('lua@5.3.5')
     # TODO: might want to move paraview out of libristra
     depends_on('paraview', when='+paraview')
+    # We explicitly depend on gtest and can no longer rely on others for it
+    depends_on('googletest@1.8.1+gmock')
+
 
     def cmake_args(self):
         spec = self.spec
         options = ['-DENABLE_LUA=ON']
-        
-        if '+cinch' in spec:
-            options.append('-DCINCH_SOURCE_DIR=' + spec['cinch'].prefix)
 
         if self.run_tests:
             options.append('-DENABLE_UNIT_TESTS=ON')

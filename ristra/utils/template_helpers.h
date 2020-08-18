@@ -10,7 +10,7 @@
 #pragma once
 
 // user includes 
-#include "ristra/utils/detail/template_helpers_impl.h"
+#include "ristra/utils/template_helpers_impl.h"
 
 // system includes
 #include <functional>

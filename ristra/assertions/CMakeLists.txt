@@ -3,35 +3,22 @@
 # All rights reserved.
 #~----------------------------------------------------------------------------~#
 
-set(assertions_HEADERS
-  dbc.h
-  detail/dbc_impl.h
-  errors.h
-  exceptions.h
-  here.h
+target_sources( Ristra PRIVATE  ${CMAKE_CURRENT_SOURCE_DIR}/dbc_impl.cc )
 
-  PARENT_SCOPE # THIS NEEDS TO BE HERE
-)
-
-set(assertions_SOURCES
-  detail/dbc_impl.cc
-  PARENT_SCOPE
-)
-
-cinch_add_unit( dbc_notify
+ristra_add_unit( dbc_notify
   SOURCES
     test/dbc_test_notify.cc
   LIBRARIES Ristra
 )
 
-cinch_add_unit( dbc_no_assert
+ristra_add_unit( dbc_no_assert
   SOURCES
     test/dbc_test_no_assert.cc
   LIBRARIES Ristra
 )
 
 
-cinch_add_unit( dbc
+ristra_add_unit( dbc
   SOURCES
     test/dbc_test.cc
     test/dbc_test_no_assert.cc

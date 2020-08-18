@@ -10,7 +10,7 @@
 
 // user includes
 #include "ristra/utils/type_traits.h"
-#include "detail/area_impl.h"
+#include "area_impl.h"
 
 namespace ristra {
 namespace geometry {

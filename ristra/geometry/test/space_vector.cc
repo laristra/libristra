@@ -12,7 +12,7 @@
  * All rights reserved
  *~--------------------------------------------------------------------------~*/
 
-#include <cinchtest.h>
+#include <gtest/gtest.h>
 
 #include "ristra/geometry/space_vector.h"
 

@@ -3,10 +3,10 @@
 // May 08, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
-#include<ristra-config.h>
+#include<ristra/ristra-config.h>
 
 #include "ristra/initialization/input_engine.h"
-#include "cinchtest.h"
+#include "gtest/gtest.h"
 // #include "ristra/flecsale-vector.h"
 #include <array>
 #include "test_input_hard_coded_problems.h"

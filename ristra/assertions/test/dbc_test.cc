@@ -7,8 +7,8 @@
  * DBC turned on.
  */
 
-#include "cinchtest.h"
-#include<ristra-config.h>
+#include <gtest/gtest.h>
+#include <ristra/ristra-config.h>
 #include <set>
 
 /* Test will take control of the test environment */

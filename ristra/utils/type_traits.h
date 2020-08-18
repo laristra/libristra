@@ -10,7 +10,7 @@
 #pragma once
 
 // user includes
-#include "detail/type_traits_impl.h"
+#include "type_traits_impl.h"
 
 // system inculdes
 #include <cxxabi.h> // works for clang 3.9.0, reported ok for GCC

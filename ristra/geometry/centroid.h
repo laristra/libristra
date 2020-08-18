@@ -12,7 +12,7 @@
 // user includes
 #include "ristra/assertions/errors.h"
 #include "ristra/utils/type_traits.h"
-#include "detail/centroid_impl.h"
+#include "centroid_impl.h"
 
 
 namespace ristra {

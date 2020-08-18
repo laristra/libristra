@@ -3,8 +3,8 @@
 // May 02, 2017
 // (c) Copyright 2017 LANSLLC, all rights reserved
 
-#include "cinchtest.h"
-#include<ristra-config.h>
+#include<gtest/gtest.h>
+#include<ristra/ristra-config.h>
 
 
 /* Test will take control of the test environment */
