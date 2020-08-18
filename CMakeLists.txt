@@ -238,5 +238,3 @@ export(
   TARGETS Ristra
   FILE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraTargets.cmake
 )
-
-export(PACKAGE Ristra)
