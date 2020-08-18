@@ -223,7 +223,7 @@ write_basic_package_version_file("${PROJECT_NAME}ConfigVersion.cmake"
 
 # Generate dependencies
 configure_file(${PROJECT_SOURCE_DIR}/RistraConfig.cmake.in
-  RistraConfig.cmake @ONLY\
+  RistraConfig.cmake @ONLY
 )
 
 # Install configuration files to standard cmake config directory
