@@ -10,4 +10,20 @@ endif()
 
 find_dependency(Boost 1.58.0 REQUIRED)
 
+if(@RISTRA_ENABLE_CATALYST@)
+  find_dependency(ParaView REQUIRED COMPONENTS vtkPVPythonCatalyst)
+endif()
+
+if(@RISTRA_ENABLE_UNIT_TESTS@)
+  find_package(GTest REQUIRED)
+endif()
+
+if(@RISTRA_ENABLE_CALIPER@)
+  find_package(Caliper REQUIRED)
+endif()
+
+if(@RISTRA_ENABLE_MPI@)
+  find_package(MPI COMPONENTS C CXX REQUIRED)
+endif()
+
 include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@Targets.cmake")
