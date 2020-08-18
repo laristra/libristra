@@ -188,8 +188,8 @@ add_subdirectory(cmake)
 
 target_include_directories( Ristra PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-	$<INSTALL_INTERFACE:include> )
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+  $<INSTALL_INTERFACE:include> )
 
 add_subdirectory(ristra)
 
@@ -198,36 +198,45 @@ add_subdirectory(ristra)
 # Export targets and package.
 #------------------------------------------------------------------------------#
 
+# Install the actual library, tests (?), and headers
 install( TARGETS Ristra
- 	EXPORT ${PROJECT_NAME}Targets
-	LIBRARY DESTINATION lib
-	ARCHIVE DESTINATION lib
-	RUNTIME DESTINATION bin
-	INCLUDES DESTINATION include) 
-
-install( EXPORT ${PROJECT_NAME}Targets
-	FILE ${PROJECT_NAME}Targets.cmake
-	NAMESPACE Ristra::
-	DESTINATION lib/cmake/${PROJECT_NAME}
+  EXPORT ${PROJECT_NAME}Targets
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION bin
+  INCLUDES DESTINATION include
 )
 
+#Target for importing downstream
+install( EXPORT RistraTargets
+  FILE RistraTargets.cmake
+  NAMESPACE Ristra::
+  DESTINATION lib/cmake/Ristra
+)
+
+# Write version info for find_package() purposes
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file("${PROJECT_NAME}ConfigVersion.cmake"
-  VERSION ${${PROJECT_NAME}_VERSION}
+  VERSION ${Ristra_VERSION}
   COMPATIBILITY SameMajorVersion
 )
 
-configure_file(${PROJECT_SOURCE_DIR}/${PROJECT_NAME}Config.cmake.in
-  ${PROJECT_NAME}Config.cmake @ONLY)
-
-install(FILES
-	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
- 	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-	DESTINATION lib/cmake/${PROJECT_NAME}
+# Generate dependencies
+configure_file(${PROJECT_SOURCE_DIR}/RistraConfig.cmake.in
+  RistraConfig.cmake @ONLY\
 )
 
+# Install configuration files to standard cmake config directory
+install(FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/RistraConfig.cmake"
+   "${CMAKE_CURRENT_BINARY_DIR}/RistraConfigVersion.cmake"
+  DESTINATION lib/cmake/Ristra
+)
+
+# Write libRistra target for downstream usage
 export(
   TARGETS Ristra
   FILE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraTargets.cmake
 )
+
 export(PACKAGE Ristra)
