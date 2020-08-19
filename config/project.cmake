@@ -131,22 +131,6 @@ set(RISTRA_DBC_REQUIRE ON CACHE BOOL
 
 option(RISTRA_ENABLE_CATALYST "Link the sim with Catalyst for in situ" OFF)
 
-# if (RISTRA_ENABLE_CATALYST)
-#   find_package(ParaView REQUIRED COMPONENTS vtkPVPythonCatalyst)
-
-#   message(STATUS "Found Paraview: ${ParaView_DIR}")
-#   message(STATUS "IO with Paraview Catalyst enabled" )
-
-#   include("${PARAVIEW_USE_FILE}")
-
-#   if (NOT PARAVIEW_USE_MPI)
-#     message(SEND_ERROR "ParaView must be built with MPI enabled")
-#   endif()
-
-#   list( APPEND RISTRA_LIBRARIES vtkPVPythonCatalyst vtkParallelMPI )
-# endif()
-
-
 if (RISTRA_ENABLE_CATALYST)
   find_package(ParaView REQUIRED)
 

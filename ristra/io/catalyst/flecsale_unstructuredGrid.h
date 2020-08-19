@@ -531,6 +531,8 @@ inline void addScalar(T* data, std::string varname, vtkSmartPointer<vtkUnstructu
 {
 	// discretization: cell based (1) or vextex based(0)
 	ristra::io::vtk::setScalarData(varname, &data[0], numElements, discretization, uGrid);
+
+	std::cout << "scalar added!!!" << std::endl;
 }
 
 template< typename T >
@@ -675,6 +677,8 @@ inline vtkSmartPointer<vtkUnstructuredGrid> createMesh(mesh_t &m)
 	}
 
     temp.pushPointsToGrid();
+
+	std::cout << "Mesh created!" << std::endl;
 
 	return temp.getUGrid();
 }
