@@ -11,7 +11,7 @@
 
 
 // user includes
-#include "detail/tuple_for_each_impl.h"
+#include "tuple_for_each_impl.h"
 
 namespace ristra {
 namespace utils {

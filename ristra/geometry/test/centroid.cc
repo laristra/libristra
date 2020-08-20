@@ -11,8 +11,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 // test includes
-#include <cinchtest.h>
-#include <ristra-config.h>
+#include <gtest/gtest.h>
+#include <ristra/ristra-config.h>
 
 // user includes
 #include <ristra/geometry/centroid.h>

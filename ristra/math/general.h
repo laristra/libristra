@@ -10,7 +10,7 @@
 #pragma once
 
 // user includes
-#include "ristra/math/detail/general_impl.h"
+#include "ristra/math/general_impl.h"
 
 #include "ristra/assertions/errors.h"
 #include "ristra/utils/template_helpers.h"

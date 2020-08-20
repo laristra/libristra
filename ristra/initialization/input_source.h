@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include<ristra-config.h>
+#include<ristra/ristra-config.h>
 
 #include <array>
 #include <functional>
@@ -13,7 +13,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
-#include "ristra/initialization/detail/inputs_impl.h"
+#include "ristra/initialization/inputs_impl.h"
 #include "ristra/embedded/embed_lua.h"
 
 namespace ristra

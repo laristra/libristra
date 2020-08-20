@@ -9,7 +9,7 @@
 #pragma once
 
 // user includes
-#include "ristra/utils/detail/tuple_visit_impl.h"
+#include "ristra/utils/tuple_visit_impl.h"
 
 namespace ristra {
 namespace utils {

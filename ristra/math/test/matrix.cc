@@ -7,13 +7,13 @@
 /// \brief Tests related to the matrix class.
 ///////////////////////////////////////////////////////////////////////////////
 
-#include<ristra-config.h>
+#include<ristra/ristra-config.h>
 
 // user includes
 #include "ristra/math/matrix.h"
 
 // system includes
-#include <cinchtest.h>
+#include <gtest/gtest.h>
 #include <iostream>
 #include <cmath>
 

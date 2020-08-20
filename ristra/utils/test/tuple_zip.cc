@@ -12,7 +12,7 @@
 
 
 // system includes
-#include <cinchtest.h>
+#include <gtest/gtest.h>
 #include <iostream>
 #include <string>
 

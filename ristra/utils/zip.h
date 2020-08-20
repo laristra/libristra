@@ -13,7 +13,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "ristra-config.h"
+#include "ristra/ristra-config.h"
 
 // uncomment to use boost's zip iterator
 //#define USE_BOOST_ZIP
@@ -27,7 +27,7 @@
 #else
 
 // user includes
-#include "detail/zip_impl.h"
+#include "zip_impl.h"
 #include "ristra/utils/type_traits.h"
 
 // system includes

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "ristra-config.h"
+#include "ristra/ristra-config.h"
 
 //! system includes
 #ifdef RISTRA_ENABLE_MPI

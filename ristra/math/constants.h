@@ -9,7 +9,7 @@
 #pragma once
 
 // user includes
-#include "ristra-config.h"
+#include "ristra/ristra-config.h"
 
 namespace ristra {
 namespace math {

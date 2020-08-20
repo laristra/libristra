@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include<ristra-config.h>
+#include<ristra/ristra-config.h>
 
 #define IM_OK_TO_INCLUDE_DBC_IMPL
-#include "ristra/assertions/detail/dbc_impl.h"
+#include "ristra/assertions/dbc_impl.h"
 #undef IM_OK_TO_INCLUDE_DBC_IMPL
 #include <functional>
 #include <set>

@@ -7,14 +7,14 @@
 /// \brief Tests related to the vector class.
 ///////////////////////////////////////////////////////////////////////////////
 
-#include<ristra-config.h>
+#include<ristra/ristra-config.h>
 
 // user includes
 #include "ristra/math/general.h"
 #include "ristra/math/vector.h"
 
 // system includes
-#include <cinchtest.h>
+#include <gtest/gtest.h>
 #include <iostream>
 
 // explicitly use some stuff
