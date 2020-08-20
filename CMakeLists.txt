@@ -124,18 +124,31 @@ set(RISTRA_DBC_REQUIRE ON CACHE BOOL
 option(RISTRA_ENABLE_CATALYST "Link the sim with Catalyst for in situ" OFF)
 
 if (RISTRA_ENABLE_CATALYST)
-  find_package(ParaView REQUIRED COMPONENTS vtkPVPythonCatalyst)
+  find_package(ParaView REQUIRED)
+
+  if (NOT TARGET ParaView::PythonCatalyst)
+    message(FATAL_ERROR
+      "Skipping example: ${CMAKE_PROJECT_NAME} requires ParaView to be built "
+      "with Catalyst and Python support enabled. Please rebuild ParaView (or "
+      "point to a different build of ParaView) with PARAVIEW_USE_PYTHON set "
+      "to TRUE")
+    #return ()
+  endif()
+
+  if (NOT PARAVIEW_USE_MPI)
+    message(FATAL_ERROR
+      "Skipping example: ${CMAKE_PROJECT_NAME} requires ParaView to be built "
+      "with MPI support enabled. Please rebuild ParaView (or point to a "
+      "different build of ParaView) with PARAVIEW_USE_MPI set to TRUE")
+    #return ()
+  endif ()
 
   message(STATUS "Found Paraview: ${ParaView_DIR}")
   message(STATUS "IO with Paraview Catalyst enabled" )
 
-  include("${PARAVIEW_USE_FILE}")
 
-  if (NOT PARAVIEW_USE_MPI)
-    message(SEND_ERROR "ParaView must be built with MPI enabled")
-  endif()
+  list( APPEND RISTRA_LIBRARIES ParaView::PythonCatalyst VTK::CommonDataModel VTK::ParallelMPI VTK::IOParallelXML)
 
-  list( APPEND RISTRA_LIBRARIES vtkPVPythonCatalyst vtkParallelMPI )
 endif()
 
 #------------------------------------------------------------------------------#
