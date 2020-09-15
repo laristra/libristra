@@ -21,7 +21,7 @@
 ## Mergers require the following to be done before merging:
 - [ ] Code review had been done
 - [ ] If this repo/branch is mirrored to Github, make sure your MR is cleared to be pushed to open
-- [ ] Gitlab CI has preferably passed (if not, make sure someone who should/would/need to fix it knows about this)
+- [ ] Gitlab CI has passed
 - [ ] All "issues" in the MR have been resolved
 - [ ] `WIP:` has been removed
 - [ ] Branch is up-to-date with `master` (mergers will not rebase for you)
