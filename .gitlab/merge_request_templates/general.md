@@ -10,7 +10,7 @@
 - [ ] Mention any other repo with MRs that would need coordination with this MR
 - [ ] Add "Related Issues" section above if any (eg, `Fixes #{issue number}`)
 - [ ] Ping any `@username` in description or comments as necessary
-- [ ] Ping `@ktsai` if you are changing anything CI related
+- [ ] Ping `@ktsai` if you are changing CI related code
 - [ ] Add/adjust tests if needed
 - [ ] Add related documentation
 - [ ] Build the code locally
