@@ -146,6 +146,7 @@ if (RISTRA_ENABLE_CATALYST)
   message(STATUS "Found Paraview: ${ParaView_DIR}")
   message(STATUS "IO with Paraview Catalyst enabled" )
 
+  add_definitions(-DRISTRA_CATALYST_ENABLED)
 
   list( APPEND RISTRA_LIBRARIES ParaView::PythonCatalyst VTK::CommonDataModel VTK::ParallelMPI VTK::IOParallelXML)
 

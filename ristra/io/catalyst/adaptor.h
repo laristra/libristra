@@ -60,8 +60,6 @@ inline vtkCPProcessor* initAdaptor(std::vector<std::string> scripts)
   //for (const auto & script : scripts)
   for (int i=0; i<scripts.size(); i++)
   {
-    std::cout << "Script: " << scripts[i].c_str() << std::endl;
-
     vtkNew<vtkCPPythonScriptPipeline> pipeline;
     pipeline->Initialize(scripts[i].c_str());
     processor_->AddPipeline(pipeline.GetPointer());
@@ -93,11 +91,7 @@ inline void processCatalyst(vtkCPProcessor* processor_, vtkUnstructuredGrid * gr
   {
     dataDescription->GetInputDescriptionByName("input")->SetGrid(grid);
     processor_->CoProcess(dataDescription.GetPointer());
-
-    std::cout << "do_coprocessing done!" << std::endl;
   }
-
-  std::cout << "processCatalyst done!" << std::endl;
 }
 
 
