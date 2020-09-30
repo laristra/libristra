@@ -50,7 +50,7 @@ include:
             ..
     - make -k -j2 -l40 || make VERBOSE=1
     - make install DESTDIR=${CI_PROJECT_DIR}/build/install
-    - make install
+    #- make install
     #- ccache -s
     - echo 'Start testing'
     - cd ${CI_PROJECT_DIR}/build/
