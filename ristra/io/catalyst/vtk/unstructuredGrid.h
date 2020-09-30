@@ -23,6 +23,10 @@
 #include <vtkMPIController.h>
 #include <vtkPointData.h>
 
+#include <ristra/io/catalyst/utils/insituTimer.hpp>
+
+
+
 
 namespace ristra {
 namespace io {
@@ -489,6 +493,8 @@ inline void UnstructuredGrid::write(std::string fileName, int parallel)
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////////
+///////////// Standalone
 
 // Data
 template <typename T>

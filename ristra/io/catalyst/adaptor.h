@@ -38,6 +38,9 @@
 #include <string>
 #include <vector>
 
+#include "utils/insituTimer.hpp"
+#include "utils/insituLog.hpp"
+
 namespace ristra {
 namespace io {
 namespace catalyst {
@@ -45,6 +48,8 @@ namespace catalyst {
 
 inline vtkCPProcessor* initAdaptor(std::vector<std::string> scripts)
 {
+  InsituTimer clock("initAdaptor");
+
 	//MPI_Init(NULL,NULL); 
 	int rank, nprocs;
 
@@ -65,6 +70,9 @@ inline vtkCPProcessor* initAdaptor(std::vector<std::string> scripts)
     processor_->AddPipeline(pipeline.GetPointer());
   }
 
+  clock.stop("initAdaptor");
+  std::cout << "adaptor.h: initAdaptor:" << clock.getDuration("initAdaptor") << " s" << std::endl;
+
   return processor_;
 }
 
@@ -72,6 +80,8 @@ inline vtkCPProcessor* initAdaptor(std::vector<std::string> scripts)
 
 inline void processCatalyst(vtkCPProcessor* processor_, vtkUnstructuredGrid * grid, double time, unsigned int timeStep, bool lastTimeStep) 
 {
+  InsituTimer clock("processCatalyst");
+
   vtkNew<vtkCPDataDescription> dataDescription;
   dataDescription->AddInput("input");
   dataDescription->SetTimeData(time, timeStep);
@@ -92,16 +102,25 @@ inline void processCatalyst(vtkCPProcessor* processor_, vtkUnstructuredGrid * gr
     dataDescription->GetInputDescriptionByName("input")->SetGrid(grid);
     processor_->CoProcess(dataDescription.GetPointer());
   }
+
+  clock.stop("processCatalyst");
+  std::cout << "adaptor.h: processCatalyst:" << clock.getDuration("processCatalyst") << " s" << std::endl;
+  //debugLog << "adaptor.h: processCatalyst:" << clock.getDuration("processCatalyst") << " s" << std::endl;
 }
 
 
 inline vtkCPProcessor* finalizeAdaptor(vtkCPProcessor* processor)
 {
+  InsituTimer clock("finalizeAdaptor");
+
   if (processor)
   {
     processor->Delete();
     processor = NULL;
   }
+
+  clock.stop("finalizeAdaptor");
+  std::cout << "adaptor.h: finalizeAdaptor:" << clock.getDuration("finalizeAdaptor") << " s" << std::endl;
 }
 
 
@@ -110,7 +129,7 @@ class adaptor_t {
 
   vtkCPProcessor* processor_ = nullptr;
 
-public:
+ public:
 
   adaptor_t(const std::vector<std::string> & scripts)
   {

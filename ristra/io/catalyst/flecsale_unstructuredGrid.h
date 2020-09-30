@@ -6,14 +6,8 @@
 #include <flecsi/topology/mesh_utils.h>
 #include <ristra/utils/time_utils.h>
 #include <ristra/io/catalyst/vtk/unstructuredGrid.h>
-
-
-// system includes
-#include <iomanip>
-#include <iostream>
-#include <sstream>
-#include <utility>
-
+#include "utils/insituTimer.hpp"
+#include "utils/insituLog.hpp"
 
 // vtk includes
 #include <vtkCellArray.h>
@@ -31,6 +25,14 @@
 #include <vtkIntArray.h>
 #include <vtkLongArray.h>
 #include <vtkLongLongArray.h>
+
+// system includes
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <utility>
+
+
 
 namespace ristra {
 namespace io {
@@ -208,29 +210,44 @@ inline void outputFile(std::string filename, std::string content)
 template< typename T >
 inline void addScalar(T* data, std::string varname, vtkSmartPointer<vtkUnstructuredGrid> & uGrid, size_t numElements, int discretization=1)
 {
+	InsituTimer clock("addScalar");
+
 	// discretization: cell based (1) or vextex based(0)
 	ristra::io::vtk::setScalarData(varname, &data[0], numElements, discretization, uGrid);
+
+	clock.stop("addScalar");
+	std::cout << "flecsale_unstructured.h: addScalar:" << clock.getDuration("addScalar") << " s" << std::endl;
 }
 
 
 template< typename T >
 inline void addVector(std::vector< std::vector<T> > data, std::string varname, vtkSmartPointer<vtkUnstructuredGrid> & uGrid, size_t numElements, int discretization=1)
 {
+	InsituTimer clock("addVector");
 	// discretization: cell based (1) or vextex based(0)
 	ristra::io::vtk::setVectorData(varname, data, numElements, discretization, uGrid);
+
+	clock.stop("addVector");
+	std::cout << "flecsale_unstructured.h: addVector:" << clock.getDuration("addVector") << " s" << std::endl;
 }
 
 
 template< typename T >
 inline void addTensor(std::vector< std::vector<T> > data, std::string varname, vtkSmartPointer<vtkUnstructuredGrid> & uGrid, size_t numElements, int discretization=1)
 {
+	InsituTimer clock("addTensor");
 	// discretization: cell based (1) or vextex based(0)
 	ristra::io::vtk::setTensorData(varname, data, numElements, discretization, uGrid);
+
+	clock.stop("addTensor");
+	std::cout << "flecsale_unstructured.h: addTensor:" << clock.getDuration("addTensor") << " s" << std::endl;
 }
 
 
 inline vtkSmartPointer<vtkUnstructuredGrid> createMesh(mesh_t &m)
 {
+	InsituTimer clock("createMesh");
+
 	// Creates a mesh
 
     // mesh statistics
@@ -354,6 +371,9 @@ inline vtkSmartPointer<vtkUnstructuredGrid> createMesh(mesh_t &m)
 	    );
 	}
     temp.pushPointsToGrid();
+
+	clock.stop("createMesh");
+	std::cout << "flecsale_unstructured.h: createMesh:" << clock.getDuration("createMesh") << " s" << std::endl;
 
 	return temp.getUGrid();
 }
