@@ -114,9 +114,9 @@ inline bool imageCompare(std::string imageA, std::string imageB)
 
   std::cout << "Images differ by " << ((float)numDiff/numPixels)*100 << " percent" << std::endl;
 
-  if ((float)numDiff/numPixels > 0.1)
+  if ((float)numDiff/numPixels > 0.02)
   {
-    std::cout << "Test failed: Images differ by more than 10 percent" << std::endl;
+    std::cout << "Test failed: Images differ by more than 2 percent" << std::endl;
     return false;
   }
 
