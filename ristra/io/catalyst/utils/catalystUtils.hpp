@@ -73,7 +73,7 @@ inline bool imageCompare(std::string imageA, std::string imageB)
   unsigned char *imgA = stbi_load(imageA.c_str(), &widthA, &heightA, &channelsA, 0);
   if (imgA == NULL)
   {
-    std::cout << "Could not load " << imageA << std::endl;
+    std::cout << "Test failed: Could not load " << imageA << std::endl;
     return false;
   }
 
@@ -81,38 +81,47 @@ inline bool imageCompare(std::string imageA, std::string imageB)
   unsigned char *imgB = stbi_load(imageB.c_str(), &widthB, &heightB, &channelsB, 0);
   if (imgB == NULL)
   {
-    std::cout << "Could not load " << imageB << std::endl;
+    std::cout << "Test failed: Could not load " << imageB << std::endl;
     return false;
   }
 
   if (widthA != widthB)
   {
-    std::cout << "Image widths are different" << std::endl;
+    std::cout << "Test failed: Image widths are different" << std::endl;
     return false;
   }
 
   if (heightA != heightB)
   {
-    std::cout << "Image heights are different" << std::endl;
+    std::cout << "Test failed: Image heights are different" << std::endl;
     return false;
   }
 
   if (channelsA != channelsB)
   {
-    std::cout << "number of channels are different" << std::endl;
+    std::cout << "Test failed: Number of channels are different" << std::endl;
     return false;
   }
     
 
   size_t numPixels = widthA*heightA*channelsA;
+  size_t numDiff = 0;
   for (int i=0; i<numPixels; i++)
     if (imgA[i] != imgB[i])
     {
-      std::cout << "pixels different!" << std::endl;
-      return false;
+      numDiff++;
     }
 
-  std::cout << "Images " << imageA << " and " << imageB << " are identical!" << std::endl;
+  std::cout << "Images differ by " << ((float)numDiff/numPixels)*100 << " percent" << std::endl;
+
+  if ((float)numDiff/numPixels > 0.1)
+  {
+    std::cout << "Test failed: Images differ by more than 10 percent" << std::endl;
+    return false;
+  }
+
+
+  std::cout << "Images " << imageA << " and " << imageB << " are similar within acceptable parameters!" << std::endl;
 
   // If all tests pass
   return true;
