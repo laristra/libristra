@@ -8,6 +8,6 @@ flecsale-mm:
     UPSTREAM_BRANCH: $CI_COMMIT_REF_NAME
     UPSTREAM_URL: "git@gitlab.lanl.gov:${CI_PROJECT_URL#https://gitlab.lanl.gov/*}"
   trigger:
-    project: laristra/flecsale-mm
+    project: laristra/flecsale-mm-ci
     branch: master
     strategy: depend
