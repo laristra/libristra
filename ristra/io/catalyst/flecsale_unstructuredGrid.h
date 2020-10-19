@@ -216,7 +216,7 @@ inline void addScalar(T* data, std::string varname, vtkSmartPointer<vtkUnstructu
 	ristra::io::vtk::setScalarData(varname, &data[0], numElements, discretization, uGrid);
 
 	clock.stop("addScalar");
-	std::cout << "flecsale_unstructured.h: addScalar:" << clock.getDuration("addScalar") << " s" << std::endl;
+	//std::cout << "flecsale_unstructured.h: addScalar:" << clock.getDuration("addScalar") << " s" << std::endl;
 }
 
 
@@ -228,7 +228,7 @@ inline void addVector(std::vector< std::vector<T> > data, std::string varname, v
 	ristra::io::vtk::setVectorData(varname, data, numElements, discretization, uGrid);
 
 	clock.stop("addVector");
-	std::cout << "flecsale_unstructured.h: addVector:" << clock.getDuration("addVector") << " s" << std::endl;
+	//std::cout << "flecsale_unstructured.h: addVector:" << clock.getDuration("addVector") << " s" << std::endl;
 }
 
 
@@ -240,7 +240,7 @@ inline void addTensor(std::vector< std::vector<T> > data, std::string varname, v
 	ristra::io::vtk::setTensorData(varname, data, numElements, discretization, uGrid);
 
 	clock.stop("addTensor");
-	std::cout << "flecsale_unstructured.h: addTensor:" << clock.getDuration("addTensor") << " s" << std::endl;
+	//std::cout << "flecsale_unstructured.h: addTensor:" << clock.getDuration("addTensor") << " s" << std::endl;
 }
 
 
@@ -373,7 +373,7 @@ inline vtkSmartPointer<vtkUnstructuredGrid> createMesh(mesh_t &m)
     temp.pushPointsToGrid();
 
 	clock.stop("createMesh");
-	std::cout << "flecsale_unstructured.h: createMesh:" << clock.getDuration("createMesh") << " s" << std::endl;
+	//std::cout << "flecsale_unstructured.h: createMesh:" << clock.getDuration("createMesh") << " s" << std::endl;
 
 	return temp.getUGrid();
 }

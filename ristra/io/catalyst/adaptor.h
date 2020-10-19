@@ -71,7 +71,8 @@ inline vtkCPProcessor* initAdaptor(std::vector<std::string> scripts)
   }
 
   clock.stop("initAdaptor");
-  std::cout << "adaptor.h: initAdaptor:" << clock.getDuration("initAdaptor") << " s" << std::endl;
+  if (rank == 0)
+    std::cout << "Init Catalyst Adaptor took:" << clock.getDuration("initAdaptor") << " s" << std::endl;
 
   return processor_;
 }
@@ -81,6 +82,10 @@ inline vtkCPProcessor* initAdaptor(std::vector<std::string> scripts)
 inline void processCatalyst(vtkCPProcessor* processor_, vtkUnstructuredGrid * grid, double time, unsigned int timeStep, bool lastTimeStep) 
 {
   InsituTimer clock("processCatalyst");
+  
+  	//MPI_Init(NULL,NULL); 
+	int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD,&rank); 
 
   vtkNew<vtkCPDataDescription> dataDescription;
   dataDescription->AddInput("input");
@@ -104,7 +109,8 @@ inline void processCatalyst(vtkCPProcessor* processor_, vtkUnstructuredGrid * gr
   }
 
   clock.stop("processCatalyst");
-  std::cout << "adaptor.h: processCatalyst:" << clock.getDuration("processCatalyst") << " s" << std::endl;
+  //if (rank == 0)
+  //  std::cout << "|    Process Catalyst took: " << clock.getDuration("processCatalyst") << " s" << std::endl;
   //debugLog << "adaptor.h: processCatalyst:" << clock.getDuration("processCatalyst") << " s" << std::endl;
 }
 
@@ -120,7 +126,7 @@ inline vtkCPProcessor* finalizeAdaptor(vtkCPProcessor* processor)
   }
 
   clock.stop("finalizeAdaptor");
-  std::cout << "adaptor.h: finalizeAdaptor:" << clock.getDuration("finalizeAdaptor") << " s" << std::endl;
+  std::cout << "Finalize Catalyst Adaptor:" << clock.getDuration("finalizeAdaptor") << " s" << std::endl;
 }
 
 
