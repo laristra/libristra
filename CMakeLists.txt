@@ -201,8 +201,8 @@ endif()
 add_subdirectory(cmake)
 
 target_include_directories( Ristra PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
+  $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
   $<INSTALL_INTERFACE:include> )
 
 add_subdirectory(ristra)
@@ -242,13 +242,13 @@ configure_file(${PROJECT_SOURCE_DIR}/RistraConfig.cmake.in
 
 # Install configuration files to standard cmake config directory
 install(FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/RistraConfig.cmake"
-   "${CMAKE_CURRENT_BINARY_DIR}/RistraConfigVersion.cmake"
+  "${PROJECT_BINARY_DIR}/RistraConfig.cmake"
+   "${PROJECT_BINARY_DIR}/RistraConfigVersion.cmake"
   DESTINATION lib/cmake/Ristra
 )
 
 # Write libRistra target for downstream usage
 export(
   TARGETS Ristra
-  FILE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraTargets.cmake
+  FILE ${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/RistraTargets.cmake
 )
