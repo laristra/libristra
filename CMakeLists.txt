@@ -128,7 +128,7 @@ if (RISTRA_ENABLE_CATALYST)
 
   if (NOT TARGET ParaView::PythonCatalyst)
     message(FATAL_ERROR
-      "Skipping example: ${CMAKE_PROJECT_NAME} requires ParaView to be built "
+      "Skipping example: ${CMAKE_PROJECT_NAME}t_t_t_t_t_t_ requires ParaView to be built "
       "with Catalyst and Python support enabled. Please rebuild ParaView (or "
       "point to a different build of ParaView) with PARAVIEW_USE_PYTHON set "
       "to TRUE")
@@ -240,7 +240,7 @@ configure_file(${PROJECT_SOURCE_DIR}/RistraConfig.cmake.in
   RistraConfig.cmake @ONLY
 )
 
-# Install configuration files to standard cmake config directory
+# Install configuration files to standard cmake config directory for project
 install(FILES
   "${PROJECT_BINARY_DIR}/RistraConfig.cmake"
    "${PROJECT_BINARY_DIR}/RistraConfigVersion.cmake"
