@@ -28,4 +28,4 @@ variables:
   LIBRISTRA_PYTHON_VERSION: "3.5.1"
   LIBRISTRA_SPACK_SPEC: "libristra@master%gcc@${LIBRISTRA_GCC_VERSION}"
   LIBRISTRA_SPACK_REPO: "https://github.com/spack/spack.git"
-  LIBRISTRA_SPACK_REF: "v0.15.3"
+  LIBRISTRA_SPACK_REF: "v0.15.4"
