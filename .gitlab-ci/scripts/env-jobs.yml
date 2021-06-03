@@ -79,4 +79,3 @@ mpich:
   artifacts:
     paths:
   allow_failure: true
-
