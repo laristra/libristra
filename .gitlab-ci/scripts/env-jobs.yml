@@ -30,6 +30,16 @@
     - cd spack && git checkout ${LIBRISTRA_SPACK_REF##*-} && cd ${CI_PROJECT_DIR}
     - export SPACK_ARCH=`./spack/bin/spack arch`
     - echo ${SPACK_ARCH}
+    - export TARGET="${SPACK_ARCH##*-}"
+    - echo ${TARGET}
+    - export LIBRISTRA_SPACK_SPEC="${LIBRISTRA_SPACK_SPEC} $(([ ${TARGET} == 'haswell' ] || [ ${TARGET} == 'skylake_avx512' ]) && echo 'target=x86_64')"
+    - |
+      if [[ ${LIBRISTRA_MPI_PROVIDER} == 'openmpi' ]];
+      then
+        export LIBRISTRA_SPACK_FULL_SPEC="${LIBRISTRA_SPACK_SPEC} ^${LIBRISTRA_MPI_PROVIDER}@${LIBRISTRA_OPENMPI_VERSION}%gcc@${LIBRISTRA_GCC_VERSION} ${LIBRISTRA_OPENMPI_SPEC}";
+      else
+        export LIBRISTRA_SPACK_FULL_SPEC="${LIBRISTRA_SPACK_SPEC} ^${LIBRISTRA_MPI_PROVIDER}@${LIBRISTRA_MPICH_VERSION}%gcc@${LIBRISTRA_GCC_VERSION} ${LIBRISTRA_MPICH_SPEC}";
+      fi
     - export PLATFORM="${SPACK_ARCH%%-*}"
     - echo ${PLATFORM}
     - mkdir -p ${CI_PROJECT_DIR}/spack/etc/spack/${PLATFORM}
