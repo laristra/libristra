@@ -35,10 +35,6 @@
     expire_in: 1 hour
   dependencies: []
 
-.shell_runner:
-  tags:
-    - laristra-setuid-shared
-
 .batch_runner:
   tags:
     - darwin-slurm-shared
@@ -50,7 +46,7 @@
   extends:
     - .common
     - .cache
-    - .shell_runner
+    - .batch_runner
 
 .update_spackage:
   script:
