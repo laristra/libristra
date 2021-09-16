@@ -31,6 +31,7 @@
     - export SPACK_ARCH=`./spack/bin/spack arch`
     - echo ${SPACK_ARCH}
     - export TARGET="${SPACK_ARCH##*-}"
+    - echo ${TARGET}
     - export LIBRISTRA_SPACK_SPEC="${LIBRISTRA_SPACK_SPEC} $(([ ${TARGET} == 'haswell' ] || [ ${TARGET} == 'skylake_avx512' ]) && echo 'target=x86_64')"
     - |
       if [[ ${LIBRISTRA_MPI_PROVIDER} == 'openmpi' ]];
