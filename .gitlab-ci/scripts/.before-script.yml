@@ -5,6 +5,7 @@ before_script:
   - unset SPACK_ROOT
   - source ${CI_PROJECT_DIR}/spack/share/spack/setup-env.sh || /bin/true
   - echo ${CI_RUNNER_TAGS}
+  - echo ${SLURM_JOB_PARTITION}
   - sinfo -p ${SLURM_JOB_PARTITION}
   - echo ${SLURM_JOB_NODELIST}
   - |
