@@ -7,10 +7,23 @@ before_script:
   - echo ${CI_RUNNER_TAGS}
   - echo ${SLURM_JOB_PARTITION}
   - sinfo -p ${SLURM_JOB_PARTITION}
-  - echo ${SLURM_JOB_NODELIST}
+  - echo ${SLURM_JOB_NODELIST}  
   - |
     if [[ -d ${CI_PROJECT_DIR}/spack ]];
     then
+      if [[ ! -d ${CI_PROJECT_DIR}/ristra_spackages/spack-repo ]];
+      then
+        echo "${CI_PROJECT_DIR}/ristra_spackages/spack-repo does not exist...";
+        ./${CI_PROJECT_DIR}/.gitlab-ci/sync-dir.pl "${CI_PROJECT_DIR}/ristra_spackages/spack-repo";
+      else
+        echo "${CI_PROJECT_DIR}/ristra_spackages/spack-repo exists!";
+      fi
+      if [[ ! -d ${CI_PROJECT_DIR}/ristra_spackages/spack-repo ]];
+      then
+        echo "${CI_PROJECT_DIR}/ristra_spackages/spack-repo STILL does not exist...";
+      else
+        echo "${CI_PROJECT_DIR}/ristra_spackages/spack-repo NOW exists!";
+      fi
       spack reindex;
       spack module tcl refresh -y;
     fi
