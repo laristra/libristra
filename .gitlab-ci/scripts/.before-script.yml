@@ -11,20 +11,6 @@ before_script:
   - |
     if [[ -d ${CI_PROJECT_DIR}/spack ]];
     then
-      if [[ ! -f ${CI_PROJECT_DIR}/ristra_spackages/spack-repo/repo.yaml ]];
-      then
-        echo "${CI_PROJECT_DIR}/ristra_spackages/spack-repo/repo.yaml does not exist...";
-        ./${CI_PROJECT_DIR}/.gitlab-ci/sync-dir.pl "${CI_PROJECT_DIR}/ristra_spackages/spack-repo";
-      else
-        echo "${CI_PROJECT_DIR}/ristra_spackages/spack-repo/repo.yaml exists!";
-      fi
-      if [[ ! -f ${CI_PROJECT_DIR}/ristra_spackages/spack-repo/repo.yaml ]];
-      then
-        echo "${CI_PROJECT_DIR}/ristra_spackages/spack-repo STILL does not exist...";
-      else
-        echo "${CI_PROJECT_DIR}/ristra_spackages/spack-repo NOW exists!";
-      fi
-      touch ${CI_PROJECT_DIR}/ristra_spackages/spack-repo/repo.yaml;
       spack reindex;
       spack module tcl refresh -y;
     fi
