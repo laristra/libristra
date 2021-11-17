@@ -37,7 +37,7 @@
 
 .batch_runner:
   tags:
-    - darwin-slurm-shared
+    - darwin-slurm-jacamar-test
   variables:
     SCHEDULER_PARAMETERS: "--nodes=1 --partition=skylake-ci-ristra,skylake-gold,skylake-platinum"
 
