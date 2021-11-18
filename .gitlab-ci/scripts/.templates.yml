@@ -59,4 +59,3 @@
     - git add spack-repo/packages/*
     - git commit -m "Gitlab CI Automatic Spackage Update - Libristra" || /bin/true
     - git push -u origin master
-
