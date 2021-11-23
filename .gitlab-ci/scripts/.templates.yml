@@ -37,7 +37,7 @@
 
 .batch_runner:
   tags:
-    - darwin-slurm-jacamar-test
+    - centos8-test
   variables:
     SCHEDULER_PARAMETERS: "--nodes=1 --partition=skylake-ci-ristra,skylake-gold,skylake-platinum"
 
