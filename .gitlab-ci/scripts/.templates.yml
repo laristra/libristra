@@ -37,9 +37,9 @@
 
 .batch_runner:
   tags:
-    - centos8-test
+    - darwin-slurm-shared
   variables:
-    SCHEDULER_PARAMETERS: "--nodes=1 --partition=skylake-ci-ristra,skylake-gold,skylake-platinum"
+    SCHEDULER_PARAMETERS: "--nodes=1 --partition=centos8-test"
 
 .job:
   retry: 0
