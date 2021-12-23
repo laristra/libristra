@@ -22,7 +22,7 @@
     GIT_SUBMODULE_STRATEGY: none
   script:
     - cd ${CI_PROJECT_DIR}
-    - module load gcc/${LIBRISTRA_GCC_VERSION}
+    #- module load gcc/${LIBRISTRA_GCC_VERSION}
     - git clone -b ${LIBRISTRA_SPACK_REF} https://${RISTRA_SPACKAGES_USERNAME}:${RISTRA_SPACKAGES_PASSWORD}@gitlab.lanl.gov/laristra/ristra_spackages.git
     - git clone https://${RISTRA_SPACK_CONFIG_USERNAME}:${RISTRA_SPACK_CONFIG_PASSWORD}@gitlab.lanl.gov/laristra/ristra-spack-configurations.git
     - echo 'Spack Version:' ${LIBRISTRA_SPACK_REF}

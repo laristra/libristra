@@ -39,7 +39,7 @@
   tags:
     - darwin-slurm-shared
   variables:
-    SCHEDULER_PARAMETERS: "--nodes=1 --partition=skylake-ci-ristra,skylake-gold,skylake-platinum"
+    SCHEDULER_PARAMETERS: "--nodes=1 --partition=skylake-ci-ristra,skylake-gold"
 
 .job:
   retry: 0
