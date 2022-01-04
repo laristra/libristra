@@ -23,7 +23,7 @@ variables:
   #LIBRISTRA_OPENMPI_SPEC: "+pmi+legacylaunchers+thread_multiple schedulers=slurm"
   LIBRISTRA_OPENMPI_SPEC: "fabrics=auto"
   LIBRISTRA_INTEL_VERSION: "19.0.2"
-  LIBRISTRA_CLANG_VERSION: "12.0.1"
+  LIBRISTRA_CLANG_VERSION: "12.0.0"
   LIBRISTRA_GCC_VERSION: "9.3.0"
   LIBRISTRA_PYTHON_VERSION: "3.5.1"
   LIBRISTRA_SPACK_SPEC: "libristra@master%gcc@${LIBRISTRA_GCC_VERSION}"
