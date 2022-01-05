@@ -22,7 +22,6 @@
     GIT_SUBMODULE_STRATEGY: none
   script:
     - cd ${CI_PROJECT_DIR}
-    - module load gcc/${LIBRISTRA_GCC_VERSION}
     - git clone -b ${LIBRISTRA_SPACK_REF} https://${RISTRA_SPACKAGES_USERNAME}:${RISTRA_SPACKAGES_PASSWORD}@gitlab.lanl.gov/laristra/ristra_spackages.git
     - git clone https://${RISTRA_SPACK_CONFIG_USERNAME}:${RISTRA_SPACK_CONFIG_PASSWORD}@gitlab.lanl.gov/laristra/ristra-spack-configurations.git
     - echo 'Spack Version:' ${LIBRISTRA_SPACK_REF}
@@ -70,8 +69,16 @@
     - export LIBRISTRA_CMD="spack install --show-log-on-error ${LIBRISTRA_SPACK_FULL_SPEC}"
     - ( echo "$LIBRISTRA_CMD" && $LIBRISTRA_CMD )
     - spack module tcl refresh -y
-    - spack env loads -r
+    - spack env loads -r -x libristra
     - export modName="${CI_PROJECT_DIR}/spack_env/loads"
+    - |
+      if [[ ${CI_JOB_NAME} =~ "clang" ]];
+      then
+        sed -i "1s;^;module load llvm/${LIBRISTRA_CLANG_VERSION}\n;" ${modName};
+      elif [[ ${CI_JOB_NAME} =~ "intel" ]];
+      then
+        sed -i "1s;^;module load intel/${LIBRISTRA_INTEL_VERSION}\n;" ${modName};
+      fi
     - sed -i "1s;^;module load gcc/${LIBRISTRA_GCC_VERSION}\n;" ${modName}
     - sed -i "1s;^;#%Module\n;" ${modName}
 

@@ -13,8 +13,11 @@ function (ristra_add_unit name)
     "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
 	add_executable(${name} ${unit_SOURCES} ${DIR_OF_RISTRA_CMAKE}/ristra_unit.cc)
-  target_link_libraries(${name} ${unit_LIBRARIES} gtest)
-  target_include_directories(${name} PRIVATE ${GTEST_DIR}/googletest/include)
+	target_link_libraries(${name} PUBLIC GTest::GTest)
+	target_link_libraries(${name} PUBLIC Ristra)
+	#target_link_libraries(${name} ${unit_LIBRARIES} gtest)
+	#target_include_directories(${name} PRIVATE ${GTEST_DIR}/googletest/include)
+
 
   foreach(input ${unit_INPUTS})
      get_filename_component(_basename ${input} NAME)
