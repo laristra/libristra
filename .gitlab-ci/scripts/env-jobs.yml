@@ -97,13 +97,3 @@ mpich:
   variables:
     LIBRISTRA_MPI_PROVIDER: "mpich"
 
-.update:
-  extends:
-    - openmpi
-    - .update_spackage
-  only:
-    refs:
-      - master
-  artifacts:
-    paths:
-  allow_failure: true
