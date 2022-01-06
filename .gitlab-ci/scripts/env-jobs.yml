@@ -60,7 +60,6 @@
     - ${CI_PROJECT_DIR}/spack/bin/spack mirror rm --scope site lanl
     - . ${CI_PROJECT_DIR}/spack/share/spack/setup-env.sh
     - spack repo add --scope site ${CI_PROJECT_DIR}/ristra_spackages/spack-repo
-    - spack repo add --scope site ${CI_PROJECT_DIR}/spack-repo
     - spack repo list
     - mkdir -p ${CI_PROJECT_DIR}/spack_env
     - spack env create --without-view -d ${CI_PROJECT_DIR}/spack_env
@@ -98,13 +97,3 @@ mpich:
   variables:
     LIBRISTRA_MPI_PROVIDER: "mpich"
 
-.update:
-  extends:
-    - openmpi
-    - .update_spackage
-  only:
-    refs:
-      - master
-  artifacts:
-    paths:
-  allow_failure: true
