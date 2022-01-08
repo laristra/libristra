@@ -15,19 +15,50 @@
   except:
   artifacts:
     paths:
-      - ${CI_PROJECT_DIR}/spack #/builds/next-generation-codes/laristra/flecsale-mm/spack
-      - ${CI_PROJECT_DIR}/ristra_spackages
       - ${CI_PROJECT_DIR}/spack_env
   variables:
     GIT_SUBMODULE_STRATEGY: none
   script:
     - cd ${CI_PROJECT_DIR}
-    - git clone -b ${LIBRISTRA_SPACK_REF} https://${RISTRA_SPACKAGES_USERNAME}:${RISTRA_SPACKAGES_PASSWORD}@gitlab.lanl.gov/laristra/ristra_spackages.git
-    - git clone https://${RISTRA_SPACK_CONFIG_USERNAME}:${RISTRA_SPACK_CONFIG_PASSWORD}@gitlab.lanl.gov/laristra/ristra-spack-configurations.git
     - echo 'Spack Version:' ${LIBRISTRA_SPACK_REF}
-    - git clone ${LIBRISTRA_SPACK_REPO}
-    - cd spack && git checkout ${LIBRISTRA_SPACK_REF##*-} && cd ${CI_PROJECT_DIR}
-    - export SPACK_ARCH=`./spack/bin/spack arch`
+    - |
+      if [[ ! -d ${RISTRA_CI_SPACK_DIR}/${CI_PROJECT_NAME}/spack-${LIBRISTRA_SPACK_REF} ]];
+      then
+        git clone -b ${LIBRISTRA_SPACK_REF} https://${RISTRA_SPACKAGES_USERNAME}:${RISTRA_SPACKAGES_PASSWORD}@gitlab.lanl.gov/laristra/ristra_spackages.git;
+        git clone https://${RISTRA_SPACK_CONFIG_USERNAME}:${RISTRA_SPACK_CONFIG_PASSWORD}@gitlab.lanl.gov/laristra/ristra-spack-configurations.git;
+        cd ${RISTRA_CI_SPACK_DIR}/${CI_PROJECT_NAME};
+        git clone ${LIBRISTRA_SPACK_REPO};
+        mv spack spack-${LIBRISTRA_SPACK_REF};
+        cd spack-${LIBRISTRA_SPACK_REF};
+        git init --shared=group . ;
+        git checkout ${LIBRISTRA_SPACK_REF##*-};
+        cd .. ;
+        source spack-${LIBRISTRA_SPACK_REF}/share/spack/setup-env.sh;
+        export SPACK_ARCH=`spack arch`;
+        echo ${SPACK_ARCH};
+        export PLATFORM="${SPACK_ARCH%%-*}";
+        echo ${PLATFORM};
+        mkdir -p spack-${LIBRISTRA_SPACK_REF}/etc/spack/${PLATFORM};
+        cp ${CI_PROJECT_DIR}/ristra-spack-configurations/common/*.yaml spack-${LIBRISTRA_SPACK_REF}/etc/spack/;
+        if [[ -d ${CI_PROJECT_DIR}/ristra-spack-configurations/Darwin/${LIBRISTRA_SPACK_REF%.*} ]];
+        then
+          cp ${CI_PROJECT_DIR}/ristra-spack-configurations/Darwin/${LIBRISTRA_SPACK_REF%.*}/*.yaml spack-${LIBRISTRA_SPACK_REF}/etc/spack/${PLATFORM}/;
+          cp ${CI_PROJECT_DIR}/ristra-spack-configurations/Darwin/${LIBRISTRA_SPACK_REF%.*}/public/*.yaml spack-${LIBRISTRA_SPACK_REF}/etc/spack/${PLATFORM}/;
+        fi
+        if [[ -f spack-${LIBRISTRA_SPACK_REF}/etc/spack/${PLATFORM}/upstreams.yaml ]];
+        then
+          export SPACK_MODULES=`awk '/tcl/{print $NF}' spack-${LIBRISTRA_SPACK_REF}/etc/spack/${PLATFORM}/upstreams.yaml`;
+          export SPACK_MODULES_ARRAY=($spack_modules);
+          for s in "${!SPACK_MODULES_ARRAY[@]}"; do [ ! -d ${SPACK_MODULES_ARRAY[s]} ] && { rm spack-${LIBRISTRA_SPACK_REF}/etc/spack/${PLATFORM}/upstreams.yaml; break; }; done
+        fi
+        # HPC mirror has cached an older version of flecsi and cinch
+        spack mirror rm --scope site lanl;
+        cp -R ${CI_PROJECT_DIR}/ristra_spackages/spack-repo spack-${LIBRISTRA_SPACK_REF}/var/spack/repos;
+        mv spack-${LIBRISTRA_SPACK_REF}/var/spack/repos/spack-repo spack-${LIBRISTRA_SPACK_REF}/var/spack/repos/ristra_spackages;
+        spack repo add --scope site spack-${LIBRISTRA_SPACK_REF}/var/spack/repos/ristra_spackages;
+      fi
+    - source ${RISTRA_CI_SPACK_DIR}/${CI_PROJECT_NAME}/spack-${LIBRISTRA_SPACK_REF}/share/spack/setup-env.sh
+    - export SPACK_ARCH=`spack arch`
     - echo ${SPACK_ARCH}
     - export TARGET="${SPACK_ARCH##*-}"
     - echo ${TARGET}
@@ -39,34 +70,15 @@
       else
         export LIBRISTRA_SPACK_FULL_SPEC="${LIBRISTRA_SPACK_SPEC} ^${LIBRISTRA_MPI_PROVIDER}@${LIBRISTRA_MPICH_VERSION}%gcc@${LIBRISTRA_GCC_VERSION} ${LIBRISTRA_MPICH_SPEC}";
       fi
-    - export PLATFORM="${SPACK_ARCH%%-*}"
-    - echo ${PLATFORM}
-    - mkdir -p ${CI_PROJECT_DIR}/spack/etc/spack/${PLATFORM}
-    - cp ${CI_PROJECT_DIR}/ristra-spack-configurations/common/*.yaml ${CI_PROJECT_DIR}/spack/etc/spack/
-    - |
-      if [[ -d ${CI_PROJECT_DIR}/ristra-spack-configurations/Darwin/${LIBRISTRA_SPACK_REF%.*} ]];
-      then
-        cp ${CI_PROJECT_DIR}/ristra-spack-configurations/Darwin/${LIBRISTRA_SPACK_REF%.*}/*.yaml ${CI_PROJECT_DIR}/spack/etc/spack/${PLATFORM}/;
-        cp ${CI_PROJECT_DIR}/ristra-spack-configurations/Darwin/${LIBRISTRA_SPACK_REF%.*}/public/*.yaml ${CI_PROJECT_DIR}/spack/etc/spack/${PLATFORM}/;
-      fi
-    - |
-      if [[ -f ${CI_PROJECT_DIR}/spack/etc/spack/${PLATFORM}/upstreams.yaml ]];
-      then
-        export SPACK_MODULES=`awk '/tcl/{print $NF}' ${CI_PROJECT_DIR}/spack/etc/spack/${PLATFORM}/upstreams.yaml`;
-        export SPACK_MODULES_ARRAY=($spack_modules);
-        for s in "${!SPACK_MODULES_ARRAY[@]}"; do [ ! -d ${SPACK_MODULES_ARRAY[s]} ] && { rm ${CI_PROJECT_DIR}/spack/etc/spack/${PLATFORM}/upstreams.yaml; break; }; done
-      fi
-    # HPC mirror has cached an older version of flecsi and cinch
-    - ${CI_PROJECT_DIR}/spack/bin/spack mirror rm --scope site lanl
-    - . ${CI_PROJECT_DIR}/spack/share/spack/setup-env.sh
-    - spack repo add --scope site ${CI_PROJECT_DIR}/ristra_spackages/spack-repo
     - spack repo list
+    - spack mirror list
     - mkdir -p ${CI_PROJECT_DIR}/spack_env
     - spack env create --without-view -d ${CI_PROJECT_DIR}/spack_env
     - spack env activate -d ${CI_PROJECT_DIR}/spack_env
     - spack dev-build -q ${LIBRISTRA_SPACK_FULL_SPEC} || ( cat spack-build-out.txt && exit 1 )
     - export LIBRISTRA_CMD="spack install --show-log-on-error ${LIBRISTRA_SPACK_FULL_SPEC}"
     - ( echo "$LIBRISTRA_CMD" && $LIBRISTRA_CMD )
+    - source ${RISTRA_CI_SPACK_DIR}/${CI_PROJECT_NAME}/spack-${LIBRISTRA_SPACK_REF}/share/spack/setup-env.sh
     - spack module tcl refresh -y
     - spack env loads -r -x libristra
     - export modName="${CI_PROJECT_DIR}/spack_env/loads"
