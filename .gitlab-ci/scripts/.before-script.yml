@@ -3,14 +3,8 @@ before_script:
   - export HOME=${CI_PROJECT_DIR}
   - export TMPDIR=${CI_PROJECT_DIR}
   - unset SPACK_ROOT
-  - source ${CI_PROJECT_DIR}/spack/share/spack/setup-env.sh || /bin/true
+  - source ${RISTRA_CI_SPACK_DIR}/${CI_PROJECT_NAME}/spack-${LIBRISTRA_SPACK_REF}/share/spack/setup-env.sh || /bin/true
   - echo ${CI_RUNNER_TAGS}
   - echo ${SLURM_JOB_PARTITION}
   - sinfo -p ${SLURM_JOB_PARTITION}
-  - echo ${SLURM_JOB_NODELIST}  
-  - |
-    if [[ -d ${CI_PROJECT_DIR}/spack ]];
-    then
-      spack reindex;
-      spack module tcl refresh -y;
-    fi
+  - echo ${SLURM_JOB_NODELIST}
