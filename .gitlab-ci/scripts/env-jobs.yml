@@ -75,7 +75,7 @@
     - mkdir -p ${CI_PROJECT_DIR}/spack_env
     - spack env create --without-view -d ${CI_PROJECT_DIR}/spack_env
     - spack env activate -d ${CI_PROJECT_DIR}/spack_env
-    - spack dev-build -q ${LIBRISTRA_SPACK_FULL_SPEC} || ( cat spack-build-out.txt && exit 1 )
+    - spack dev-build -q -u install ${LIBRISTRA_SPACK_FULL_SPEC} || ( cat spack-build-out.txt && exit 1 )
     - export LIBRISTRA_CMD="spack install --show-log-on-error ${LIBRISTRA_SPACK_FULL_SPEC}"
     - ( echo "$LIBRISTRA_CMD" && $LIBRISTRA_CMD )
     - source ${RISTRA_CI_SPACK_DIR}/${CI_PROJECT_NAME}/spack-${LIBRISTRA_SPACK_REF}/share/spack/setup-env.sh
