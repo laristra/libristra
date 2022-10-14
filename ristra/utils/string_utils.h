@@ -10,12 +10,14 @@
 #pragma once
 
 // system includes
+#include <cstdlib>
 #include <cstring>
 #include <iomanip>
 #include <iterator>
 #include <locale>
 #include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace ristra {

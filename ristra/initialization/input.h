@@ -13,8 +13,13 @@
 #include <ristra/embedded/embed_lua.h>
 
 // system includes
+#include <csstring>
 #include <iomanip>
+#include <map>
+#include <stdexcept>
 #include <string>
+#include <tuple>
+#include <vector>
 
 namespace ristra {
 namespace initialization {

@@ -11,6 +11,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include <tuple>
+#include <type_traits>
+#include <utility>
 
 // user includes
 #include "tuple_zip_impl.h"
