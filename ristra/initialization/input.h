@@ -13,7 +13,7 @@
 #include <ristra/embedded/embed_lua.h>
 
 // system includes
-#include <csstring>
+#include <cstring>
 #include <iomanip>
 #include <map>
 #include <stdexcept>
